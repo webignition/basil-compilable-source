@@ -1,0 +1,89 @@
+<?php
+
+declare(strict_types=1);
+
+namespace webignition\BasilCompilableSource\Metadata;
+
+use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
+use webignition\BasilCompilableSource\VariablePlaceholderCollection;
+
+class Metadata implements MetadataInterface
+{
+    public const KEY_CLASS_DEPENDENCIES = 'class-dependencies';
+    public const KEY_VARIABLE_DEPENDENCIES = 'variable-dependencies';
+    public const KEY_VARIABLE_EXPORTS = 'variable-exports';
+
+    /**
+     * @var ClassDependencyCollection
+     */
+    private $classDependencies;
+
+    /**
+     * @var VariablePlaceholderCollection
+     */
+    private $variableDependencies;
+
+    /**
+     * @var VariablePlaceholderCollection
+     */
+    private $variableExports;
+
+    /**
+     * @param array<mixed> $components
+     */
+    public function __construct(array $components = [])
+    {
+        $classDependencies = $components[self::KEY_CLASS_DEPENDENCIES] ?? new ClassDependencyCollection();
+        $classDependencies = $classDependencies instanceof ClassDependencyCollection
+            ? $classDependencies
+            : new ClassDependencyCollection();
+
+        $variableDependencies = $components[self::KEY_VARIABLE_DEPENDENCIES] ?? new VariablePlaceholderCollection();
+        $variableDependencies = $variableDependencies instanceof VariablePlaceholderCollection
+            ? $variableDependencies
+            : new VariablePlaceholderCollection();
+
+        $variableExports = $components[self::KEY_VARIABLE_EXPORTS] ?? new VariablePlaceholderCollection();
+        $variableExports = $variableExports instanceof VariablePlaceholderCollection
+            ? $variableExports
+            : new VariablePlaceholderCollection();
+
+        $this->classDependencies = $classDependencies;
+        $this->variableDependencies = $variableDependencies;
+        $this->variableExports = $variableExports;
+    }
+
+    public function getClassDependencies(): ClassDependencyCollection
+    {
+        return $this->classDependencies;
+    }
+
+    public function getVariableExports(): VariablePlaceholderCollection
+    {
+        return $this->variableExports;
+    }
+
+    public function getVariableDependencies(): VariablePlaceholderCollection
+    {
+        return $this->variableDependencies;
+    }
+
+    public function merge(MetadataInterface $metadata): MetadataInterface
+    {
+        $new = clone $this;
+        $new->mergeClassDependencies($metadata->getClassDependencies());
+        $new->variableDependencies->merge($metadata->getVariableDependencies());
+        $new->variableExports->merge($metadata->getVariableExports());
+
+        return $new;
+    }
+
+    private function mergeClassDependencies(ClassDependencyCollection $classDependencies): void
+    {
+        foreach ($classDependencies->getLines() as $classDependency) {
+            if ($this->classDependencies->canLineBeAdded($classDependency)) {
+                $this->classDependencies->addLine($classDependency);
+            }
+        }
+    }
+}

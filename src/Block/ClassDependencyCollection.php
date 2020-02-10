@@ -16,7 +16,7 @@ class ClassDependencyCollection extends AbstractBlock
         return trim($renderedContent);
     }
 
-    protected function canLineBeAdded(LineInterface $line): bool
+    public function canLineBeAdded(LineInterface $line): bool
     {
         if ($line instanceof ClassDependency) {
             return false === $this->containsClassDependency($line);
