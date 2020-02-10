@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Line;
 
-use webignition\BasilCompilableSource\SourceInterface;
+use webignition\BasilCompilableSource\LineInterface;
 
-class EmptyLine implements SourceInterface
+class EmptyLine implements LineInterface
 {
     public function render(): string
     {
