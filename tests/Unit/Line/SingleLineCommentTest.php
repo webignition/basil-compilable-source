@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Tests\Unit\Line;
 
 use webignition\BasilCompilableSource\Line\SingleLineComment;
-use webignition\BasilCompilableSource\Tests\Services\ObjectReflector;
 
 class SingleLineCommentTest extends \PHPUnit\Framework\TestCase
 {
@@ -14,7 +13,7 @@ class SingleLineCommentTest extends \PHPUnit\Framework\TestCase
         $content = 'comment content';
         $comment = new SingleLineComment($content);
 
-        $this->assertSame($content, ObjectReflector::getProperty($comment, 'content'));
+        $this->assertSame($content, $comment->getContent());
     }
 
     /**

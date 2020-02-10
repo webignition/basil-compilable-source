@@ -8,8 +8,6 @@ use webignition\BasilCompilableSource\SourceInterface;
 
 class EmptyLine implements SourceInterface
 {
-    private const RENDER_PATTERN = '// %s;';
-
     public function render(): string
     {
         return '';
