@@ -13,7 +13,10 @@ class ClassDependencyCollection extends AbstractBlock
     {
         $renderedContent = parent::render();
 
-        return trim($renderedContent);
+        $renderedLines = explode("\n", $renderedContent);
+        sort($renderedLines);
+
+        return trim(implode("\n", $renderedLines));
     }
 
     protected function canLineBeAdded(LineInterface $line): bool

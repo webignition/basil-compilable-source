@@ -85,6 +85,17 @@ class ClassDependencyCollectionTest extends \PHPUnit\Framework\TestCase
                     'use webignition\BasilCompilableSource\Line\ClassDependency;' . "\n" .
                     'use webignition\BasilCompilableSource\Tests\Unit\Line\ClassDependencyTest as BaseTest;',
             ],
+            'lines are sorted' => [
+                'collection' => new ClassDependencyCollection([
+                    new ClassDependency('C'),
+                    new ClassDependency('A'),
+                    new ClassDependency('B'),
+                ]),
+                'expectedString' =>
+                    'use A;' . "\n" .
+                    'use B;' . "\n" .
+                    'use C;',
+            ],
         ];
     }
 }
