@@ -29,11 +29,11 @@ class SingleLineCommentTest extends \PHPUnit\Framework\TestCase
         return [
             'empty' => [
                 'comment' => new SingleLineComment(''),
-                'expectedString' => '// ;',
+                'expectedString' => '// ',
             ],
             'non-empty' => [
                 'comment' => new SingleLineComment('non-empty'),
-                'expectedString' => '// non-empty;',
+                'expectedString' => '// non-empty',
             ],
         ];
     }

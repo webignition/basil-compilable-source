@@ -11,6 +11,6 @@ class SingleLineComment extends AbstractStringLine implements SourceInterface
 {
     protected function getRenderPattern(): string
     {
-        return '// %s;';
+        return '// %s';
     }
 }
