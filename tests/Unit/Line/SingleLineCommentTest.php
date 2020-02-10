@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilCompilableSource\Tests\Line;
+namespace webignition\BasilCompilableSource\Tests\Unit\Line;
 
 use webignition\BasilCompilableSource\Line\SingleLineComment;
 use webignition\BasilCompilableSource\Tests\Services\ObjectReflector;
