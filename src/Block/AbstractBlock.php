@@ -25,7 +25,7 @@ abstract class AbstractBlock implements BlockInterface
         }
     }
 
-    abstract protected function canLineBeAdded(LineInterface $line): bool;
+    abstract public function canLineBeAdded(LineInterface $line): bool;
 
     public function addLine(LineInterface $line): void
     {
