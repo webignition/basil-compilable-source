@@ -9,19 +9,37 @@ namespace webignition\BasilCompilableSource;
  */
 class VariablePlaceholderCollection implements \IteratorAggregate
 {
+    private $placeholderType;
+
     /**
      * @var VariablePlaceholder[]
      */
     private $variablePlaceholders = [];
 
-    /**
-     * @param VariablePlaceholder[] $items
-     */
-    public function __construct(array $items = [])
+    private function __construct(string $placeholderType)
     {
-        foreach ($items as $item) {
-            $this->add($item);
+        $this->placeholderType = VariablePlaceholder::isAllowedType($placeholderType)
+            ? $placeholderType
+            : VariablePlaceholder::TYPE_EXPORT;
+    }
+
+    /**
+     * @param string $placeholderType
+     * @param string[] $names
+     *
+     * @return VariablePlaceholderCollection
+     */
+    public static function create(string $placeholderType, array $names = []): VariablePlaceholderCollection
+    {
+        $collection = new VariablePlaceholderCollection($placeholderType);
+
+        foreach ($names as $name) {
+            if (is_string($name)) {
+                $collection->add(new VariablePlaceholder($name, $collection->getPlaceholderType()));
+            }
         }
+
+        return $collection;
     }
 
     /**
@@ -29,17 +47,19 @@ class VariablePlaceholderCollection implements \IteratorAggregate
      *
      * @return VariablePlaceholderCollection
      */
-    public static function create(array $names): VariablePlaceholderCollection
+    public static function createDependencyCollection(array $names = []): VariablePlaceholderCollection
     {
-        $collection = new VariablePlaceholderCollection();
+        return self::create(VariablePlaceholder::TYPE_DEPENDENCY, $names);
+    }
 
-        foreach ($names as $name) {
-            if (is_string($name)) {
-                $collection->createPlaceholder($name);
-            }
-        }
-
-        return $collection;
+    /**
+     * @param string[] $names
+     *
+     * @return VariablePlaceholderCollection
+     */
+    public static function createExportCollection(array $names = []): VariablePlaceholderCollection
+    {
+        return self::create(VariablePlaceholder::TYPE_EXPORT, $names);
     }
 
     public function createPlaceholder(string $name): VariablePlaceholder
@@ -47,26 +67,35 @@ class VariablePlaceholderCollection implements \IteratorAggregate
         $variablePlaceholder = $this->variablePlaceholders[$name] ?? null;
 
         if (null === $variablePlaceholder) {
-            $variablePlaceholder = new VariablePlaceholder($name);
+            $variablePlaceholder = new VariablePlaceholder($name, $this->placeholderType);
             $this->add($variablePlaceholder);
         }
 
         return $variablePlaceholder;
     }
 
+    public function getPlaceholderType(): string
+    {
+        return $this->placeholderType;
+    }
+
     public function merge(VariablePlaceholderCollection $collection): void
     {
-        foreach ($collection as $variablePlaceholder) {
-            $this->add($variablePlaceholder);
+        if ($collection->getPlaceholderType() === $this->getPlaceholderType()) {
+            foreach ($collection as $variablePlaceholder) {
+                $this->add($variablePlaceholder);
+            }
         }
     }
 
     public function add(VariablePlaceholder $variablePlaceholder): void
     {
-        $name = $variablePlaceholder->getContent();
+        if ($variablePlaceholder->getType() === $this->getPlaceholderType()) {
+            $name = $variablePlaceholder->getContent();
 
-        if (!array_key_exists($name, $this->variablePlaceholders)) {
-            $this->variablePlaceholders[$name] = $variablePlaceholder;
+            if (!array_key_exists($name, $this->variablePlaceholders)) {
+                $this->variablePlaceholders[$name] = $variablePlaceholder;
+            }
         }
     }
 
