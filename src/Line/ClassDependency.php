@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Line;
 
-use webignition\BasilCompilableSource\SourceInterface;
+use webignition\BasilCompilableSource\LineInterface;
 
-class ClassDependency implements SourceInterface
+class ClassDependency implements LineInterface
 {
     private const RENDER_PATTERN = 'use %s;';
 
