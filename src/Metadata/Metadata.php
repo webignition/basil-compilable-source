@@ -38,15 +38,17 @@ class Metadata implements MetadataInterface
             ? $classDependencies
             : new ClassDependencyCollection();
 
-        $variableDependencies = $components[self::KEY_VARIABLE_DEPENDENCIES] ?? new VariablePlaceholderCollection();
+        $emptyVariableDependencies = VariablePlaceholderCollection::createDependencyCollection();
+        $variableDependencies = $components[self::KEY_VARIABLE_DEPENDENCIES] ?? $emptyVariableDependencies;
         $variableDependencies = $variableDependencies instanceof VariablePlaceholderCollection
             ? $variableDependencies
-            : new VariablePlaceholderCollection();
+            : $emptyVariableDependencies;
 
-        $variableExports = $components[self::KEY_VARIABLE_EXPORTS] ?? new VariablePlaceholderCollection();
+        $emptyVariableExports = VariablePlaceholderCollection::createExportCollection();
+        $variableExports = $components[self::KEY_VARIABLE_EXPORTS] ?? $emptyVariableExports;
         $variableExports = $variableExports instanceof VariablePlaceholderCollection
             ? $variableExports
-            : new VariablePlaceholderCollection();
+            : $emptyVariableExports;
 
         $this->classDependencies = $classDependencies;
         $this->variableDependencies = $variableDependencies;

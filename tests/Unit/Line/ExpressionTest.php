@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Tests\Unit\Line;
 
+use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
+use webignition\BasilCompilableSource\Line\ClassDependency;
 use webignition\BasilCompilableSource\Line\EmptyLine;
 use webignition\BasilCompilableSource\Line\Expression;
 use webignition\BasilCompilableSource\Line\ExpressionInterface;
@@ -28,21 +30,42 @@ class ExpressionTest extends \PHPUnit\Framework\TestCase
     public function createDataProvider(): array
     {
         return [
-            'no metadata' => [
+            'empty' => [
                 'line' => new EmptyLine(),
                 'metadata' => null,
                 'expectedMetadata' => new Metadata(),
             ],
-            'has metadata' => [
-                'line' => new VariablePlaceholder('NAME'),
+            'variable dependency, no explicit metadata' => [
+                'line' => VariablePlaceholder::createDependency('DEPENDENCY'),
+                'metadata' => null,
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                        'DEPENDENCY',
+                    ])
+                ]),
+            ],
+            'variable export, no explicit metadata' => [
+                'line' => VariablePlaceholder::createExport('EXPORT'),
+                'metadata' => null,
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
+                        'EXPORT',
+                    ])
+                ]),
+            ],
+            'variable dependency, has explicit metadata' => [
+                'line' => VariablePlaceholder::createDependency('DEPENDENCY'),
                 'metadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::create([
-                        'NAME',
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
+                        new ClassDependency(ClassDependency::class),
                     ])
                 ]),
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::create([
-                        'NAME',
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
+                        new ClassDependency(ClassDependency::class),
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                        'DEPENDENCY',
                     ])
                 ]),
             ],
@@ -62,14 +85,14 @@ class ExpressionTest extends \PHPUnit\Framework\TestCase
         return [
             'variable placeholder' => [
                 'expression' => new Expression(
-                    new VariablePlaceholder('NAME'),
+                    VariablePlaceholder::createDependency('DEPENDENCY'),
                     new Metadata([
-                        Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::create([
-                            'NAME',
+                        Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createDependencyCollection([
+                            'DEPENDENCY',
                         ])
                     ])
                 ),
-                'expectedString' => '{{ NAME }}',
+                'expectedString' => '{{ DEPENDENCY }}',
             ]
         ];
     }

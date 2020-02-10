@@ -9,39 +9,73 @@ use webignition\BasilCompilableSource\VariablePlaceholderCollection;
 
 class VariablePlaceholderCollectionTest extends \PHPUnit\Framework\TestCase
 {
-    public function testConstruct()
+    /**
+     * @dataProvider createDataProvider
+     *
+     * @param string $type
+     * @param string[] $names
+     * @param VariablePlaceholder[] $expectedPlaceholders
+     */
+    public function testCreate(string $type, array $names, array $expectedPlaceholders)
     {
-        $placeholders = [
-            'ONE' => new VariablePlaceholder('ONE'),
-            'TWO' => new VariablePlaceholder('TWO'),
-            'THREE' => new VariablePlaceholder('THREE'),
-        ];
-
-        $collection = new VariablePlaceholderCollection($placeholders);
-
-        $this->assertEquals($placeholders, $this->getCollectionVariablePlaceholders($collection));
-    }
-
-    public function testCreate()
-    {
-        $names = ['ONE', 'TWO', 'TWO', 'THREE'];
-
-        $collection = VariablePlaceholderCollection::create($names);
-
-        $expectedPlaceholders = [
-            'ONE' => new VariablePlaceholder('ONE'),
-            'TWO' => new VariablePlaceholder('TWO'),
-            'THREE' => new VariablePlaceholder('THREE'),
-        ];
+        $collection = VariablePlaceholderCollection::create($type, $names);
 
         $this->assertCount(count($expectedPlaceholders), $collection);
 
         $this->assertEquals($expectedPlaceholders, $this->getCollectionVariablePlaceholders($collection));
     }
 
+    public function createDataProvider(): array
+    {
+        return [
+            'dependency collection' => [
+                'type' => VariablePlaceholder::TYPE_DEPENDENCY,
+                'names' => [
+                    'DEPENDENCY_1',
+                    'DEPENDENCY_2',
+                    'DEPENDENCY_2',
+                    'DEPENDENCY_3',
+                ],
+                'expectedPlaceholders' => [
+                    'DEPENDENCY_1' => VariablePlaceholder::createDependency('DEPENDENCY_1'),
+                    'DEPENDENCY_2' => VariablePlaceholder::createDependency('DEPENDENCY_2'),
+                    'DEPENDENCY_3' => VariablePlaceholder::createDependency('DEPENDENCY_3'),
+                ],
+            ],
+            'export collection' => [
+                'type' => VariablePlaceholder::TYPE_EXPORT,
+                'names' => [
+                    'EXPORT_1',
+                    'EXPORT_1',
+                    'EXPORT_2',
+                    'EXPORT_3',
+                ],
+                'expectedPlaceholders' => [
+                    'EXPORT_1' => VariablePlaceholder::createExport('EXPORT_1'),
+                    'EXPORT_2' => VariablePlaceholder::createExport('EXPORT_2'),
+                    'EXPORT_3' => VariablePlaceholder::createExport('EXPORT_3'),
+                ],
+            ],
+            'invalid type collection' => [
+                'type' => 'invalid',
+                'names' => [
+                    'EXPORT_1',
+                    'EXPORT_1',
+                    'EXPORT_2',
+                    'EXPORT_3',
+                ],
+                'expectedPlaceholders' => [
+                    'EXPORT_1' => VariablePlaceholder::createExport('EXPORT_1'),
+                    'EXPORT_2' => VariablePlaceholder::createExport('EXPORT_2'),
+                    'EXPORT_3' => VariablePlaceholder::createExport('EXPORT_3'),
+                ],
+            ],
+        ];
+    }
+
     public function testCreatePlaceholder()
     {
-        $collection = new VariablePlaceholderCollection();
+        $collection = VariablePlaceholderCollection::createDependencyCollection();
         $this->assertEquals([], $this->getCollectionVariablePlaceholders($collection));
 
         $placeholder = $collection->createPlaceholder('PLACEHOLDER');
@@ -57,19 +91,20 @@ class VariablePlaceholderCollectionTest extends \PHPUnit\Framework\TestCase
 
     public function testMerge()
     {
-        $collection = VariablePlaceholderCollection::create(['ONE']);
+        $collection = VariablePlaceholderCollection::createDependencyCollection(['ONE']);
 
-        $collection->merge(VariablePlaceholderCollection::create(['TWO', 'THREE']));
-        $collection->merge(VariablePlaceholderCollection::create(['THREE', 'FOUR']));
+        $collection->merge(VariablePlaceholderCollection::createDependencyCollection(['TWO', 'THREE']));
+        $collection->merge(VariablePlaceholderCollection::createDependencyCollection(['THREE', 'FOUR']));
+        $collection->merge(VariablePlaceholderCollection::createExportCollection(['FIVE']));
 
         $this->assertCount(4, $collection);
 
         $this->assertEquals(
             [
-                'ONE' => new VariablePlaceholder('ONE'),
-                'TWO' => new VariablePlaceholder('TWO'),
-                'THREE' => new VariablePlaceholder('THREE'),
-                'FOUR' => new VariablePlaceholder('FOUR'),
+                'ONE' => new VariablePlaceholder('ONE', VariablePlaceholder::TYPE_DEPENDENCY),
+                'TWO' => new VariablePlaceholder('TWO', VariablePlaceholder::TYPE_DEPENDENCY),
+                'THREE' => new VariablePlaceholder('THREE', VariablePlaceholder::TYPE_DEPENDENCY),
+                'FOUR' => new VariablePlaceholder('FOUR', VariablePlaceholder::TYPE_DEPENDENCY),
             ],
             $this->getCollectionVariablePlaceholders($collection)
         );
@@ -83,10 +118,13 @@ class VariablePlaceholderCollectionTest extends \PHPUnit\Framework\TestCase
             'THREE' => 'THREE',
         ];
 
-        $collection = VariablePlaceholderCollection::create(array_values($collectionValues));
+        $collection = VariablePlaceholderCollection::createDependencyCollection(array_values($collectionValues));
 
         foreach ($collection as $id => $variablePlaceholder) {
-            $expectedPlaceholder = new VariablePlaceholder($collectionValues[$id]);
+            $expectedPlaceholder = new VariablePlaceholder(
+                $collectionValues[$id],
+                VariablePlaceholder::TYPE_DEPENDENCY
+            );
 
             $this->assertEquals($expectedPlaceholder, $variablePlaceholder);
         }

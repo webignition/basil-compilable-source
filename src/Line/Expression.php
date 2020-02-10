@@ -21,7 +21,13 @@ class Expression implements ExpressionInterface
 
     public function getMetadata(): MetadataInterface
     {
-        return $this->metadata;
+        $metadata = clone $this->metadata;
+
+        if ($this->line instanceof ExpressionInterface) {
+            $metadata = $metadata->merge($this->line->getMetadata());
+        }
+
+        return $metadata;
     }
 
     public function render(): string
