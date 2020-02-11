@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Line\Statement;
 
 use webignition\BasilCompilableSource\Line\ExpressionInterface;
+use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\VariablePlaceholder;
 
 class AssignmentStatement extends Statement implements AssignmentStatementInterface
@@ -37,6 +38,11 @@ class AssignmentStatement extends Statement implements AssignmentStatementInterf
     public function getCastTo(): ?string
     {
         return $this->castTo;
+    }
+
+    public function getMetadata(): MetadataInterface
+    {
+        return parent::getMetadata()->merge($this->placeholder->getMetadata());
     }
 
     public function render(): string
