@@ -25,13 +25,11 @@ class AssignmentStatementTest extends \PHPUnit\Framework\TestCase
     public function testCreate(
         VariablePlaceholder $placeholder,
         ExpressionInterface $expression,
-        ?string $castTo,
-        MetadataInterface $expectedMetadata
+        ?string $castTo
     ) {
         $statement = new AssignmentStatement($placeholder, $expression, $castTo);
 
         $this->assertSame($placeholder, $statement->getVariablePlaceholder());
-        $this->assertEquals($expectedMetadata, $statement->getMetadata());
         $this->assertSame($expression, $statement->getExpression());
         $this->assertSame($castTo, $statement->getCastTo());
     }
@@ -43,31 +41,16 @@ class AssignmentStatementTest extends \PHPUnit\Framework\TestCase
                 'placeholder' => VariablePlaceholder::createExport('PLACEHOLDER'),
                 'expression' => VariablePlaceholder::createDependency('DEPENDENCY'),
                 'castTo' =>  null,
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
-                        'DEPENDENCY',
-                    ])
-                ]),
             ],
             'variable dependency, cast to string' => [
                 'placeholder' => VariablePlaceholder::createExport('PLACEHOLDER'),
                 'expression' => VariablePlaceholder::createDependency('DEPENDENCY'),
                 'castTo' =>  'string',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
-                        'DEPENDENCY',
-                    ])
-                ]),
             ],
             'variable export' => [
                 'placeholder' => VariablePlaceholder::createExport('PLACEHOLDER'),
                 'expression' => VariablePlaceholder::createExport('EXPORT'),
                 'castTo' =>  null,
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        'EXPORT',
-                    ])
-                ]),
             ],
             'expression with metadata encapsulating variable dependency' => [
                 'placeholder' => VariablePlaceholder::createExport('PLACEHOLDER'),
@@ -80,20 +63,11 @@ class AssignmentStatementTest extends \PHPUnit\Framework\TestCase
                     ])
                 ),
                 'castTo' =>  null,
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassDependency(ClassDependency::class),
-                    ]),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
-                        'DEPENDENCY',
-                    ])
-                ]),
             ],
             'method invocation' => [
                 'placeholder' => VariablePlaceholder::createExport('PLACEHOLDER'),
                 'expression' => new MethodInvocation('methodName'),
                 'castTo' =>  null,
-                'expectedMetadata' => new Metadata(),
             ],
             'object method invocation' => [
                 'placeholder' => VariablePlaceholder::createExport('PLACEHOLDER'),
@@ -102,9 +76,68 @@ class AssignmentStatementTest extends \PHPUnit\Framework\TestCase
                     'methodName'
                 ),
                 'castTo' =>  null,
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider getMetadataDataProvider
+     */
+    public function testGetMetadata(AssignmentStatement $statement, MetadataInterface $expectedMetadata)
+    {
+        $this->assertEquals($expectedMetadata, $statement->getMetadata());
+    }
+
+    public function getMetadataDataProvider(): array
+    {
+        return [
+            'expression is variable dependency' => [
+                'statement' => new AssignmentStatement(
+                    VariablePlaceholder::createExport('PLACEHOLDER'),
+                    VariablePlaceholder::createDependency('DEPENDENCY')
+                ),
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
-                        'OBJECT',
+                        'DEPENDENCY',
+                    ]),
+                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
+                        'PLACEHOLDER',
+                    ])
+                ]),
+            ],
+            'variable export' => [
+                'statement' => new AssignmentStatement(
+                    VariablePlaceholder::createExport('PLACEHOLDER'),
+                    VariablePlaceholder::createExport('EXPORT')
+                ),
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
+                        'EXPORT',
+                        'PLACEHOLDER',
+                    ])
+                ]),
+            ],
+            'expression with metadata encapsulating variable dependency' => [
+                'statement' => new AssignmentStatement(
+                    VariablePlaceholder::createExport('PLACEHOLDER'),
+                    new Expression(
+                        VariablePlaceholder::createDependency('DEPENDENCY'),
+                        new Metadata([
+                            Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
+                                new ClassDependency(ClassDependency::class),
+                            ]),
+                        ])
+                    )
+                ),
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
+                        new ClassDependency(ClassDependency::class),
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                        'DEPENDENCY',
+                    ]),
+                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
+                        'PLACEHOLDER',
                     ])
                 ]),
             ],
