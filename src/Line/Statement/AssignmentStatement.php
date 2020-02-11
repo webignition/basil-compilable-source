@@ -9,15 +9,24 @@ use webignition\BasilCompilableSource\VariablePlaceholder;
 
 class AssignmentStatement extends Statement implements AssignmentStatementInterface
 {
-    private const RENDER_PATTERN = '%s = %s';
+    private const RENDER_PATTERN = '%s = %s%s';
 
     private $placeholder;
 
-    public function __construct(VariablePlaceholder $placeholder, ExpressionInterface $expression)
-    {
+    /**
+     * @var string|null
+     */
+    private $castTo = null;
+
+    public function __construct(
+        VariablePlaceholder $placeholder,
+        ExpressionInterface $expression,
+        ?string $castTo = null
+    ) {
         parent::__construct($expression);
 
         $this->placeholder = $placeholder;
+        $this->castTo = $castTo;
     }
 
     public function getVariablePlaceholder(): VariablePlaceholder
@@ -25,11 +34,21 @@ class AssignmentStatement extends Statement implements AssignmentStatementInterf
         return $this->placeholder;
     }
 
+    public function getCastTo(): ?string
+    {
+        return $this->castTo;
+    }
+
     public function render(): string
     {
+        $cast = null === $this->castTo
+            ? ''
+            : '(' . $this->castTo . ') ';
+
         return sprintf(
             self::RENDER_PATTERN,
             $this->placeholder->render(),
+            $cast,
             parent::render()
         );
     }
