@@ -77,9 +77,16 @@ class ExpressionTest extends \PHPUnit\Framework\TestCase
                 'expectedMetadata' => new Metadata(),
             ],
             'object method invocation' => [
-                'line' => new ObjectMethodInvocation('object', 'methodName'),
+                'line' => new ObjectMethodInvocation(
+                    VariablePlaceholder::createDependency('OBJECT'),
+                    'methodName'
+                ),
                 'metadata' => null,
-                'expectedMetadata' => new Metadata(),
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                        'OBJECT',
+                    ])
+                ]),
             ],
         ];
     }
@@ -111,8 +118,11 @@ class ExpressionTest extends \PHPUnit\Framework\TestCase
                 'expectedString' => 'methodName()',
             ],
             'object method invocation' => [
-                'expression' => new ObjectMethodInvocation('object', 'methodName'),
-                'expectedString' => 'object->methodName()',
+                'expression' => new ObjectMethodInvocation(
+                    VariablePlaceholder::createDependency('OBJECT'),
+                    'methodName'
+                ),
+                'expectedString' => '{{ OBJECT }}->methodName()',
             ],
         ];
     }

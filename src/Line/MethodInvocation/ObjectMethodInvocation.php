@@ -4,33 +4,47 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Line\MethodInvocation;
 
+use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\BasilCompilableSource\VariablePlaceholder;
+
 class ObjectMethodInvocation extends MethodInvocation implements ObjectMethodInvocationInterface
 {
     private const RENDER_PATTERN = '%s->%s';
 
-    private $object;
+    private $objectPlaceholder;
 
+    /**
+     * @param VariablePlaceholder $objectPlaceholder
+     * @param string $methodName
+     * @param string[] $arguments
+     * @param string $argumentFormat
+     */
     public function __construct(
-        string $object,
+        VariablePlaceholder $objectPlaceholder,
         string $methodName,
         array $arguments = [],
         string $argumentFormat = self::ARGUMENT_FORMAT_INLINE
     ) {
         parent::__construct($methodName, $arguments, $argumentFormat);
 
-        $this->object = $object;
+        $this->objectPlaceholder = $objectPlaceholder;
     }
 
-    public function getObject(): string
+    public function getObjectPlaceholder(): VariablePlaceholder
     {
-        return $this->object;
+        return $this->objectPlaceholder;
+    }
+
+    public function getMetadata(): MetadataInterface
+    {
+        return $this->objectPlaceholder->getMetadata();
     }
 
     public function render(): string
     {
         return sprintf(
             self::RENDER_PATTERN,
-            $this->getObject(),
+            $this->getObjectPlaceholder()->render(),
             parent::render()
         );
     }
