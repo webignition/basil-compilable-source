@@ -8,6 +8,8 @@ use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 
 class Statement implements StatementInterface
 {
+    private const RENDER_PATTERN = '%s;';
+
     private $expression;
 
     public function __construct(ExpressionInterface $expression)
@@ -27,6 +29,9 @@ class Statement implements StatementInterface
 
     public function render(): string
     {
-        return $this->expression->render() . ';';
+        return sprintf(
+            self::RENDER_PATTERN,
+            $this->expression->render()
+        );
     }
 }
