@@ -2,36 +2,30 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilCompilableSource\Tests\Unit\Line;
+namespace webignition\BasilCompilableSource\Tests\Unit\Line\Statement;
 
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
-use webignition\BasilCompilableSource\Line\AssignmentStatement;
-use webignition\BasilCompilableSource\Line\AssignmentStatementInterface;
 use webignition\BasilCompilableSource\Line\ClassDependency;
 use webignition\BasilCompilableSource\Line\Expression;
 use webignition\BasilCompilableSource\Line\ExpressionInterface;
 use webignition\BasilCompilableSource\Line\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
-use webignition\BasilCompilableSource\Line\Statement;
-use webignition\BasilCompilableSource\Line\StatementInterface;
+use webignition\BasilCompilableSource\Line\Statement\Statement;
+use webignition\BasilCompilableSource\Line\Statement\StatementInterface;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\VariablePlaceholder;
 use webignition\BasilCompilableSource\VariablePlaceholderCollection;
 
-class AssignmentStatementTest extends \PHPUnit\Framework\TestCase
+class StatementTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider createDataProvider
      */
-    public function testCreate(
-        VariablePlaceholder $placeholder,
-        ExpressionInterface $expression,
-        MetadataInterface $expectedMetadata
-    ) {
-        $statement = new AssignmentStatement($placeholder, $expression);
+    public function testCreate(ExpressionInterface $expression, MetadataInterface $expectedMetadata)
+    {
+        $statement = new Statement($expression);
 
-        $this->assertSame($placeholder, $statement->getVariablePlaceholder());
         $this->assertEquals($expectedMetadata, $statement->getMetadata());
         $this->assertSame($expression, $statement->getExpression());
     }
@@ -40,7 +34,6 @@ class AssignmentStatementTest extends \PHPUnit\Framework\TestCase
     {
         return [
             'variable dependency' => [
-                'placeholder' => VariablePlaceholder::createExport('PLACEHOLDER'),
                 'expression' => VariablePlaceholder::createDependency('DEPENDENCY'),
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
@@ -49,7 +42,6 @@ class AssignmentStatementTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             'variable export' => [
-                'placeholder' => VariablePlaceholder::createExport('PLACEHOLDER'),
                 'expression' => VariablePlaceholder::createExport('EXPORT'),
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
@@ -58,7 +50,6 @@ class AssignmentStatementTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             'expression with metadata encapsulating variable dependency' => [
-                'placeholder' => VariablePlaceholder::createExport('PLACEHOLDER'),
                 'expression' => new Expression(
                     VariablePlaceholder::createDependency('DEPENDENCY'),
                     new Metadata([
@@ -77,12 +68,10 @@ class AssignmentStatementTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             'method invocation' => [
-                'placeholder' => VariablePlaceholder::createExport('PLACEHOLDER'),
                 'expression' => new MethodInvocation('methodName'),
                 'expectedMetadata' => new Metadata(),
             ],
             'object method invocation' => [
-                'placeholder' => VariablePlaceholder::createExport('PLACEHOLDER'),
                 'expression' => new ObjectMethodInvocation('object', 'methodName'),
                 'expectedMetadata' => new Metadata(),
             ],
@@ -92,7 +81,7 @@ class AssignmentStatementTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider renderDataProvider
      */
-    public function testRender(AssignmentStatementInterface $statement, string $expectedString)
+    public function testRender(StatementInterface $statement, string $expectedString)
     {
         $this->assertSame($expectedString, $statement->render());
     }
@@ -101,22 +90,19 @@ class AssignmentStatementTest extends \PHPUnit\Framework\TestCase
     {
         return [
             'statement encapsulating variable dependency' => [
-                'statement' => new AssignmentStatement(
-                    VariablePlaceholder::createExport('PLACEHOLDER'),
+                'statement' => new Statement(
                     VariablePlaceholder::createDependency('DEPENDENCY')
                 ),
-                'expectedString' => '{{ PLACEHOLDER }} = {{ DEPENDENCY }};',
+                'expectedString' => '{{ DEPENDENCY }};',
             ],
             'statement encapsulating variable export' => [
-                'statement' => new AssignmentStatement(
-                    VariablePlaceholder::createExport('PLACEHOLDER'),
+                'statement' => new Statement(
                     VariablePlaceholder::createExport('EXPORT')
                 ),
-                'expectedString' => '{{ PLACEHOLDER }} = {{ EXPORT }};',
+                'expectedString' => '{{ EXPORT }};',
             ],
             'statement encapsulating expression with metadata encapsulating variable dependency' => [
-                'statement' => new AssignmentStatement(
-                    VariablePlaceholder::createExport('PLACEHOLDER'),
+                'statement' => new Statement(
                     new Expression(
                         VariablePlaceholder::createDependency('DEPENDENCY'),
                         new Metadata([
@@ -126,21 +112,19 @@ class AssignmentStatementTest extends \PHPUnit\Framework\TestCase
                         ])
                     )
                 ),
-                'expectedString' => '{{ PLACEHOLDER }} = {{ DEPENDENCY }};',
+                'expectedString' => '{{ DEPENDENCY }};',
             ],
             'statement encapsulating method invocation' => [
-                'statement' => new AssignmentStatement(
-                    VariablePlaceholder::createExport('PLACEHOLDER'),
+                'statement' => new Statement(
                     new MethodInvocation('methodName')
                 ),
-                'expectedString' => '{{ PLACEHOLDER }} = methodName();',
+                'expectedString' => 'methodName();',
             ],
             'statement encapsulating object method invocation' => [
-                'statement' => new AssignmentStatement(
-                    VariablePlaceholder::createExport('PLACEHOLDER'),
+                'statement' => new Statement(
                     new ObjectMethodInvocation('object', 'methodName')
                 ),
-                'expectedString' => '{{ PLACEHOLDER }} = object->methodName();',
+                'expectedString' => 'object->methodName();',
             ],
         ];
     }

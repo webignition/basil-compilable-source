@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilCompilableSource\Line;
+namespace webignition\BasilCompilableSource\Line\Statement;
 
+use webignition\BasilCompilableSource\Line\ExpressionInterface;
 use webignition\BasilCompilableSource\VariablePlaceholder;
 
 class AssignmentStatement extends Statement implements AssignmentStatementInterface
