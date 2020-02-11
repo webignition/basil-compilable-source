@@ -25,6 +25,7 @@ class StatementTest extends \PHPUnit\Framework\TestCase
         $statement = new Statement($expression);
 
         $this->assertEquals($expectedMetadata, $statement->getMetadata());
+        $this->assertSame($expression, $statement->getExpression());
     }
 
     public function createDataProvider(): array
