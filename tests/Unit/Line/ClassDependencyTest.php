@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Tests\Unit\Line;
 
 use webignition\BasilCompilableSource\Line\ClassDependency;
-use webignition\BasilCompilableSource\Line\SingleLineComment;
 use webignition\BasilCompilableSource\Tests\Services\ObjectReflector;
 
 class ClassDependencyTest extends \PHPUnit\Framework\TestCase
@@ -46,12 +45,8 @@ class ClassDependencyTest extends \PHPUnit\Framework\TestCase
     public function getClassDataProvider(): array
     {
         return [
-            'no delimiter' => [
-                'classDependency' => new ClassDependency('ClassName'),
-                'expectedClass' => 'ClassName',
-            ],
             'global namespace' => [
-                'classDependency' => new ClassDependency('\\Global'),
+                'classDependency' => new ClassDependency('Global'),
                 'expectedClass' => 'Global',
             ],
             'namespaced' => [
