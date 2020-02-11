@@ -15,9 +15,9 @@ class StaticObjectTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider getMetadataDataProvider
      */
-    public function testGetMetadata(ClassDependency $classDependency, MetadataInterface $expectedMetadata)
+    public function testGetMetadata(string $object, MetadataInterface $expectedMetadata)
     {
-        $staticObject = new StaticObject($classDependency);
+        $staticObject = new StaticObject($object);
 
         $this->assertEquals($expectedMetadata, $staticObject->getMetadata());
     }
@@ -25,8 +25,20 @@ class StaticObjectTest extends \PHPUnit\Framework\TestCase
     public function getMetadataDataProvider(): array
     {
         return [
-            'default' => [
-                'classDependency' => new ClassDependency(ClassDependency::class),
+            'string reference' => [
+                'object' => 'parent',
+                'expectedMetadata' => new Metadata(),
+            ],
+            'global classname' => [
+                'object' => \StdClass::class,
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
+                        new ClassDependency(\StdClass::class),
+                    ]),
+                ]),
+            ],
+            'namespaced classname' => [
+                'object' => ClassDependency::class,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ClassDependency::class),
@@ -47,11 +59,17 @@ class StaticObjectTest extends \PHPUnit\Framework\TestCase
     public function renderDataProvider(): array
     {
         return [
-            'default' => [
-                'staticObject' => new StaticObject(
-                    new ClassDependency(StaticObject::class)
-                ),
-                'expectedString' => 'StaticObject',
+            'string reference' => [
+                'object' => new StaticObject('parent'),
+                'expectedString' => 'parent',
+            ],
+            'global classname' => [
+                'object' => new StaticObject(\StdClass::class),
+                'expectedString' => 'StdClass',
+            ],
+            'namespaced classname' => [
+                'object' => new StaticObject(ClassDependency::class),
+                'expectedString' => 'ClassDependency',
             ],
         ];
     }

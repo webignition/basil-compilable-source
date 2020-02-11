@@ -12,13 +12,26 @@ use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 
 class StaticObject extends AbstractStringLine implements ExpressionInterface
 {
-    private $classDependency;
+    /**
+     * @var MetadataInterface
+     */
+    private $metadata;
 
-    public function __construct(ClassDependency $classDependency)
+    public function __construct(string $object)
     {
-        parent::__construct($classDependency->getClass());
+        if (ClassDependency::isFullyQualifiedClassName($object)) {
+            $classDependency = new ClassDependency($object);
 
-        $this->classDependency = $classDependency;
+            parent::__construct($classDependency->getClass());
+            $this->metadata = new Metadata([
+                Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
+                    $classDependency,
+                ]),
+            ]);
+        } else {
+            parent::__construct($object);
+            $this->metadata = new Metadata();
+        }
     }
 
     protected function getRenderPattern(): string
@@ -28,10 +41,6 @@ class StaticObject extends AbstractStringLine implements ExpressionInterface
 
     public function getMetadata(): MetadataInterface
     {
-        return new Metadata([
-            Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                $this->classDependency,
-            ]),
-        ]);
+        return $this->metadata;
     }
 }
