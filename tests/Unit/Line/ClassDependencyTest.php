@@ -36,6 +36,32 @@ class ClassDependencyTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
+     * @dataProvider getClassDataProvider
+     */
+    public function testGetClass(ClassDependency $classDependency, string $expectedClass)
+    {
+        $this->assertSame($expectedClass, $classDependency->getClass());
+    }
+
+    public function getClassDataProvider(): array
+    {
+        return [
+            'no delimiter' => [
+                'classDependency' => new ClassDependency('ClassName'),
+                'expectedClass' => 'ClassName',
+            ],
+            'global namespace' => [
+                'classDependency' => new ClassDependency('\\Global'),
+                'expectedClass' => 'Global',
+            ],
+            'namespaced' => [
+                'classDependency' => new ClassDependency(ClassDependency::class),
+                'expectedClass' => 'ClassDependency',
+            ],
+        ];
+    }
+
+    /**
      * @dataProvider renderDataProvider
      */
     public function testRender(ClassDependency $classDependency, string $expectedString)
