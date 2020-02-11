@@ -27,10 +27,6 @@ class ClassDependency implements LineInterface
 
     public function getClass(): string
     {
-        if (false === self::isFullyQualifiedClassName($this->className)) {
-            return $this->className;
-        }
-
         $classNameParts = explode(self::FQCN_PART_DELIMITER, $this->className);
 
         return array_pop($classNameParts);
