@@ -8,6 +8,8 @@ use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSource\Line\ClassDependency;
 use webignition\BasilCompilableSource\Line\Expression;
 use webignition\BasilCompilableSource\Line\ExpressionInterface;
+use webignition\BasilCompilableSource\Line\MethodInvocation\MethodInvocation;
+use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Line\Statement;
 use webignition\BasilCompilableSource\Line\StatementInterface;
 use webignition\BasilCompilableSource\Metadata\Metadata;
@@ -65,6 +67,14 @@ class StatementTest extends \PHPUnit\Framework\TestCase
                     ])
                 ]),
             ],
+            'method invocation' => [
+                'expression' => new MethodInvocation('methodName'),
+                'expectedMetadata' => new Metadata(),
+            ],
+            'object method invocation' => [
+                'expression' => new ObjectMethodInvocation('object', 'methodName'),
+                'expectedMetadata' => new Metadata(),
+            ],
         ];
     }
 
@@ -103,6 +113,18 @@ class StatementTest extends \PHPUnit\Framework\TestCase
                     )
                 ),
                 'expectedString' => '{{ DEPENDENCY }};',
+            ],
+            'statement encapsulating method invocation' => [
+                'statement' => new Statement(
+                    new MethodInvocation('methodName')
+                ),
+                'expectedString' => 'methodName();',
+            ],
+            'statement encapsulating object method invocation' => [
+                'statement' => new Statement(
+                    new ObjectMethodInvocation('object', 'methodName')
+                ),
+                'expectedString' => 'object->methodName();',
             ],
         ];
     }

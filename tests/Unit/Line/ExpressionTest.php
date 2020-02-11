@@ -9,6 +9,8 @@ use webignition\BasilCompilableSource\Line\ClassDependency;
 use webignition\BasilCompilableSource\Line\EmptyLine;
 use webignition\BasilCompilableSource\Line\Expression;
 use webignition\BasilCompilableSource\Line\ExpressionInterface;
+use webignition\BasilCompilableSource\Line\MethodInvocation\MethodInvocation;
+use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\LineInterface;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
@@ -69,6 +71,16 @@ class ExpressionTest extends \PHPUnit\Framework\TestCase
                     ])
                 ]),
             ],
+            'method invocation' => [
+                'line' => new MethodInvocation('methodName'),
+                'metadata' => null,
+                'expectedMetadata' => new Metadata(),
+            ],
+            'object method invocation' => [
+                'line' => new ObjectMethodInvocation('object', 'methodName'),
+                'metadata' => null,
+                'expectedMetadata' => new Metadata(),
+            ],
         ];
     }
 
@@ -93,7 +105,15 @@ class ExpressionTest extends \PHPUnit\Framework\TestCase
                     ])
                 ),
                 'expectedString' => '{{ DEPENDENCY }}',
-            ]
+            ],
+            'method invocation' => [
+                'expression' => new MethodInvocation('methodName'),
+                'expectedString' => 'methodName()',
+            ],
+            'object method invocation' => [
+                'expression' => new ObjectMethodInvocation('object', 'methodName'),
+                'expectedString' => 'object->methodName()',
+            ],
         ];
     }
 }
