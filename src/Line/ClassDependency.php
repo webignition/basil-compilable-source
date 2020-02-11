@@ -20,9 +20,14 @@ class ClassDependency implements LineInterface
         $this->alias = $alias;
     }
 
+    public static function isFullyQualifiedClassName(string $className): bool
+    {
+        return strtolower($className) !== $className;
+    }
+
     public function getClass(): string
     {
-        if (0 === substr_count($this->className, self::FQCN_PART_DELIMITER)) {
+        if (false === self::isFullyQualifiedClassName($this->className)) {
             return $this->className;
         }
 

@@ -38,9 +38,17 @@ class StaticObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
     public function createDataProvider(): array
     {
         return [
-            'no arguments' => [
+            'no arguments, string reference' => [
                 'staticObject' => new StaticObject(
-                    new ClassDependency(ClassDependency::class)
+                    'parent'
+                ),
+                'methodName' => 'method',
+                'arguments' => [],
+                'argumentFormat' => MethodInvocation::ARGUMENT_FORMAT_INLINE,
+            ],
+            'no arguments, object reference' => [
+                'staticObject' => new StaticObject(
+                    ClassDependency::class
                 ),
                 'methodName' => 'method',
                 'arguments' => [],
@@ -48,7 +56,7 @@ class StaticObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
             ],
             'single argument' => [
                 'staticObject' => new StaticObject(
-                    new ClassDependency(ClassDependency::class)
+                    ClassDependency::class
                 ),
                 'methodName' => 'method',
                 'arguments' => [
@@ -58,7 +66,7 @@ class StaticObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
             ],
             'multiple arguments, inline' => [
                 'staticObject' => new StaticObject(
-                    new ClassDependency(ClassDependency::class)
+                    ClassDependency::class
                 ),
                 'methodName' => 'method',
                 'arguments' => [
@@ -70,7 +78,7 @@ class StaticObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
             ],
             'multiple arguments, stacked' => [
                 'staticObject' => new StaticObject(
-                    new ClassDependency(ClassDependency::class)
+                    ClassDependency::class
                 ),
                 'methodName' => 'method',
                 'arguments' => [
@@ -94,10 +102,19 @@ class StaticObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
     public function renderDataProvider(): array
     {
         return [
-            'object and method name only' => [
+            'object and method name only, string reference' => [
                 'invocation' => new StaticObjectMethodInvocation(
                     new StaticObject(
-                        new ClassDependency(ClassDependency::class)
+                        'parent'
+                    ),
+                    'methodName'
+                ),
+                'expectedString' => 'parent::methodName()',
+            ],
+            'object and method name only, object reference' => [
+                'invocation' => new StaticObjectMethodInvocation(
+                    new StaticObject(
+                        ClassDependency::class
                     ),
                     'methodName'
                 ),
@@ -106,7 +123,7 @@ class StaticObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
             'no arguments, inline' => [
                 'invocation' => new StaticObjectMethodInvocation(
                     new StaticObject(
-                        new ClassDependency(ClassDependency::class)
+                        ClassDependency::class
                     ),
                     'methodName',
                     [],
@@ -117,7 +134,7 @@ class StaticObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
             'no arguments, stacked' => [
                 'invocation' => new StaticObjectMethodInvocation(
                     new StaticObject(
-                        new ClassDependency(ClassDependency::class)
+                        ClassDependency::class
                     ),
                     'methodName',
                     [],
@@ -128,7 +145,7 @@ class StaticObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
             'has arguments, inline' => [
                 'invocation' => new StaticObjectMethodInvocation(
                     new StaticObject(
-                        new ClassDependency(ClassDependency::class)
+                        ClassDependency::class
                     ),
                     'methodName',
                     [
@@ -142,7 +159,7 @@ class StaticObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
             'has arguments, stacked' => [
                 'invocation' => new StaticObjectMethodInvocation(
                     new StaticObject(
-                        new ClassDependency(ClassDependency::class)
+                        ClassDependency::class
                     ),
                     'methodName',
                     [
