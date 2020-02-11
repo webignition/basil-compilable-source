@@ -11,6 +11,8 @@ class ArrayExpressionTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider createDataProvider
+     *
+     * @param array<mixed> $data
      */
     public function testCreate(array $data)
     {

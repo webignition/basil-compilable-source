@@ -9,16 +9,25 @@ use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 
 class ArrayExpression implements ExpressionInterface
 {
+    /**
+     * @var array<mixed>
+     */
     private $data = [];
 
     private const INDENT_SPACE_COUNT = 4;
     private const DEFAULT_INDENT_COUNT = 1;
 
+    /**
+     * @param array<mixed> $data
+     */
     public function __construct(array $data)
     {
         $this->data = $data;
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function getData(): array
     {
         return $this->data;
