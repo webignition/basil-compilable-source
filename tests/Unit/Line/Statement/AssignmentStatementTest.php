@@ -97,9 +97,16 @@ class AssignmentStatementTest extends \PHPUnit\Framework\TestCase
             ],
             'object method invocation' => [
                 'placeholder' => VariablePlaceholder::createExport('PLACEHOLDER'),
-                'expression' => new ObjectMethodInvocation('object', 'methodName'),
+                'expression' => new ObjectMethodInvocation(
+                    VariablePlaceholder::createDependency('OBJECT'),
+                    'methodName'
+                ),
                 'castTo' =>  null,
-                'expectedMetadata' => new Metadata(),
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                        'OBJECT',
+                    ])
+                ]),
             ],
         ];
     }
@@ -161,9 +168,12 @@ class AssignmentStatementTest extends \PHPUnit\Framework\TestCase
             'statement encapsulating object method invocation' => [
                 'statement' => new AssignmentStatement(
                     VariablePlaceholder::createExport('PLACEHOLDER'),
-                    new ObjectMethodInvocation('object', 'methodName')
+                    new ObjectMethodInvocation(
+                        VariablePlaceholder::createDependency('OBJECT'),
+                        'methodName'
+                    )
                 ),
-                'expectedString' => '{{ PLACEHOLDER }} = object->methodName();',
+                'expectedString' => '{{ PLACEHOLDER }} = {{ OBJECT }}->methodName();',
             ],
         ];
     }

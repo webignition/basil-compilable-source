@@ -72,8 +72,15 @@ class StatementTest extends \PHPUnit\Framework\TestCase
                 'expectedMetadata' => new Metadata(),
             ],
             'object method invocation' => [
-                'expression' => new ObjectMethodInvocation('object', 'methodName'),
-                'expectedMetadata' => new Metadata(),
+                'expression' => new ObjectMethodInvocation(
+                    VariablePlaceholder::createDependency('OBJECT'),
+                    'methodName'
+                ),
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                        'OBJECT',
+                    ])
+                ]),
             ],
         ];
     }
@@ -122,9 +129,12 @@ class StatementTest extends \PHPUnit\Framework\TestCase
             ],
             'statement encapsulating object method invocation' => [
                 'statement' => new Statement(
-                    new ObjectMethodInvocation('object', 'methodName')
+                    new ObjectMethodInvocation(
+                        VariablePlaceholder::createDependency('OBJECT'),
+                        'methodName'
+                    )
                 ),
-                'expectedString' => 'object->methodName();',
+                'expectedString' => '{{ OBJECT }}->methodName();',
             ],
         ];
     }

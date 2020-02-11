@@ -19,11 +19,6 @@ class MethodInvocation implements MethodInvocationInterface
     private $argumentFormat;
 
     /**
-     * @var MetadataInterface
-     */
-    private $metadata;
-
-    /**
      * @param string $methodName
      * @param string[] $arguments
      * @param string $argumentFormat
@@ -36,7 +31,6 @@ class MethodInvocation implements MethodInvocationInterface
         $this->methodName = $methodName;
         $this->arguments = $arguments;
         $this->argumentFormat = $argumentFormat;
-        $this->metadata = new Metadata();
     }
 
     public function getMethodName(): string
@@ -56,7 +50,7 @@ class MethodInvocation implements MethodInvocationInterface
 
     public function getMetadata(): MetadataInterface
     {
-        return $this->metadata;
+        return new Metadata();
     }
 
     public function render(): string
