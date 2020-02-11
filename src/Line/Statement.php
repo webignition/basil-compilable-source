@@ -15,6 +15,11 @@ class Statement implements StatementInterface
         $this->expression = $expression;
     }
 
+    public function getExpression(): ExpressionInterface
+    {
+        return $this->expression;
+    }
+
     public function getMetadata(): MetadataInterface
     {
         return $this->expression->getMetadata();
