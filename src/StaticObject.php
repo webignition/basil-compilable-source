@@ -12,6 +12,9 @@ use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 
 class StaticObject extends AbstractStringLine implements ExpressionInterface
 {
+    /**
+     * @var MetadataInterface
+     */
     private $metadata;
 
     public function __construct(string $object)
