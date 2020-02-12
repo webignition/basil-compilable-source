@@ -32,6 +32,11 @@ class ClassDependency implements LineInterface
         return array_pop($classNameParts);
     }
 
+    public function getClassName(): string
+    {
+        return $this->className;
+    }
+
     public function render(): string
     {
         $content = $this->className;
