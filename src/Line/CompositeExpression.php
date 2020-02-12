@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Line;
 
 use webignition\BasilCompilableSource\Metadata\Metadata;
-use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 
-class CompositeExpression implements ExpressionInterface
+class CompositeExpression extends AbstractExpression
 {
     /**
      * @var ExpressionInterface[]
@@ -15,33 +14,26 @@ class CompositeExpression implements ExpressionInterface
     private $expressions;
 
     /**
-     * @var MetadataInterface
-     */
-    private $metadata;
-
-    /**
      * @param array<mixed> $expressions
+     * @param string|null $castTo
      */
-    public function __construct(array $expressions)
+    public function __construct(array $expressions, ?string $castTo = null)
     {
         $this->expressions = array_filter($expressions, function ($item) {
             return $item instanceof ExpressionInterface;
         });
 
-        $this->metadata = new Metadata();
+        $metadata = new Metadata();
         foreach ($this->expressions as $expression) {
-            $this->metadata = $this->metadata->merge($expression->getMetadata());
+            $metadata = $metadata->merge($expression->getMetadata());
         }
-    }
 
-    public function getMetadata(): MetadataInterface
-    {
-        return $this->metadata;
+        parent::__construct($castTo, $metadata);
     }
 
     public function render(): string
     {
-        return (string) array_reduce(
+        return parent::render() . (string) array_reduce(
             $this->expressions,
             function (?string $content, ExpressionInterface $expression) {
                 return $content . $expression->render();

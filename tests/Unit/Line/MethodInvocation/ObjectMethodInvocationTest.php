@@ -110,6 +110,16 @@ class ObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
                 ),
                 'expectedString' => '{{ OBJECT }}->methodName()',
             ],
+            'object and method name only, cast to string' => [
+                'invocation' => new ObjectMethodInvocation(
+                    VariablePlaceholder::createDependency('OBJECT'),
+                    'methodName',
+                    [],
+                    MethodInvocation::ARGUMENT_FORMAT_INLINE,
+                    'string'
+                ),
+                'expectedString' => '(string) {{ OBJECT }}->methodName()',
+            ],
             'no arguments, inline' => [
                 'invocation' => new ObjectMethodInvocation(
                     VariablePlaceholder::createDependency('OBJECT'),

@@ -4,21 +4,15 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Line;
 
-use webignition\BasilCompilableSource\Metadata\Metadata;
-use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-
-class LiteralExpression implements ExpressionInterface
+class LiteralExpression extends AbstractExpression
 {
     private $content;
 
-    public function __construct(string $content)
+    public function __construct(string $content, ?string $castTo = null)
     {
-        $this->content = $content;
-    }
+        parent::__construct($castTo);
 
-    public function getMetadata(): MetadataInterface
-    {
-        return new Metadata();
+        $this->content = $content;
     }
 
     public function render(): string

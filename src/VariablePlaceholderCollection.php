@@ -91,7 +91,7 @@ class VariablePlaceholderCollection implements \IteratorAggregate
     public function add(VariablePlaceholder $variablePlaceholder): void
     {
         if ($variablePlaceholder->getType() === $this->getPlaceholderType()) {
-            $name = $variablePlaceholder->getContent();
+            $name = $variablePlaceholder->getName();
 
             if (!array_key_exists($name, $this->variablePlaceholders)) {
                 $this->variablePlaceholders[$name] = $variablePlaceholder;

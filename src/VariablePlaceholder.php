@@ -4,22 +4,33 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource;
 
-use webignition\BasilCompilableSource\Line\ExpressionInterface;
+use webignition\BasilCompilableSource\Line\AbstractExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 
-class VariablePlaceholder extends AbstractStringLine implements ExpressionInterface
+class VariablePlaceholder extends AbstractExpression
 {
+    private const RENDER_PATTERN = '{{ %s }}';
+
     public const TYPE_DEPENDENCY = 'dependency';
     public const TYPE_EXPORT = 'export';
 
+    private $name;
     private $type;
+    private $castTo;
 
-    public function __construct(string $content, string $type)
+    public function __construct(string $name, string $type, ?string $castTo = null)
     {
-        parent::__construct($content);
+        parent::__construct($castTo);
 
+        $this->name = $name;
         $this->type = self::isAllowedType($type) ? $type : self::TYPE_EXPORT;
+        $this->castTo = $castTo;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
     }
 
     public static function isAllowedType(string $type): bool
@@ -33,24 +44,19 @@ class VariablePlaceholder extends AbstractStringLine implements ExpressionInterf
         );
     }
 
-    public static function createDependency(string $content): VariablePlaceholder
+    public static function createDependency(string $content, ?string $castTo = null): VariablePlaceholder
     {
-        return new VariablePlaceholder($content, self::TYPE_DEPENDENCY);
+        return new VariablePlaceholder($content, self::TYPE_DEPENDENCY, $castTo);
     }
 
-    public static function createExport(string $content): VariablePlaceholder
+    public static function createExport(string $content, ?string $castTo = null): VariablePlaceholder
     {
-        return new VariablePlaceholder($content, self::TYPE_EXPORT);
+        return new VariablePlaceholder($content, self::TYPE_EXPORT, $castTo);
     }
 
     public function getType(): string
     {
         return $this->type;
-    }
-
-    protected function getRenderPattern(): string
-    {
-        return '{{ %s }}';
     }
 
     public function getMetadata(): MetadataInterface
@@ -65,5 +71,10 @@ class VariablePlaceholder extends AbstractStringLine implements ExpressionInterf
         return new Metadata([
             $componentKey => $placeholderCollection,
         ]);
+    }
+
+    public function render(): string
+    {
+        return parent::render() . sprintf(self::RENDER_PATTERN, $this->name);
     }
 }

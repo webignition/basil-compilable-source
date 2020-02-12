@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Line;
 
-use webignition\BasilCompilableSource\Metadata\Metadata;
-use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-
-class ArrayExpression implements ExpressionInterface
+class ArrayExpression extends AbstractExpression
 {
     /**
      * @var array<mixed>
@@ -22,6 +19,8 @@ class ArrayExpression implements ExpressionInterface
      */
     public function __construct(array $data)
     {
+        parent::__construct();
+
         $this->data = $data;
     }
 
@@ -31,11 +30,6 @@ class ArrayExpression implements ExpressionInterface
     public function getData(): array
     {
         return $this->data;
-    }
-
-    public function getMetadata(): MetadataInterface
-    {
-        return new Metadata();
     }
 
     public function render(): string
