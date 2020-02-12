@@ -17,20 +17,24 @@ class MethodInvocation implements MethodInvocationInterface
     private $methodName;
     private $arguments = [];
     private $argumentFormat;
+    private $castTo;
 
     /**
      * @param string $methodName
      * @param string[] $arguments
      * @param string $argumentFormat
+     * @param string|null $castTo
      */
     public function __construct(
         string $methodName,
         array $arguments = [],
-        string $argumentFormat = self::ARGUMENT_FORMAT_INLINE
+        string $argumentFormat = self::ARGUMENT_FORMAT_INLINE,
+        ?string $castTo = null
     ) {
         $this->methodName = $methodName;
         $this->arguments = $arguments;
         $this->argumentFormat = $argumentFormat;
+        $this->castTo = $castTo;
     }
 
     public function getMethodName(): string
@@ -53,7 +57,22 @@ class MethodInvocation implements MethodInvocationInterface
         return new Metadata();
     }
 
+    public function getCastTo(): ?string
+    {
+        return $this->castTo;
+    }
+
     public function render(): string
+    {
+        return $this->renderCastTo() . $this->renderWithoutCasting();
+    }
+
+    protected function renderCastTo(): string
+    {
+        return null === $this->castTo ? '' : '(' . $this->castTo . ') ';
+    }
+
+    protected function renderWithoutCasting(): string
     {
         return sprintf(
             self::RENDER_PATTERN,

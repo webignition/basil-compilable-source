@@ -18,7 +18,7 @@ class VariablePlaceholderTest extends \PHPUnit\Framework\TestCase
     {
         $placeholder = new VariablePlaceholder($name, $type);
 
-        $this->assertSame($name, $placeholder->getContent());
+        $this->assertSame($name, $placeholder->getName());
         $this->assertSame($expectedType, $placeholder->getType());
     }
 
@@ -111,6 +111,10 @@ class VariablePlaceholderTest extends \PHPUnit\Framework\TestCase
             'non-empty' => [
                 'placeholder' => new VariablePlaceholder('NAME', VariablePlaceholder::TYPE_EXPORT),
                 'expectedString' => '{{ NAME }}',
+            ],
+            'non-empty, cast to string' => [
+                'placeholder' => new VariablePlaceholder('NAME', VariablePlaceholder::TYPE_EXPORT, 'string'),
+                'expectedString' => '(string) {{ NAME }}',
             ],
         ];
     }

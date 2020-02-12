@@ -6,7 +6,6 @@ namespace webignition\BasilCompilableSource\Tests\Unit\Line\Statement;
 
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSource\Line\ClassDependency;
-use webignition\BasilCompilableSource\Line\Expression;
 use webignition\BasilCompilableSource\Line\ExpressionInterface;
 use webignition\BasilCompilableSource\Line\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
@@ -46,24 +45,6 @@ class StatementTest extends \PHPUnit\Framework\TestCase
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         'EXPORT',
-                    ])
-                ]),
-            ],
-            'expression with metadata encapsulating variable dependency' => [
-                'expression' => new Expression(
-                    VariablePlaceholder::createDependency('DEPENDENCY'),
-                    new Metadata([
-                        Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                            new ClassDependency(ClassDependency::class),
-                        ]),
-                    ])
-                ),
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassDependency(ClassDependency::class),
-                    ]),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
-                        'DEPENDENCY',
                     ])
                 ]),
             ],
@@ -107,19 +88,6 @@ class StatementTest extends \PHPUnit\Framework\TestCase
                     VariablePlaceholder::createExport('EXPORT')
                 ),
                 'expectedString' => '{{ EXPORT }};',
-            ],
-            'statement encapsulating expression with metadata encapsulating variable dependency' => [
-                'statement' => new Statement(
-                    new Expression(
-                        VariablePlaceholder::createDependency('DEPENDENCY'),
-                        new Metadata([
-                            Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                                new ClassDependency(ClassDependency::class),
-                            ]),
-                        ])
-                    )
-                ),
-                'expectedString' => '{{ DEPENDENCY }};',
             ],
             'statement encapsulating method invocation' => [
                 'statement' => new Statement(

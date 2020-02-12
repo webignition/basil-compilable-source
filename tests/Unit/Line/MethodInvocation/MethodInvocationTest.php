@@ -83,6 +83,15 @@ class MethodInvocationTest extends \PHPUnit\Framework\TestCase
                 ),
                 'expectedString' => 'methodName()',
             ],
+            'name only, cast to string' => [
+                'invocation' => new MethodInvocation(
+                    'methodName',
+                    [],
+                    MethodInvocation::ARGUMENT_FORMAT_INLINE,
+                    'string'
+                ),
+                'expectedString' => '(string) methodName()',
+            ],
             'no arguments, inline' => [
                 'invocation' => new MethodInvocation(
                     'methodName',

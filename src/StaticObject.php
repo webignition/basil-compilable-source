@@ -5,42 +5,36 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource;
 
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
+use webignition\BasilCompilableSource\Line\AbstractExpression;
 use webignition\BasilCompilableSource\Line\ClassDependency;
-use webignition\BasilCompilableSource\Line\ExpressionInterface;
 use webignition\BasilCompilableSource\Metadata\Metadata;
-use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 
-class StaticObject extends AbstractStringLine implements ExpressionInterface
+class StaticObject extends AbstractExpression
 {
-    /**
-     * @var MetadataInterface
-     */
-    private $metadata;
+    private $object;
 
-    public function __construct(string $object)
+    public function __construct(string $object, ?string $castTo = null)
     {
+        $metadata = null;
+
         if (ClassDependency::isFullyQualifiedClassName($object)) {
             $classDependency = new ClassDependency($object);
+            $object = $classDependency->getClass();
 
-            parent::__construct($classDependency->getClass());
-            $this->metadata = new Metadata([
+            $metadata = new Metadata([
                 Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                     $classDependency,
                 ]),
             ]);
-        } else {
-            parent::__construct($object);
-            $this->metadata = new Metadata();
         }
+
+        parent::__construct($castTo, $metadata);
+
+        $this->object = $object;
     }
 
-    protected function getRenderPattern(): string
+    public function render(): string
     {
-        return '%s';
-    }
-
-    public function getMetadata(): MetadataInterface
-    {
-        return $this->metadata;
+        return $this->object;
     }
 }

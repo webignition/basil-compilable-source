@@ -20,6 +20,7 @@ class ArrayExpressionTest extends \PHPUnit\Framework\TestCase
 
         $this->assertSame($data, $expression->getData());
         $this->assertEquals(new Metadata(), $expression->getMetadata());
+        $this->assertNull($expression->getCastTo());
     }
 
     public function createDataProvider(): array

@@ -8,7 +8,6 @@ use webignition\BasilCompilableSource\Block\CodeBlock;
 use webignition\BasilCompilableSource\Block\CodeBlockInterface;
 use webignition\BasilCompilableSource\Line\ClassDependency;
 use webignition\BasilCompilableSource\Line\EmptyLine;
-use webignition\BasilCompilableSource\Line\Expression;
 use webignition\BasilCompilableSource\Line\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Line\MethodInvocation\StaticObjectMethodInvocation;
@@ -57,7 +56,6 @@ class CodeBlockTest extends \PHPUnit\Framework\TestCase
                         VariablePlaceholder::createDependency('OBJECT'),
                         'methodName'
                     ),
-                    new Statement(new Expression(new EmptyLine())),
                     new Statement(new MethodInvocation('methodName')),
                     new Statement(new ObjectMethodInvocation(
                         VariablePlaceholder::createDependency('OBJECT'),
@@ -69,11 +67,9 @@ class CodeBlockTest extends \PHPUnit\Framework\TestCase
                     ),
                     new ClassDependency(ClassDependency::class),
                     new EmptyLine(),
-                    new Expression(new EmptyLine()),
                     new SingleLineComment('single line comment'),
                 ],
                 'expectedLines' => [
-                    new Statement(new Expression(new EmptyLine())),
                     new Statement(new MethodInvocation('methodName')),
                     new Statement(new ObjectMethodInvocation(
                         VariablePlaceholder::createDependency('OBJECT'),
@@ -90,7 +86,6 @@ class CodeBlockTest extends \PHPUnit\Framework\TestCase
             'code blocks' => [
                 'sources' => [
                     new CodeBlock([
-                        new Statement(new Expression(new EmptyLine())),
                         new Statement(new MethodInvocation('methodName')),
                         new Statement(
                             new ObjectMethodInvocation(
@@ -109,7 +104,6 @@ class CodeBlockTest extends \PHPUnit\Framework\TestCase
                     ]),
                 ],
                 'expectedLines' => [
-                    new Statement(new Expression(new EmptyLine())),
                     new Statement(new MethodInvocation('methodName')),
                     new Statement(
                         new ObjectMethodInvocation(
@@ -203,8 +197,7 @@ class CodeBlockTest extends \PHPUnit\Framework\TestCase
                     ),
                     new AssignmentStatement(
                         VariablePlaceholder::createExport('PLACEHOLDER'),
-                        new MethodInvocation('methodName'),
-                        'string'
+                        new MethodInvocation('methodName', [], MethodInvocation::ARGUMENT_FORMAT_INLINE, 'string')
                     ),
                     new AssignmentStatement(
                         VariablePlaceholder::createExport('PLACEHOLDER'),

@@ -19,11 +19,12 @@ class CompositeExpressionTest extends \PHPUnit\Framework\TestCase
      * @param array<mixed> $expressions
      * @param MetadataInterface $expectedMetadata
      */
-    public function testCreate(array $expressions, MetadataInterface $expectedMetadata)
+    public function testCreate(array $expressions, ?string $castTo, MetadataInterface $expectedMetadata)
     {
-        $expression = new CompositeExpression($expressions);
+        $expression = new CompositeExpression($expressions, $castTo);
 
         $this->assertEquals($expectedMetadata, $expression->getMetadata());
+        $this->assertSame($castTo, $expression->getCastTo());
     }
 
     public function createDataProvider(): array
@@ -31,22 +32,36 @@ class CompositeExpressionTest extends \PHPUnit\Framework\TestCase
         return [
             'empty' => [
                 'expressions' => [],
+                'castTo' => null,
                 'expectedMetadata' => new Metadata(),
             ],
-            'variable dependency only' => [
+            'variable dependency' => [
                 'expressions' => [
                     VariablePlaceholder::createDependency('DEPENDENCY'),
                 ],
+                'castTo' => null,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         'DEPENDENCY',
                     ]),
                 ]),
             ],
-            'variable export only' => [
+            'variable dependency, cast to string' => [
+                'expressions' => [
+                    VariablePlaceholder::createDependency('DEPENDENCY'),
+                ],
+                'castTo' => 'string',
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                        'DEPENDENCY',
+                    ]),
+                ]),
+            ],
+            'variable export' => [
                 'expressions' => [
                     VariablePlaceholder::createExport('EXPORT'),
                 ],
+                'castTo' => null,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         'EXPORT',
@@ -58,6 +73,7 @@ class CompositeExpressionTest extends \PHPUnit\Framework\TestCase
                     VariablePlaceholder::createDependency('DEPENDENCY'),
                     VariablePlaceholder::createExport('EXPORT'),
                 ],
+                'castTo' => null,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         'DEPENDENCY',
@@ -72,6 +88,7 @@ class CompositeExpressionTest extends \PHPUnit\Framework\TestCase
                     VariablePlaceholder::createDependency('ENV'),
                     new LiteralExpression('[\'KEY\']')
                 ],
+                'castTo' => null,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         'ENV',
@@ -96,13 +113,22 @@ class CompositeExpressionTest extends \PHPUnit\Framework\TestCase
                 'expressions' => new CompositeExpression([]),
                 'expectedString' => '',
             ],
-            'variable dependency only' => [
+            'variable dependency' => [
                 'expressions' => new CompositeExpression([
                     VariablePlaceholder::createDependency('DEPENDENCY'),
                 ]),
                 'expectedString' => '{{ DEPENDENCY }}',
             ],
-            'variable export only' => [
+            'variable dependency, cast to string' => [
+                'expressions' => new CompositeExpression(
+                    [
+                        VariablePlaceholder::createDependency('DEPENDENCY'),
+                    ],
+                    'string'
+                ),
+                'expectedString' => '(string) {{ DEPENDENCY }}',
+            ],
+            'variable export' => [
                 'expressions' => new CompositeExpression([
                     VariablePlaceholder::createExport('EXPORT'),
                 ]),
