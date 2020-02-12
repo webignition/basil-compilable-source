@@ -16,7 +16,7 @@ class ClassDependencyTest extends \PHPUnit\Framework\TestCase
     {
         $classDependency = new ClassDependency($className, $alias);
 
-        $this->assertSame($className, ObjectReflector::getProperty($classDependency, 'className'));
+        $this->assertSame($className, $classDependency->getClassName());
         $this->assertSame($alias, ObjectReflector::getProperty($classDependency, 'alias'));
     }
 
