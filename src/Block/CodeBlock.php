@@ -51,7 +51,7 @@ class CodeBlock extends AbstractBlock implements CodeBlockInterface
         $metadata = new Metadata();
 
         foreach ($this->getLines() as $line) {
-            if ($line instanceof ExpressionInterface) {
+            if ($line instanceof ExpressionInterface || $line instanceof StatementInterface) {
                 $metadata = $metadata->merge($line->getMetadata());
             }
         }
