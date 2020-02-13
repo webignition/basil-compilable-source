@@ -76,7 +76,7 @@ EOD;
         $this->codeBlock->addLine($statement);
     }
 
-    public function getLines(): \ArrayIterator
+    public function getLines(): array
     {
         return $this->codeBlock->getLines();
     }

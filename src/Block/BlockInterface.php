@@ -12,7 +12,7 @@ interface BlockInterface extends SourceInterface
     public function addLine(LineInterface $line): void;
 
     /**
-     * @return \ArrayIterator<int, LineInterface>
+     * @return array<int, LineInterface>
      */
-    public function getLines(): \ArrayIterator;
+    public function getLines(): array;
 }
