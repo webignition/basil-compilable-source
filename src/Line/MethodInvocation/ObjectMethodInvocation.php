@@ -40,7 +40,7 @@ class ObjectMethodInvocation extends MethodInvocation implements ObjectMethodInv
 
     public function getMetadata(): MetadataInterface
     {
-        return $this->objectPlaceholder->getMetadata();
+        return parent::getMetadata()->merge($this->objectPlaceholder->getMetadata());
     }
 
     public function render(): string

@@ -16,9 +16,18 @@ class MethodInvocation implements MethodInvocationInterface
     private const RENDER_PATTERN = '%s(%s)';
 
     private $methodName;
+
+    /**
+     * @var ExpressionInterface[]
+     */
     private $arguments = [];
     private $argumentFormat;
     private $castTo;
+
+    /**
+     * @var MetadataInterface
+     */
+    private $metadata;
 
     /**
      * @param string $methodName
@@ -38,6 +47,11 @@ class MethodInvocation implements MethodInvocationInterface
         $this->arguments = array_filter($arguments, function ($argument) {
             return $argument instanceof ExpressionInterface;
         });
+
+        $this->metadata = new Metadata();
+        foreach ($this->arguments as $expression) {
+            $this->metadata = $this->metadata->merge($expression->getMetadata());
+        }
     }
 
     public function getMethodName(): string
@@ -57,7 +71,7 @@ class MethodInvocation implements MethodInvocationInterface
 
     public function getMetadata(): MetadataInterface
     {
-        return new Metadata();
+        return $this->metadata;
     }
 
     public function getCastTo(): ?string
