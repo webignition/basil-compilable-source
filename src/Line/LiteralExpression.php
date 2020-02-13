@@ -17,6 +17,6 @@ class LiteralExpression extends AbstractExpression
 
     public function render(): string
     {
-        return $this->content;
+        return parent::render() . $this->content;
     }
 }
