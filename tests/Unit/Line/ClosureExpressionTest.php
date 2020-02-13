@@ -104,7 +104,7 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
                 'expectedString' =>
                     '(function () {' . "\n" .
                     '' . "\n" .
-                    '})();',
+                    '})()',
             ],
             'single literal statement' => [
                 'expression' => new ClosureExpression(
@@ -115,7 +115,7 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
                 'expectedString' =>
                     '(function () {' . "\n" .
                     '    return 5;' . "\n" .
-                    '})();',
+                    '})()',
             ],
             'single literal statement, with return statement expression cast to string' => [
                 'expression' => new ClosureExpression(
@@ -126,7 +126,7 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
                 'expectedString' =>
                     '(function () {' . "\n" .
                     '    return (string) 5;' . "\n" .
-                    '})();',
+                    '})()',
             ],
             'multiple literal statements' => [
                 'expression' => new ClosureExpression(
@@ -140,7 +140,7 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
                     '    4;' . "\n" .
                     "\n" .
                     '    return 5;' . "\n" .
-                    '})();',
+                    '})()',
             ],
             'non-empty, has metadata' => [
                 'expression' => new ClosureExpression(
@@ -177,7 +177,7 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
                 '    {{ EXPORT }} = {{ DEPENDENCY }}->dependencyMethodName();' . "\n" .
                 "\n" .
                 '    return (string) {{ EXPORT }}->getWidth() . \'x\' . (string) {{ EXPORT }}->getHeight();' . "\n" .
-                '})();',
+                '})()',
             ],
         ];
     }
