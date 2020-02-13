@@ -34,12 +34,9 @@ abstract class AbstractBlock implements BlockInterface
         }
     }
 
-    /**
-     * @return \ArrayIterator<int, LineInterface>
-     */
-    public function getLines(): \ArrayIterator
+    public function getLines(): array
     {
-        return new \ArrayIterator($this->lines);
+        return $this->lines;
     }
 
     public function render(): string

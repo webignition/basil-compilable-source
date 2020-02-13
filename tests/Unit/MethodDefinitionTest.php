@@ -13,7 +13,6 @@ use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocati
 use webignition\BasilCompilableSource\Line\SingleLineComment;
 use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\Statement;
-use webignition\BasilCompilableSource\LineInterface;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\MethodDefinition;
@@ -69,14 +68,14 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
     public function testAddLine()
     {
         $methodDefinition = new MethodDefinition('name', new CodeBlock());
-        $this->assertEquals([], $this->getIteratorLines($methodDefinition->getLines()));
+        $this->assertEquals([], $methodDefinition->getLines());
 
         $methodDefinition->addLine(new EmptyLine());
         $this->assertEquals(
             [
                 new EmptyLine(),
             ],
-            $this->getIteratorLines($methodDefinition->getLines())
+            $methodDefinition->getLines()
         );
 
         $methodDefinition->addLine(new SingleLineComment('comment'));
@@ -85,7 +84,7 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
                 new EmptyLine(),
                 new SingleLineComment('comment'),
             ],
-            $this->getIteratorLines($methodDefinition->getLines())
+            $methodDefinition->getLines()
         );
     }
 
@@ -334,22 +333,6 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
                     '}'
             ],
         ];
-    }
-
-    /**
-     * @param \ArrayIterator<int, LineInterface> $iterator
-     *
-     * @return LineInterface[]
-     */
-    private function getIteratorLines(\ArrayIterator $iterator): array
-    {
-        $lines = [];
-
-        foreach ($iterator as $line) {
-            $lines[] = $line;
-        }
-
-        return $lines;
     }
 
     private function createMethodDefinitionWithDocBlock(
