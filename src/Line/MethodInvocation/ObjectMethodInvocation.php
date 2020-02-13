@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Line\MethodInvocation;
 
+use webignition\BasilCompilableSource\Line\ExpressionInterface;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\VariablePlaceholder;
 
@@ -16,7 +17,7 @@ class ObjectMethodInvocation extends MethodInvocation implements ObjectMethodInv
     /**
      * @param VariablePlaceholder $objectPlaceholder
      * @param string $methodName
-     * @param string[] $arguments
+     * @param ExpressionInterface[] $arguments
      * @param string $argumentFormat
      * @param string|null $castTo
      */

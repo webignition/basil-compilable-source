@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Tests\Unit\Line\MethodInvocation;
 
 use webignition\BasilCompilableSource\Line\ClassDependency;
+use webignition\BasilCompilableSource\Line\ExpressionInterface;
+use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\Line\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSource\Line\MethodInvocation\StaticObjectMethodInvocation;
 use webignition\BasilCompilableSource\Line\MethodInvocation\StaticObjectMethodInvocationInterface;
@@ -17,7 +19,7 @@ class StaticObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
      *
      * @param StaticObject $staticObject
      * @param string $methodName
-     * @param string[] $arguments
+     * @param ExpressionInterface[] $arguments
      * @param string $argumentFormat
      */
     public function testCreate(
@@ -60,7 +62,7 @@ class StaticObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
                 ),
                 'methodName' => 'method',
                 'arguments' => [
-                    1,
+                    new LiteralExpression('1'),
                 ],
                 'argumentFormat' => MethodInvocation::ARGUMENT_FORMAT_INLINE,
             ],
@@ -70,9 +72,9 @@ class StaticObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
                 ),
                 'methodName' => 'method',
                 'arguments' => [
-                    2,
-                    "'single-quoted value'",
-                    '"double-quoted value"'
+                    new LiteralExpression('2'),
+                    new LiteralExpression("'single-quoted value'"),
+                    new LiteralExpression('"double-quoted value"'),
                 ],
                 'argumentFormat' => MethodInvocation::ARGUMENT_FORMAT_INLINE,
             ],
@@ -82,9 +84,9 @@ class StaticObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
                 ),
                 'methodName' => 'method',
                 'arguments' => [
-                    2,
-                    "'single-quoted value'",
-                    '"double-quoted value"'
+                    new LiteralExpression('2'),
+                    new LiteralExpression("'single-quoted value'"),
+                    new LiteralExpression('"double-quoted value"'),
                 ],
                 'argumentFormat' => MethodInvocation::ARGUMENT_FORMAT_STACKED,
             ],
@@ -149,8 +151,8 @@ class StaticObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
                     ),
                     'methodName',
                     [
-                        '1',
-                        "\'single-quoted value\'",
+                        new LiteralExpression('1'),
+                        new LiteralExpression("\'single-quoted value\'"),
                     ],
                     MethodInvocation::ARGUMENT_FORMAT_INLINE
                 ),
@@ -163,8 +165,8 @@ class StaticObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
                     ),
                     'methodName',
                     [
-                        '1',
-                        "\'single-quoted value\'",
+                        new LiteralExpression('1'),
+                        new LiteralExpression("\'single-quoted value\'"),
                     ],
                     MethodInvocation::ARGUMENT_FORMAT_STACKED
                 ),

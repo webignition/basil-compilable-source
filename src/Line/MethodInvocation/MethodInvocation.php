@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Line\MethodInvocation;
 
+use webignition\BasilCompilableSource\Line\ExpressionInterface;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 
@@ -21,7 +22,7 @@ class MethodInvocation implements MethodInvocationInterface
 
     /**
      * @param string $methodName
-     * @param string[] $arguments
+     * @param ExpressionInterface[] $arguments
      * @param string $argumentFormat
      * @param string|null $castTo
      */
@@ -32,9 +33,11 @@ class MethodInvocation implements MethodInvocationInterface
         ?string $castTo = null
     ) {
         $this->methodName = $methodName;
-        $this->arguments = $arguments;
         $this->argumentFormat = $argumentFormat;
         $this->castTo = $castTo;
+        $this->arguments = array_filter($arguments, function ($argument) {
+            return $argument instanceof ExpressionInterface;
+        });
     }
 
     public function getMethodName(): string
@@ -84,19 +87,23 @@ class MethodInvocation implements MethodInvocationInterface
     private function createArgumentsString(): string
     {
         $arguments = $this->getArguments();
-
-        $hasArguments = count($arguments) > 0;
-
-        if (!$hasArguments) {
+        if ([] === $arguments) {
             return '';
         }
+
+        $renderedArguments = array_map(
+            function (ExpressionInterface $expression) {
+                return $expression->render();
+            },
+            $arguments
+        );
 
         $argumentPrefix = '';
         $join = ', ';
         $stringSuffix = '';
 
         if (self::ARGUMENT_FORMAT_STACKED === $this->getArgumentFormat()) {
-            array_walk($arguments, function (&$argument) {
+            array_walk($renderedArguments, function (&$argument) {
                 $argument = '    ' . $argument;
             });
 
@@ -105,10 +112,10 @@ class MethodInvocation implements MethodInvocationInterface
             $stringSuffix = "\n";
         }
 
-        array_walk($arguments, function (&$argument) use ($argumentPrefix) {
+        array_walk($renderedArguments, function (&$argument) use ($argumentPrefix) {
             $argument = $argumentPrefix . $argument;
         });
 
-        return implode($join, $arguments) . $stringSuffix;
+        return implode($join, $renderedArguments) . $stringSuffix;
     }
 }

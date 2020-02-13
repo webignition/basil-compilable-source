@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Tests\Unit\Line\MethodInvocation;
 
+use webignition\BasilCompilableSource\Line\ExpressionInterface;
+use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\Line\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocationInterface;
@@ -18,7 +20,7 @@ class ObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
      *
      * @param VariablePlaceholder $objectPlaceholder
      * @param string $methodName
-     * @param string[] $arguments
+     * @param ExpressionInterface[] $arguments
      * @param string $argumentFormat
      */
     public function testCreate(
@@ -48,7 +50,7 @@ class ObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
                 'objectPlaceholder' => VariablePlaceholder::createDependency('OBJECT'),
                 'methodName' => 'method',
                 'arguments' => [
-                    1,
+                    new LiteralExpression('1'),
                 ],
                 'argumentFormat' => MethodInvocation::ARGUMENT_FORMAT_INLINE,
             ],
@@ -56,9 +58,9 @@ class ObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
                 'objectPlaceholder' => VariablePlaceholder::createDependency('OBJECT'),
                 'methodName' => 'method',
                 'arguments' => [
-                    2,
-                    "'single-quoted value'",
-                    '"double-quoted value"'
+                    new LiteralExpression('2'),
+                    new LiteralExpression("'single-quoted value'"),
+                    new LiteralExpression('"double-quoted value"'),
                 ],
                 'argumentFormat' => MethodInvocation::ARGUMENT_FORMAT_INLINE,
             ],
@@ -66,9 +68,9 @@ class ObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
                 'objectPlaceholder' => VariablePlaceholder::createDependency('OBJECT'),
                 'methodName' => 'method',
                 'arguments' => [
-                    2,
-                    "'single-quoted value'",
-                    '"double-quoted value"'
+                    new LiteralExpression('2'),
+                    new LiteralExpression("'single-quoted value'"),
+                    new LiteralExpression('"double-quoted value"'),
                 ],
                 'argumentFormat' => MethodInvocation::ARGUMENT_FORMAT_STACKED,
             ],
@@ -143,8 +145,8 @@ class ObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
                     VariablePlaceholder::createDependency('OBJECT'),
                     'methodName',
                     [
-                        '1',
-                        "\'single-quoted value\'",
+                        new LiteralExpression('1'),
+                        new LiteralExpression("\'single-quoted value\'"),
                     ],
                     MethodInvocation::ARGUMENT_FORMAT_INLINE
                 ),
@@ -155,8 +157,8 @@ class ObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
                     VariablePlaceholder::createDependency('OBJECT'),
                     'methodName',
                     [
-                        '1',
-                        "\'single-quoted value\'",
+                        new LiteralExpression('1'),
+                        new LiteralExpression("\'single-quoted value\'"),
                     ],
                     MethodInvocation::ARGUMENT_FORMAT_STACKED
                 ),
