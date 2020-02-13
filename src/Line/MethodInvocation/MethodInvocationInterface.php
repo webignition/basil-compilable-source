@@ -11,7 +11,7 @@ interface MethodInvocationInterface extends ExpressionInterface
     public function getMethodName(): string;
 
     /**
-     * @return string[]
+     * @return ExpressionInterface[]
      */
     public function getArguments(): array;
 

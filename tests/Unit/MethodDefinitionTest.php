@@ -8,6 +8,7 @@ use webignition\BasilCompilableSource\Block\CodeBlock;
 use webignition\BasilCompilableSource\Block\CodeBlockInterface;
 use webignition\BasilCompilableSource\Block\DocBlock;
 use webignition\BasilCompilableSource\Line\EmptyLine;
+use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\Line\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Line\SingleLineComment;
@@ -258,8 +259,8 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
                                 VariablePlaceholder::createDependency('OBJECT'),
                                 'methodName',
                                 [
-                                    '$x',
-                                    '$y',
+                                    new LiteralExpression('$x'),
+                                    new LiteralExpression('$y'),
                                 ]
                             )
                         ),
@@ -309,8 +310,8 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
                                     VariablePlaceholder::createDependency('OBJECT'),
                                     'methodName',
                                     [
-                                        '$x',
-                                        '$y',
+                                        new LiteralExpression('$x'),
+                                        new LiteralExpression('$y'),
                                     ]
                                 )
                             ),

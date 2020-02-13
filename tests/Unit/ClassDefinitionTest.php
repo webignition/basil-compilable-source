@@ -12,6 +12,7 @@ use webignition\BasilCompilableSource\ClassDefinitionInterface;
 use webignition\BasilCompilableSource\DataProviderMethodDefinition;
 use webignition\BasilCompilableSource\Line\ClassDependency;
 use webignition\BasilCompilableSource\Line\EmptyLine;
+use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\Line\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Line\MethodInvocation\StaticObjectMethodInvocation;
@@ -210,7 +211,7 @@ class ClassDefinitionTest extends TestCase
                                     new StaticObject('Acme\\Statement'),
                                     'createAction',
                                     [
-                                        '\'$"a" exists\'',
+                                        new LiteralExpression('\'$"a" exists\''),
                                     ]
                                 )
                             ),
@@ -227,7 +228,7 @@ class ClassDefinitionTest extends TestCase
                                     new StaticObject('Acme\\Statement'),
                                     'createAction',
                                     [
-                                        '\'$"b" exists\'',
+                                        new LiteralExpression('\'$"b" exists\''),
                                     ]
                                 )
                             ),
@@ -273,7 +274,7 @@ class ClassDefinitionTest extends TestCase
                                             new StaticObject('Acme\\Statement'),
                                             'createAction',
                                             [
-                                                '\'$"a" exists\'',
+                                                new LiteralExpression('\'$"a" exists\''),
                                             ]
                                         )
                                     ),
@@ -308,7 +309,7 @@ class ClassDefinitionTest extends TestCase
                                     new StaticObject('Acme\\Statement'),
                                     'createAction',
                                     [
-                                        '\'$"b" exists\'',
+                                        new LiteralExpression('\'$"b" exists\''),
                                     ]
                                 )
                             ),
