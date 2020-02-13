@@ -13,7 +13,7 @@ class ClosureExpression extends AbstractExpression
     private const RENDER_TEMPLATE = <<<'EOD'
 (function () {
 %s%s
-})();
+})()
 EOD;
 
     private $codeBlock;
