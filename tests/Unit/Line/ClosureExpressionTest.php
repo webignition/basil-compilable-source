@@ -131,12 +131,14 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
             'multiple literal statements' => [
                 'expression' => new ClosureExpression(
                     new CodeBlock([
+                        new Statement(new LiteralExpression('3')),
                         new Statement(new LiteralExpression('4')),
                         new ReturnStatement(new LiteralExpression('5')),
                     ])
                 ),
                 'expectedString' =>
                     '(function () {' . "\n" .
+                    '    3;' . "\n" .
                     '    4;' . "\n" .
                     "\n" .
                     '    return 5;' . "\n" .
