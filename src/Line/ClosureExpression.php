@@ -49,7 +49,7 @@ EOD;
             $renderedBodyStatements = (string) array_reduce(
                 $bodyStatements,
                 function (?string $content, StatementInterface $statement) {
-                    return $content . $statement->render();
+                    return $content . $statement->render() . "\n";
                 }
             );
 
@@ -58,7 +58,7 @@ EOD;
         }
 
         if ('' !== $renderedBodyStatements) {
-            $renderedBodyStatements .= "\n\n";
+            $renderedBodyStatements .= "\n";
         }
 
         return sprintf(
