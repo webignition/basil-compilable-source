@@ -4,47 +4,51 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Tests\Unit\Line;
 
+use webignition\BasilCompilableSource\Line\ComparisonExpression;
 use webignition\BasilCompilableSource\Line\ExpressionInterface;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
-use webignition\BasilCompilableSource\Line\NullCoalescingExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\VariablePlaceholder;
 use webignition\BasilCompilableSource\VariablePlaceholderCollection;
 
-class NullCoalescingExpressionTest extends \PHPUnit\Framework\TestCase
+class ComparisonExpressionTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider createDataProvider
      */
     public function testCreate(
-        ExpressionInterface $expression,
-        ExpressionInterface $default,
+        ExpressionInterface $leftHandSide,
+        ExpressionInterface $rightHandSide,
+        string $comparison,
         MetadataInterface $expectedMetadata
     ) {
-        $nullCoalescingExpression = new NullCoalescingExpression($expression, $default);
+        $expression = new ComparisonExpression($leftHandSide, $rightHandSide, $comparison);
 
-        $this->assertEquals($expectedMetadata, $nullCoalescingExpression->getMetadata());
-        $this->assertNull($nullCoalescingExpression->getCastTo());
-        $this->assertSame($expression, $nullCoalescingExpression->getExpression());
-        $this->assertSame($default, $nullCoalescingExpression->getDefault());
+        $this->assertEquals($expectedMetadata, $expression->getMetadata());
+        $this->assertNull($expression->getCastTo());
+        $this->assertSame($leftHandSide, $expression->getLeftHandSide());
+        $this->assertSame($rightHandSide, $expression->getRightHandSide());
+        $this->assertSame($comparison, $expression->getComparison());
     }
 
     public function createDataProvider(): array
     {
         return [
             'no metadata' => [
-                 new LiteralExpression('5'),
-                 new LiteralExpression('6'),
+                'leftHandSide' => new LiteralExpression('5'),
+                'rightHandSide' => new LiteralExpression('6'),
+                'comparison' => '===',
                 'expectedMetadata' => new Metadata(),
             ],
             'has metadata' => [
-                new ObjectMethodInvocation(
+                'leftHandSide' => new ObjectMethodInvocation(
                     VariablePlaceholder::createDependency('DEPENDENCY'),
                     'methodName'
                 ),
-                new LiteralExpression('literal'),
+                'rightHandSide' => new LiteralExpression('literal'),
+                'comparison' => '!==',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         'DEPENDENCY',
@@ -57,7 +61,7 @@ class NullCoalescingExpressionTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider renderDataProvider
      */
-    public function testRender(NullCoalescingExpression $expression, string $expectedString)
+    public function testRender(ComparisonExpression $expression, string $expectedString)
     {
         $this->assertSame($expectedString, $expression->render());
     }
@@ -65,26 +69,27 @@ class NullCoalescingExpressionTest extends \PHPUnit\Framework\TestCase
     public function renderDataProvider(): array
     {
         return [
-            'literals' => [
-                'expression' => new NullCoalescingExpression(
-                    new LiteralExpression('expression'),
-                    new LiteralExpression('default')
+            'literals, exact equals' => [
+                'expression' => new ComparisonExpression(
+                    new LiteralExpression('lhs'),
+                    new LiteralExpression('rhs'),
+                    '==='
                 ),
                 'expectedString' =>
-                    'expression ?? default',
+                    'lhs === rhs',
             ],
-            'object method invocation or literal' => [
-                'expression' => new NullCoalescingExpression(
+            'object method invocation and literal, null coalesce' => [
+                'expression' => new ComparisonExpression(
                     new ObjectMethodInvocation(
                         VariablePlaceholder::createDependency('DEPENDENCY'),
                         'methodName'
                     ),
-                    new LiteralExpression('default')
+                    new LiteralExpression('value'),
+                    '??'
                 ),
                 'expectedString' =>
-                    '{{ DEPENDENCY }}->methodName() ?? default',
+                    '{{ DEPENDENCY }}->methodName() ?? value',
             ],
-
         ];
     }
 }
