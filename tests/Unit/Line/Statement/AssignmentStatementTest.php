@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Tests\Unit\Line\Statement;
 
+use webignition\BasilCompilableSource\Line\ObjectPropertyAccessExpression;
 use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\AssignmentStatementInterface;
 use webignition\BasilCompilableSource\Line\ExpressionInterface;
@@ -140,6 +141,19 @@ class AssignmentStatementTest extends \PHPUnit\Framework\TestCase
                     )
                 ),
                 'expectedString' => '{{ PLACEHOLDER }} = {{ OBJECT }}->methodName();',
+            ],
+            'placeholder is object property access expression' => [
+                'statement' => new AssignmentStatement(
+                    new ObjectPropertyAccessExpression(
+                        VariablePlaceholder::createExport('TARGET'),
+                        'propertyName'
+                    ),
+                    new ObjectMethodInvocation(
+                        VariablePlaceholder::createDependency('OBJECT'),
+                        'methodName'
+                    )
+                ),
+                'expectedString' => '{{ TARGET }}->propertyName = {{ OBJECT }}->methodName();',
             ],
         ];
     }

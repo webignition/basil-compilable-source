@@ -14,14 +14,14 @@ class AssignmentStatement extends Statement implements AssignmentStatementInterf
 
     private $placeholder;
 
-    public function __construct(VariablePlaceholder $placeholder, ExpressionInterface $expression)
+    public function __construct(ExpressionInterface $placeholder, ExpressionInterface $expression)
     {
         parent::__construct($expression);
 
         $this->placeholder = $placeholder;
     }
 
-    public function getVariablePlaceholder(): VariablePlaceholder
+    public function getVariablePlaceholder(): ExpressionInterface
     {
         return $this->placeholder;
     }
