@@ -181,10 +181,10 @@ class CodeBlockTest extends \PHPUnit\Framework\TestCase
     public function renderDataProvider(): array
     {
         return [
-//            'empty' => [
-//                'codeBlock' => new CodeBlock(),
-//                'expectedString' => '',
-//            ],
+            'empty' => [
+                'codeBlock' => new CodeBlock(),
+                'expectedString' => '',
+            ],
             'lines' => [
                 'codeBlock' => new CodeBlock([
                     new Statement(new MethodInvocation('methodName')),

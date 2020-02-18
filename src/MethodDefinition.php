@@ -76,6 +76,11 @@ EOD;
         $this->codeBlock->addLine($statement);
     }
 
+    public function addLines(array $lines): void
+    {
+        $this->codeBlock->addLines($lines);
+    }
+
     public function getLines(): array
     {
         return $this->codeBlock->getLines();
