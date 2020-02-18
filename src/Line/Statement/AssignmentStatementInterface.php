@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Line\Statement;
 
-use webignition\BasilCompilableSource\VariablePlaceholder;
+use webignition\BasilCompilableSource\Line\ExpressionInterface;
 
 interface AssignmentStatementInterface extends StatementInterface
 {
-    public function getVariablePlaceholder(): VariablePlaceholder;
+    public function getVariablePlaceholder(): ExpressionInterface;
 }
