@@ -90,6 +90,16 @@ class ComparisonExpressionTest extends \PHPUnit\Framework\TestCase
                 'expectedString' =>
                     '{{ DEPENDENCY }}->methodName() ?? value',
             ],
+            'literals, exact equals, cast to string' => [
+                'expression' => new ComparisonExpression(
+                    new LiteralExpression('lhs'),
+                    new LiteralExpression('rhs'),
+                    '===',
+                    'string'
+                ),
+                'expectedString' =>
+                    '(string) (lhs === rhs)',
+            ],
         ];
     }
 }
