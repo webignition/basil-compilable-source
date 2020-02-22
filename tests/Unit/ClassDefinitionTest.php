@@ -65,11 +65,11 @@ class ClassDefinitionTest extends TestCase
                 'name' => 'noMethods',
                 'methods' => [
                     new MethodDefinition('methodOne', new CodeBlock()),
-                    new MethodDefinition('methodTne', new CodeBlock()),
+                    new MethodDefinition('methodTwo', new CodeBlock()),
                 ],
                 'expectedMethods' => [
-                    new MethodDefinition('methodOne', new CodeBlock()),
-                    new MethodDefinition('methodTne', new CodeBlock()),
+                    'methodOne' => new MethodDefinition('methodOne', new CodeBlock()),
+                    'methodTwo' => new MethodDefinition('methodTwo', new CodeBlock()),
                 ],
             ],
         ];
