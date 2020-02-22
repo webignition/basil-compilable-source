@@ -41,9 +41,11 @@ EOD;
         $this->name = $name;
         $this->baseClass = null;
 
-        $this->methods = array_filter($methods, function ($item) {
-            return $item instanceof MethodDefinitionInterface;
-        });
+        foreach ($methods as $method) {
+            if ($method instanceof MethodDefinitionInterface) {
+                $this->methods[$method->getName()] = $method;
+            }
+        }
     }
 
     public function getName(): string
