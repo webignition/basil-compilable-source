@@ -14,9 +14,9 @@ class ObjectPropertyAccessExpression extends AbstractExpression
     private $objectPlaceholder;
     private $property;
 
-    public function __construct(VariablePlaceholder $objectPlaceholder, string $property)
+    public function __construct(VariablePlaceholder $objectPlaceholder, string $property, ?string $castTo = null)
     {
-        parent::__construct();
+        parent::__construct($castTo);
 
         $this->objectPlaceholder = $objectPlaceholder;
         $this->property = $property;
@@ -39,7 +39,7 @@ class ObjectPropertyAccessExpression extends AbstractExpression
 
     public function render(): string
     {
-        return sprintf(
+        return parent::render() . sprintf(
             self::RENDER_PATTERN,
             $this->objectPlaceholder->render(),
             $this->property
