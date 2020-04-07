@@ -12,6 +12,7 @@ use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\Line\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Line\MethodInvocation\StaticObjectMethodInvocation;
+use webignition\BasilCompilableSource\Line\ObjectPropertyAccessExpression;
 use webignition\BasilCompilableSource\Line\SingleLineComment;
 use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\Statement;
@@ -258,6 +259,106 @@ class CodeBlockTest extends \PHPUnit\Framework\TestCase
                     '' . "\n" .
                     '// single line comment'
                 ,
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider addBlockDataProvider
+     */
+    public function testAddBlock(
+        CodeBlockInterface $block,
+        CodeBlockInterface $addition,
+        string $expectedRenderedContent,
+        MetadataInterface $expectedMetadata
+    ) {
+        $block->addBlock($addition);
+
+        $this->assertSame($expectedRenderedContent, $block->render());
+        $this->assertEquals($expectedMetadata, $block->getMetadata());
+    }
+
+    public function addBlockDataProvider(): array
+    {
+        return [
+            'empty block, empty addition' => [
+                'block' => new CodeBlock(),
+                'addition' => new CodeBlock(),
+                'expectedRenderedContent' => '',
+                'expectedMetadata' => new Metadata(),
+            ],
+            'block without metadata, empty addition' => [
+                'block' => new CodeBlock([
+                    new Statement(
+                        new LiteralExpression('"literal expression"')
+                    ),
+                ]),
+                'addition' => new CodeBlock(),
+                'expectedRenderedContent' =>
+                    '"literal expression";',
+                'expectedMetadata' => new Metadata(),
+            ],
+            'block with metadata, empty addition' => [
+                'block' => new CodeBlock([
+                    new Statement(
+                        new ObjectPropertyAccessExpression(
+                            VariablePlaceholder::createDependency('DEPENDENCY'),
+                            'propertyName'
+                        )
+                    ),
+                ]),
+                'addition' => new CodeBlock(),
+                'expectedRenderedContent' =>
+                    '{{ DEPENDENCY }}->propertyName;',
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                        'DEPENDENCY',
+                    ])
+                ]),
+            ],
+            'block without metadata, addition without metadata' => [
+                'block' => new CodeBlock([
+                    new Statement(
+                        new LiteralExpression('"block expression"')
+                    ),
+                ]),
+                'addition' => new CodeBlock([
+                    new Statement(
+                        new LiteralExpression('"addition expression"')
+                    ),
+                ]),
+                'expectedRenderedContent' =>
+                    '"block expression";' . "\n" .
+                    '"addition expression";'
+                ,
+                'expectedMetadata' => new Metadata(),
+            ],
+            'block with metadata, addition with metadata' => [
+                'block' => new CodeBlock([
+                    new Statement(
+                        new ObjectPropertyAccessExpression(
+                            VariablePlaceholder::createDependency('BLOCK_DEPENDENCY'),
+                            'propertyName'
+                        )
+                    ),
+                ]),
+                'addition' => new CodeBlock([
+                    new Statement(
+                        new ObjectPropertyAccessExpression(
+                            VariablePlaceholder::createDependency('ADDITION_DEPENDENCY'),
+                            'propertyName'
+                        )
+                    ),
+                ]),
+                'expectedRenderedContent' =>
+                    '{{ BLOCK_DEPENDENCY }}->propertyName;' . "\n" .
+                    '{{ ADDITION_DEPENDENCY }}->propertyName;',
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                        'BLOCK_DEPENDENCY',
+                        'ADDITION_DEPENDENCY',
+                    ])
+                ]),
             ],
         ];
     }
