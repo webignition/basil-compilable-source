@@ -92,6 +92,11 @@ EOD;
         $this->addLines($block->getLines());
     }
 
+    public function isEmpty(): bool
+    {
+        return $this->codeBlock->isEmpty();
+    }
+
     public function getMetadata(): MetadataInterface
     {
         return $this->codeBlock->getMetadata();

@@ -126,6 +126,15 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
         );
     }
 
+    public function testIsEmpty()
+    {
+        $methodDefinition = new MethodDefinition('name', new CodeBlock());
+        $this->assertTrue($methodDefinition->isEmpty());
+
+        $methodDefinition->addLine(new SingleLineComment('comment'));
+        $this->assertFalse($methodDefinition->isEmpty());
+    }
+
     /**
      * @dataProvider getMetadataDataProvider
      */

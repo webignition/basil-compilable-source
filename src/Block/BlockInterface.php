@@ -22,4 +22,6 @@ interface BlockInterface extends SourceInterface
     public function getLines(): array;
 
     public function addBlock(BlockInterface $block): void;
+
+    public function isEmpty(): bool;
 }
