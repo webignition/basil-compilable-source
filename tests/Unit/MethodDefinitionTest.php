@@ -107,6 +107,25 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
         );
     }
 
+    public function testAddBlock()
+    {
+        $methodDefinition = new MethodDefinition('name', new CodeBlock());
+        $this->assertEquals([], $methodDefinition->getLines());
+
+        $methodDefinition->addBlock(new CodeBlock([
+            new EmptyLine(),
+            new SingleLineComment('comment'),
+        ]));
+
+        $this->assertEquals(
+            [
+                new EmptyLine(),
+                new SingleLineComment('comment'),
+            ],
+            $methodDefinition->getLines()
+        );
+    }
+
     /**
      * @dataProvider getMetadataDataProvider
      */

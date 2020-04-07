@@ -20,4 +20,6 @@ interface BlockInterface extends SourceInterface
      * @return array<int, LineInterface>
      */
     public function getLines(): array;
+
+    public function addBlock(BlockInterface $block): void;
 }
