@@ -49,6 +49,11 @@ abstract class AbstractBlock implements BlockInterface
         $this->addLines($block->getLines());
     }
 
+    public function isEmpty(): bool
+    {
+        return 0 === count($this->lines);
+    }
+
     public function render(): string
     {
         $renderedLines = [];
