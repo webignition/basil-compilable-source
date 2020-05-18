@@ -16,4 +16,7 @@ interface MethodInvocationInterface extends ExpressionInterface
     public function getArguments(): array;
 
     public function getArgumentFormat(): string;
+
+    public function enableErrorSuppression(): void;
+    public function disableErrorSuppression(): void;
 }

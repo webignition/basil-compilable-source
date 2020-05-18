@@ -197,6 +197,23 @@ class ObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
                     "    \'single-quoted value\'\n" .
                     ")",
             ],
+            'object and method name only, has errors suppressed' => [
+                'invocation' => $this->createInvocationWithErrorSuppression(
+                    VariablePlaceholder::createDependency('OBJECT'),
+                    'methodName'
+                ),
+                'expectedString' => '@{{ OBJECT }}->methodName()',
+            ],
         ];
+    }
+
+    private function createInvocationWithErrorSuppression(
+        VariablePlaceholder $objectPlaceholder,
+        string $name
+    ): ObjectMethodInvocation {
+        $methodInvocation = new ObjectMethodInvocation($objectPlaceholder, $name);
+        $methodInvocation->enableErrorSuppression();
+
+        return $methodInvocation;
     }
 }

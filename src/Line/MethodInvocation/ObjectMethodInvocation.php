@@ -45,10 +45,15 @@ class ObjectMethodInvocation extends MethodInvocation implements ObjectMethodInv
 
     public function render(): string
     {
+        $objectPlaceholder = $this->getObjectPlaceholder()->render();
+        if ($this->suppressErrors === true) {
+            $objectPlaceholder = '@' . $objectPlaceholder;
+        }
+
         return $this->renderCastTo() . sprintf(
             self::RENDER_PATTERN,
-            $this->getObjectPlaceholder()->render(),
-            parent::renderWithoutCasting()
+            $objectPlaceholder,
+            parent::renderWithoutCastingWithoutErrorSuppression()
         );
     }
 }
