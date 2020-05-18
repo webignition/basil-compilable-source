@@ -162,6 +162,18 @@ class MethodInvocationTest extends \PHPUnit\Framework\TestCase
                     "    \'single-quoted value\'\n" .
                     ")",
             ],
+            'name only, has errors suppressed' => [
+                'invocation' => $this->createInvocationWithErrorSuppression('methodName'),
+                'expectedString' => '@methodName()',
+            ],
         ];
+    }
+
+    private function createInvocationWithErrorSuppression(string $name): MethodInvocationInterface
+    {
+        $methodInvocation = new MethodInvocation($name);
+        $methodInvocation->enableErrorSuppression();
+
+        return $methodInvocation;
     }
 }

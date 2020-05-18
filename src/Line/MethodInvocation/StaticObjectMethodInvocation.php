@@ -36,10 +36,15 @@ class StaticObjectMethodInvocation extends MethodInvocation implements StaticObj
 
     public function render(): string
     {
+        $staticObject = $this->getStaticObject()->render();
+        if ($this->suppressErrors === true) {
+            $staticObject = '@' . $staticObject;
+        }
+
         return sprintf(
             self::RENDER_PATTERN,
-            $this->getStaticObject()->render(),
-            parent::render()
+            $staticObject,
+            parent::renderWithoutCastingWithoutErrorSuppression()
         );
     }
 }

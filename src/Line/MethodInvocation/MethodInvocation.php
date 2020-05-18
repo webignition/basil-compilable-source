@@ -25,6 +25,11 @@ class MethodInvocation implements MethodInvocationInterface
     private $castTo;
 
     /**
+     * @var bool
+     */
+    protected $suppressErrors = false;
+
+    /**
      * @var MetadataInterface
      */
     private $metadata;
@@ -84,6 +89,16 @@ class MethodInvocation implements MethodInvocationInterface
         return $this->renderCastTo() . $this->renderWithoutCasting();
     }
 
+    public function enableErrorSuppression(): void
+    {
+        $this->suppressErrors = true;
+    }
+
+    public function disableErrorSuppression(): void
+    {
+        $this->suppressErrors = false;
+    }
+
     protected function renderCastTo(): string
     {
         return null === $this->castTo ? '' : '(' . $this->castTo . ') ';
@@ -91,9 +106,24 @@ class MethodInvocation implements MethodInvocationInterface
 
     protected function renderWithoutCasting(): string
     {
+        $methodName = $this->getMethodName();
+        if ($this->suppressErrors === true) {
+            $methodName = '@' . $methodName;
+        }
+
+        return $this->renderMethodCall($methodName);
+    }
+
+    protected function renderWithoutCastingWithoutErrorSuppression(): string
+    {
+        return $this->renderMethodCall($this->getMethodName());
+    }
+
+    private function renderMethodCall(string $methodName): string
+    {
         return sprintf(
             self::RENDER_PATTERN,
-            $this->getMethodName(),
+            $methodName,
             $this->createArgumentsString()
         );
     }
