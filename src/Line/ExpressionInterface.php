@@ -10,5 +10,4 @@ use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 interface ExpressionInterface extends LineInterface
 {
     public function getMetadata(): MetadataInterface;
-    public function getCastTo(): ?string;
 }

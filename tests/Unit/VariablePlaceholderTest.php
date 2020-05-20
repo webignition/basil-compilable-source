@@ -112,10 +112,6 @@ class VariablePlaceholderTest extends \PHPUnit\Framework\TestCase
                 'placeholder' => new VariablePlaceholder('NAME', VariablePlaceholder::TYPE_EXPORT),
                 'expectedString' => '{{ NAME }}',
             ],
-            'non-empty, cast to string' => [
-                'placeholder' => new VariablePlaceholder('NAME', VariablePlaceholder::TYPE_EXPORT, 'string'),
-                'expectedString' => '(string) {{ NAME }}',
-            ],
         ];
     }
 }

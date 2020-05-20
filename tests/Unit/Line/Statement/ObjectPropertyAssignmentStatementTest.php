@@ -29,22 +29,10 @@ class ObjectPropertyAssignmentStatementTest extends \PHPUnit\Framework\TestCase
     public function createDataProvider(): array
     {
         return [
-            'no castTo' => [
+            'default' => [
                 'placeholder' => new ObjectPropertyAccessExpression(
                     VariablePlaceholder::createExport('DEPENDENCY'),
                     'propertyName'
-                ),
-                'expression' => VariablePlaceholder::createDependency('DEPENDENCY'),
-                'expectedPlaceholder' => new ObjectPropertyAccessExpression(
-                    VariablePlaceholder::createExport('DEPENDENCY'),
-                    'propertyName'
-                ),
-            ],
-            'has castTo' => [
-                'placeholder' => new ObjectPropertyAccessExpression(
-                    VariablePlaceholder::createExport('DEPENDENCY'),
-                    'propertyName',
-                    'string'
                 ),
                 'expression' => VariablePlaceholder::createDependency('DEPENDENCY'),
                 'expectedPlaceholder' => new ObjectPropertyAccessExpression(
@@ -66,22 +54,11 @@ class ObjectPropertyAssignmentStatementTest extends \PHPUnit\Framework\TestCase
     public function renderDataProvider(): array
     {
         return [
-            'no castTo' => [
+            'default' => [
                 'statement' => new ObjectPropertyAssignmentStatement(
                     new ObjectPropertyAccessExpression(
                         VariablePlaceholder::createExport('PLACEHOLDER'),
                         'propertyName'
-                    ),
-                    VariablePlaceholder::createDependency('DEPENDENCY')
-                ),
-                'expectedString' => '{{ PLACEHOLDER }}->propertyName = {{ DEPENDENCY }};',
-            ],
-            'has castTo' => [
-                'statement' => new ObjectPropertyAssignmentStatement(
-                    new ObjectPropertyAccessExpression(
-                        VariablePlaceholder::createExport('PLACEHOLDER'),
-                        'propertyName',
-                        'string'
                     ),
                     VariablePlaceholder::createDependency('DEPENDENCY')
                 ),

@@ -17,15 +17,13 @@ class VariablePlaceholder extends AbstractExpression
 
     private $name;
     private $type;
-    private $castTo;
 
-    public function __construct(string $name, string $type, ?string $castTo = null)
+    public function __construct(string $name, string $type)
     {
-        parent::__construct($castTo);
+        parent::__construct();
 
         $this->name = $name;
         $this->type = self::isAllowedType($type) ? $type : self::TYPE_EXPORT;
-        $this->castTo = $castTo;
     }
 
     public function getName(): string
@@ -44,14 +42,14 @@ class VariablePlaceholder extends AbstractExpression
         );
     }
 
-    public static function createDependency(string $content, ?string $castTo = null): VariablePlaceholder
+    public static function createDependency(string $content): VariablePlaceholder
     {
-        return new VariablePlaceholder($content, self::TYPE_DEPENDENCY, $castTo);
+        return new VariablePlaceholder($content, self::TYPE_DEPENDENCY);
     }
 
-    public static function createExport(string $content, ?string $castTo = null): VariablePlaceholder
+    public static function createExport(string $content): VariablePlaceholder
     {
-        return new VariablePlaceholder($content, self::TYPE_EXPORT, $castTo);
+        return new VariablePlaceholder($content, self::TYPE_EXPORT);
     }
 
     public function getType(): string
@@ -75,6 +73,6 @@ class VariablePlaceholder extends AbstractExpression
 
     public function render(): string
     {
-        return parent::render() . sprintf(self::RENDER_PATTERN, $this->name);
+        return sprintf(self::RENDER_PATTERN, $this->name);
     }
 }

@@ -44,7 +44,7 @@ class StaticObjectMethodInvocation extends MethodInvocation implements StaticObj
         return sprintf(
             self::RENDER_PATTERN,
             $staticObject,
-            parent::renderWithoutCastingWithoutErrorSuppression()
+            parent::renderWithoutErrorSuppression()
         );
     }
 }

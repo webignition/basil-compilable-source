@@ -57,10 +57,6 @@ class LiteralExpressionTest extends \PHPUnit\Framework\TestCase
                 'expression' => new LiteralExpression('2'),
                 'expectedString' => '2',
             ],
-            'int, cast to string' => [
-                'expression' => new LiteralExpression('2', 'string'),
-                'expectedString' => '(string) 2',
-            ],
         ];
     }
 }

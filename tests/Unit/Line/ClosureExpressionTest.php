@@ -6,6 +6,7 @@ namespace webignition\BasilCompilableSource\Tests\Unit\Line;
 
 use webignition\BasilCompilableSource\Block\CodeBlock;
 use webignition\BasilCompilableSource\Block\CodeBlockInterface;
+use webignition\BasilCompilableSource\Line\CastExpression;
 use webignition\BasilCompilableSource\Line\ClosureExpression;
 use webignition\BasilCompilableSource\Line\CompositeExpression;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
@@ -29,7 +30,6 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
         $expression = new ClosureExpression($codeBlock);
 
         $this->assertEquals($expectedMetadata, $expression->getMetadata());
-        $this->assertNull($expression->getCastTo());
         $this->assertSame($codeBlock, $expression->getCodeBlock());
     }
 
@@ -58,19 +58,23 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
                     ),
                     new ReturnStatement(
                         new CompositeExpression([
-                            new ObjectMethodInvocation(
-                                VariablePlaceholder::createExport('EXPORT'),
-                                'getWidth',
-                                [],
-                                MethodInvocation::ARGUMENT_FORMAT_INLINE,
+                            new CastExpression(
+                                new ObjectMethodInvocation(
+                                    VariablePlaceholder::createExport('EXPORT'),
+                                    'getWidth',
+                                    [],
+                                    MethodInvocation::ARGUMENT_FORMAT_INLINE
+                                ),
                                 'string'
                             ),
                             new LiteralExpression(' . \'x\' . '),
-                            new ObjectMethodInvocation(
-                                VariablePlaceholder::createExport('EXPORT'),
-                                'getHeight',
-                                [],
-                                MethodInvocation::ARGUMENT_FORMAT_INLINE,
+                            new CastExpression(
+                                new ObjectMethodInvocation(
+                                    VariablePlaceholder::createExport('EXPORT'),
+                                    'getHeight',
+                                    [],
+                                    MethodInvocation::ARGUMENT_FORMAT_INLINE
+                                ),
                                 'string'
                             ),
                         ])
@@ -120,12 +124,17 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
             'single literal statement, with return statement expression cast to string' => [
                 'expression' => new ClosureExpression(
                     new CodeBlock([
-                        new ReturnStatement(new LiteralExpression('5', 'string')),
+                        new ReturnStatement(
+                            new CastExpression(
+                                new LiteralExpression('5'),
+                                'string'
+                            )
+                        ),
                     ])
                 ),
                 'expectedString' =>
                     '(function () {' . "\n" .
-                    '    return (string) 5;' . "\n" .
+                    '    return (string) (5);' . "\n" .
                     '})()',
             ],
             'multiple literal statements' => [
@@ -156,19 +165,23 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
                         ),
                         new ReturnStatement(
                             new CompositeExpression([
-                                new ObjectMethodInvocation(
-                                    VariablePlaceholder::createExport('EXPORT'),
-                                    'getWidth',
-                                    [],
-                                    MethodInvocation::ARGUMENT_FORMAT_INLINE,
+                                new CastExpression(
+                                    new ObjectMethodInvocation(
+                                        VariablePlaceholder::createExport('EXPORT'),
+                                        'getWidth',
+                                        [],
+                                        MethodInvocation::ARGUMENT_FORMAT_INLINE
+                                    ),
                                     'string'
                                 ),
                                 new LiteralExpression(' . \'x\' . '),
-                                new ObjectMethodInvocation(
-                                    VariablePlaceholder::createExport('EXPORT'),
-                                    'getHeight',
-                                    [],
-                                    MethodInvocation::ARGUMENT_FORMAT_INLINE,
+                                new CastExpression(
+                                    new ObjectMethodInvocation(
+                                        VariablePlaceholder::createExport('EXPORT'),
+                                        'getHeight',
+                                        [],
+                                        MethodInvocation::ARGUMENT_FORMAT_INLINE
+                                    ),
                                     'string'
                                 ),
                             ])
@@ -178,7 +191,8 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
                 '(function () {' . "\n" .
                 '    {{ EXPORT }} = {{ DEPENDENCY }}->dependencyMethodName();' . "\n" .
                 "\n" .
-                '    return (string) {{ EXPORT }}->getWidth() . \'x\' . (string) {{ EXPORT }}->getHeight();' . "\n" .
+                '    return (string) ({{ EXPORT }}->getWidth()) . ' .
+                '\'x\' . (string) ({{ EXPORT }}->getHeight());' . "\n" .
                 '})()',
             ],
         ];

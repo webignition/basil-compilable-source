@@ -13,7 +13,7 @@ class StaticObject extends AbstractExpression
 {
     private $object;
 
-    public function __construct(string $object, ?string $castTo = null)
+    public function __construct(string $object)
     {
         $metadata = null;
 
@@ -28,7 +28,7 @@ class StaticObject extends AbstractExpression
             ]);
         }
 
-        parent::__construct($castTo, $metadata);
+        parent::__construct($metadata);
 
         $this->object = $object;
     }

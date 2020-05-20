@@ -15,9 +15,8 @@ class CompositeExpression extends AbstractExpression
 
     /**
      * @param array<mixed> $expressions
-     * @param string|null $castTo
      */
-    public function __construct(array $expressions, ?string $castTo = null)
+    public function __construct(array $expressions)
     {
         $this->expressions = array_filter($expressions, function ($item) {
             return $item instanceof ExpressionInterface;
@@ -28,12 +27,12 @@ class CompositeExpression extends AbstractExpression
             $metadata = $metadata->merge($expression->getMetadata());
         }
 
-        parent::__construct($castTo, $metadata);
+        parent::__construct($metadata);
     }
 
     public function render(): string
     {
-        return parent::render() . (string) array_reduce(
+        return (string) array_reduce(
             $this->expressions,
             function (?string $content, ExpressionInterface $expression) {
                 return $content . $expression->render();

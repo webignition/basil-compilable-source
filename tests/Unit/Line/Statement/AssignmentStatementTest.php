@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Tests\Unit\Line\Statement;
 
+use webignition\BasilCompilableSource\Line\CastExpression;
 use webignition\BasilCompilableSource\Line\ObjectPropertyAccessExpression;
 use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\AssignmentStatementInterface;
@@ -121,9 +122,9 @@ class AssignmentStatementTest extends \PHPUnit\Framework\TestCase
             'statement encapsulating variable export, export is cast to string' => [
                 'statement' => new AssignmentStatement(
                     VariablePlaceholder::createExport('PLACEHOLDER'),
-                    VariablePlaceholder::createExport('EXPORT', 'string')
+                    new CastExpression(VariablePlaceholder::createExport('EXPORT'), 'string')
                 ),
-                'expectedString' => '{{ PLACEHOLDER }} = (string) {{ EXPORT }};',
+                'expectedString' => '{{ PLACEHOLDER }} = (string) ({{ EXPORT }});',
             ],
             'statement encapsulating method invocation' => [
                 'statement' => new AssignmentStatement(

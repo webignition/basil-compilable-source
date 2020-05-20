@@ -19,16 +19,14 @@ class ObjectMethodInvocation extends MethodInvocation implements ObjectMethodInv
      * @param string $methodName
      * @param ExpressionInterface[] $arguments
      * @param string $argumentFormat
-     * @param string|null $castTo
      */
     public function __construct(
         VariablePlaceholder $objectPlaceholder,
         string $methodName,
         array $arguments = [],
-        string $argumentFormat = self::ARGUMENT_FORMAT_INLINE,
-        ?string $castTo = null
+        string $argumentFormat = self::ARGUMENT_FORMAT_INLINE
     ) {
-        parent::__construct($methodName, $arguments, $argumentFormat, $castTo);
+        parent::__construct($methodName, $arguments, $argumentFormat);
 
         $this->objectPlaceholder = $objectPlaceholder;
     }
@@ -50,10 +48,10 @@ class ObjectMethodInvocation extends MethodInvocation implements ObjectMethodInv
             $objectPlaceholder = '@' . $objectPlaceholder;
         }
 
-        return $this->renderCastTo() . sprintf(
+        return sprintf(
             self::RENDER_PATTERN,
             $objectPlaceholder,
-            parent::renderWithoutCastingWithoutErrorSuppression()
+            parent::renderWithoutErrorSuppression()
         );
     }
 }
