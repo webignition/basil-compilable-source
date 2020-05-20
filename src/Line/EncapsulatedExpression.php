@@ -8,15 +8,15 @@ class EncapsulatedExpression extends AbstractExpression
 {
     private $expression;
 
-    public function __construct(ExpressionInterface $expression, ?string $castTo = null)
+    public function __construct(ExpressionInterface $expression)
     {
         $this->expression = $expression;
 
-        parent::__construct($castTo, $expression->getMetadata());
+        parent::__construct($expression->getMetadata());
     }
 
     public function render(): string
     {
-        return parent::render() . '(' . $this->expression->render() . ')';
+        return '(' . $this->expression->render() . ')';
     }
 }

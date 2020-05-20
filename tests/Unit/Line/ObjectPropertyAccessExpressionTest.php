@@ -18,34 +18,21 @@ class ObjectPropertyAccessExpressionTest extends \PHPUnit\Framework\TestCase
     public function testCreate(
         VariablePlaceholder $objectPlaceholder,
         string $property,
-        ?string $castTo,
         MetadataInterface $expectedMetadata
     ) {
-        $invocation = new ObjectPropertyAccessExpression($objectPlaceholder, $property, $castTo);
+        $invocation = new ObjectPropertyAccessExpression($objectPlaceholder, $property);
 
         $this->assertSame($objectPlaceholder, $invocation->getObjectPlaceholder());
         $this->assertSame($property, $invocation->getProperty());
-        $this->assertSame($castTo, $invocation->getCastTo());
         $this->assertEquals($expectedMetadata, $invocation->getMetadata());
     }
 
     public function createDataProvider(): array
     {
         return [
-            'no castTo' => [
+            'default' => [
                 'objectPlaceholder' => VariablePlaceholder::createDependency('OBJECT'),
                 'property' => 'propertyName',
-                'castTo' => null,
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
-                        'OBJECT',
-                    ]),
-                ]),
-            ],
-            'has castTo' => [
-                'objectPlaceholder' => VariablePlaceholder::createDependency('OBJECT'),
-                'property' => 'propertyName',
-                'castTo' => 'string',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         'OBJECT',
@@ -66,20 +53,12 @@ class ObjectPropertyAccessExpressionTest extends \PHPUnit\Framework\TestCase
     public function renderDataProvider(): array
     {
         return [
-            'no castTo' => [
+            'default' => [
                 'expression' => new ObjectPropertyAccessExpression(
                     VariablePlaceholder::createDependency('OBJECT'),
                     'propertyName'
                 ),
                 'expectedString' => '{{ OBJECT }}->propertyName',
-            ],
-            'has castTo' => [
-                'expression' => new ObjectPropertyAccessExpression(
-                    VariablePlaceholder::createDependency('OBJECT'),
-                    'propertyName',
-                    'string'
-                ),
-                'expectedString' => '(string) {{ OBJECT }}->propertyName',
             ],
         ];
     }

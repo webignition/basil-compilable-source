@@ -18,13 +18,11 @@ class ComparisonExpression extends AbstractExpression
      * @param ExpressionInterface $leftHandSide
      * @param ExpressionInterface $rightHandSide
      * @param string $comparison
-     * @param string|null $castTo
      */
     public function __construct(
         ExpressionInterface $leftHandSide,
         ExpressionInterface $rightHandSide,
-        string $comparison,
-        ?string $castTo = null
+        string $comparison
     ) {
         $this->leftHandSide = $leftHandSide;
         $this->rightHandSide = $rightHandSide;
@@ -34,7 +32,7 @@ class ComparisonExpression extends AbstractExpression
         $metadata = $metadata->merge($this->leftHandSide->getMetadata());
         $metadata = $metadata->merge($this->rightHandSide->getMetadata());
 
-        parent::__construct($castTo, $metadata);
+        parent::__construct($metadata);
     }
 
     public function getLeftHandSide(): ExpressionInterface
@@ -54,18 +52,11 @@ class ComparisonExpression extends AbstractExpression
 
     public function render(): string
     {
-        $cast = parent::render();
-        $content = sprintf(
+        return sprintf(
             self::RENDER_TEMPLATE,
             $this->leftHandSide->render(),
             $this->comparison,
             $this->rightHandSide->render()
         );
-
-        if (null !== $this->getCastTo()) {
-            $content = '(' . $content . ')';
-        }
-
-        return $cast . $content;
     }
 }

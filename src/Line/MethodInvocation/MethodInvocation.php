@@ -22,7 +22,6 @@ class MethodInvocation implements MethodInvocationInterface
      */
     private $arguments = [];
     private $argumentFormat;
-    private $castTo;
 
     /**
      * @var bool
@@ -38,17 +37,14 @@ class MethodInvocation implements MethodInvocationInterface
      * @param string $methodName
      * @param ExpressionInterface[] $arguments
      * @param string $argumentFormat
-     * @param string|null $castTo
      */
     public function __construct(
         string $methodName,
         array $arguments = [],
-        string $argumentFormat = self::ARGUMENT_FORMAT_INLINE,
-        ?string $castTo = null
+        string $argumentFormat = self::ARGUMENT_FORMAT_INLINE
     ) {
         $this->methodName = $methodName;
         $this->argumentFormat = $argumentFormat;
-        $this->castTo = $castTo;
         $this->arguments = array_filter($arguments, function ($argument) {
             return $argument instanceof ExpressionInterface;
         });
@@ -79,14 +75,14 @@ class MethodInvocation implements MethodInvocationInterface
         return $this->metadata;
     }
 
-    public function getCastTo(): ?string
-    {
-        return $this->castTo;
-    }
-
     public function render(): string
     {
-        return $this->renderCastTo() . $this->renderWithoutCasting();
+        $methodName = $this->getMethodName();
+        if ($this->suppressErrors === true) {
+            $methodName = '@' . $methodName;
+        }
+
+        return $this->renderMethodCall($methodName);
     }
 
     public function enableErrorSuppression(): void
@@ -99,22 +95,7 @@ class MethodInvocation implements MethodInvocationInterface
         $this->suppressErrors = false;
     }
 
-    protected function renderCastTo(): string
-    {
-        return null === $this->castTo ? '' : '(' . $this->castTo . ') ';
-    }
-
-    protected function renderWithoutCasting(): string
-    {
-        $methodName = $this->getMethodName();
-        if ($this->suppressErrors === true) {
-            $methodName = '@' . $methodName;
-        }
-
-        return $this->renderMethodCall($methodName);
-    }
-
-    protected function renderWithoutCastingWithoutErrorSuppression(): string
+    protected function renderWithoutErrorSuppression(): string
     {
         return $this->renderMethodCall($this->getMethodName());
     }

@@ -27,7 +27,6 @@ class ComparisonExpressionTest extends \PHPUnit\Framework\TestCase
         $expression = new ComparisonExpression($leftHandSide, $rightHandSide, $comparison);
 
         $this->assertEquals($expectedMetadata, $expression->getMetadata());
-        $this->assertNull($expression->getCastTo());
         $this->assertSame($leftHandSide, $expression->getLeftHandSide());
         $this->assertSame($rightHandSide, $expression->getRightHandSide());
         $this->assertSame($comparison, $expression->getComparison());
@@ -89,16 +88,6 @@ class ComparisonExpressionTest extends \PHPUnit\Framework\TestCase
                 ),
                 'expectedString' =>
                     '{{ DEPENDENCY }}->methodName() ?? value',
-            ],
-            'literals, exact equals, cast to string' => [
-                'expression' => new ComparisonExpression(
-                    new LiteralExpression('lhs'),
-                    new LiteralExpression('rhs'),
-                    '===',
-                    'string'
-                ),
-                'expectedString' =>
-                    '(string) (lhs === rhs)',
             ],
         ];
     }

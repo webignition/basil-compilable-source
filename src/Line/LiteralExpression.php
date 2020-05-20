@@ -8,15 +8,15 @@ class LiteralExpression extends AbstractExpression
 {
     private $content;
 
-    public function __construct(string $content, ?string $castTo = null)
+    public function __construct(string $content)
     {
-        parent::__construct($castTo);
+        parent::__construct();
 
         $this->content = $content;
     }
 
     public function render(): string
     {
-        return parent::render() . $this->content;
+        return $this->content;
     }
 }

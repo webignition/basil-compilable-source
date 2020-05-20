@@ -6,6 +6,7 @@ namespace webignition\BasilCompilableSource\Tests\Unit\Block;
 
 use webignition\BasilCompilableSource\Block\CodeBlock;
 use webignition\BasilCompilableSource\Block\CodeBlockInterface;
+use webignition\BasilCompilableSource\Line\CastExpression;
 use webignition\BasilCompilableSource\Line\ClassDependency;
 use webignition\BasilCompilableSource\Line\EmptyLine;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
@@ -199,7 +200,10 @@ class CodeBlockTest extends \PHPUnit\Framework\TestCase
                     ),
                     new AssignmentStatement(
                         VariablePlaceholder::createExport('PLACEHOLDER'),
-                        new MethodInvocation('methodName', [], MethodInvocation::ARGUMENT_FORMAT_INLINE, 'string')
+                        new CastExpression(
+                            new MethodInvocation('methodName', [], MethodInvocation::ARGUMENT_FORMAT_INLINE),
+                            'string'
+                        )
                     ),
                     new AssignmentStatement(
                         VariablePlaceholder::createExport('PLACEHOLDER'),
@@ -249,7 +253,7 @@ class CodeBlockTest extends \PHPUnit\Framework\TestCase
                     'methodName();' . "\n" .
                     '{{ OBJECT }}->methodName();' . "\n" .
                     '{{ PLACEHOLDER }} = methodName();' . "\n" .
-                    '{{ PLACEHOLDER }} = (string) methodName();' . "\n" .
+                    '{{ PLACEHOLDER }} = (string) (methodName());' . "\n" .
                     '{{ PLACEHOLDER }} = ClassDependency::methodName();' . "\n" .
                     '{{ PLACEHOLDER }} = {{ OBJECT }}->methodName(\'string\', EmptyLine::innerMethodName());' . "\n" .
                     '{{ PLACEHOLDER }} = {{ OBJECT }}->methodName(ClassDependency::innerMethodName(' . "\n" .

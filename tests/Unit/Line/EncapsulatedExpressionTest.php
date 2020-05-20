@@ -35,13 +35,6 @@ class EncapsulatedExpressionTest extends \PHPUnit\Framework\TestCase
                 ),
                 'expectedString' => '(100)',
             ],
-            'literal, cast to string' => [
-                'expression' => new EncapsulatedExpression(
-                    new LiteralExpression('100'),
-                    'string'
-                ),
-                'expectedString' => '(string) (100)',
-            ],
             'comparison' => [
                 'expression' => new EncapsulatedExpression(
                     new ComparisonExpression(

@@ -37,7 +37,6 @@ class MethodInvocationTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($arguments, $invocation->getArguments());
         $this->assertSame($argumentFormat, $invocation->getArgumentFormat());
         $this->assertEquals($expectedMetadata, $invocation->getMetadata());
-        $this->assertNull($invocation->getCastTo());
     }
 
     public function createDataProvider(): array
@@ -111,15 +110,6 @@ class MethodInvocationTest extends \PHPUnit\Framework\TestCase
                     'methodName'
                 ),
                 'expectedString' => 'methodName()',
-            ],
-            'name only, cast to string' => [
-                'invocation' => new MethodInvocation(
-                    'methodName',
-                    [],
-                    MethodInvocation::ARGUMENT_FORMAT_INLINE,
-                    'string'
-                ),
-                'expectedString' => '(string) methodName()',
             ],
             'no arguments, inline' => [
                 'invocation' => new MethodInvocation(
