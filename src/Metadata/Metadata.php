@@ -13,20 +13,9 @@ class Metadata implements MetadataInterface
     public const KEY_VARIABLE_DEPENDENCIES = 'variable-dependencies';
     public const KEY_VARIABLE_EXPORTS = 'variable-exports';
 
-    /**
-     * @var ClassDependencyCollection
-     */
-    private $classDependencies;
-
-    /**
-     * @var VariablePlaceholderCollection
-     */
-    private $variableDependencies;
-
-    /**
-     * @var VariablePlaceholderCollection
-     */
-    private $variableExports;
+    private ClassDependencyCollection $classDependencies;
+    private VariablePlaceholderCollection $variableDependencies;
+    private VariablePlaceholderCollection $variableExports;
 
     /**
      * @param array<mixed> $components

@@ -16,7 +16,7 @@ class DataProviderMethodDefinition extends MethodDefinition implements DataProvi
     /**
      * @var array<mixed>
      */
-    private $data;
+    private array $data;
 
     /**
      * @param string $name

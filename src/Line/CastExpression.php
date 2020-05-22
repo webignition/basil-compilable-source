@@ -6,8 +6,8 @@ namespace webignition\BasilCompilableSource\Line;
 
 class CastExpression extends AbstractExpression
 {
-    private $expression;
-    private $castTo;
+    private ExpressionInterface $expression;
+    private string $castTo;
 
     public function __construct(ExpressionInterface $expression, string $castTo)
     {

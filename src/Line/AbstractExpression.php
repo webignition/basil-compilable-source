@@ -9,7 +9,7 @@ use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 
 abstract class AbstractExpression implements ExpressionInterface
 {
-    private $metadata;
+    private ?MetadataInterface $metadata;
 
     public function __construct(?MetadataInterface $metadata = null)
     {

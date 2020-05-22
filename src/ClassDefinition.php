@@ -20,17 +20,14 @@ EOD;
     private const CLASS_SIGNATURE_TEMPLATE = 'class %s %s';
     private const NAMESPACE_SEPARATOR = '\\';
 
-    private $name;
+    private string $name;
 
-    /**
-     * @var ClassDependency|null
-     */
-    private $baseClass;
+    private ?ClassDependency $baseClass;
 
     /**
      * @var MethodDefinitionInterface[]
      */
-    private $methods = [];
+    private array $methods = [];
 
     /**
      * @param string $name

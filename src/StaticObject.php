@@ -11,7 +11,7 @@ use webignition\BasilCompilableSource\Metadata\Metadata;
 
 class StaticObject extends AbstractExpression
 {
-    private $object;
+    private string $object;
 
     public function __construct(string $object)
     {

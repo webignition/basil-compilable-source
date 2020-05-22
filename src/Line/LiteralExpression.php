@@ -6,7 +6,7 @@ namespace webignition\BasilCompilableSource\Line;
 
 class LiteralExpression extends AbstractExpression
 {
-    private $content;
+    private string $content;
 
     public function __construct(string $content)
     {

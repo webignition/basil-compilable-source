@@ -11,8 +11,8 @@ class ClassDependency implements LineInterface
     private const RENDER_PATTERN = 'use %s;';
     private const FQCN_PART_DELIMITER = '\\';
 
-    private $className;
-    private $alias;
+    private string $className;
+    private ?string $alias;
 
     public function __construct(string $className, ?string $alias = null)
     {

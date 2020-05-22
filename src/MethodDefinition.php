@@ -22,25 +22,18 @@ EOD;
     public const VISIBILITY_PROTECTED = 'protected';
     public const VISIBILITY_PRIVATE = 'private';
 
-    private $visibility = self::VISIBILITY_PUBLIC;
+    private string $visibility = self::VISIBILITY_PUBLIC;
 
-    /**
-     * @var string|null
-     */
-    private $returnType = null;
-    private $name;
-    private $codeBlock;
+    private ?string $returnType = null;
+    private string $name;
+    private CodeBlockInterface $codeBlock;
 
     /**
      * @var string[]
      */
-    private $arguments = [];
-    private $isStatic = false;
-
-    /**
-     * @var DocBlock|null
-     */
-    private $docBlock;
+    private array $arguments = [];
+    private bool $isStatic = false;
+    private ?DocBlock $docBlock = null;
 
     /**
      * @param string $name

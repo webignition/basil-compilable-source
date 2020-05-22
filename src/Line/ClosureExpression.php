@@ -16,7 +16,7 @@ class ClosureExpression extends AbstractExpression
 })()
 EOD;
 
-    private $codeBlock;
+    private CodeBlockInterface $codeBlock;
 
     public function __construct(CodeBlockInterface $codeBlock)
     {

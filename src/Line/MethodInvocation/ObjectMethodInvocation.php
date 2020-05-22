@@ -12,7 +12,7 @@ class ObjectMethodInvocation extends MethodInvocation implements ObjectMethodInv
 {
     private const RENDER_PATTERN = '%s->%s';
 
-    private $objectPlaceholder;
+    private VariablePlaceholder $objectPlaceholder;
 
     /**
      * @param VariablePlaceholder $objectPlaceholder

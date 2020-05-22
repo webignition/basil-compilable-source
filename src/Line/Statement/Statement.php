@@ -11,7 +11,7 @@ class Statement implements StatementInterface
 {
     private const RENDER_PATTERN = '%s;';
 
-    private $expression;
+    private ExpressionInterface $expression;
 
     public function __construct(ExpressionInterface $expression)
     {

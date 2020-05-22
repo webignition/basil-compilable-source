@@ -11,8 +11,8 @@ class ObjectPropertyAccessExpression extends AbstractExpression
 {
     private const RENDER_PATTERN = '%s->%s';
 
-    private $objectPlaceholder;
-    private $property;
+    private VariablePlaceholder $objectPlaceholder;
+    private string $property;
 
     public function __construct(VariablePlaceholder $objectPlaceholder, string $property)
     {
