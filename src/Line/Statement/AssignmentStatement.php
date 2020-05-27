@@ -11,7 +11,7 @@ class AssignmentStatement extends Statement implements AssignmentStatementInterf
 {
     private const RENDER_PATTERN = '%s = %s';
 
-    private $placeholder;
+    private ExpressionInterface $placeholder;
 
     public function __construct(ExpressionInterface $placeholder, ExpressionInterface $expression)
     {

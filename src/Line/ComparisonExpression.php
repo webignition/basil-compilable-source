@@ -10,9 +10,9 @@ class ComparisonExpression extends AbstractExpression
 {
     private const RENDER_TEMPLATE = '%s %s %s';
 
-    private $leftHandSide;
-    private $rightHandSide;
-    private $comparison;
+    private ExpressionInterface $leftHandSide;
+    private ExpressionInterface $rightHandSide;
+    private string $comparison;
 
     /**
      * @param ExpressionInterface $leftHandSide

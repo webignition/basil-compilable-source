@@ -15,8 +15,8 @@ class VariablePlaceholder extends AbstractExpression
     public const TYPE_DEPENDENCY = 'dependency';
     public const TYPE_EXPORT = 'export';
 
-    private $name;
-    private $type;
+    private string $name;
+    private string $type;
 
     public function __construct(string $name, string $type)
     {

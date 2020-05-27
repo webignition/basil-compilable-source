@@ -11,7 +11,7 @@ abstract class AbstractBlock implements BlockInterface
     /**
      * @var LineInterface[]
      */
-    private $lines = [];
+    private array $lines = [];
 
     /**
      * @param array<mixed> $lines

@@ -9,7 +9,7 @@ class ArrayExpression extends AbstractExpression
     /**
      * @var array<mixed>
      */
-    private $data = [];
+    private array $data = [];
 
     private const INDENT_SPACE_COUNT = 4;
     private const DEFAULT_INDENT_COUNT = 1;

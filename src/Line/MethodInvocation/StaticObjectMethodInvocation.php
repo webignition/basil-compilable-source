@@ -11,7 +11,7 @@ class StaticObjectMethodInvocation extends MethodInvocation implements StaticObj
 {
     private const RENDER_PATTERN = '%s::%s';
 
-    private $staticObject;
+    private StaticObject $staticObject;
 
     public function __construct(
         StaticObject $staticObject,

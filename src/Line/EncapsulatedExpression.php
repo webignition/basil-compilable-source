@@ -6,7 +6,7 @@ namespace webignition\BasilCompilableSource\Line;
 
 class EncapsulatedExpression extends AbstractExpression
 {
-    private $expression;
+    private ExpressionInterface $expression;
 
     public function __construct(ExpressionInterface $expression)
     {

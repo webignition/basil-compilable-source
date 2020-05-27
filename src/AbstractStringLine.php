@@ -6,7 +6,7 @@ namespace webignition\BasilCompilableSource;
 
 abstract class AbstractStringLine implements SourceInterface
 {
-    private $content;
+    private string $content;
 
     public function __construct(string $content)
     {

@@ -9,12 +9,12 @@ namespace webignition\BasilCompilableSource;
  */
 class VariablePlaceholderCollection implements \IteratorAggregate
 {
-    private $placeholderType;
+    private string $placeholderType;
 
     /**
      * @var VariablePlaceholder[]
      */
-    private $variablePlaceholders = [];
+    private array $variablePlaceholders = [];
 
     private function __construct(string $placeholderType)
     {

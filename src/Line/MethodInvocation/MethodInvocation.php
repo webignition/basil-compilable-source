@@ -15,23 +15,23 @@ class MethodInvocation implements MethodInvocationInterface
 
     private const RENDER_PATTERN = '%s(%s)';
 
-    private $methodName;
+    private string $methodName;
 
     /**
      * @var ExpressionInterface[]
      */
-    private $arguments = [];
-    private $argumentFormat;
+    private array $arguments = [];
+    private string $argumentFormat = self::ARGUMENT_FORMAT_INLINE;
 
     /**
      * @var bool
      */
-    protected $suppressErrors = false;
+    protected bool $suppressErrors = false;
 
     /**
      * @var MetadataInterface
      */
-    private $metadata;
+    private MetadataInterface $metadata;
 
     /**
      * @param string $methodName
