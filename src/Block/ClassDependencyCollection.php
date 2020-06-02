@@ -30,15 +30,7 @@ class ClassDependencyCollection extends AbstractBlock
 
     public function merge(ClassDependencyCollection $collection): ClassDependencyCollection
     {
-        $new = clone $this;
-
-        foreach ($collection->getLines() as $classDependency) {
-            if ($new->canLineBeAdded($classDependency)) {
-                $new->addLine($classDependency);
-            }
-        }
-
-        return $new;
+        return new ClassDependencyCollection(array_merge($this->getLines(), $collection->getLines()));
     }
 
     private function containsClassDependency(ClassDependency $classDependency): bool
