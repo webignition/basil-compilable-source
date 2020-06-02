@@ -75,7 +75,7 @@ EOD;
 
         foreach ($this->methods as $method) {
             if ($method instanceof MethodDefinitionInterface) {
-                $metadata->merge($method->getMetadata());
+                $metadata = $metadata->merge($method->getMetadata());
             }
         }
 
@@ -93,7 +93,7 @@ EOD;
             ) === 0;
 
             if (false === $baseClassIsInRootNamespace) {
-                $classDependencies->merge(new ClassDependencyCollection([
+                $classDependencies = $classDependencies->merge(new ClassDependencyCollection([
                     $this->baseClass,
                 ]));
             }
