@@ -272,7 +272,10 @@ class CodeBlockTest extends \PHPUnit\Framework\TestCase
         $codeBlock = new CodeBlock();
         $this->assertTrue($codeBlock->isEmpty());
 
-        $codeBlock->addLine(new SingleLineComment('comment'));
+        $codeBlock = new CodeBlock([
+            new SingleLineComment('comment')
+        ]);
+
         $this->assertFalse($codeBlock->isEmpty());
     }
 }

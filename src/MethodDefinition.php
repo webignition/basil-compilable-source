@@ -65,11 +65,6 @@ EOD;
         return $this->arguments;
     }
 
-    public function addLine(LineInterface $statement): void
-    {
-        $this->codeBlock->addLine($statement);
-    }
-
     public function getLines(): array
     {
         return $this->codeBlock->getLines();

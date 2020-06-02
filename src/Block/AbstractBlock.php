@@ -19,13 +19,15 @@ abstract class AbstractBlock implements BlockInterface
     public function __construct(array $lines = [])
     {
         foreach ($lines as $line) {
-            $this->addLine($line);
+            if ($this->canLineBeAdded($line)) {
+                $this->lines[] = $line;
+            }
         }
     }
 
     abstract public function canLineBeAdded(LineInterface $line): bool;
 
-    public function addLine(LineInterface $line): void
+    protected function addLine(LineInterface $line): void
     {
         if ($this->canLineBeAdded($line)) {
             $this->lines[] = $line;

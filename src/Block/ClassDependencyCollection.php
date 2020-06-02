@@ -28,6 +28,15 @@ class ClassDependencyCollection extends AbstractBlock
         return false;
     }
 
+    public function merge(ClassDependencyCollection $collection): void
+    {
+        foreach ($collection->getLines() as $classDependency) {
+            if ($this->canLineBeAdded($classDependency)) {
+                $this->addLine($classDependency);
+            }
+        }
+    }
+
     private function containsClassDependency(ClassDependency $classDependency): bool
     {
         $renderedClassDependency = $classDependency->render();

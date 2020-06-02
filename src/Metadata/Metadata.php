@@ -62,19 +62,11 @@ class Metadata implements MetadataInterface
     public function merge(MetadataInterface $metadata): MetadataInterface
     {
         $new = clone $this;
-        $new->mergeClassDependencies($metadata->getClassDependencies());
+
+        $new->classDependencies->merge($metadata->getClassDependencies());
         $new->variableDependencies->merge($metadata->getVariableDependencies());
         $new->variableExports->merge($metadata->getVariableExports());
 
         return $new;
-    }
-
-    private function mergeClassDependencies(ClassDependencyCollection $classDependencies): void
-    {
-        foreach ($classDependencies->getLines() as $classDependency) {
-            if ($this->classDependencies->canLineBeAdded($classDependency)) {
-                $this->classDependencies->addLine($classDependency);
-            }
-        }
     }
 }

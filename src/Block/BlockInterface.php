@@ -9,8 +9,6 @@ use webignition\BasilCompilableSource\SourceInterface;
 
 interface BlockInterface extends SourceInterface
 {
-    public function addLine(LineInterface $line): void;
-
     /**
      * @return array<int, LineInterface>
      */

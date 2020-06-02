@@ -66,35 +66,15 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    public function testAddLine()
-    {
-        $methodDefinition = new MethodDefinition('name', new CodeBlock());
-        $this->assertEquals([], $methodDefinition->getLines());
-
-        $methodDefinition->addLine(new EmptyLine());
-        $this->assertEquals(
-            [
-                new EmptyLine(),
-            ],
-            $methodDefinition->getLines()
-        );
-
-        $methodDefinition->addLine(new SingleLineComment('comment'));
-        $this->assertEquals(
-            [
-                new EmptyLine(),
-                new SingleLineComment('comment'),
-            ],
-            $methodDefinition->getLines()
-        );
-    }
-
     public function testIsEmpty()
     {
         $methodDefinition = new MethodDefinition('name', new CodeBlock());
         $this->assertTrue($methodDefinition->isEmpty());
 
-        $methodDefinition->addLine(new SingleLineComment('comment'));
+        $methodDefinition = new MethodDefinition('name', new CodeBlock([
+            new SingleLineComment('comment')
+        ]));
+
         $this->assertFalse($methodDefinition->isEmpty());
     }
 
