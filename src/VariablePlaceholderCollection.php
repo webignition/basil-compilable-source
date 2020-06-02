@@ -79,13 +79,17 @@ class VariablePlaceholderCollection implements \IteratorAggregate
         return $this->placeholderType;
     }
 
-    public function merge(VariablePlaceholderCollection $collection): void
+    public function merge(VariablePlaceholderCollection $collection): VariablePlaceholderCollection
     {
-        if ($collection->getPlaceholderType() === $this->getPlaceholderType()) {
+        $new = clone $this;
+
+        if ($collection->getPlaceholderType() === $new->getPlaceholderType()) {
             foreach ($collection as $variablePlaceholder) {
-                $this->add($variablePlaceholder);
+                $new->add($variablePlaceholder);
             }
         }
+
+        return $new;
     }
 
     public function add(VariablePlaceholder $variablePlaceholder): void

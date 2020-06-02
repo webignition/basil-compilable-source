@@ -93,9 +93,9 @@ class VariablePlaceholderCollectionTest extends \PHPUnit\Framework\TestCase
     {
         $collection = VariablePlaceholderCollection::createDependencyCollection(['ONE']);
 
-        $collection->merge(VariablePlaceholderCollection::createDependencyCollection(['TWO', 'THREE']));
-        $collection->merge(VariablePlaceholderCollection::createDependencyCollection(['THREE', 'FOUR']));
-        $collection->merge(VariablePlaceholderCollection::createExportCollection(['FIVE']));
+        $collection = $collection->merge(VariablePlaceholderCollection::createDependencyCollection(['TWO', 'THREE']));
+        $collection = $collection->merge(VariablePlaceholderCollection::createDependencyCollection(['THREE', 'FOUR']));
+        $collection = $collection->merge(VariablePlaceholderCollection::createExportCollection(['FIVE']));
 
         $this->assertCount(4, $collection);
 
