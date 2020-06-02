@@ -8,6 +8,7 @@ use webignition\BasilCompilableSource\Block\CodeBlock;
 use webignition\BasilCompilableSource\Block\CodeBlockInterface;
 use webignition\BasilCompilableSource\Block\DocBlock;
 use webignition\BasilCompilableSource\Line\EmptyLine;
+use webignition\BasilCompilableSource\Line\Literal;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\Line\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
@@ -308,7 +309,7 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
                         ['x', 'y']
                     ),
                     new DocBlock([
-                        new SingleLineComment('@dataProvider nameOfMethodDataProvider'),
+                        new Literal('@dataProvider nameOfMethodDataProvider'),
                     ])
                 ),
                 'expectedString' =>

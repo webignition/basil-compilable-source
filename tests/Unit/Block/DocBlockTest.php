@@ -7,9 +7,9 @@ namespace webignition\BasilCompilableSource\Tests\Unit\Block;
 use webignition\BasilCompilableSource\Block\DocBlock;
 use webignition\BasilCompilableSource\Line\ClassDependency;
 use webignition\BasilCompilableSource\Line\EmptyLine;
+use webignition\BasilCompilableSource\Line\Literal;
 use webignition\BasilCompilableSource\Line\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
-use webignition\BasilCompilableSource\Line\SingleLineComment;
 use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\Statement;
 use webignition\BasilCompilableSource\LineInterface;
@@ -60,11 +60,11 @@ class DocBlockTest extends \PHPUnit\Framework\TestCase
                     ),
                     new ClassDependency(ClassDependency::class),
                     new EmptyLine(),
-                    new SingleLineComment('single line comment'),
+                    new Literal('single line comment'),
                 ],
                 'expectedLines' => [
                     new EmptyLine(),
-                    new SingleLineComment('single line comment'),
+                    new Literal('single line comment'),
                 ],
             ],
         ];
@@ -90,7 +90,7 @@ class DocBlockTest extends \PHPUnit\Framework\TestCase
             'non-empty' => [
                 'docBlock' => new DocBlock([
                     new EmptyLine(),
-                    new SingleLineComment('single line comment'),
+                    new Literal('single line comment'),
                 ]),
                 'expectedString' =>
                     '/**' . "\n" .
