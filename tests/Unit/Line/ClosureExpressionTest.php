@@ -9,6 +9,7 @@ use webignition\BasilCompilableSource\Block\CodeBlockInterface;
 use webignition\BasilCompilableSource\Line\CastExpression;
 use webignition\BasilCompilableSource\Line\ClosureExpression;
 use webignition\BasilCompilableSource\Line\CompositeExpression;
+use webignition\BasilCompilableSource\Line\EmptyLine;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\Line\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
@@ -142,6 +143,7 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
                     new CodeBlock([
                         new Statement(new LiteralExpression('3')),
                         new Statement(new LiteralExpression('4')),
+                        new EmptyLine(),
                         new ReturnStatement(new LiteralExpression('5')),
                     ])
                 ),
@@ -163,6 +165,7 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
                                 'dependencyMethodName'
                             )
                         ),
+                        new EmptyLine(),
                         new ReturnStatement(
                             new CompositeExpression([
                                 new CastExpression(
