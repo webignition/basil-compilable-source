@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource;
 
+use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSource\Line\ClassDependency;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
@@ -92,7 +93,9 @@ EOD;
             ) === 0;
 
             if (false === $baseClassIsInRootNamespace) {
-                $classDependencies->addLine($this->baseClass);
+                $classDependencies->merge(new ClassDependencyCollection([
+                    $this->baseClass,
+                ]));
             }
         }
 
