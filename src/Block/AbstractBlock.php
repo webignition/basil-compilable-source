@@ -27,13 +27,6 @@ abstract class AbstractBlock implements BlockInterface
 
     abstract public function canLineBeAdded(LineInterface $line): bool;
 
-    protected function addLine(LineInterface $line): void
-    {
-        if ($this->canLineBeAdded($line)) {
-            $this->lines[] = $line;
-        }
-    }
-
     public function getLines(): array
     {
         return $this->lines;
