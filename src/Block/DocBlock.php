@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Block;
 
 use webignition\BasilCompilableSource\Line\EmptyLine;
-use webignition\BasilCompilableSource\Line\SingleLineComment;
+use webignition\BasilCompilableSource\Line\Literal;
 use webignition\BasilCompilableSource\LineInterface;
 
 class DocBlock extends AbstractBlock implements BlockInterface
@@ -14,22 +14,25 @@ class DocBlock extends AbstractBlock implements BlockInterface
 
     public function canLineBeAdded(LineInterface $line): bool
     {
-        return $line instanceof SingleLineComment || $line instanceof EmptyLine;
+        return $line instanceof EmptyLine || $line instanceof Literal;
     }
 
     public function render(): string
     {
-        $renderedLines = [];
-
-        foreach ($this->getLines() as $line) {
-            $renderedLine = "\n" . ' *';
-
-            if ($line instanceof SingleLineComment) {
-                $renderedLine .= ' ' . $line->getContent();
-            }
-
-            $renderedLines[] = $renderedLine;
+        $renderedContent = parent::render();
+        if ('' === $renderedContent) {
+            return sprintf(self::RENDER_TEMPLATE, '');
         }
+
+        $renderedLines = explode("\n", $renderedContent);
+
+        array_walk($renderedLines, function (string &$renderedLine) {
+            $prefix = "\n" . ' *';
+
+            $renderedLine = '' === $renderedLine
+                ? $prefix
+                : $prefix . ' ' . $renderedLine;
+        });
 
         return sprintf(self::RENDER_TEMPLATE, implode('', $renderedLines));
     }
