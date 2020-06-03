@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Line;
 
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\VariablePlaceholder;
+use webignition\BasilCompilableSource\ResolvableVariablePlaceholderInterface;
 
 class ObjectPropertyAccessExpression extends AbstractExpression
 {
     private const RENDER_PATTERN = '%s->%s';
 
-    private VariablePlaceholder $objectPlaceholder;
+    private ResolvableVariablePlaceholderInterface $objectPlaceholder;
     private string $property;
 
-    public function __construct(VariablePlaceholder $objectPlaceholder, string $property)
+    public function __construct(ResolvableVariablePlaceholderInterface $objectPlaceholder, string $property)
     {
         parent::__construct();
 
@@ -22,7 +22,7 @@ class ObjectPropertyAccessExpression extends AbstractExpression
         $this->property = $property;
     }
 
-    public function getObjectPlaceholder(): VariablePlaceholder
+    public function getObjectPlaceholder(): ResolvableVariablePlaceholderInterface
     {
         return $this->objectPlaceholder;
     }

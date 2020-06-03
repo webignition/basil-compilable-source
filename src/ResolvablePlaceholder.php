@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource;
 
-use webignition\BasilCompilableSource\Line\AbstractExpression;
+use webignition\BasilCompilableSource\Line\ExpressionInterface;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 
-class VariablePlaceholder extends AbstractExpression
+class ResolvablePlaceholder implements ExpressionInterface, ResolvableVariablePlaceholderInterface
 {
     private const RENDER_PATTERN = '{{ %s }}';
 
@@ -20,8 +20,6 @@ class VariablePlaceholder extends AbstractExpression
 
     public function __construct(string $name, string $type)
     {
-        parent::__construct();
-
         $this->name = $name;
         $this->type = self::isAllowedType($type) ? $type : self::TYPE_EXPORT;
     }
@@ -42,14 +40,14 @@ class VariablePlaceholder extends AbstractExpression
         );
     }
 
-    public static function createDependency(string $content): VariablePlaceholder
+    public static function createDependency(string $content): self
     {
-        return new VariablePlaceholder($content, self::TYPE_DEPENDENCY);
+        return new ResolvablePlaceholder($content, self::TYPE_DEPENDENCY);
     }
 
-    public static function createExport(string $content): VariablePlaceholder
+    public static function createExport(string $content): self
     {
-        return new VariablePlaceholder($content, self::TYPE_EXPORT);
+        return new ResolvablePlaceholder($content, self::TYPE_EXPORT);
     }
 
     public function getType(): string
@@ -59,7 +57,7 @@ class VariablePlaceholder extends AbstractExpression
 
     public function getMetadata(): MetadataInterface
     {
-        $placeholderCollection = VariablePlaceholderCollection::create($this->type);
+        $placeholderCollection = ResolvablePlaceholderCollection::create($this->type);
         $placeholderCollection->add($this);
 
         $componentKey = $this->type === self::TYPE_DEPENDENCY

@@ -19,8 +19,8 @@ use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\MethodDefinition;
 use webignition\BasilCompilableSource\MethodDefinitionInterface;
-use webignition\BasilCompilableSource\VariablePlaceholder;
-use webignition\BasilCompilableSource\VariablePlaceholderCollection;
+use webignition\BasilCompilableSource\ResolvablePlaceholder;
+use webignition\BasilCompilableSource\ResolvablePlaceholderCollection;
 
 class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
 {
@@ -93,20 +93,20 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
                 'methodDefinition' => new MethodDefinition('name', new CodeBlock([
                     new Statement(
                         new ObjectMethodInvocation(
-                            VariablePlaceholder::createDependency('DEPENDENCY'),
+                            ResolvablePlaceholder::createDependency('DEPENDENCY'),
                             'methodName'
                         )
                     ),
                     new AssignmentStatement(
-                        VariablePlaceholder::createExport('PLACEHOLDER'),
+                        ResolvablePlaceholder::createExport('PLACEHOLDER'),
                         new MethodInvocation('methodName')
                     ),
                 ])),
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
                         'DEPENDENCY',
                     ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
+                    Metadata::KEY_VARIABLE_EXPORTS => ResolvablePlaceholderCollection::createExportCollection([
                         'PLACEHOLDER',
                     ]),
                 ]),
@@ -232,9 +232,9 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
                         new SingleLineComment('Assign object method call to VALUE'),
                         new EmptyLine(),
                         new AssignmentStatement(
-                            VariablePlaceholder::createExport('VALUE'),
+                            ResolvablePlaceholder::createExport('VALUE'),
                             new ObjectMethodInvocation(
-                                VariablePlaceholder::createDependency('OBJECT'),
+                                ResolvablePlaceholder::createDependency('OBJECT'),
                                 'methodName',
                                 [
                                     new LiteralExpression('$x'),
@@ -283,9 +283,9 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
                             new SingleLineComment('Assign object method call to VALUE'),
                             new EmptyLine(),
                             new AssignmentStatement(
-                                VariablePlaceholder::createExport('VALUE'),
+                                ResolvablePlaceholder::createExport('VALUE'),
                                 new ObjectMethodInvocation(
-                                    VariablePlaceholder::createDependency('OBJECT'),
+                                    ResolvablePlaceholder::createDependency('OBJECT'),
                                     'methodName',
                                     [
                                         new LiteralExpression('$x'),

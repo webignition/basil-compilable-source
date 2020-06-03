@@ -5,37 +5,37 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource;
 
 /**
- * @implements \IteratorAggregate<VariablePlaceholder>
+ * @implements \IteratorAggregate<ResolvableVariablePlaceholderInterface>
  */
-class VariablePlaceholderCollection implements \IteratorAggregate
+class ResolvablePlaceholderCollection implements \IteratorAggregate
 {
     private string $placeholderType;
 
     /**
-     * @var VariablePlaceholder[]
+     * @var ResolvableVariablePlaceholderInterface[]
      */
     private array $variablePlaceholders = [];
 
     private function __construct(string $placeholderType)
     {
-        $this->placeholderType = VariablePlaceholder::isAllowedType($placeholderType)
+        $this->placeholderType = ResolvablePlaceholder::isAllowedType($placeholderType)
             ? $placeholderType
-            : VariablePlaceholder::TYPE_EXPORT;
+            : ResolvablePlaceholder::TYPE_EXPORT;
     }
 
     /**
      * @param string $placeholderType
      * @param string[] $names
      *
-     * @return VariablePlaceholderCollection
+     * @return ResolvablePlaceholderCollection
      */
-    public static function create(string $placeholderType, array $names = []): VariablePlaceholderCollection
+    public static function create(string $placeholderType, array $names = []): ResolvablePlaceholderCollection
     {
-        $collection = new VariablePlaceholderCollection($placeholderType);
+        $collection = new ResolvablePlaceholderCollection($placeholderType);
 
         foreach ($names as $name) {
             if (is_string($name)) {
-                $collection->add(new VariablePlaceholder($name, $collection->getPlaceholderType()));
+                $collection->add(new ResolvablePlaceholder($name, $collection->getPlaceholderType()));
             }
         }
 
@@ -45,29 +45,29 @@ class VariablePlaceholderCollection implements \IteratorAggregate
     /**
      * @param string[] $names
      *
-     * @return VariablePlaceholderCollection
+     * @return ResolvablePlaceholderCollection
      */
-    public static function createDependencyCollection(array $names = []): VariablePlaceholderCollection
+    public static function createDependencyCollection(array $names = []): ResolvablePlaceholderCollection
     {
-        return self::create(VariablePlaceholder::TYPE_DEPENDENCY, $names);
+        return self::create(ResolvablePlaceholder::TYPE_DEPENDENCY, $names);
     }
 
     /**
      * @param string[] $names
      *
-     * @return VariablePlaceholderCollection
+     * @return ResolvablePlaceholderCollection
      */
-    public static function createExportCollection(array $names = []): VariablePlaceholderCollection
+    public static function createExportCollection(array $names = []): ResolvablePlaceholderCollection
     {
-        return self::create(VariablePlaceholder::TYPE_EXPORT, $names);
+        return self::create(ResolvablePlaceholder::TYPE_EXPORT, $names);
     }
 
-    public function createPlaceholder(string $name): VariablePlaceholder
+    public function createPlaceholder(string $name): ResolvableVariablePlaceholderInterface
     {
         $variablePlaceholder = $this->variablePlaceholders[$name] ?? null;
 
         if (null === $variablePlaceholder) {
-            $variablePlaceholder = new VariablePlaceholder($name, $this->placeholderType);
+            $variablePlaceholder = new ResolvablePlaceholder($name, $this->placeholderType);
             $this->add($variablePlaceholder);
         }
 
@@ -79,7 +79,7 @@ class VariablePlaceholderCollection implements \IteratorAggregate
         return $this->placeholderType;
     }
 
-    public function merge(VariablePlaceholderCollection $collection): VariablePlaceholderCollection
+    public function merge(ResolvablePlaceholderCollection $collection): ResolvablePlaceholderCollection
     {
         $new = clone $this;
 
@@ -92,7 +92,7 @@ class VariablePlaceholderCollection implements \IteratorAggregate
         return $new;
     }
 
-    public function add(VariablePlaceholder $variablePlaceholder): void
+    public function add(ResolvableVariablePlaceholderInterface $variablePlaceholder): void
     {
         if ($variablePlaceholder->getType() === $this->getPlaceholderType()) {
             $name = $variablePlaceholder->getName();

@@ -7,8 +7,8 @@ namespace webignition\BasilCompilableSource\Tests\Unit\Line;
 use webignition\BasilCompilableSource\Line\ObjectPropertyAccessExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\VariablePlaceholder;
-use webignition\BasilCompilableSource\VariablePlaceholderCollection;
+use webignition\BasilCompilableSource\ResolvablePlaceholder;
+use webignition\BasilCompilableSource\ResolvablePlaceholderCollection;
 
 class ObjectPropertyAccessExpressionTest extends \PHPUnit\Framework\TestCase
 {
@@ -16,7 +16,7 @@ class ObjectPropertyAccessExpressionTest extends \PHPUnit\Framework\TestCase
      * @dataProvider createDataProvider
      */
     public function testCreate(
-        VariablePlaceholder $objectPlaceholder,
+        ResolvablePlaceholder $objectPlaceholder,
         string $property,
         MetadataInterface $expectedMetadata
     ) {
@@ -31,10 +31,10 @@ class ObjectPropertyAccessExpressionTest extends \PHPUnit\Framework\TestCase
     {
         return [
             'default' => [
-                'objectPlaceholder' => VariablePlaceholder::createDependency('OBJECT'),
+                'objectPlaceholder' => ResolvablePlaceholder::createDependency('OBJECT'),
                 'property' => 'propertyName',
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
                         'OBJECT',
                     ]),
                 ]),
@@ -55,7 +55,7 @@ class ObjectPropertyAccessExpressionTest extends \PHPUnit\Framework\TestCase
         return [
             'default' => [
                 'expression' => new ObjectPropertyAccessExpression(
-                    VariablePlaceholder::createDependency('OBJECT'),
+                    ResolvablePlaceholder::createDependency('OBJECT'),
                     'propertyName'
                 ),
                 'expectedString' => '{{ OBJECT }}->propertyName',
