@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Tests\Unit;
 
+use webignition\BasilCompilableSource\Block\CodeBlock;
+use webignition\BasilCompilableSource\Block\CodeBlockInterface;
 use webignition\BasilCompilableSource\Block\DocBlock;
 use webignition\BasilCompilableSource\Line\EmptyLine;
 use webignition\BasilCompilableSource\Line\Literal;
@@ -17,7 +19,6 @@ use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\MethodDefinition;
 use webignition\BasilCompilableSource\MethodDefinitionInterface;
-use webignition\BasilCompilableSource\SourceInterface;
 use webignition\BasilCompilableSource\VariablePlaceholder;
 use webignition\BasilCompilableSource\VariablePlaceholderCollection;
 
@@ -27,14 +28,16 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
      * @dataProvider createDataProvider
      *
      * @param string $name
-     * @param SourceInterface[] $sources
+     * @param CodeBlockInterface $codeBlock
      * @param string[] $arguments
      */
-    public function testCreate(string $name, array $sources, array $arguments = [])
+    public function testCreate(string $name, CodeBlockInterface $codeBlock, array $arguments = [])
     {
-        $methodDefinition = new MethodDefinition($name, $sources, $arguments);
+        $methodDefinition = new MethodDefinition($name, $codeBlock, $arguments);
 
         $this->assertSame($name, $methodDefinition->getName());
+        $this->assertSame($codeBlock, $methodDefinition->getCodeBlock());
+        $this->assertEquals($codeBlock->getMetadata(), $methodDefinition->getMetadata());
         $this->assertSame($arguments, $methodDefinition->getArguments());
         $this->assertsame(MethodDefinition::VISIBILITY_PUBLIC, $methodDefinition->getVisibility());
         $this->assertNull($methodDefinition->getReturnType());
@@ -47,34 +50,22 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
         return [
             'no arguments' => [
                 'name' => 'noArguments',
-                'sources' => [],
+                'codeBlock' => new CodeBlock(),
             ],
             'empty arguments' => [
                 'name' => 'emptyArguments',
-                'sources' => [],
+                'codeBlock' => new CodeBlock(),
                 'arguments' => [],
             ],
             'has arguments' => [
                 'name' => 'hasArguments',
-                'sources' => [],
+                'codeBlock' => new CodeBlock(),
                 'arguments' => [
                     'arg1',
                     'arg2',
                 ],
             ],
         ];
-    }
-
-    public function testIsEmpty()
-    {
-        $methodDefinition = new MethodDefinition('name');
-        $this->assertTrue($methodDefinition->isEmpty());
-
-        $methodDefinition = new MethodDefinition('name', [
-            new SingleLineComment('comment')
-        ]);
-
-        $this->assertFalse($methodDefinition->isEmpty());
     }
 
     /**
@@ -89,18 +80,18 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
     {
         return [
             'empty' => [
-                'methodDefinition' => new MethodDefinition('name'),
+                'methodDefinition' => new MethodDefinition('name', new CodeBlock()),
                 'expectedMetadata' => new Metadata(),
             ],
             'lines without metadata' => [
-                'methodDefinition' => new MethodDefinition('name', [
+                'methodDefinition' => new MethodDefinition('name', new CodeBlock([
                     new EmptyLine(),
                     new SingleLineComment('single line comment'),
-                ]),
+                ])),
                 'expectedMetadata' => new Metadata(),
             ],
             'lines with metadata' => [
-                'methodDefinition' => new MethodDefinition('name', [
+                'methodDefinition' => new MethodDefinition('name', new CodeBlock([
                     new Statement(
                         new ObjectMethodInvocation(
                             VariablePlaceholder::createDependency('DEPENDENCY'),
@@ -111,7 +102,7 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
                         VariablePlaceholder::createExport('PLACEHOLDER'),
                         new MethodInvocation('methodName')
                     ),
-                ]),
+                ])),
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         'DEPENDENCY',
@@ -126,7 +117,7 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
 
     public function testVisibility()
     {
-        $methodDefinition = new MethodDefinition('name');
+        $methodDefinition = new MethodDefinition('name', new CodeBlock());
         $this->assertSame(MethodDefinition::VISIBILITY_PUBLIC, $methodDefinition->getVisibility());
 
         $methodDefinition->setProtected();
@@ -141,7 +132,7 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
 
     public function testSetReturnType()
     {
-        $methodDefinition = new MethodDefinition('name');
+        $methodDefinition = new MethodDefinition('name', new CodeBlock());
         $this->assertNull($methodDefinition->getReturnType());
 
         $methodDefinition->setReturnType('string');
@@ -156,7 +147,7 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
 
     public function testIsStatic()
     {
-        $methodDefinition = new MethodDefinition('name');
+        $methodDefinition = new MethodDefinition('name', new CodeBlock());
         $this->assertFalse($methodDefinition->isStatic());
 
         $methodDefinition->setStatic();
@@ -165,7 +156,7 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
 
     public function testSetDocBlock()
     {
-        $methodDefinition = new MethodDefinition('name');
+        $methodDefinition = new MethodDefinition('name', new CodeBlock());
         $this->assertNull($methodDefinition->getDocBlock());
 
         $docBlock = new DocBlock();
@@ -183,21 +174,21 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
 
     public function renderDataProvider(): array
     {
-        $emptyProtectedMethod = new MethodDefinition('emptyProtectedMethod');
+        $emptyProtectedMethod = new MethodDefinition('emptyProtectedMethod', new CodeBlock());
         $emptyProtectedMethod->setProtected();
 
-        $emptyPrivateMethod = new MethodDefinition('emptyPrivateMethod');
+        $emptyPrivateMethod = new MethodDefinition('emptyPrivateMethod', new CodeBlock());
         $emptyPrivateMethod->setPrivate();
 
-        $emptyMethodWithReturnType = new MethodDefinition('emptyPublicMethodWithReturnType');
+        $emptyMethodWithReturnType = new MethodDefinition('emptyPublicMethodWithReturnType', new CodeBlock());
         $emptyMethodWithReturnType->setReturnType('string');
 
-        $emptyPublicStaticMethod = new MethodDefinition('emptyPublicStaticMethod');
+        $emptyPublicStaticMethod = new MethodDefinition('emptyPublicStaticMethod', new CodeBlock());
         $emptyPublicStaticMethod->setStatic();
 
         return [
             'public, no arguments, no return type, no lines' => [
-                'methodDefinition' => new MethodDefinition('emptyPublicMethod'),
+                'methodDefinition' => new MethodDefinition('emptyPublicMethod', new CodeBlock()),
                 'expectedString' =>
                     'public function emptyPublicMethod()' . "\n" .
                     '{' . "\n\n" .
@@ -218,7 +209,7 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
                     '}'
             ],
             'public, has arguments, no return type, no lines' => [
-                'methodDefinition' => new MethodDefinition('emptyPublicMethod', [], [
+                'methodDefinition' => new MethodDefinition('emptyPublicMethod', new CodeBlock(), [
                     'arg1',
                     'arg2',
                     'arg3',
@@ -238,7 +229,7 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
             'public, has arguments, no return type, has lines' => [
                 'methodDefinition' => new MethodDefinition(
                     'nameOfMethod',
-                    [
+                    new CodeBlock([
                         new SingleLineComment('Assign object method call to VALUE'),
                         new EmptyLine(),
                         new AssignmentStatement(
@@ -252,7 +243,7 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
                                 ]
                             )
                         ),
-                    ],
+                    ]),
                     ['x', 'y']
                 ),
                 'expectedString' =>
@@ -266,10 +257,10 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
             'public, has arguments, no return type, has lines with trailing newline' => [
                 'methodDefinition' => new MethodDefinition(
                     'nameOfMethod',
-                    [
+                    new CodeBlock([
                         new SingleLineComment('comment'),
                         new EmptyLine(),
-                    ],
+                    ]),
                     ['x', 'y']
                 ),
                 'expectedString' =>
@@ -289,7 +280,7 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
                 'methodDefinition' => $this->createMethodDefinitionWithDocBlock(
                     new MethodDefinition(
                         'nameOfMethod',
-                        [
+                        new CodeBlock([
                             new SingleLineComment('Assign object method call to VALUE'),
                             new EmptyLine(),
                             new AssignmentStatement(
@@ -303,7 +294,7 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
                                     ]
                                 )
                             ),
-                        ],
+                        ]),
                         ['x', 'y']
                     ),
                     new DocBlock([

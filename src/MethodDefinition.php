@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource;
 
-use webignition\BasilCompilableSource\Block\CodeBlock;
+use webignition\BasilCompilableSource\Block\CodeBlockInterface;
 use webignition\BasilCompilableSource\Block\DocBlock;
+use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 
-class MethodDefinition extends CodeBlock implements MethodDefinitionInterface
+class MethodDefinition implements MethodDefinitionInterface
 {
     private const RENDER_TEMPLATE = <<<'EOD'
 %s
@@ -24,6 +25,7 @@ EOD;
 
     private ?string $returnType;
     private string $name;
+    private CodeBlockInterface $codeBlock;
 
     /**
      * @var string[]
@@ -34,16 +36,15 @@ EOD;
 
     /**
      * @param string $name
-     * @param SourceInterface[] $sources
+     * @param CodeBlockInterface $codeBlock
      * @param string[] $arguments
      */
-    public function __construct(string $name, array $sources = [], array $arguments = [])
+    public function __construct(string $name, CodeBlockInterface $codeBlock, array $arguments = [])
     {
-        parent::__construct($sources);
-
         $this->visibility = self::VISIBILITY_PUBLIC;
         $this->returnType = null;
         $this->name = $name;
+        $this->codeBlock = $codeBlock;
         $this->arguments = $arguments;
         $this->isStatic = false;
     }
@@ -51,6 +52,16 @@ EOD;
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function getCodeBlock(): CodeBlockInterface
+    {
+        return $this->codeBlock;
+    }
+
+    public function getMetadata(): MetadataInterface
+    {
+        return $this->codeBlock->getMetadata();
     }
 
     public function getArguments(): array
@@ -112,7 +123,7 @@ EOD;
     {
         $signature = $this->createSignature();
 
-        $lines = parent::render();
+        $lines = $this->codeBlock->render();
         $lines = $this->indent($lines);
         $lines = rtrim($lines, "\n");
 
