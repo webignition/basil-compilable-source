@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource;
 
 /**
- * @implements \IteratorAggregate<ResolvablePlaceholder>
+ * @implements \IteratorAggregate<ResolvableVariablePlaceholderInterface>
  */
 class ResolvablePlaceholderCollection implements \IteratorAggregate
 {
     private string $placeholderType;
 
     /**
-     * @var ResolvablePlaceholder[]
+     * @var ResolvableVariablePlaceholderInterface[]
      */
     private array $variablePlaceholders = [];
 
@@ -62,7 +62,7 @@ class ResolvablePlaceholderCollection implements \IteratorAggregate
         return self::create(ResolvablePlaceholder::TYPE_EXPORT, $names);
     }
 
-    public function createPlaceholder(string $name): ResolvablePlaceholder
+    public function createPlaceholder(string $name): ResolvableVariablePlaceholderInterface
     {
         $variablePlaceholder = $this->variablePlaceholders[$name] ?? null;
 
@@ -92,7 +92,7 @@ class ResolvablePlaceholderCollection implements \IteratorAggregate
         return $new;
     }
 
-    public function add(ResolvablePlaceholder $variablePlaceholder): void
+    public function add(ResolvableVariablePlaceholderInterface $variablePlaceholder): void
     {
         if ($variablePlaceholder->getType() === $this->getPlaceholderType()) {
             $name = $variablePlaceholder->getName();
