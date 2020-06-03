@@ -6,9 +6,13 @@ namespace webignition\BasilCompilableSource;
 
 use webignition\BasilCompilableSource\Block\CodeBlockInterface;
 use webignition\BasilCompilableSource\Block\DocBlock;
+use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 
-interface MethodDefinitionInterface extends CodeBlockInterface
+interface MethodDefinitionInterface extends SourceInterface
 {
+    public function getCodeBlock(): CodeBlockInterface;
+    public function getMetadata(): MetadataInterface;
+
     /**
      * @return string[]
      */
