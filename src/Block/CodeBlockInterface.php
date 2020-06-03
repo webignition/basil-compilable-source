@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Block;
 
-use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\BasilCompilableSource\HasMetadataInterface;
 
-interface CodeBlockInterface extends BlockInterface
+interface CodeBlockInterface extends BlockInterface, HasMetadataInterface
 {
-    public function getMetadata(): MetadataInterface;
 }
