@@ -13,16 +13,16 @@ class ObjectMethodInvocation extends MethodInvocation implements ObjectMethodInv
 {
     private const RENDER_PATTERN = '%s->%s';
 
-    private ResolvableVariablePlaceholderInterface $objectPlaceholder;
+    private VariablePlaceholderInterface $objectPlaceholder;
 
     /**
-     * @param ResolvableVariablePlaceholderInterface $objectPlaceholder
+     * @param VariablePlaceholderInterface $objectPlaceholder
      * @param string $methodName
      * @param ExpressionInterface[] $arguments
      * @param string $argumentFormat
      */
     public function __construct(
-        ResolvableVariablePlaceholderInterface $objectPlaceholder,
+        VariablePlaceholderInterface $objectPlaceholder,
         string $methodName,
         array $arguments = [],
         string $argumentFormat = self::ARGUMENT_FORMAT_INLINE
@@ -39,12 +39,18 @@ class ObjectMethodInvocation extends MethodInvocation implements ObjectMethodInv
 
     public function getMetadata(): MetadataInterface
     {
-        return parent::getMetadata()->merge($this->objectPlaceholder->getMetadata());
+        $metadata = parent::getMetadata();
+
+        if ($this->objectPlaceholder instanceof ResolvableVariablePlaceholderInterface) {
+            $metadata = $metadata->merge($this->objectPlaceholder->getMetadata());
+        }
+
+        return $metadata;
     }
 
     public function render(): string
     {
-        $objectPlaceholder = $this->getObjectPlaceholder()->render();
+        $objectPlaceholder = $this->objectPlaceholder->render();
         if ($this->suppressErrors === true) {
             $objectPlaceholder = '@' . $objectPlaceholder;
         }
