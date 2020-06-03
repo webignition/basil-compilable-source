@@ -212,8 +212,7 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
                             new CatchExpression(
                                 new ObjectTypeDeclarationCollection([
                                     new ObjectTypeDeclaration(new ClassDependency(\RuntimeException::class))
-                                ]),
-                                ResolvablePlaceholder::createExport('EXCEPTION')
+                                ])
                             )
                         )
                     )
@@ -222,7 +221,7 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
                     '(function () {' . "\n" .
                     '    try {' . "\n" .
                     "\n" .
-                    '    } catch (RuntimeException {{ EXCEPTION }}) {' . "\n" .
+                    '    } catch (RuntimeException $exception) {' . "\n" .
                     "\n" .
                     '    }' . "\n" .
                     '})()',

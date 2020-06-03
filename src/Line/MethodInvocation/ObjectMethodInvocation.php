@@ -6,22 +6,23 @@ namespace webignition\BasilCompilableSource\Line\MethodInvocation;
 
 use webignition\BasilCompilableSource\Line\ExpressionInterface;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\BasilCompilableSource\ResolvableVariablePlaceholderInterface;
 use webignition\BasilCompilableSource\VariablePlaceholderInterface;
 
 class ObjectMethodInvocation extends MethodInvocation implements ObjectMethodInvocationInterface
 {
     private const RENDER_PATTERN = '%s->%s';
 
-    private VariablePlaceholderInterface $objectPlaceholder;
+    private ResolvableVariablePlaceholderInterface $objectPlaceholder;
 
     /**
-     * @param VariablePlaceholderInterface $objectPlaceholder
+     * @param ResolvableVariablePlaceholderInterface $objectPlaceholder
      * @param string $methodName
      * @param ExpressionInterface[] $arguments
      * @param string $argumentFormat
      */
     public function __construct(
-        VariablePlaceholderInterface $objectPlaceholder,
+        ResolvableVariablePlaceholderInterface $objectPlaceholder,
         string $methodName,
         array $arguments = [],
         string $argumentFormat = self::ARGUMENT_FORMAT_INLINE

@@ -48,8 +48,7 @@ class TryCatchBlockTest extends \PHPUnit\Framework\TestCase
                             new ObjectTypeDeclarationCollection([
                                 new ObjectTypeDeclaration(new ClassDependency(\LogicException::class)),
                                 new ObjectTypeDeclaration(new ClassDependency(\RuntimeException::class)),
-                            ]),
-                            ResolvablePlaceholder::createExport('EXCEPTION')
+                            ])
                         ),
                         [
                             new SingleLineComment('handle LogicException and RuntimeException')
@@ -59,8 +58,7 @@ class TryCatchBlockTest extends \PHPUnit\Framework\TestCase
                         new CatchExpression(
                             new ObjectTypeDeclarationCollection([
                                 new ObjectTypeDeclaration(new ClassDependency(\LengthException::class)),
-                            ]),
-                            ResolvablePlaceholder::createExport('L_EXCEPTION')
+                            ])
                         ),
                         [
                             new SingleLineComment('handle LengthException')
@@ -70,9 +68,9 @@ class TryCatchBlockTest extends \PHPUnit\Framework\TestCase
                 'expectedString' =>
                     'try {' . "\n" .
                     '    methodName();' . "\n" .
-                    '} catch (LogicException | RuntimeException {{ EXCEPTION }}) {' . "\n" .
+                    '} catch (LogicException | RuntimeException $exception) {' . "\n" .
                     '    // handle LogicException and RuntimeException' . "\n" .
-                    '} catch (LengthException {{ L_EXCEPTION }}) {' . "\n" .
+                    '} catch (LengthException $exception) {' . "\n" .
                     '    // handle LengthException' . "\n" .
                     '}'
                 ,

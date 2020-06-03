@@ -12,7 +12,6 @@ use webignition\BasilCompilableSource\Line\SingleLineComment;
 use webignition\BasilCompilableSource\Line\Statement\ReturnStatement;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclaration;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclarationCollection;
-use webignition\BasilCompilableSource\ResolvablePlaceholder;
 
 class CatchBlockTest extends \PHPUnit\Framework\TestCase
 {
@@ -32,12 +31,11 @@ class CatchBlockTest extends \PHPUnit\Framework\TestCase
                     new CatchExpression(
                         new ObjectTypeDeclarationCollection([
                             new ObjectTypeDeclaration(new ClassDependency(\Exception::class)),
-                        ]),
-                        ResolvablePlaceholder::createExport('EXCEPTION')
+                        ])
                     )
                 ),
                 'expectedString' =>
-                    'catch (Exception {{ EXCEPTION }}) {' . "\n" .
+                    'catch (Exception $exception) {' . "\n" .
                     "\n" .
                     '}',
             ],
@@ -47,12 +45,11 @@ class CatchBlockTest extends \PHPUnit\Framework\TestCase
                         new ObjectTypeDeclarationCollection([
                             new ObjectTypeDeclaration(new ClassDependency(\LogicException::class)),
                             new ObjectTypeDeclaration(new ClassDependency(\RuntimeException::class)),
-                        ]),
-                        ResolvablePlaceholder::createExport('EXCEPTION')
+                        ])
                     )
                 ),
                 'expectedString' =>
-                    'catch (LogicException | RuntimeException {{ EXCEPTION }}) {' . "\n" .
+                    'catch (LogicException | RuntimeException $exception) {' . "\n" .
                     "\n" .
                     '}',
             ],
@@ -61,8 +58,7 @@ class CatchBlockTest extends \PHPUnit\Framework\TestCase
                     new CatchExpression(
                         new ObjectTypeDeclarationCollection([
                             new ObjectTypeDeclaration(new ClassDependency(\Exception::class)),
-                        ]),
-                        ResolvablePlaceholder::createExport('EXCEPTION')
+                        ])
                     ),
                     [
                         new SingleLineComment('Single line comment'),
@@ -72,7 +68,7 @@ class CatchBlockTest extends \PHPUnit\Framework\TestCase
                     ]
                 ),
                 'expectedString' =>
-                    'catch (Exception {{ EXCEPTION }}) {' . "\n" .
+                    'catch (Exception $exception) {' . "\n" .
                     '    // Single line comment' . "\n" .
                     '    return 100;' . "\n" .
                     '}',

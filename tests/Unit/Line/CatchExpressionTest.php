@@ -10,7 +10,6 @@ use webignition\BasilCompilableSource\Line\ClassDependency;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclaration;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclarationCollection;
-use webignition\BasilCompilableSource\ResolvablePlaceholder;
 use webignition\BasilCompilableSource\ResolvablePlaceholderCollection;
 
 class CatchExpressionTest extends \PHPUnit\Framework\TestCase
@@ -22,18 +21,12 @@ class CatchExpressionTest extends \PHPUnit\Framework\TestCase
             new ObjectTypeDeclaration(new ClassDependency(\RuntimeException::class)),
         ]);
 
-        $expression = new CatchExpression(
-            $typeDeclarationCollection,
-            ResolvablePlaceholder::createExport('EXCEPTION')
-        );
+        $expression = new CatchExpression($typeDeclarationCollection);
 
         $expectedMetadata = new Metadata([
             Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                 new ClassDependency(\LogicException::class),
                 new ClassDependency(\RuntimeException::class),
-            ]),
-            Metadata::KEY_VARIABLE_EXPORTS => ResolvablePlaceholderCollection::createExportCollection([
-                'EXCEPTION',
             ]),
         ]);
 
@@ -47,13 +40,10 @@ class CatchExpressionTest extends \PHPUnit\Framework\TestCase
             new ObjectTypeDeclaration(new ClassDependency(\RuntimeException::class)),
         ]);
 
-        $expression = new CatchExpression(
-            $typeDeclarationCollection,
-            ResolvablePlaceholder::createExport('EXCEPTION')
-        );
+        $expression = new CatchExpression($typeDeclarationCollection);
 
         $this->assertSame(
-            'LogicException | RuntimeException {{ EXCEPTION }}',
+            'LogicException | RuntimeException $exception',
             $expression->render()
         );
     }

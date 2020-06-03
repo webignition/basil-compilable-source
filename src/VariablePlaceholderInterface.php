@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource;
 
-interface VariablePlaceholderInterface extends HasMetadataInterface, SourceInterface
+interface VariablePlaceholderInterface extends SourceInterface
 {
     public function getName(): string;
 }
