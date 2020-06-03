@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Tests\Unit;
 
-use webignition\BasilCompilableSource\Block\CodeBlock;
 use webignition\BasilCompilableSource\DataProviderMethodDefinition;
 use webignition\BasilCompilableSource\DataProviderMethodDefinitionInterface;
 use webignition\BasilCompilableSource\Line\ArrayExpression;
@@ -23,20 +22,26 @@ class DataProviderMethodDefinitionTest extends \PHPUnit\Framework\TestCase
     {
         $methodDefinition = new DataProviderMethodDefinition($name, $data);
 
-        $expectedCodeBlock = new CodeBlock([
-            new ReturnStatement(
-                new ArrayExpression($data)
-            ),
-        ]);
-
         $this->assertSame($name, $methodDefinition->getName());
-        $this->assertEquals($expectedCodeBlock, $methodDefinition->getCodeBlock());
         $this->assertSame([], $methodDefinition->getArguments());
         $this->assertsame(MethodDefinition::VISIBILITY_PUBLIC, $methodDefinition->getVisibility());
         $this->assertSame('array', $methodDefinition->getReturnType());
         $this->assertFalse($methodDefinition->isStatic());
         $this->assertNull($methodDefinition->getDocBlock());
         $this->assertSame($data, $methodDefinition->getData());
+
+        $expectedLines = [
+            new ReturnStatement(
+                new ArrayExpression($data)
+            ),
+        ];
+
+        $methodDefinitionLines = [];
+        foreach ($methodDefinition as $line) {
+            $methodDefinitionLines[] = $line;
+        }
+
+        $this->assertEquals($expectedLines, $methodDefinitionLines);
     }
 
     public function createDataProvider(): array
