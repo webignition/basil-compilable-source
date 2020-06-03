@@ -15,6 +15,9 @@ class ObjectTypeDeclarationCollection implements TypeDeclarationCollectionInterf
      */
     private array $declarations;
 
+    /**
+     * @param ObjectTypeDeclaration[] $declarations
+     */
     public function __construct(array $declarations)
     {
         $this->declarations = array_filter($declarations, function ($item) {
