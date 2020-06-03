@@ -9,8 +9,6 @@ use webignition\BasilCompilableSource\Block\DocBlock;
 
 interface MethodDefinitionInterface extends HasMetadataInterface, SourceInterface
 {
-    public function getCodeBlock(): CodeBlockInterface;
-
     /**
      * @return string[]
      */

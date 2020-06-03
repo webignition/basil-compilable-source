@@ -23,14 +23,7 @@ class DataProviderMethodDefinitionTest extends \PHPUnit\Framework\TestCase
     {
         $methodDefinition = new DataProviderMethodDefinition($name, $data);
 
-        $expectedCodeBlock = new CodeBlock([
-            new ReturnStatement(
-                new ArrayExpression($data)
-            ),
-        ]);
-
         $this->assertSame($name, $methodDefinition->getName());
-        $this->assertEquals($expectedCodeBlock, $methodDefinition->getCodeBlock());
         $this->assertSame([], $methodDefinition->getArguments());
         $this->assertsame(MethodDefinition::VISIBILITY_PUBLIC, $methodDefinition->getVisibility());
         $this->assertSame('array', $methodDefinition->getReturnType());

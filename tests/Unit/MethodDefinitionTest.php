@@ -36,7 +36,6 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
         $methodDefinition = new MethodDefinition($name, $codeBlock, $arguments);
 
         $this->assertSame($name, $methodDefinition->getName());
-        $this->assertSame($codeBlock, $methodDefinition->getCodeBlock());
         $this->assertEquals($codeBlock->getMetadata(), $methodDefinition->getMetadata());
         $this->assertSame($arguments, $methodDefinition->getArguments());
         $this->assertsame(MethodDefinition::VISIBILITY_PUBLIC, $methodDefinition->getVisibility());
