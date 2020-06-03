@@ -13,7 +13,6 @@ use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\Line\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Line\MethodInvocation\StaticObjectMethodInvocation;
-use webignition\BasilCompilableSource\Line\ObjectPropertyAccessExpression;
 use webignition\BasilCompilableSource\Line\SingleLineComment;
 use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\Statement;
@@ -38,7 +37,7 @@ class CodeBlockTest extends \PHPUnit\Framework\TestCase
         $codeBlock = new CodeBlock($sources);
 
         $lines = [];
-        foreach ($codeBlock->getLines() as $line) {
+        foreach ($codeBlock as $line) {
             $lines[] = $line;
         }
 

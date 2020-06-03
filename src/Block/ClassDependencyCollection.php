@@ -37,7 +37,7 @@ class ClassDependencyCollection extends AbstractBlock
     {
         $renderedClassDependency = $classDependency->render();
 
-        foreach ($this->getLines() as $line) {
+        foreach ($this as $line) {
             /* @var ClassDependency $line */
             $renderedLine = $line->render();
 

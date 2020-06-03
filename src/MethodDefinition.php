@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource;
 
-use webignition\BasilCompilableSource\Block\BlockInterface;
 use webignition\BasilCompilableSource\Block\CodeBlockInterface;
 use webignition\BasilCompilableSource\Block\DocBlock;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
@@ -63,11 +62,6 @@ EOD;
     public function getArguments(): array
     {
         return $this->arguments;
-    }
-
-    public function getLines(): array
-    {
-        return $this->codeBlock->getLines();
     }
 
     public function isEmpty(): bool
@@ -145,6 +139,31 @@ EOD;
         }
 
         return $content;
+    }
+
+    public function current(): LineInterface
+    {
+        return $this->codeBlock->current();
+    }
+
+    public function next(): void
+    {
+        $this->codeBlock->next();
+    }
+
+    public function key(): int
+    {
+        return $this->codeBlock->key();
+    }
+
+    public function valid(): bool
+    {
+        return $this->codeBlock->valid();
+    }
+
+    public function rewind(): void
+    {
+        $this->codeBlock->rewind();
     }
 
     private function createSignature(): string
