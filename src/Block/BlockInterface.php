@@ -12,8 +12,6 @@ use webignition\BasilCompilableSource\SourceInterface;
  */
 interface BlockInterface extends \Iterator, SourceInterface
 {
-    public function isEmpty(): bool;
-
     public function current(): LineInterface;
     public function key(): int;
     public function next(): void;
