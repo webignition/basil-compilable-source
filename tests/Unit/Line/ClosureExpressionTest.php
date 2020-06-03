@@ -31,7 +31,6 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
         $expression = new ClosureExpression($codeBlock);
 
         $this->assertEquals($expectedMetadata, $expression->getMetadata());
-        $this->assertSame($codeBlock, $expression->getCodeBlock());
     }
 
     public function createDataProvider(): array

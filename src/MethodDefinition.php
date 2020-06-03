@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource;
 
-use webignition\BasilCompilableSource\Block\CodeBlockInterface;
 use webignition\BasilCompilableSource\Block\DocBlock;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 
@@ -25,7 +24,7 @@ EOD;
 
     private ?string $returnType;
     private string $name;
-    private CodeBlockInterface $codeBlock;
+    private FunctionBodyInterface $body;
 
     /**
      * @var string[]
@@ -36,15 +35,15 @@ EOD;
 
     /**
      * @param string $name
-     * @param CodeBlockInterface $codeBlock
+     * @param FunctionBodyInterface $body
      * @param string[] $arguments
      */
-    public function __construct(string $name, CodeBlockInterface $codeBlock, array $arguments = [])
+    public function __construct(string $name, FunctionBodyInterface $body, array $arguments = [])
     {
         $this->visibility = self::VISIBILITY_PUBLIC;
         $this->returnType = null;
         $this->name = $name;
-        $this->codeBlock = $codeBlock;
+        $this->body = $body;
         $this->arguments = $arguments;
         $this->isStatic = false;
     }
@@ -56,7 +55,7 @@ EOD;
 
     public function getMetadata(): MetadataInterface
     {
-        return $this->codeBlock->getMetadata();
+        return $this->body->getMetadata();
     }
 
     public function getArguments(): array
@@ -118,7 +117,7 @@ EOD;
     {
         $signature = $this->createSignature();
 
-        $lines = $this->codeBlock->render();
+        $lines = $this->body->render();
         $lines = $this->indent($lines);
         $lines = rtrim($lines, "\n");
 
