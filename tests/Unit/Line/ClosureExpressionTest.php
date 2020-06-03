@@ -6,7 +6,12 @@ namespace webignition\BasilCompilableSource\Tests\Unit\Line;
 
 use webignition\BasilCompilableSource\Block\CodeBlock;
 use webignition\BasilCompilableSource\Block\CodeBlockInterface;
+use webignition\BasilCompilableSource\Block\TryCatch\CatchBlock;
+use webignition\BasilCompilableSource\Block\TryCatch\TryBlock;
+use webignition\BasilCompilableSource\Block\TryCatch\TryCatchBlock;
 use webignition\BasilCompilableSource\Line\CastExpression;
+use webignition\BasilCompilableSource\Line\CatchExpression;
+use webignition\BasilCompilableSource\Line\ClassDependency;
 use webignition\BasilCompilableSource\Line\ClosureExpression;
 use webignition\BasilCompilableSource\Line\CompositeExpression;
 use webignition\BasilCompilableSource\Line\EmptyLine;
@@ -18,6 +23,8 @@ use webignition\BasilCompilableSource\Line\Statement\ReturnStatement;
 use webignition\BasilCompilableSource\Line\Statement\Statement;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclaration;
+use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclarationCollection;
 use webignition\BasilCompilableSource\VariablePlaceholder;
 use webignition\BasilCompilableSource\VariablePlaceholderCollection;
 
@@ -196,6 +203,29 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
                 '    return (string) ({{ EXPORT }}->getWidth()) . ' .
                 '\'x\' . (string) ({{ EXPORT }}->getHeight());' . "\n" .
                 '})()',
+            ],
+            'try/catch block' => [
+                'expression' => new ClosureExpression(
+                    new TryCatchBlock(
+                        new TryBlock(),
+                        new CatchBlock(
+                            new CatchExpression(
+                                new ObjectTypeDeclarationCollection([
+                                    new ObjectTypeDeclaration(new ClassDependency(\RuntimeException::class))
+                                ]),
+                                VariablePlaceholder::createExport('EXCEPTION')
+                            )
+                        )
+                    )
+                ),
+                'expectedString' =>
+                    '(function () {' . "\n" .
+                    '    try {' . "\n" .
+                    "\n" .
+                    '    } catch (RuntimeException {{ EXCEPTION }}) {' . "\n" .
+                    "\n" .
+                    '    }' . "\n" .
+                    '})()',
             ],
         ];
     }
