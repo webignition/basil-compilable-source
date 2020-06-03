@@ -6,15 +6,16 @@ namespace webignition\BasilCompilableSource\Line;
 
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\ResolvableVariablePlaceholderInterface;
+use webignition\BasilCompilableSource\VariablePlaceholderInterface;
 
 class ObjectPropertyAccessExpression extends AbstractExpression
 {
     private const RENDER_PATTERN = '%s->%s';
 
-    private ResolvableVariablePlaceholderInterface $objectPlaceholder;
+    private VariablePlaceholderInterface $objectPlaceholder;
     private string $property;
 
-    public function __construct(ResolvableVariablePlaceholderInterface $objectPlaceholder, string $property)
+    public function __construct(VariablePlaceholderInterface $objectPlaceholder, string $property)
     {
         parent::__construct();
 
@@ -22,7 +23,7 @@ class ObjectPropertyAccessExpression extends AbstractExpression
         $this->property = $property;
     }
 
-    public function getObjectPlaceholder(): ResolvableVariablePlaceholderInterface
+    public function getObjectPlaceholder(): VariablePlaceholderInterface
     {
         return $this->objectPlaceholder;
     }
@@ -34,7 +35,13 @@ class ObjectPropertyAccessExpression extends AbstractExpression
 
     public function getMetadata(): MetadataInterface
     {
-        return parent::getMetadata()->merge($this->objectPlaceholder->getMetadata());
+        $metadata = parent::getMetadata();
+
+        if ($this->objectPlaceholder instanceof ResolvableVariablePlaceholderInterface) {
+            $metadata = $metadata->merge($this->objectPlaceholder->getMetadata());
+        }
+
+        return $metadata;
     }
 
     public function render(): string

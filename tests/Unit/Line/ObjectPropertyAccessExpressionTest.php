@@ -9,6 +9,8 @@ use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\ResolvablePlaceholder;
 use webignition\BasilCompilableSource\ResolvablePlaceholderCollection;
+use webignition\BasilCompilableSource\ResolvingPlaceholder;
+use webignition\BasilCompilableSource\VariablePlaceholderInterface;
 
 class ObjectPropertyAccessExpressionTest extends \PHPUnit\Framework\TestCase
 {
@@ -16,7 +18,7 @@ class ObjectPropertyAccessExpressionTest extends \PHPUnit\Framework\TestCase
      * @dataProvider createDataProvider
      */
     public function testCreate(
-        ResolvablePlaceholder $objectPlaceholder,
+        VariablePlaceholderInterface $objectPlaceholder,
         string $property,
         MetadataInterface $expectedMetadata
     ) {
@@ -30,7 +32,7 @@ class ObjectPropertyAccessExpressionTest extends \PHPUnit\Framework\TestCase
     public function createDataProvider(): array
     {
         return [
-            'default' => [
+            'has resolvable placeholder' => [
                 'objectPlaceholder' => ResolvablePlaceholder::createDependency('OBJECT'),
                 'property' => 'propertyName',
                 'expectedMetadata' => new Metadata([
@@ -38,6 +40,11 @@ class ObjectPropertyAccessExpressionTest extends \PHPUnit\Framework\TestCase
                         'OBJECT',
                     ]),
                 ]),
+            ],
+            'has resolving placeholder' => [
+                'objectPlaceholder' => new ResolvingPlaceholder('object'),
+                'property' => 'propertyName',
+                'expectedMetadata' => new Metadata(),
             ],
         ];
     }
@@ -53,12 +60,19 @@ class ObjectPropertyAccessExpressionTest extends \PHPUnit\Framework\TestCase
     public function renderDataProvider(): array
     {
         return [
-            'default' => [
+            'has resolvable placeholder' => [
                 'expression' => new ObjectPropertyAccessExpression(
                     ResolvablePlaceholder::createDependency('OBJECT'),
                     'propertyName'
                 ),
                 'expectedString' => '{{ OBJECT }}->propertyName',
+            ],
+            'has resolving placeholder' => [
+                'expression' => new ObjectPropertyAccessExpression(
+                    new ResolvingPlaceholder('object'),
+                    'propertyName'
+                ),
+                'expectedString' => '$object->propertyName',
             ],
         ];
     }
