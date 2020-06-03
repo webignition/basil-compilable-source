@@ -7,15 +7,17 @@ namespace webignition\BasilCompilableSource\Line;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclarationCollection;
-use webignition\BasilCompilableSource\VariablePlaceholder;
+use webignition\BasilCompilableSource\VariablePlaceholderInterface;
 
 class CatchExpression implements ExpressionInterface
 {
     private ObjectTypeDeclarationCollection $classes;
-    private VariablePlaceholder $exceptionVariable;
+    private VariablePlaceholderInterface $exceptionVariable;
 
-    public function __construct(ObjectTypeDeclarationCollection $classes, VariablePlaceholder $exceptionVariable)
-    {
+    public function __construct(
+        ObjectTypeDeclarationCollection $classes,
+        VariablePlaceholderInterface $exceptionVariable
+    ) {
         $this->classes = $classes;
         $this->exceptionVariable = $exceptionVariable;
     }
