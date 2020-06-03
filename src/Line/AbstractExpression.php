@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Line;
 
+use webignition\BasilCompilableSource\HasMetadataTrait;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 
 abstract class AbstractExpression implements ExpressionInterface
 {
-    private ?MetadataInterface $metadata;
+    use HasMetadataTrait;
 
-    public function __construct(?MetadataInterface $metadata = null)
+    public function __construct(MetadataInterface $metadata = null)
     {
-        $this->metadata = $metadata instanceof MetadataInterface ? $metadata : new Metadata();
-    }
+        if (null === $metadata) {
+            $metadata = new Metadata();
+        }
 
-    public function getMetadata(): MetadataInterface
-    {
-        return $this->metadata;
+        $this->metadata = $metadata;
     }
 }

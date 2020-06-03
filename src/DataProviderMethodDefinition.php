@@ -9,10 +9,11 @@ use webignition\BasilCompilableSource\Block\DocBlock;
 use webignition\BasilCompilableSource\Line\ArrayExpression;
 use webignition\BasilCompilableSource\Line\Statement\ReturnStatement;
 use webignition\BasilCompilableSource\Metadata\Metadata;
-use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 
 class DataProviderMethodDefinition extends MethodDefinition implements DataProviderMethodDefinitionInterface
 {
+    use HasMetadataTrait;
+
     /**
      * @var array<mixed>
      */
@@ -31,11 +32,8 @@ class DataProviderMethodDefinition extends MethodDefinition implements DataProvi
                 new ArrayExpression($data)
             ),
         ]));
-    }
 
-    public function getMetadata(): MetadataInterface
-    {
-        return new Metadata();
+        $this->metadata = new Metadata();
     }
 
     public function getData(): array

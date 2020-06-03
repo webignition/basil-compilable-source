@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Line\MethodInvocation;
 
+use webignition\BasilCompilableSource\HasMetadataTrait;
 use webignition\BasilCompilableSource\Line\ExpressionInterface;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 
 class MethodInvocation implements MethodInvocationInterface
 {
+    use HasMetadataTrait;
+
     public const ARGUMENT_FORMAT_INLINE = 'inline';
     public const ARGUMENT_FORMAT_STACKED = 'stacked';
 
@@ -68,11 +71,6 @@ class MethodInvocation implements MethodInvocationInterface
     public function getArgumentFormat(): string
     {
         return $this->argumentFormat;
-    }
-
-    public function getMetadata(): MetadataInterface
-    {
-        return $this->metadata;
     }
 
     public function render(): string
