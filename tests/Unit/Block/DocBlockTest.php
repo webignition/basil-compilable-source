@@ -28,7 +28,7 @@ class DocBlockTest extends \PHPUnit\Framework\TestCase
         $docBlock = new DocBlock($lines);
 
         $docBlockLines = [];
-        foreach ($docBlock->getLines() as $line) {
+        foreach ($docBlock as $line) {
             $docBlockLines[] = $line;
         }
 

@@ -7,12 +7,16 @@ namespace webignition\BasilCompilableSource\Block;
 use webignition\BasilCompilableSource\LineInterface;
 use webignition\BasilCompilableSource\SourceInterface;
 
-interface BlockInterface extends SourceInterface
+/**
+ * @extends \Iterator<int, LineInterface>
+ */
+interface BlockInterface extends \Iterator, SourceInterface
 {
-    /**
-     * @return array<int, LineInterface>
-     */
-    public function getLines(): array;
-
     public function isEmpty(): bool;
+
+    public function current(): LineInterface;
+    public function key(): int;
+    public function next(): void;
+    public function rewind(): void;
+    public function valid(): bool;
 }

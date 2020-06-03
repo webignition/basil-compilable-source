@@ -8,6 +8,8 @@ use webignition\BasilCompilableSource\LineInterface;
 
 abstract class AbstractBlock implements BlockInterface
 {
+    private int $iteratorIndex = 0;
+
     /**
      * @var LineInterface[]
      */
@@ -27,7 +29,10 @@ abstract class AbstractBlock implements BlockInterface
 
     abstract public function canLineBeAdded(LineInterface $line): bool;
 
-    public function getLines(): array
+    /**
+     * @return LineInterface[]
+     */
+    protected function getLines(): array
     {
         return $this->lines;
     }
@@ -41,11 +46,35 @@ abstract class AbstractBlock implements BlockInterface
     {
         $renderedLines = [];
 
-        foreach ($this->getLines() as $line) {
-            /* @var LineInterface $line */
+        foreach ($this as $line) {
             $renderedLines[] = $line->render();
         }
 
         return implode("\n", $renderedLines);
+    }
+
+    public function current(): LineInterface
+    {
+        return $this->lines[$this->iteratorIndex];
+    }
+
+    public function next(): void
+    {
+        ++$this->iteratorIndex;
+    }
+
+    public function key(): int
+    {
+        return $this->iteratorIndex;
+    }
+
+    public function valid(): bool
+    {
+        return isset($this->lines[$this->iteratorIndex]);
+    }
+
+    public function rewind(): void
+    {
+        $this->iteratorIndex = 0;
     }
 }

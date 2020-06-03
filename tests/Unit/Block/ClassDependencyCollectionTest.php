@@ -24,7 +24,7 @@ class ClassDependencyCollectionTest extends \PHPUnit\Framework\TestCase
         $classDependencyCollection = new ClassDependencyCollection($lines);
 
         $collectionLines = [];
-        foreach ($classDependencyCollection->getLines() as $line) {
+        foreach ($classDependencyCollection as $line) {
             $collectionLines[] = $line;
         }
 
