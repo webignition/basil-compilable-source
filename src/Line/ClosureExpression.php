@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Line;
 
-use webignition\BasilCompilableSource\Block\CodeBlockInterface;
+use webignition\BasilCompilableSource\FunctionBodyInterface;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 
 class ClosureExpression extends AbstractExpression
@@ -15,30 +15,25 @@ class ClosureExpression extends AbstractExpression
 })()
 EOD;
 
-    private CodeBlockInterface $codeBlock;
+    private FunctionBodyInterface $body;
 
-    public function __construct(CodeBlockInterface $codeBlock)
+    public function __construct(FunctionBodyInterface $body)
     {
         parent::__construct();
 
-        $this->codeBlock = $codeBlock;
-    }
-
-    public function getCodeBlock(): CodeBlockInterface
-    {
-        return $this->codeBlock;
+        $this->body = $body;
     }
 
     public function getMetadata(): MetadataInterface
     {
-        return $this->codeBlock->getMetadata();
+        return $this->body->getMetadata();
     }
 
     public function render(): string
     {
         return sprintf(
             self::RENDER_TEMPLATE,
-            $this->indent($this->codeBlock->render())
+            $this->indent($this->body->render())
         );
     }
 
