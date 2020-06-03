@@ -10,8 +10,8 @@ use webignition\BasilCompilableSource\Line\ClassDependency;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclaration;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclarationCollection;
-use webignition\BasilCompilableSource\VariablePlaceholder;
-use webignition\BasilCompilableSource\VariablePlaceholderCollection;
+use webignition\BasilCompilableSource\ResolvablePlaceholder;
+use webignition\BasilCompilableSource\ResolvablePlaceholderCollection;
 
 class CatchExpressionTest extends \PHPUnit\Framework\TestCase
 {
@@ -24,7 +24,7 @@ class CatchExpressionTest extends \PHPUnit\Framework\TestCase
 
         $expression = new CatchExpression(
             $typeDeclarationCollection,
-            VariablePlaceholder::createExport('EXCEPTION')
+            ResolvablePlaceholder::createExport('EXCEPTION')
         );
 
         $expectedMetadata = new Metadata([
@@ -32,7 +32,7 @@ class CatchExpressionTest extends \PHPUnit\Framework\TestCase
                 new ClassDependency(\LogicException::class),
                 new ClassDependency(\RuntimeException::class),
             ]),
-            Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
+            Metadata::KEY_VARIABLE_EXPORTS => ResolvablePlaceholderCollection::createExportCollection([
                 'EXCEPTION',
             ]),
         ]);
@@ -49,7 +49,7 @@ class CatchExpressionTest extends \PHPUnit\Framework\TestCase
 
         $expression = new CatchExpression(
             $typeDeclarationCollection,
-            VariablePlaceholder::createExport('EXCEPTION')
+            ResolvablePlaceholder::createExport('EXCEPTION')
         );
 
         $this->assertSame(

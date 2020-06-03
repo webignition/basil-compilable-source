@@ -14,7 +14,7 @@ use webignition\BasilCompilableSource\Line\SingleLineComment;
 use webignition\BasilCompilableSource\Line\Statement\Statement;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclaration;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclarationCollection;
-use webignition\BasilCompilableSource\VariablePlaceholder;
+use webignition\BasilCompilableSource\ResolvablePlaceholder;
 
 class TryCatchBlockTest extends \PHPUnit\Framework\TestCase
 {
@@ -49,7 +49,7 @@ class TryCatchBlockTest extends \PHPUnit\Framework\TestCase
                                 new ObjectTypeDeclaration(new ClassDependency(\LogicException::class)),
                                 new ObjectTypeDeclaration(new ClassDependency(\RuntimeException::class)),
                             ]),
-                            VariablePlaceholder::createExport('EXCEPTION')
+                            ResolvablePlaceholder::createExport('EXCEPTION')
                         ),
                         [
                             new SingleLineComment('handle LogicException and RuntimeException')
@@ -60,7 +60,7 @@ class TryCatchBlockTest extends \PHPUnit\Framework\TestCase
                             new ObjectTypeDeclarationCollection([
                                 new ObjectTypeDeclaration(new ClassDependency(\LengthException::class)),
                             ]),
-                            VariablePlaceholder::createExport('L_EXCEPTION')
+                            ResolvablePlaceholder::createExport('L_EXCEPTION')
                         ),
                         [
                             new SingleLineComment('handle LengthException')

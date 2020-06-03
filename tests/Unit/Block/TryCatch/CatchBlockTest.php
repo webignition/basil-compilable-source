@@ -12,7 +12,7 @@ use webignition\BasilCompilableSource\Line\SingleLineComment;
 use webignition\BasilCompilableSource\Line\Statement\ReturnStatement;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclaration;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclarationCollection;
-use webignition\BasilCompilableSource\VariablePlaceholder;
+use webignition\BasilCompilableSource\ResolvablePlaceholder;
 
 class CatchBlockTest extends \PHPUnit\Framework\TestCase
 {
@@ -33,7 +33,7 @@ class CatchBlockTest extends \PHPUnit\Framework\TestCase
                         new ObjectTypeDeclarationCollection([
                             new ObjectTypeDeclaration(new ClassDependency(\Exception::class)),
                         ]),
-                        VariablePlaceholder::createExport('EXCEPTION')
+                        ResolvablePlaceholder::createExport('EXCEPTION')
                     )
                 ),
                 'expectedString' =>
@@ -48,7 +48,7 @@ class CatchBlockTest extends \PHPUnit\Framework\TestCase
                             new ObjectTypeDeclaration(new ClassDependency(\LogicException::class)),
                             new ObjectTypeDeclaration(new ClassDependency(\RuntimeException::class)),
                         ]),
-                        VariablePlaceholder::createExport('EXCEPTION')
+                        ResolvablePlaceholder::createExport('EXCEPTION')
                     )
                 ),
                 'expectedString' =>
@@ -62,7 +62,7 @@ class CatchBlockTest extends \PHPUnit\Framework\TestCase
                         new ObjectTypeDeclarationCollection([
                             new ObjectTypeDeclaration(new ClassDependency(\Exception::class)),
                         ]),
-                        VariablePlaceholder::createExport('EXCEPTION')
+                        ResolvablePlaceholder::createExport('EXCEPTION')
                     ),
                     [
                         new SingleLineComment('Single line comment'),

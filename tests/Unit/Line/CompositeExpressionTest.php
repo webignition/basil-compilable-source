@@ -8,8 +8,8 @@ use webignition\BasilCompilableSource\Line\CompositeExpression;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\VariablePlaceholder;
-use webignition\BasilCompilableSource\VariablePlaceholderCollection;
+use webignition\BasilCompilableSource\ResolvablePlaceholder;
+use webignition\BasilCompilableSource\ResolvablePlaceholderCollection;
 
 class CompositeExpressionTest extends \PHPUnit\Framework\TestCase
 {
@@ -35,45 +35,45 @@ class CompositeExpressionTest extends \PHPUnit\Framework\TestCase
             ],
             'variable dependency' => [
                 'expressions' => [
-                    VariablePlaceholder::createDependency('DEPENDENCY'),
+                    ResolvablePlaceholder::createDependency('DEPENDENCY'),
                 ],
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
                         'DEPENDENCY',
                     ]),
                 ]),
             ],
             'variable export' => [
                 'expressions' => [
-                    VariablePlaceholder::createExport('EXPORT'),
+                    ResolvablePlaceholder::createExport('EXPORT'),
                 ],
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
+                    Metadata::KEY_VARIABLE_EXPORTS => ResolvablePlaceholderCollection::createExportCollection([
                         'EXPORT',
                     ]),
                 ]),
             ],
             'variable dependency and variable export' => [
                 'expressions' => [
-                    VariablePlaceholder::createDependency('DEPENDENCY'),
-                    VariablePlaceholder::createExport('EXPORT'),
+                    ResolvablePlaceholder::createDependency('DEPENDENCY'),
+                    ResolvablePlaceholder::createExport('EXPORT'),
                 ],
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
                         'DEPENDENCY',
                     ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
+                    Metadata::KEY_VARIABLE_EXPORTS => ResolvablePlaceholderCollection::createExportCollection([
                         'EXPORT',
                     ]),
                 ]),
             ],
             'variable dependency and array access' => [
                 'expressions' => [
-                    VariablePlaceholder::createDependency('ENV'),
+                    ResolvablePlaceholder::createDependency('ENV'),
                     new LiteralExpression('[\'KEY\']')
                 ],
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
                         'ENV',
                     ]),
                 ]),
@@ -98,26 +98,26 @@ class CompositeExpressionTest extends \PHPUnit\Framework\TestCase
             ],
             'variable dependency' => [
                 'expressions' => new CompositeExpression([
-                    VariablePlaceholder::createDependency('DEPENDENCY'),
+                    ResolvablePlaceholder::createDependency('DEPENDENCY'),
                 ]),
                 'expectedString' => '{{ DEPENDENCY }}',
             ],
             'variable export' => [
                 'expressions' => new CompositeExpression([
-                    VariablePlaceholder::createExport('EXPORT'),
+                    ResolvablePlaceholder::createExport('EXPORT'),
                 ]),
                 'expectedString' => '{{ EXPORT }}',
             ],
             'variable dependency and variable export' => [
                 'expressions' => new CompositeExpression([
-                    VariablePlaceholder::createDependency('DEPENDENCY'),
-                    VariablePlaceholder::createExport('EXPORT'),
+                    ResolvablePlaceholder::createDependency('DEPENDENCY'),
+                    ResolvablePlaceholder::createExport('EXPORT'),
                 ]),
                 'expectedString' => '{{ DEPENDENCY }}{{ EXPORT }}',
             ],
             'variable dependency and array access' => [
                 'expressions' => new CompositeExpression([
-                    VariablePlaceholder::createDependency('ENV'),
+                    ResolvablePlaceholder::createDependency('ENV'),
                     new LiteralExpression('[\'KEY\']')
                 ]),
                 'expectedString' => '{{ ENV }}[\'KEY\']',
