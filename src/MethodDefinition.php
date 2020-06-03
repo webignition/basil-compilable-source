@@ -54,11 +54,6 @@ EOD;
         return $this->name;
     }
 
-    public function getCodeBlock(): CodeBlockInterface
-    {
-        return $this->codeBlock;
-    }
-
     public function getMetadata(): MetadataInterface
     {
         return $this->codeBlock->getMetadata();
