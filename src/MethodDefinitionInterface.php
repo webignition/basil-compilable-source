@@ -16,7 +16,6 @@ interface MethodDefinitionInterface extends CodeBlockInterface
     public function getName(): string;
     public function getReturnType(): ?string;
     public function getVisibility(): string;
-    public function getCodeBlock(): CodeBlockInterface;
     public function getDocBlock(): ?DocBlock;
     public function isStatic(): bool;
 }

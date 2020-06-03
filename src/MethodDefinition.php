@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource;
 
-use webignition\BasilCompilableSource\Block\CodeBlockInterface;
+use webignition\BasilCompilableSource\Block\CodeBlock;
 use webignition\BasilCompilableSource\Block\DocBlock;
-use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 
-class MethodDefinition implements MethodDefinitionInterface
+class MethodDefinition extends CodeBlock implements MethodDefinitionInterface
 {
     private const RENDER_TEMPLATE = <<<'EOD'
 %s
@@ -21,30 +20,30 @@ EOD;
     public const VISIBILITY_PROTECTED = 'protected';
     public const VISIBILITY_PRIVATE = 'private';
 
-    private string $visibility = self::VISIBILITY_PUBLIC;
+    private string $visibility;
 
-    private ?string $returnType = null;
+    private ?string $returnType;
     private string $name;
-    private CodeBlockInterface $codeBlock;
 
     /**
      * @var string[]
      */
-    private array $arguments = [];
-    private bool $isStatic = false;
+    private array $arguments;
+    private bool $isStatic;
     private ?DocBlock $docBlock = null;
 
     /**
      * @param string $name
-     * @param CodeBlockInterface $codeBlock
+     * @param SourceInterface[] $sources
      * @param string[] $arguments
      */
-    public function __construct(string $name, CodeBlockInterface $codeBlock, array $arguments = [])
+    public function __construct(string $name, array $sources = [], array $arguments = [])
     {
+        parent::__construct($sources);
+
         $this->visibility = self::VISIBILITY_PUBLIC;
         $this->returnType = null;
         $this->name = $name;
-        $this->codeBlock = $codeBlock;
         $this->arguments = $arguments;
         $this->isStatic = false;
     }
@@ -54,24 +53,9 @@ EOD;
         return $this->name;
     }
 
-    public function getCodeBlock(): CodeBlockInterface
-    {
-        return $this->codeBlock;
-    }
-
     public function getArguments(): array
     {
         return $this->arguments;
-    }
-
-    public function isEmpty(): bool
-    {
-        return $this->codeBlock->isEmpty();
-    }
-
-    public function getMetadata(): MetadataInterface
-    {
-        return $this->codeBlock->getMetadata();
     }
 
     public function setPublic(): void
@@ -128,7 +112,7 @@ EOD;
     {
         $signature = $this->createSignature();
 
-        $lines = $this->codeBlock->render();
+        $lines = parent::render();
         $lines = $this->indent($lines);
         $lines = rtrim($lines, "\n");
 
@@ -139,31 +123,6 @@ EOD;
         }
 
         return $content;
-    }
-
-    public function current(): LineInterface
-    {
-        return $this->codeBlock->current();
-    }
-
-    public function next(): void
-    {
-        $this->codeBlock->next();
-    }
-
-    public function key(): int
-    {
-        return $this->codeBlock->key();
-    }
-
-    public function valid(): bool
-    {
-        return $this->codeBlock->valid();
-    }
-
-    public function rewind(): void
-    {
-        $this->codeBlock->rewind();
     }
 
     private function createSignature(): string

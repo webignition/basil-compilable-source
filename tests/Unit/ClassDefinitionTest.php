@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use webignition\BasilCompilableSource\Block\CodeBlock;
 use webignition\BasilCompilableSource\Block\DocBlock;
 use webignition\BasilCompilableSource\ClassDefinition;
 use webignition\BasilCompilableSource\ClassDefinitionInterface;
@@ -65,12 +64,12 @@ class ClassDefinitionTest extends TestCase
             'valid methods' => [
                 'name' => 'noMethods',
                 'methods' => [
-                    new MethodDefinition('methodOne', new CodeBlock()),
-                    new MethodDefinition('methodTwo', new CodeBlock()),
+                    new MethodDefinition('methodOne'),
+                    new MethodDefinition('methodTwo'),
                 ],
                 'expectedMethods' => [
-                    'methodOne' => new MethodDefinition('methodOne', new CodeBlock()),
-                    'methodTwo' => new MethodDefinition('methodTwo', new CodeBlock()),
+                    'methodOne' => new MethodDefinition('methodOne'),
+                    'methodTwo' => new MethodDefinition('methodTwo'),
                 ],
             ],
         ];
@@ -102,7 +101,7 @@ class ClassDefinitionTest extends TestCase
                 'classDefinition' => new ClassDefinition(
                     'className',
                     [
-                        new MethodDefinition('methodName', new CodeBlock()),
+                        new MethodDefinition('methodName'),
                     ]
                 ),
                 'expectedMetadata' => new Metadata(),
@@ -111,10 +110,10 @@ class ClassDefinitionTest extends TestCase
                 'classDefinition' => new ClassDefinition(
                     'className',
                     [
-                        new MethodDefinition('name', new CodeBlock([
+                        new MethodDefinition('name', [
                             new EmptyLine(),
                             new SingleLineComment('single line comment'),
-                        ])),
+                        ]),
                     ]
                 ),
                 'expectedMetadata' => new Metadata(),
@@ -123,7 +122,7 @@ class ClassDefinitionTest extends TestCase
                 'classDefinition' => new ClassDefinition(
                     'className',
                     [
-                        new MethodDefinition('name', new CodeBlock([
+                        new MethodDefinition('name', [
                             new Statement(
                                 new ObjectMethodInvocation(
                                     VariablePlaceholder::createDependency('DEPENDENCY'),
@@ -134,7 +133,7 @@ class ClassDefinitionTest extends TestCase
                                 VariablePlaceholder::createExport('PLACEHOLDER'),
                                 new MethodInvocation('methodName')
                             ),
-                        ])),
+                        ]),
                     ]
                 ),
                 'expectedMetadata' => new Metadata([
@@ -189,7 +188,7 @@ class ClassDefinitionTest extends TestCase
             'single empty method' => [
                 'classDefinition' => $this->createClassDefinitionWithBaseClass(
                     new ClassDefinition('NameOfClass', [
-                        new MethodDefinition('methodName', new CodeBlock())
+                        new MethodDefinition('methodName')
                     ]),
                     new ClassDependency('TestCase')
                 ),
@@ -204,7 +203,7 @@ class ClassDefinitionTest extends TestCase
             'many methods' => [
                 'classDefinition' => $this->createClassDefinitionWithBaseClass(
                     new ClassDefinition('NameOfClass', [
-                        new MethodDefinition('stepOne', new CodeBlock([
+                        new MethodDefinition('stepOne', [
                             new SingleLineComment('click $"a"'),
                             new AssignmentStatement(
                                 VariablePlaceholder::createExport('STATEMENT'),
@@ -220,8 +219,8 @@ class ClassDefinitionTest extends TestCase
                                 VariablePlaceholder::createExport('CURRENT_STATEMENT'),
                                 VariablePlaceholder::createExport('STATEMENT')
                             ),
-                        ])),
-                        new MethodDefinition('stepTwo', new CodeBlock([
+                        ]),
+                        new MethodDefinition('stepTwo', [
                             new SingleLineComment('click $"b"'),
                             new AssignmentStatement(
                                 VariablePlaceholder::createExport('STATEMENT'),
@@ -237,7 +236,7 @@ class ClassDefinitionTest extends TestCase
                                 VariablePlaceholder::createExport('CURRENT_STATEMENT'),
                                 VariablePlaceholder::createExport('STATEMENT')
                             ),
-                        ])),
+                        ]),
                     ]),
                     new ClassDependency('TestCase')
                 ),
@@ -267,7 +266,7 @@ class ClassDefinitionTest extends TestCase
                         $this->createMethodDefinitionWithDocBlock(
                             new MethodDefinition(
                                 'stepOne',
-                                new CodeBlock([
+                                [
                                     new SingleLineComment('click $"a"'),
                                     new AssignmentStatement(
                                         VariablePlaceholder::createExport('STATEMENT'),
@@ -283,7 +282,7 @@ class ClassDefinitionTest extends TestCase
                                         VariablePlaceholder::createExport('CURRENT_STATEMENT'),
                                         VariablePlaceholder::createExport('STATEMENT')
                                     ),
-                                ]),
+                                ],
                                 [
                                     'x', 'y',
                                 ]
@@ -302,7 +301,7 @@ class ClassDefinitionTest extends TestCase
                                 'y' => '4',
                             ],
                         ]),
-                        new MethodDefinition('stepTwo', new CodeBlock([
+                        new MethodDefinition('stepTwo', [
                             new SingleLineComment('click $"b"'),
                             new AssignmentStatement(
                                 VariablePlaceholder::createExport('STATEMENT'),
@@ -318,7 +317,7 @@ class ClassDefinitionTest extends TestCase
                                 VariablePlaceholder::createExport('CURRENT_STATEMENT'),
                                 VariablePlaceholder::createExport('STATEMENT')
                             ),
-                        ])),
+                        ]),
                     ]),
                     new ClassDependency('TestCase')
                 ),
