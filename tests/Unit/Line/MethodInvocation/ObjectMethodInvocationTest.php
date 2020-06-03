@@ -14,23 +14,25 @@ use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocati
 use webignition\BasilCompilableSource\Line\MethodInvocation\StaticObjectMethodInvocation;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\BasilCompilableSource\ResolvingPlaceholder;
 use webignition\BasilCompilableSource\StaticObject;
 use webignition\BasilCompilableSource\ResolvablePlaceholder;
 use webignition\BasilCompilableSource\ResolvablePlaceholderCollection;
+use webignition\BasilCompilableSource\VariablePlaceholderInterface;
 
 class ObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider createDataProvider
      *
-     * @param ResolvablePlaceholder $objectPlaceholder
+     * @param VariablePlaceholderInterface $objectPlaceholder
      * @param string $methodName
      * @param ExpressionInterface[] $arguments
      * @param string $argumentFormat
      * @param MetadataInterface $expectedMetadata
      */
     public function testCreate(
-        ResolvablePlaceholder $objectPlaceholder,
+        VariablePlaceholderInterface $objectPlaceholder,
         string $methodName,
         array $arguments,
         string $argumentFormat,
@@ -121,6 +123,13 @@ class ObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
                     ]),
                 ]),
             ],
+            'no arguments, resolving placeholder' => [
+                'objectPlaceholder' => new ResolvingPlaceholder('object'),
+                'methodName' => 'method',
+                'arguments' => [],
+                'argumentFormat' => MethodInvocation::ARGUMENT_FORMAT_INLINE,
+                'expectedMetadata' => new Metadata(),
+            ],
         ];
     }
 
@@ -193,6 +202,13 @@ class ObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
                     'methodName'
                 ),
                 'expectedString' => '@{{ OBJECT }}->methodName()',
+            ],
+            'object and method name only, resolving placeholder' => [
+                'invocation' => new ObjectMethodInvocation(
+                    new ResolvingPlaceholder('object'),
+                    'methodName'
+                ),
+                'expectedString' => '$object->methodName()',
             ],
         ];
     }
