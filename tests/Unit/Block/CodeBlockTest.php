@@ -6,8 +6,10 @@ namespace webignition\BasilCompilableSource\Tests\Unit\Block;
 
 use webignition\BasilCompilableSource\Block\CodeBlock;
 use webignition\BasilCompilableSource\Block\CodeBlockInterface;
+use webignition\BasilCompilableSource\FunctionBodyInterface;
 use webignition\BasilCompilableSource\Line\CastExpression;
 use webignition\BasilCompilableSource\Line\ClassDependency;
+use webignition\BasilCompilableSource\Line\ClosureExpression;
 use webignition\BasilCompilableSource\Line\EmptyLine;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\Line\MethodInvocation\MethodInvocation;
@@ -262,6 +264,38 @@ class CodeBlockTest extends \PHPUnit\Framework\TestCase
                     '' . "\n" .
                     '// single line comment'
                 ,
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider createEnclosingCodeBlockDataProvider
+     */
+    public function testCreateEnclosingCodeBlock(FunctionBodyInterface $body, CodeBlockInterface $expectedCodeBlock)
+    {
+        $this->assertEquals($expectedCodeBlock, CodeBlock::createEnclosingCodeBlock($body));
+    }
+
+    public function createEnclosingCodeBlockDataProvider(): array
+    {
+        return [
+            'enclose a code block' => [
+                'body' => new CodeBlock([
+                    new Statement(
+                        new LiteralExpression('"literal')
+                    ),
+                ]),
+                'expectedCodeBlock' => new CodeBlock([
+                    new Statement(
+                        new ClosureExpression(
+                            new CodeBlock([
+                                new Statement(
+                                    new LiteralExpression('"literal')
+                                ),
+                            ])
+                        )
+                    ),
+                ]),
             ],
         ];
     }
