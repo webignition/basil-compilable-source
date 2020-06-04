@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource;
 
-interface VariablePlaceholderInterface extends SourceInterface
+use webignition\BasilCompilableSource\Line\ExpressionInterface;
+
+interface VariablePlaceholderInterface extends ExpressionInterface
 {
     public function getName(): string;
 }
