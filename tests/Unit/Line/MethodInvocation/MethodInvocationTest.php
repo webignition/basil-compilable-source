@@ -10,9 +10,11 @@ use webignition\BasilCompilableSource\Line\ExpressionInterface;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\Line\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSource\Line\MethodInvocation\MethodInvocationInterface;
+use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Line\MethodInvocation\StaticObjectMethodInvocation;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\BasilCompilableSource\ResolvablePlaceholder;
 use webignition\BasilCompilableSource\StaticObject;
 
 class MethodInvocationTest extends \PHPUnit\Framework\TestCase
@@ -155,6 +157,36 @@ class MethodInvocationTest extends \PHPUnit\Framework\TestCase
             'name only, has errors suppressed' => [
                 'invocation' => $this->createInvocationWithErrorSuppression('methodName'),
                 'expectedString' => '@methodName()',
+            ],
+            'indent stacked multi-line arguments' => [
+                'invocation' => new MethodInvocation(
+                    'setValue',
+                    [
+                        new ObjectMethodInvocation(
+                            ResolvablePlaceholder::createDependency('NAVIGATOR'),
+                            'find',
+                            [
+                                new StaticObjectMethodInvocation(
+                                    new StaticObject(ObjectMethodInvocation::class),
+                                    'fromJson',
+                                    [
+                                        new LiteralExpression('{' . "\n" . '    "locator": ".selector"' . "\n" . '}'),
+                                    ]
+                                )
+                            ]
+                        ),
+                        new LiteralExpression('"literal for mutator"')
+                    ],
+                    ObjectMethodInvocation::ARGUMENT_FORMAT_STACKED
+                ),
+                'expectedString' =>
+                    'setValue(' . "\n" .
+                    '    {{ NAVIGATOR }}->find(ObjectMethodInvocation::fromJson({' . "\n" .
+                    '        "locator": ".selector"' . "\n" .
+                    '    })),' . "\n" .
+                    '    "literal for mutator"' . "\n" .
+                    ')'
+                ,
             ],
         ];
     }

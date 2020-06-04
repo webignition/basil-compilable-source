@@ -226,6 +226,37 @@ class ObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
                 ),
                 'expectedString' => '{{ OBJECT }}->innerMethodName()->outerMethodName()',
             ],
+            'indent stacked multi-line arguments' => [
+                'invocation' => new ObjectMethodInvocation(
+                    ResolvablePlaceholder::createDependency('MUTATOR'),
+                    'setValue',
+                    [
+                        new ObjectMethodInvocation(
+                            ResolvablePlaceholder::createDependency('NAVIGATOR'),
+                            'find',
+                            [
+                                new StaticObjectMethodInvocation(
+                                    new StaticObject(ObjectMethodInvocation::class),
+                                    'fromJson',
+                                    [
+                                        new LiteralExpression('{' . "\n" . '    "locator": ".selector"' . "\n" . '}'),
+                                    ]
+                                )
+                            ]
+                        ),
+                        new LiteralExpression('"literal for mutator"')
+                    ],
+                    ObjectMethodInvocation::ARGUMENT_FORMAT_STACKED
+                ),
+                'expectedString' =>
+                    '{{ MUTATOR }}->setValue(' . "\n" .
+                    '    {{ NAVIGATOR }}->find(ObjectMethodInvocation::fromJson({' . "\n" .
+                    '        "locator": ".selector"' . "\n" .
+                    '    })),' . "\n" .
+                    '    "literal for mutator"' . "\n" .
+                    ')'
+                ,
+            ],
         ];
     }
 

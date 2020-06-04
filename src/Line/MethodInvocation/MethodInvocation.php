@@ -127,6 +127,16 @@ class MethodInvocation implements MethodInvocationInterface
 
         if (self::ARGUMENT_FORMAT_STACKED === $this->getArgumentFormat()) {
             array_walk($renderedArguments, function (&$argument) {
+                $argumentLines = explode("\n", $argument);
+
+                if (count($argumentLines) > 1) {
+                    array_walk($argumentLines, function (&$line) {
+                        $line = '    ' . $line;
+                    });
+
+                    $argument = trim(implode("\n", $argumentLines));
+                }
+
                 $argument = '    ' . $argument;
             });
 
