@@ -7,42 +7,36 @@ namespace webignition\BasilCompilableSource\Line\MethodInvocation;
 use webignition\BasilCompilableSource\Line\ExpressionInterface;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\ResolvableVariablePlaceholderInterface;
-use webignition\BasilCompilableSource\VariablePlaceholderInterface;
 
-class ObjectMethodInvocation extends MethodInvocation implements ObjectMethodInvocationInterface
+class ObjectMethodInvocation extends MethodInvocation
 {
     private const RENDER_PATTERN = '%s->%s';
 
-    private VariablePlaceholderInterface $objectPlaceholder;
+    private ExpressionInterface $object;
 
     /**
-     * @param VariablePlaceholderInterface $objectPlaceholder
+     * @param ExpressionInterface $object
      * @param string $methodName
      * @param ExpressionInterface[] $arguments
      * @param string $argumentFormat
      */
     public function __construct(
-        VariablePlaceholderInterface $objectPlaceholder,
+        ExpressionInterface $object,
         string $methodName,
         array $arguments = [],
         string $argumentFormat = self::ARGUMENT_FORMAT_INLINE
     ) {
         parent::__construct($methodName, $arguments, $argumentFormat);
 
-        $this->objectPlaceholder = $objectPlaceholder;
-    }
-
-    public function getObjectPlaceholder(): VariablePlaceholderInterface
-    {
-        return $this->objectPlaceholder;
+        $this->object = $object;
     }
 
     public function getMetadata(): MetadataInterface
     {
         $metadata = parent::getMetadata();
 
-        if ($this->objectPlaceholder instanceof ResolvableVariablePlaceholderInterface) {
-            $metadata = $metadata->merge($this->objectPlaceholder->getMetadata());
+        if ($this->object instanceof ResolvableVariablePlaceholderInterface) {
+            $metadata = $metadata->merge($this->object->getMetadata());
         }
 
         return $metadata;
@@ -50,7 +44,7 @@ class ObjectMethodInvocation extends MethodInvocation implements ObjectMethodInv
 
     public function render(): string
     {
-        $objectPlaceholder = $this->objectPlaceholder->render();
+        $objectPlaceholder = $this->object->render();
         if ($this->suppressErrors === true) {
             $objectPlaceholder = '@' . $objectPlaceholder;
         }
