@@ -6,5 +6,4 @@ namespace webignition\BasilCompilableSource;
 
 interface VariableDependencyInterface extends HasMetadataInterface, VariablePlaceholderInterface
 {
-    public function getType(): string;
 }

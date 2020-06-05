@@ -31,12 +31,12 @@ class ObjectPropertyAssignmentStatementTest extends \PHPUnit\Framework\TestCase
         return [
             'default' => [
                 'placeholder' => new ObjectPropertyAccessExpression(
-                    VariableDependency::createExport('DEPENDENCY'),
+                    new VariableDependency('DEPENDENCY'),
                     'propertyName'
                 ),
-                'expression' => VariableDependency::createDependency('DEPENDENCY'),
+                'expression' => new VariableDependency('DEPENDENCY'),
                 'expectedPlaceholder' => new ObjectPropertyAccessExpression(
-                    VariableDependency::createExport('DEPENDENCY'),
+                    new VariableDependency('DEPENDENCY'),
                     'propertyName'
                 ),
             ],
@@ -57,10 +57,10 @@ class ObjectPropertyAssignmentStatementTest extends \PHPUnit\Framework\TestCase
             'default' => [
                 'statement' => new ObjectPropertyAssignmentStatement(
                     new ObjectPropertyAccessExpression(
-                        VariableDependency::createExport('PLACEHOLDER'),
+                        new VariableDependency('PLACEHOLDER'),
                         'propertyName'
                     ),
-                    VariableDependency::createDependency('DEPENDENCY')
+                    new VariableDependency('DEPENDENCY')
                 ),
                 'expectedString' => '{{ PLACEHOLDER }}->propertyName = {{ DEPENDENCY }};',
             ],

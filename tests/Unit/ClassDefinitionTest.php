@@ -27,6 +27,7 @@ use webignition\BasilCompilableSource\MethodDefinitionInterface;
 use webignition\BasilCompilableSource\StaticObject;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSource\VariableDependencyCollection;
+use webignition\BasilCompilableSource\VariableName;
 
 class ClassDefinitionTest extends TestCase
 {
@@ -126,23 +127,20 @@ class ClassDefinitionTest extends TestCase
                         new MethodDefinition('name', new CodeBlock([
                             new Statement(
                                 new ObjectMethodInvocation(
-                                    VariableDependency::createDependency('DEPENDENCY'),
+                                    new VariableDependency('DEPENDENCY'),
                                     'methodName'
                                 )
                             ),
                             new AssignmentStatement(
-                                VariableDependency::createExport('PLACEHOLDER'),
+                                new VariableName('variable'),
                                 new MethodInvocation('methodName')
                             ),
                         ])),
                     ]
                 ),
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariableDependencyCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         'DEPENDENCY',
-                    ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariableDependencyCollection::createExportCollection([
-                        'PLACEHOLDER',
                     ]),
                 ]),
             ],
@@ -207,7 +205,7 @@ class ClassDefinitionTest extends TestCase
                         new MethodDefinition('stepOne', new CodeBlock([
                             new SingleLineComment('click $"a"'),
                             new AssignmentStatement(
-                                VariableDependency::createExport('STATEMENT'),
+                                new VariableName('statement'),
                                 new StaticObjectMethodInvocation(
                                     new StaticObject('Acme\\Statement'),
                                     'createAction',
@@ -217,14 +215,14 @@ class ClassDefinitionTest extends TestCase
                                 )
                             ),
                             new AssignmentStatement(
-                                VariableDependency::createExport('CURRENT_STATEMENT'),
-                                VariableDependency::createExport('STATEMENT')
+                                new VariableName('currentStatement'),
+                                new VariableName('statement')
                             ),
                         ])),
                         new MethodDefinition('stepTwo', new CodeBlock([
                             new SingleLineComment('click $"b"'),
                             new AssignmentStatement(
-                                VariableDependency::createExport('STATEMENT'),
+                                new VariableName('statement'),
                                 new StaticObjectMethodInvocation(
                                     new StaticObject('Acme\\Statement'),
                                     'createAction',
@@ -234,8 +232,8 @@ class ClassDefinitionTest extends TestCase
                                 )
                             ),
                             new AssignmentStatement(
-                                VariableDependency::createExport('CURRENT_STATEMENT'),
-                                VariableDependency::createExport('STATEMENT')
+                                new VariableName('currentStatement'),
+                                new VariableName('statement')
                             ),
                         ])),
                     ]),
@@ -249,15 +247,15 @@ class ClassDefinitionTest extends TestCase
                     '    public function stepOne()' . "\n" .
                     '    {' . "\n" .
                     '        // click $"a"' . "\n" .
-                    '        {{ STATEMENT }} = Statement::createAction(\'$"a" exists\');' . "\n" .
-                    '        {{ CURRENT_STATEMENT }} = {{ STATEMENT }};' . "\n" .
+                    '        $statement = Statement::createAction(\'$"a" exists\');' . "\n" .
+                    '        $currentStatement = $statement;' . "\n" .
                     '    }' . "\n" .
                     "\n" .
                     '    public function stepTwo()' . "\n" .
                     '    {' . "\n" .
                     '        // click $"b"' . "\n" .
-                    '        {{ STATEMENT }} = Statement::createAction(\'$"b" exists\');' . "\n" .
-                    '        {{ CURRENT_STATEMENT }} = {{ STATEMENT }};' . "\n" .
+                    '        $statement = Statement::createAction(\'$"b" exists\');' . "\n" .
+                    '        $currentStatement = $statement;' . "\n" .
                     '    }' . "\n" .
                     '}'
             ],
@@ -270,7 +268,7 @@ class ClassDefinitionTest extends TestCase
                                 new CodeBlock([
                                     new SingleLineComment('click $"a"'),
                                     new AssignmentStatement(
-                                        VariableDependency::createExport('STATEMENT'),
+                                        new VariableName('statement'),
                                         new StaticObjectMethodInvocation(
                                             new StaticObject('Acme\\Statement'),
                                             'createAction',
@@ -280,8 +278,8 @@ class ClassDefinitionTest extends TestCase
                                         )
                                     ),
                                     new AssignmentStatement(
-                                        VariableDependency::createExport('CURRENT_STATEMENT'),
-                                        VariableDependency::createExport('STATEMENT')
+                                        new VariableName('currentStatement'),
+                                        new VariableName('statement')
                                     ),
                                 ]),
                                 [
@@ -305,7 +303,7 @@ class ClassDefinitionTest extends TestCase
                         new MethodDefinition('stepTwo', new CodeBlock([
                             new SingleLineComment('click $"b"'),
                             new AssignmentStatement(
-                                VariableDependency::createExport('STATEMENT'),
+                                new VariableName('statement'),
                                 new StaticObjectMethodInvocation(
                                     new StaticObject('Acme\\Statement'),
                                     'createAction',
@@ -315,8 +313,8 @@ class ClassDefinitionTest extends TestCase
                                 )
                             ),
                             new AssignmentStatement(
-                                VariableDependency::createExport('CURRENT_STATEMENT'),
-                                VariableDependency::createExport('STATEMENT')
+                                new VariableName('currentStatement'),
+                                new VariableName('statement')
                             ),
                         ])),
                     ]),
@@ -333,8 +331,8 @@ class ClassDefinitionTest extends TestCase
                     '    public function stepOne($x, $y)' . "\n" .
                     '    {' . "\n" .
                     '        // click $"a"' . "\n" .
-                    '        {{ STATEMENT }} = Statement::createAction(\'$"a" exists\');' . "\n" .
-                    '        {{ CURRENT_STATEMENT }} = {{ STATEMENT }};' . "\n" .
+                    '        $statement = Statement::createAction(\'$"a" exists\');' . "\n" .
+                    '        $currentStatement = $statement;' . "\n" .
                     '    }' . "\n" .
                     "\n" .
                     '    public function stepOneDataProvider(): array' . "\n" .
@@ -354,8 +352,8 @@ class ClassDefinitionTest extends TestCase
                     '    public function stepTwo()' . "\n" .
                     '    {' . "\n" .
                     '        // click $"b"' . "\n" .
-                    '        {{ STATEMENT }} = Statement::createAction(\'$"b" exists\');' . "\n" .
-                    '        {{ CURRENT_STATEMENT }} = {{ STATEMENT }};' . "\n" .
+                    '        $statement = Statement::createAction(\'$"b" exists\');' . "\n" .
+                    '        $currentStatement = $statement;' . "\n" .
                     '    }' . "\n" .
                     '}'
             ],

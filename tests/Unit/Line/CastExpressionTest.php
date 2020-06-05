@@ -10,7 +10,6 @@ use webignition\BasilCompilableSource\Line\CastExpression;
 use webignition\BasilCompilableSource\Line\ClosureExpression;
 use webignition\BasilCompilableSource\Line\ComparisonExpression;
 use webignition\BasilCompilableSource\Line\CompositeExpression;
-use webignition\BasilCompilableSource\Line\EncapsulatedExpression;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\Line\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
@@ -90,7 +89,7 @@ class CastExpressionTest extends \PHPUnit\Framework\TestCase
             'object property access expression as string' => [
                 'expression' => new CastExpression(
                     new ObjectPropertyAccessExpression(
-                        VariableDependency::createDependency('OBJECT'),
+                        new VariableDependency('OBJECT'),
                         'property'
                     ),
                     'string'
@@ -107,7 +106,7 @@ class CastExpressionTest extends \PHPUnit\Framework\TestCase
             'object method invocation as string' => [
                 'expression' => new CastExpression(
                     new ObjectMethodInvocation(
-                        VariableDependency::createDependency('OBJECT'),
+                        new VariableDependency('OBJECT'),
                         'methodName'
                     ),
                     'string'

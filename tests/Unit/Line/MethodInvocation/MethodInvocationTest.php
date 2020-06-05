@@ -15,7 +15,6 @@ use webignition\BasilCompilableSource\Line\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSource\Line\MethodInvocation\MethodInvocationInterface;
 use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Line\MethodInvocation\StaticObjectMethodInvocation;
-use webignition\BasilCompilableSource\Line\SingleLineComment;
 use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\ReturnStatement;
 use webignition\BasilCompilableSource\Metadata\Metadata;
@@ -170,7 +169,7 @@ class MethodInvocationTest extends \PHPUnit\Framework\TestCase
                     'setValue',
                     [
                         new ObjectMethodInvocation(
-                            VariableDependency::createDependency('NAVIGATOR'),
+                            new VariableDependency('NAVIGATOR'),
                             'find',
                             [
                                 new StaticObjectMethodInvocation(

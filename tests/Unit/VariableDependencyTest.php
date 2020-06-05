@@ -14,47 +14,20 @@ class VariableDependencyTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider constructDataProvider
      */
-    public function testConstruct(string $name, string $type, string $expectedType)
+    public function testConstruct(string $name)
     {
-        $dependency = new VariableDependency($name, $type);
+        $dependency = new VariableDependency($name);
 
         $this->assertSame($name, $dependency->getName());
-        $this->assertSame($expectedType, $dependency->getType());
     }
 
     public function constructDataProvider(): array
     {
         return [
-            'dependency' => [
+            'default' => [
                 'name' => 'DEPENDENCY',
-                'type' => VariableDependency::TYPE_DEPENDENCY,
-                'expectedType' => VariableDependency::TYPE_DEPENDENCY,
-            ],
-            'export' => [
-                'name' => 'EXPORT',
-                'type' => VariableDependency::TYPE_EXPORT,
-                'expectedType' => VariableDependency::TYPE_EXPORT,
-            ],
-            'invalid type' => [
-                'name' => 'EXPORT?',
-                'type' => 'invalid',
-                'expectedType' => VariableDependency::TYPE_EXPORT,
             ],
         ];
-    }
-
-    public function testCreateDependency()
-    {
-        $dependency = VariableDependency::createDependency('DEPENDENCY');
-
-        $this->assertSame(VariableDependency::TYPE_DEPENDENCY, $dependency->getType());
-    }
-
-    public function testCreateExport()
-    {
-        $dependency = VariableDependency::createExport('EXPORT');
-
-        $this->assertSame(VariableDependency::TYPE_EXPORT, $dependency->getType());
     }
 
     /**
@@ -69,25 +42,11 @@ class VariableDependencyTest extends \PHPUnit\Framework\TestCase
     {
         return [
             'variable dependency' => [
-                'placeholder' => VariableDependency::createDependency('DEPENDENCY'),
+                'dependency' => new VariableDependency('DEPENDENCY'),
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariableDependencyCollection::create(
-                        VariableDependency::TYPE_DEPENDENCY,
-                        [
-                            'DEPENDENCY',
-                        ]
-                    ),
-                ]),
-            ],
-            'variable export' => [
-                'placeholder' => VariableDependency::createExport('EXPORT'),
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_EXPORTS => VariableDependencyCollection::create(
-                        VariableDependency::TYPE_EXPORT,
-                        [
-                            'EXPORT',
-                        ]
-                    ),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                        'DEPENDENCY',
+                    ]),
                 ]),
             ],
         ];
@@ -105,11 +64,11 @@ class VariableDependencyTest extends \PHPUnit\Framework\TestCase
     {
         return [
             'empty' => [
-                'placeholder' => new VariableDependency('', VariableDependency::TYPE_EXPORT),
+                'dependency' => new VariableDependency(''),
                 'expectedString' => '{{  }}',
             ],
             'non-empty' => [
-                'placeholder' => new VariableDependency('NAME', VariableDependency::TYPE_EXPORT),
+                'dependency' => new VariableDependency('NAME'),
                 'expectedString' => '{{ NAME }}',
             ],
         ];

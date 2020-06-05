@@ -17,19 +17,16 @@ class MetadataTest extends \PHPUnit\Framework\TestCase
      * @param array<mixed> $components
      * @param ClassDependencyCollection $expectedClassDependencies
      * @param VariableDependencyCollection $expectedVariableDependencies
-     * @param VariableDependencyCollection $expectedVariableExports
      */
     public function testCreate(
         array $components,
         ClassDependencyCollection $expectedClassDependencies,
-        VariableDependencyCollection $expectedVariableDependencies,
-        VariableDependencyCollection $expectedVariableExports
+        VariableDependencyCollection $expectedVariableDependencies
     ) {
         $metadata = new Metadata($components);
 
         $this->assertEquals($expectedClassDependencies, $metadata->getClassDependencies());
         $this->assertEquals($expectedVariableDependencies, $metadata->getVariableDependencies());
-        $this->assertEquals($expectedVariableExports, $metadata->getVariableExports());
     }
 
     public function createDataProvider(): array
@@ -38,39 +35,30 @@ class MetadataTest extends \PHPUnit\Framework\TestCase
             'empty' => [
                 'components' => [],
                 'expectedClassDependencies' => new ClassDependencyCollection(),
-                'expectedVariableDependencies' => VariableDependencyCollection::createDependencyCollection(),
-                'expectedVariableExports' => VariableDependencyCollection::createExportCollection(),
+                'expectedVariableDependencies' => new VariableDependencyCollection(),
             ],
             'components set, incorrect types' => [
                 'components' => [
                     Metadata::KEY_CLASS_DEPENDENCIES => 'string',
                     Metadata::KEY_VARIABLE_DEPENDENCIES => 'string',
-                    Metadata::KEY_VARIABLE_EXPORTS => 'string',
                 ],
                 'expectedClassDependencies' => new ClassDependencyCollection(),
-                'expectedVariableDependencies' => VariableDependencyCollection::createDependencyCollection(),
-                'expectedVariableExports' => VariableDependencyCollection::createExportCollection(),
+                'expectedVariableDependencies' => new VariableDependencyCollection(),
             ],
             'components set, correct types' => [
                 'components' => [
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ClassDependency::class),
                     ]),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariableDependencyCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         'VARIABLE_DEPENDENCY',
-                    ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariableDependencyCollection::createExportCollection([
-                        'VARIABLE_EXPORT',
                     ]),
                 ],
                 'expectedClassDependencies' => new ClassDependencyCollection([
                     new ClassDependency(ClassDependency::class),
                 ]),
-                'expectedVariableDependencies' => VariableDependencyCollection::createDependencyCollection([
+                'expectedVariableDependencies' => new VariableDependencyCollection([
                     'VARIABLE_DEPENDENCY',
-                ]),
-                'expectedVariableExports' => VariableDependencyCollection::createExportCollection([
-                    'VARIABLE_EXPORT',
                 ]),
             ],
         ];
@@ -82,13 +70,9 @@ class MetadataTest extends \PHPUnit\Framework\TestCase
             Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                 new ClassDependency(ClassDependency::class),
             ]),
-            Metadata::KEY_VARIABLE_DEPENDENCIES => VariableDependencyCollection::createDependencyCollection([
+            Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                 'VARIABLE_DEPENDENCY_1',
                 'VARIABLE_DEPENDENCY_2',
-            ]),
-            Metadata::KEY_VARIABLE_EXPORTS => VariableDependencyCollection::createExportCollection([
-                'VARIABLE_EXPORT_1',
-                'VARIABLE_EXPORT_2',
             ]),
         ]);
 
@@ -97,13 +81,9 @@ class MetadataTest extends \PHPUnit\Framework\TestCase
                 new ClassDependency(ClassDependency::class),
                 new ClassDependency(Metadata::class),
             ]),
-            Metadata::KEY_VARIABLE_DEPENDENCIES => VariableDependencyCollection::createDependencyCollection([
+            Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                 'VARIABLE_DEPENDENCY_2',
                 'VARIABLE_DEPENDENCY_3',
-            ]),
-            Metadata::KEY_VARIABLE_EXPORTS => VariableDependencyCollection::createExportCollection([
-                'VARIABLE_EXPORT_2',
-                'VARIABLE_EXPORT_3',
             ]),
         ]);
 
@@ -116,15 +96,10 @@ class MetadataTest extends \PHPUnit\Framework\TestCase
                     new ClassDependency(ClassDependency::class),
                     new ClassDependency(Metadata::class),
                 ]),
-                Metadata::KEY_VARIABLE_DEPENDENCIES => VariableDependencyCollection::createDependencyCollection([
+                Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                     'VARIABLE_DEPENDENCY_1',
                     'VARIABLE_DEPENDENCY_2',
                     'VARIABLE_DEPENDENCY_3',
-                ]),
-                Metadata::KEY_VARIABLE_EXPORTS => VariableDependencyCollection::createExportCollection([
-                    'VARIABLE_EXPORT_1',
-                    'VARIABLE_EXPORT_2',
-                    'VARIABLE_EXPORT_3',
                 ]),
             ])
         );

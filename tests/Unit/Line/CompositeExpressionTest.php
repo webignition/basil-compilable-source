@@ -35,45 +35,21 @@ class CompositeExpressionTest extends \PHPUnit\Framework\TestCase
             ],
             'variable dependency' => [
                 'expressions' => [
-                    VariableDependency::createDependency('DEPENDENCY'),
+                    new VariableDependency('DEPENDENCY'),
                 ],
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariableDependencyCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         'DEPENDENCY',
-                    ]),
-                ]),
-            ],
-            'variable export' => [
-                'expressions' => [
-                    VariableDependency::createExport('EXPORT'),
-                ],
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_EXPORTS => VariableDependencyCollection::createExportCollection([
-                        'EXPORT',
-                    ]),
-                ]),
-            ],
-            'variable dependency and variable export' => [
-                'expressions' => [
-                    VariableDependency::createDependency('DEPENDENCY'),
-                    VariableDependency::createExport('EXPORT'),
-                ],
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariableDependencyCollection::createDependencyCollection([
-                        'DEPENDENCY',
-                    ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariableDependencyCollection::createExportCollection([
-                        'EXPORT',
                     ]),
                 ]),
             ],
             'variable dependency and array access' => [
                 'expressions' => [
-                    VariableDependency::createDependency('ENV'),
+                    new VariableDependency('ENV'),
                     new LiteralExpression('[\'KEY\']')
                 ],
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariableDependencyCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         'ENV',
                     ]),
                 ]),
@@ -98,26 +74,13 @@ class CompositeExpressionTest extends \PHPUnit\Framework\TestCase
             ],
             'variable dependency' => [
                 'expressions' => new CompositeExpression([
-                    VariableDependency::createDependency('DEPENDENCY'),
+                    new VariableDependency('DEPENDENCY'),
                 ]),
                 'expectedString' => '{{ DEPENDENCY }}',
             ],
-            'variable export' => [
-                'expressions' => new CompositeExpression([
-                    VariableDependency::createExport('EXPORT'),
-                ]),
-                'expectedString' => '{{ EXPORT }}',
-            ],
-            'variable dependency and variable export' => [
-                'expressions' => new CompositeExpression([
-                    VariableDependency::createDependency('DEPENDENCY'),
-                    VariableDependency::createExport('EXPORT'),
-                ]),
-                'expectedString' => '{{ DEPENDENCY }}{{ EXPORT }}',
-            ],
             'variable dependency and array access' => [
                 'expressions' => new CompositeExpression([
-                    VariableDependency::createDependency('ENV'),
+                    new VariableDependency('ENV'),
                     new LiteralExpression('[\'KEY\']')
                 ]),
                 'expectedString' => '{{ ENV }}[\'KEY\']',

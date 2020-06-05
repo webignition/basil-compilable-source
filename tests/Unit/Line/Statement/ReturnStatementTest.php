@@ -12,7 +12,7 @@ class ReturnStatementTest extends \PHPUnit\Framework\TestCase
     public function testRender()
     {
         $statement = new ReturnStatement(
-            VariableDependency::createDependency('DEPENDENCY')
+            new VariableDependency('DEPENDENCY')
         );
 
         $this->assertSame('return {{ DEPENDENCY }};', $statement->render());

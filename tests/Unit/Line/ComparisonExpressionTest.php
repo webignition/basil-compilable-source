@@ -43,13 +43,13 @@ class ComparisonExpressionTest extends \PHPUnit\Framework\TestCase
             ],
             'has metadata' => [
                 'leftHandSide' => new ObjectMethodInvocation(
-                    VariableDependency::createDependency('DEPENDENCY'),
+                    new VariableDependency('DEPENDENCY'),
                     'methodName'
                 ),
                 'rightHandSide' => new LiteralExpression('literal'),
                 'comparison' => '!==',
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariableDependencyCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         'DEPENDENCY',
                     ])
                 ]),
@@ -80,7 +80,7 @@ class ComparisonExpressionTest extends \PHPUnit\Framework\TestCase
             'object method invocation and literal, null coalesce' => [
                 'expression' => new ComparisonExpression(
                     new ObjectMethodInvocation(
-                        VariableDependency::createDependency('DEPENDENCY'),
+                        new VariableDependency('DEPENDENCY'),
                         'methodName'
                     ),
                     new LiteralExpression('value'),

@@ -12,16 +12,11 @@ class VariableDependency implements ExpressionInterface, VariableDependencyInter
 {
     private const RENDER_PATTERN = '{{ %s }}';
 
-    public const TYPE_DEPENDENCY = 'dependency';
-    public const TYPE_EXPORT = 'export';
-
     private string $name;
-    private string $type;
 
-    public function __construct(string $name, string $type)
+    public function __construct(string $name)
     {
         $this->name = $name;
-        $this->type = self::isAllowedType($type) ? $type : self::TYPE_EXPORT;
     }
 
     public function getName(): string
@@ -29,43 +24,13 @@ class VariableDependency implements ExpressionInterface, VariableDependencyInter
         return $this->name;
     }
 
-    public static function isAllowedType(string $type): bool
-    {
-        return in_array(
-            $type,
-            [
-                self::TYPE_DEPENDENCY,
-                self::TYPE_EXPORT,
-            ]
-        );
-    }
-
-    public static function createDependency(string $content): self
-    {
-        return new VariableDependency($content, self::TYPE_DEPENDENCY);
-    }
-
-    public static function createExport(string $content): self
-    {
-        return new VariableDependency($content, self::TYPE_EXPORT);
-    }
-
-    public function getType(): string
-    {
-        return $this->type;
-    }
-
     public function getMetadata(): MetadataInterface
     {
-        $placeholderCollection = VariableDependencyCollection::create($this->type);
+        $placeholderCollection = new VariableDependencyCollection();
         $placeholderCollection->add($this);
 
-        $componentKey = $this->type === self::TYPE_DEPENDENCY
-            ? Metadata::KEY_VARIABLE_DEPENDENCIES
-            : Metadata::KEY_VARIABLE_EXPORTS;
-
         return new Metadata([
-            $componentKey => $placeholderCollection,
+            Metadata::KEY_VARIABLE_DEPENDENCIES => $placeholderCollection,
         ]);
     }
 

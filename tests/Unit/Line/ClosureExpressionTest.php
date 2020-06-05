@@ -58,9 +58,9 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
             'non-empty, has metadata' => [
                 'codeBlock' => new CodeBlock([
                     new AssignmentStatement(
-                        VariableDependency::createExport('EXPORT'),
+                        new VariableName('variable'),
                         new ObjectMethodInvocation(
-                            VariableDependency::createDependency('DEPENDENCY'),
+                            new VariableDependency('DEPENDENCY'),
                             'dependencyMethodName'
                         )
                     ),
@@ -68,7 +68,7 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
                         new CompositeExpression([
                             new CastExpression(
                                 new ObjectMethodInvocation(
-                                    VariableDependency::createExport('EXPORT'),
+                                    new VariableName('variable'),
                                     'getWidth',
                                     [],
                                     MethodInvocation::ARGUMENT_FORMAT_INLINE
@@ -78,7 +78,7 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
                             new LiteralExpression(' . \'x\' . '),
                             new CastExpression(
                                 new ObjectMethodInvocation(
-                                    VariableDependency::createExport('EXPORT'),
+                                    new VariableName('variable'),
                                     'getHeight',
                                     [],
                                     MethodInvocation::ARGUMENT_FORMAT_INLINE
@@ -89,11 +89,8 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
                     )
                 ]),
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariableDependencyCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         'DEPENDENCY',
-                    ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariableDependencyCollection::createExportCollection([
-                        'EXPORT',
                     ]),
                 ]),
             ],
@@ -166,9 +163,9 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
                 'expression' => new ClosureExpression(
                     new CodeBlock([
                         new AssignmentStatement(
-                            VariableDependency::createExport('EXPORT'),
+                            new VariableName('variable'),
                             new ObjectMethodInvocation(
-                                VariableDependency::createDependency('DEPENDENCY'),
+                                new VariableDependency('DEPENDENCY'),
                                 'dependencyMethodName'
                             )
                         ),
@@ -177,7 +174,7 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
                             new CompositeExpression([
                                 new CastExpression(
                                     new ObjectMethodInvocation(
-                                        VariableDependency::createExport('EXPORT'),
+                                        new VariableName('variable'),
                                         'getWidth',
                                         [],
                                         MethodInvocation::ARGUMENT_FORMAT_INLINE
@@ -187,7 +184,7 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
                                 new LiteralExpression(' . \'x\' . '),
                                 new CastExpression(
                                     new ObjectMethodInvocation(
-                                        VariableDependency::createExport('EXPORT'),
+                                        new VariableName('variable'),
                                         'getHeight',
                                         [],
                                         MethodInvocation::ARGUMENT_FORMAT_INLINE
@@ -199,10 +196,9 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
                     ])
                 ),
                 '(function () {' . "\n" .
-                '    {{ EXPORT }} = {{ DEPENDENCY }}->dependencyMethodName();' . "\n" .
+                '    $variable = {{ DEPENDENCY }}->dependencyMethodName();' . "\n" .
                 "\n" .
-                '    return (string) ({{ EXPORT }}->getWidth()) . ' .
-                '\'x\' . (string) ({{ EXPORT }}->getHeight());' . "\n" .
+                '    return (string) ($variable->getWidth()) . \'x\' . (string) ($variable->getHeight());' . "\n" .
                 '})()',
             ],
             'try/catch block' => [
