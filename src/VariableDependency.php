@@ -57,7 +57,7 @@ class VariableDependency implements ExpressionInterface, VariableDependencyInter
 
     public function getMetadata(): MetadataInterface
     {
-        $placeholderCollection = VariablePlaceholderCollection::create($this->type);
+        $placeholderCollection = VariableDependencyCollection::create($this->type);
         $placeholderCollection->add($this);
 
         $componentKey = $this->type === self::TYPE_DEPENDENCY

@@ -7,7 +7,7 @@ namespace webignition\BasilCompilableSource\Tests\Unit;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\VariableDependency;
-use webignition\BasilCompilableSource\VariablePlaceholderCollection;
+use webignition\BasilCompilableSource\VariableDependencyCollection;
 
 class VariableDependencyTest extends \PHPUnit\Framework\TestCase
 {
@@ -71,7 +71,7 @@ class VariableDependencyTest extends \PHPUnit\Framework\TestCase
             'variable dependency' => [
                 'placeholder' => VariableDependency::createDependency('DEPENDENCY'),
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::create(
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariableDependencyCollection::create(
                         VariableDependency::TYPE_DEPENDENCY,
                         [
                             'DEPENDENCY',
@@ -82,7 +82,7 @@ class VariableDependencyTest extends \PHPUnit\Framework\TestCase
             'variable export' => [
                 'placeholder' => VariableDependency::createExport('EXPORT'),
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::create(
+                    Metadata::KEY_VARIABLE_EXPORTS => VariableDependencyCollection::create(
                         VariableDependency::TYPE_EXPORT,
                         [
                             'EXPORT',

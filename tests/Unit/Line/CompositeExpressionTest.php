@@ -9,7 +9,7 @@ use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\VariableDependency;
-use webignition\BasilCompilableSource\VariablePlaceholderCollection;
+use webignition\BasilCompilableSource\VariableDependencyCollection;
 
 class CompositeExpressionTest extends \PHPUnit\Framework\TestCase
 {
@@ -38,7 +38,7 @@ class CompositeExpressionTest extends \PHPUnit\Framework\TestCase
                     VariableDependency::createDependency('DEPENDENCY'),
                 ],
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariableDependencyCollection::createDependencyCollection([
                         'DEPENDENCY',
                     ]),
                 ]),
@@ -48,7 +48,7 @@ class CompositeExpressionTest extends \PHPUnit\Framework\TestCase
                     VariableDependency::createExport('EXPORT'),
                 ],
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
+                    Metadata::KEY_VARIABLE_EXPORTS => VariableDependencyCollection::createExportCollection([
                         'EXPORT',
                     ]),
                 ]),
@@ -59,10 +59,10 @@ class CompositeExpressionTest extends \PHPUnit\Framework\TestCase
                     VariableDependency::createExport('EXPORT'),
                 ],
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariableDependencyCollection::createDependencyCollection([
                         'DEPENDENCY',
                     ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
+                    Metadata::KEY_VARIABLE_EXPORTS => VariableDependencyCollection::createExportCollection([
                         'EXPORT',
                     ]),
                 ]),
@@ -73,7 +73,7 @@ class CompositeExpressionTest extends \PHPUnit\Framework\TestCase
                     new LiteralExpression('[\'KEY\']')
                 ],
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariableDependencyCollection::createDependencyCollection([
                         'ENV',
                     ]),
                 ]),

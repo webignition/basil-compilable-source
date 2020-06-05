@@ -27,7 +27,7 @@ use webignition\BasilCompilableSource\VariableName;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclaration;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclarationCollection;
 use webignition\BasilCompilableSource\VariableDependency;
-use webignition\BasilCompilableSource\VariablePlaceholderCollection;
+use webignition\BasilCompilableSource\VariableDependencyCollection;
 
 class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
 {
@@ -89,10 +89,10 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
                     )
                 ]),
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariableDependencyCollection::createDependencyCollection([
                         'DEPENDENCY',
                     ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
+                    Metadata::KEY_VARIABLE_EXPORTS => VariableDependencyCollection::createExportCollection([
                         'EXPORT',
                     ]),
                 ]),

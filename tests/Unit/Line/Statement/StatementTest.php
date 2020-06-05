@@ -14,7 +14,7 @@ use webignition\BasilCompilableSource\Line\Statement\StatementInterface;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\VariableDependency;
-use webignition\BasilCompilableSource\VariablePlaceholderCollection;
+use webignition\BasilCompilableSource\VariableDependencyCollection;
 
 class StatementTest extends \PHPUnit\Framework\TestCase
 {
@@ -35,7 +35,7 @@ class StatementTest extends \PHPUnit\Framework\TestCase
             'variable dependency' => [
                 'expression' => VariableDependency::createDependency('DEPENDENCY'),
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariableDependencyCollection::createDependencyCollection([
                         'DEPENDENCY',
                     ])
                 ]),
@@ -43,7 +43,7 @@ class StatementTest extends \PHPUnit\Framework\TestCase
             'variable export' => [
                 'expression' => VariableDependency::createExport('EXPORT'),
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
+                    Metadata::KEY_VARIABLE_EXPORTS => VariableDependencyCollection::createExportCollection([
                         'EXPORT',
                     ])
                 ]),
@@ -58,7 +58,7 @@ class StatementTest extends \PHPUnit\Framework\TestCase
                     'methodName'
                 ),
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariableDependencyCollection::createDependencyCollection([
                         'OBJECT',
                     ])
                 ]),

@@ -26,7 +26,7 @@ use webignition\BasilCompilableSource\MethodDefinition;
 use webignition\BasilCompilableSource\MethodDefinitionInterface;
 use webignition\BasilCompilableSource\StaticObject;
 use webignition\BasilCompilableSource\VariableDependency;
-use webignition\BasilCompilableSource\VariablePlaceholderCollection;
+use webignition\BasilCompilableSource\VariableDependencyCollection;
 
 class ClassDefinitionTest extends TestCase
 {
@@ -138,10 +138,10 @@ class ClassDefinitionTest extends TestCase
                     ]
                 ),
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariableDependencyCollection::createDependencyCollection([
                         'DEPENDENCY',
                     ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
+                    Metadata::KEY_VARIABLE_EXPORTS => VariableDependencyCollection::createExportCollection([
                         'PLACEHOLDER',
                     ]),
                 ]),

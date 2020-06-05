@@ -24,7 +24,7 @@ use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\SourceInterface;
 use webignition\BasilCompilableSource\StaticObject;
 use webignition\BasilCompilableSource\VariableDependency;
-use webignition\BasilCompilableSource\VariablePlaceholderCollection;
+use webignition\BasilCompilableSource\VariableDependencyCollection;
 
 class CodeBlockTest extends \PHPUnit\Framework\TestCase
 {
@@ -162,10 +162,10 @@ class CodeBlockTest extends \PHPUnit\Framework\TestCase
                     ),
                 ]),
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariableDependencyCollection::createDependencyCollection([
                         'DEPENDENCY',
                     ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
+                    Metadata::KEY_VARIABLE_EXPORTS => VariableDependencyCollection::createExportCollection([
                         'PLACEHOLDER',
                     ]),
                 ]),

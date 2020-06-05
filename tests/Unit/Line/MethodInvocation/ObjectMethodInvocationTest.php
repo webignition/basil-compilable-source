@@ -16,7 +16,7 @@ use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\VariableName;
 use webignition\BasilCompilableSource\StaticObject;
 use webignition\BasilCompilableSource\VariableDependency;
-use webignition\BasilCompilableSource\VariablePlaceholderCollection;
+use webignition\BasilCompilableSource\VariableDependencyCollection;
 
 class ObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
 {
@@ -53,7 +53,7 @@ class ObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
                 'arguments' => [],
                 'argumentFormat' => MethodInvocation::ARGUMENT_FORMAT_INLINE,
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariableDependencyCollection::createDependencyCollection([
                         'OBJECT',
                     ]),
                 ]),
@@ -66,7 +66,7 @@ class ObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
                 ],
                 'argumentFormat' => MethodInvocation::ARGUMENT_FORMAT_INLINE,
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariableDependencyCollection::createDependencyCollection([
                         'OBJECT',
                     ]),
                 ]),
@@ -81,7 +81,7 @@ class ObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
                 ],
                 'argumentFormat' => MethodInvocation::ARGUMENT_FORMAT_INLINE,
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariableDependencyCollection::createDependencyCollection([
                         'OBJECT',
                     ]),
                 ]),
@@ -96,7 +96,7 @@ class ObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
                 ],
                 'argumentFormat' => MethodInvocation::ARGUMENT_FORMAT_STACKED,
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariableDependencyCollection::createDependencyCollection([
                         'OBJECT',
                     ]),
                 ]),
@@ -115,7 +115,7 @@ class ObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ClassDependency::class),
                     ]),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariableDependencyCollection::createDependencyCollection([
                         'OBJECT',
                     ]),
                 ]),

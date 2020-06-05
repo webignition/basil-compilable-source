@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Metadata;
 
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
-use webignition\BasilCompilableSource\VariablePlaceholderCollection;
+use webignition\BasilCompilableSource\VariableDependencyCollection;
 
 interface MetadataInterface
 {
     public function getClassDependencies(): ClassDependencyCollection;
-    public function getVariableExports(): VariablePlaceholderCollection;
-    public function getVariableDependencies(): VariablePlaceholderCollection;
+    public function getVariableExports(): VariableDependencyCollection;
+    public function getVariableDependencies(): VariableDependencyCollection;
 
     public function merge(MetadataInterface $metadata): MetadataInterface;
 }

@@ -8,7 +8,7 @@ use webignition\BasilCompilableSource\Line\ObjectPropertyAccessExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\VariableDependency;
-use webignition\BasilCompilableSource\VariablePlaceholderCollection;
+use webignition\BasilCompilableSource\VariableDependencyCollection;
 use webignition\BasilCompilableSource\VariableName;
 use webignition\BasilCompilableSource\VariablePlaceholderInterface;
 
@@ -36,7 +36,7 @@ class ObjectPropertyAccessExpressionTest extends \PHPUnit\Framework\TestCase
                 'objectPlaceholder' => VariableDependency::createDependency('OBJECT'),
                 'property' => 'propertyName',
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariableDependencyCollection::createDependencyCollection([
                         'OBJECT',
                     ]),
                 ]),

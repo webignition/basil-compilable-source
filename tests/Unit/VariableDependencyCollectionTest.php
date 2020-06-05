@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Tests\Unit;
 
 use webignition\BasilCompilableSource\VariableDependency;
-use webignition\BasilCompilableSource\VariablePlaceholderCollection;
+use webignition\BasilCompilableSource\VariableDependencyCollection;
 
-class VariablePlaceholderCollectionTest extends \PHPUnit\Framework\TestCase
+class VariableDependencyCollectionTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider createDataProvider
@@ -18,7 +18,7 @@ class VariablePlaceholderCollectionTest extends \PHPUnit\Framework\TestCase
      */
     public function testCreate(string $type, array $names, array $expectedPlaceholders)
     {
-        $collection = VariablePlaceholderCollection::create($type, $names);
+        $collection = VariableDependencyCollection::create($type, $names);
 
         $this->assertCount(count($expectedPlaceholders), $collection);
 
@@ -75,7 +75,7 @@ class VariablePlaceholderCollectionTest extends \PHPUnit\Framework\TestCase
 
     public function testCreatePlaceholder()
     {
-        $collection = VariablePlaceholderCollection::createDependencyCollection();
+        $collection = VariableDependencyCollection::createDependencyCollection();
         $this->assertEquals([], $this->getCollectionVariablePlaceholders($collection));
 
         $placeholder = $collection->createPlaceholder('PLACEHOLDER');
@@ -91,13 +91,13 @@ class VariablePlaceholderCollectionTest extends \PHPUnit\Framework\TestCase
 
     public function testMerge()
     {
-        $collection = VariablePlaceholderCollection::createDependencyCollection(['ONE']);
+        $collection = VariableDependencyCollection::createDependencyCollection(['ONE']);
 
-        $collection = $collection->merge(VariablePlaceholderCollection::createDependencyCollection(['TWO', 'THREE']));
+        $collection = $collection->merge(VariableDependencyCollection::createDependencyCollection(['TWO', 'THREE']));
         $collection = $collection->merge(
-            VariablePlaceholderCollection::createDependencyCollection(['THREE', 'FOUR'])
+            VariableDependencyCollection::createDependencyCollection(['THREE', 'FOUR'])
         );
-        $collection = $collection->merge(VariablePlaceholderCollection::createExportCollection(['FIVE']));
+        $collection = $collection->merge(VariableDependencyCollection::createExportCollection(['FIVE']));
 
         $this->assertCount(4, $collection);
 
@@ -120,7 +120,7 @@ class VariablePlaceholderCollectionTest extends \PHPUnit\Framework\TestCase
             'THREE' => 'THREE',
         ];
 
-        $collection = VariablePlaceholderCollection::createDependencyCollection(array_values($collectionValues));
+        $collection = VariableDependencyCollection::createDependencyCollection(array_values($collectionValues));
 
         foreach ($collection as $id => $variablePlaceholder) {
             $expectedPlaceholder = new VariableDependency(
@@ -133,14 +133,14 @@ class VariablePlaceholderCollectionTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @param VariablePlaceholderCollection $collection
+     * @param VariableDependencyCollection $collection
      *
      * @return VariableDependency[]
      */
-    private function getCollectionVariablePlaceholders(VariablePlaceholderCollection $collection): array
+    private function getCollectionVariablePlaceholders(VariableDependencyCollection $collection): array
     {
         $reflectionObject = new \ReflectionObject($collection);
-        $property = $reflectionObject->getProperty('variablePlaceholders');
+        $property = $reflectionObject->getProperty('dependencies');
         $property->setAccessible(true);
 
         return $property->getValue($collection);
