@@ -23,7 +23,7 @@ use webignition\BasilCompilableSource\Line\Statement\ReturnStatement;
 use webignition\BasilCompilableSource\Line\Statement\Statement;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\ResolvingPlaceholder;
+use webignition\BasilCompilableSource\VariableName;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclaration;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclarationCollection;
 use webignition\BasilCompilableSource\ResolvablePlaceholder;
@@ -231,12 +231,12 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
                 'expression' => new ClosureExpression(
                     new CodeBlock([
                         new AssignmentStatement(
-                            new ResolvingPlaceholder('variableName'),
+                            new VariableName('variableName'),
                             new LiteralExpression('"literal value"')
                         ),
                         new EmptyLine(),
                         new ReturnStatement(
-                            new ResolvingPlaceholder('variableName')
+                            new VariableName('variableName')
                         ),
                     ])
                 ),

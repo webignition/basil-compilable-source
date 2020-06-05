@@ -6,7 +6,7 @@ namespace webignition\BasilCompilableSource\Line;
 
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\ResolvingPlaceholder;
+use webignition\BasilCompilableSource\VariableName;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclarationCollection;
 
 class CatchExpression implements ExpressionInterface
@@ -28,7 +28,7 @@ class CatchExpression implements ExpressionInterface
 
     public function render(): string
     {
-        $placeholder = new ResolvingPlaceholder('exception');
+        $placeholder = new VariableName('exception');
 
         return sprintf(
             '%s %s',

@@ -8,7 +8,7 @@ use webignition\BasilCompilableSource\Line\ExpressionInterface;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 
-class ResolvingPlaceholder implements ExpressionInterface, VariablePlaceholderInterface
+class VariableName implements ExpressionInterface, VariablePlaceholderInterface
 {
     private const RENDER_PATTERN = '$%s';
 
