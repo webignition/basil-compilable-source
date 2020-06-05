@@ -128,20 +128,12 @@ class MethodInvocation implements MethodInvocationInterface
         if (self::ARGUMENT_FORMAT_STACKED === $this->getArgumentFormat()) {
             array_walk($renderedArguments, function (&$argument) {
                 $argumentLines = explode("\n", $argument);
+                array_walk($argumentLines, function (&$line) {
+                    $line = $this->indentLine($line);
+                });
 
-                if (count($argumentLines) > 1) {
-                    array_walk($argumentLines, function (&$line) {
-                        if ('' !== $line) {
-                            $line = '    ' . $line;
-                        }
-                    });
-
-                    $argument = trim(implode("\n", $argumentLines));
-                }
-
-                if ('' !== $argument) {
-                    $argument = '    ' . $argument;
-                }
+                $argument = trim(implode("\n", $argumentLines));
+                $argument = $this->indentLine($argument);
             });
 
             $argumentPrefix = "\n";
@@ -154,5 +146,14 @@ class MethodInvocation implements MethodInvocationInterface
         });
 
         return implode($join, $renderedArguments) . $stringSuffix;
+    }
+
+    private function indentLine(string $content): string
+    {
+        if ('' !== $content) {
+            $content = '    ' . $content;
+        }
+
+        return $content;
     }
 }
