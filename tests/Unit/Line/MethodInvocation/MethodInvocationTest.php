@@ -21,7 +21,7 @@ use webignition\BasilCompilableSource\Line\Statement\ReturnStatement;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\ResolvablePlaceholder;
-use webignition\BasilCompilableSource\ResolvingPlaceholder;
+use webignition\BasilCompilableSource\VariableName;
 use webignition\BasilCompilableSource\StaticObject;
 
 class MethodInvocationTest extends \PHPUnit\Framework\TestCase
@@ -185,12 +185,12 @@ class MethodInvocationTest extends \PHPUnit\Framework\TestCase
                         new ClosureExpression(
                             new CodeBlock([
                                 new AssignmentStatement(
-                                    new ResolvingPlaceholder('variable'),
+                                    new VariableName('variable'),
                                     new LiteralExpression('100')
                                 ),
                                 new EmptyLine(),
                                 new ReturnStatement(
-                                    new ResolvingPlaceholder('variable'),
+                                    new VariableName('variable'),
                                 ),
                             ])
                         ),

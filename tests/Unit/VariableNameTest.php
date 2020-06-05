@@ -5,19 +5,19 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Tests\Unit;
 
 use webignition\BasilCompilableSource\Metadata\Metadata;
-use webignition\BasilCompilableSource\ResolvingPlaceholder;
+use webignition\BasilCompilableSource\VariableName;
 
-class ResolvingPlaceholderTest extends \PHPUnit\Framework\TestCase
+class VariableNameTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetMetadata()
     {
-        $this->assertEquals(new Metadata(), (new ResolvingPlaceholder('name'))->getMetadata());
+        $this->assertEquals(new Metadata(), (new VariableName('name'))->getMetadata());
     }
 
     /**
      * @dataProvider renderDataProvider
      */
-    public function testRender(ResolvingPlaceholder $placeholder, string $expectedString)
+    public function testRender(VariableName $placeholder, string $expectedString)
     {
         $this->assertSame($expectedString, $placeholder->render());
     }
@@ -26,11 +26,11 @@ class ResolvingPlaceholderTest extends \PHPUnit\Framework\TestCase
     {
         return [
             'empty' => [
-                'placeholder' => new ResolvingPlaceholder(''),
+                'placeholder' => new VariableName(''),
                 'expectedString' => '$',
             ],
             'non-empty' => [
-                'placeholder' => new ResolvingPlaceholder('name'),
+                'placeholder' => new VariableName('name'),
                 'expectedString' => '$name',
             ],
         ];

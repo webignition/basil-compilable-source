@@ -13,7 +13,7 @@ use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocati
 use webignition\BasilCompilableSource\Line\MethodInvocation\StaticObjectMethodInvocation;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\ResolvingPlaceholder;
+use webignition\BasilCompilableSource\VariableName;
 use webignition\BasilCompilableSource\StaticObject;
 use webignition\BasilCompilableSource\ResolvablePlaceholder;
 use webignition\BasilCompilableSource\ResolvablePlaceholderCollection;
@@ -121,7 +121,7 @@ class ObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             'no arguments, resolving placeholder' => [
-                'object' => new ResolvingPlaceholder('object'),
+                'object' => new VariableName('object'),
                 'methodName' => 'method',
                 'arguments' => [],
                 'argumentFormat' => MethodInvocation::ARGUMENT_FORMAT_INLINE,
@@ -202,7 +202,7 @@ class ObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
             ],
             'object and method name only, resolving placeholder' => [
                 'invocation' => new ObjectMethodInvocation(
-                    new ResolvingPlaceholder('object'),
+                    new VariableName('object'),
                     'methodName'
                 ),
                 'expectedString' => '$object->methodName()',

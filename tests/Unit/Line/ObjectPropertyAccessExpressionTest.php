@@ -9,7 +9,7 @@ use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\ResolvablePlaceholder;
 use webignition\BasilCompilableSource\ResolvablePlaceholderCollection;
-use webignition\BasilCompilableSource\ResolvingPlaceholder;
+use webignition\BasilCompilableSource\VariableName;
 use webignition\BasilCompilableSource\VariablePlaceholderInterface;
 
 class ObjectPropertyAccessExpressionTest extends \PHPUnit\Framework\TestCase
@@ -42,7 +42,7 @@ class ObjectPropertyAccessExpressionTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             'has resolving placeholder' => [
-                'objectPlaceholder' => new ResolvingPlaceholder('object'),
+                'objectPlaceholder' => new VariableName('object'),
                 'property' => 'propertyName',
                 'expectedMetadata' => new Metadata(),
             ],
@@ -69,7 +69,7 @@ class ObjectPropertyAccessExpressionTest extends \PHPUnit\Framework\TestCase
             ],
             'has resolving placeholder' => [
                 'expression' => new ObjectPropertyAccessExpression(
-                    new ResolvingPlaceholder('object'),
+                    new VariableName('object'),
                     'propertyName'
                 ),
                 'expectedString' => '$object->propertyName',
