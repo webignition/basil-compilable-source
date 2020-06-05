@@ -13,7 +13,7 @@ use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocati
 use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\Statement;
 use webignition\BasilCompilableSource\LineInterface;
-use webignition\BasilCompilableSource\ResolvablePlaceholder;
+use webignition\BasilCompilableSource\VariablePlaceholder;
 
 class DocBlockTest extends \PHPUnit\Framework\TestCase
 {
@@ -46,16 +46,16 @@ class DocBlockTest extends \PHPUnit\Framework\TestCase
                 'sources' => [
                     new MethodInvocation('methodName'),
                     new ObjectMethodInvocation(
-                        ResolvablePlaceholder::createDependency('OBJECT'),
+                        VariablePlaceholder::createDependency('OBJECT'),
                         'methodName'
                     ),
                     new Statement(new MethodInvocation('methodName')),
                     new Statement(new ObjectMethodInvocation(
-                        ResolvablePlaceholder::createDependency('OBJECT'),
+                        VariablePlaceholder::createDependency('OBJECT'),
                         'methodName'
                     )),
                     new AssignmentStatement(
-                        ResolvablePlaceholder::createExport('PLACEHOLDER'),
+                        VariablePlaceholder::createExport('PLACEHOLDER'),
                         new MethodInvocation('methodName')
                     ),
                     new ClassDependency(ClassDependency::class),

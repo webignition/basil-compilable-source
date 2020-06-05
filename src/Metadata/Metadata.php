@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Metadata;
 
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
-use webignition\BasilCompilableSource\ResolvablePlaceholderCollection;
+use webignition\BasilCompilableSource\VariablePlaceholderCollection;
 
 class Metadata implements MetadataInterface
 {
@@ -14,8 +14,8 @@ class Metadata implements MetadataInterface
     public const KEY_VARIABLE_EXPORTS = 'variable-exports';
 
     private ClassDependencyCollection $classDependencies;
-    private ResolvablePlaceholderCollection $variableDependencies;
-    private ResolvablePlaceholderCollection $variableExports;
+    private VariablePlaceholderCollection $variableDependencies;
+    private VariablePlaceholderCollection $variableExports;
 
     /**
      * @param array<mixed> $components
@@ -27,15 +27,15 @@ class Metadata implements MetadataInterface
             ? $classDependencies
             : new ClassDependencyCollection();
 
-        $emptyVariableDependencies = ResolvablePlaceholderCollection::createDependencyCollection();
+        $emptyVariableDependencies = VariablePlaceholderCollection::createDependencyCollection();
         $variableDependencies = $components[self::KEY_VARIABLE_DEPENDENCIES] ?? $emptyVariableDependencies;
-        $variableDependencies = $variableDependencies instanceof ResolvablePlaceholderCollection
+        $variableDependencies = $variableDependencies instanceof VariablePlaceholderCollection
             ? $variableDependencies
             : $emptyVariableDependencies;
 
-        $emptyVariableExports = ResolvablePlaceholderCollection::createExportCollection();
+        $emptyVariableExports = VariablePlaceholderCollection::createExportCollection();
         $variableExports = $components[self::KEY_VARIABLE_EXPORTS] ?? $emptyVariableExports;
-        $variableExports = $variableExports instanceof ResolvablePlaceholderCollection
+        $variableExports = $variableExports instanceof VariablePlaceholderCollection
             ? $variableExports
             : $emptyVariableExports;
 
@@ -49,12 +49,12 @@ class Metadata implements MetadataInterface
         return $this->classDependencies;
     }
 
-    public function getVariableExports(): ResolvablePlaceholderCollection
+    public function getVariableExports(): VariablePlaceholderCollection
     {
         return $this->variableExports;
     }
 
-    public function getVariableDependencies(): ResolvablePlaceholderCollection
+    public function getVariableDependencies(): VariablePlaceholderCollection
     {
         return $this->variableDependencies;
     }

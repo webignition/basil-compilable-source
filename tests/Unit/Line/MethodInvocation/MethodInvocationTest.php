@@ -20,7 +20,7 @@ use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\ReturnStatement;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\ResolvablePlaceholder;
+use webignition\BasilCompilableSource\VariablePlaceholder;
 use webignition\BasilCompilableSource\VariableName;
 use webignition\BasilCompilableSource\StaticObject;
 
@@ -170,7 +170,7 @@ class MethodInvocationTest extends \PHPUnit\Framework\TestCase
                     'setValue',
                     [
                         new ObjectMethodInvocation(
-                            ResolvablePlaceholder::createDependency('NAVIGATOR'),
+                            VariablePlaceholder::createDependency('NAVIGATOR'),
                             'find',
                             [
                                 new StaticObjectMethodInvocation(

@@ -8,7 +8,7 @@ use webignition\BasilCompilableSource\Line\ObjectPropertyAccessExpression;
 use webignition\BasilCompilableSource\Line\Statement\AssignmentStatementInterface;
 use webignition\BasilCompilableSource\Line\ExpressionInterface;
 use webignition\BasilCompilableSource\Line\Statement\ObjectPropertyAssignmentStatement;
-use webignition\BasilCompilableSource\ResolvablePlaceholder;
+use webignition\BasilCompilableSource\VariablePlaceholder;
 
 class ObjectPropertyAssignmentStatementTest extends \PHPUnit\Framework\TestCase
 {
@@ -31,12 +31,12 @@ class ObjectPropertyAssignmentStatementTest extends \PHPUnit\Framework\TestCase
         return [
             'default' => [
                 'placeholder' => new ObjectPropertyAccessExpression(
-                    ResolvablePlaceholder::createExport('DEPENDENCY'),
+                    VariablePlaceholder::createExport('DEPENDENCY'),
                     'propertyName'
                 ),
-                'expression' => ResolvablePlaceholder::createDependency('DEPENDENCY'),
+                'expression' => VariablePlaceholder::createDependency('DEPENDENCY'),
                 'expectedPlaceholder' => new ObjectPropertyAccessExpression(
-                    ResolvablePlaceholder::createExport('DEPENDENCY'),
+                    VariablePlaceholder::createExport('DEPENDENCY'),
                     'propertyName'
                 ),
             ],
@@ -57,10 +57,10 @@ class ObjectPropertyAssignmentStatementTest extends \PHPUnit\Framework\TestCase
             'default' => [
                 'statement' => new ObjectPropertyAssignmentStatement(
                     new ObjectPropertyAccessExpression(
-                        ResolvablePlaceholder::createExport('PLACEHOLDER'),
+                        VariablePlaceholder::createExport('PLACEHOLDER'),
                         'propertyName'
                     ),
-                    ResolvablePlaceholder::createDependency('DEPENDENCY')
+                    VariablePlaceholder::createDependency('DEPENDENCY')
                 ),
                 'expectedString' => '{{ PLACEHOLDER }}->propertyName = {{ DEPENDENCY }};',
             ],

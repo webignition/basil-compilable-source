@@ -25,8 +25,8 @@ use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\MethodDefinition;
 use webignition\BasilCompilableSource\MethodDefinitionInterface;
 use webignition\BasilCompilableSource\StaticObject;
-use webignition\BasilCompilableSource\ResolvablePlaceholder;
-use webignition\BasilCompilableSource\ResolvablePlaceholderCollection;
+use webignition\BasilCompilableSource\VariablePlaceholder;
+use webignition\BasilCompilableSource\VariablePlaceholderCollection;
 
 class ClassDefinitionTest extends TestCase
 {
@@ -126,22 +126,22 @@ class ClassDefinitionTest extends TestCase
                         new MethodDefinition('name', new CodeBlock([
                             new Statement(
                                 new ObjectMethodInvocation(
-                                    ResolvablePlaceholder::createDependency('DEPENDENCY'),
+                                    VariablePlaceholder::createDependency('DEPENDENCY'),
                                     'methodName'
                                 )
                             ),
                             new AssignmentStatement(
-                                ResolvablePlaceholder::createExport('PLACEHOLDER'),
+                                VariablePlaceholder::createExport('PLACEHOLDER'),
                                 new MethodInvocation('methodName')
                             ),
                         ])),
                     ]
                 ),
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         'DEPENDENCY',
                     ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => ResolvablePlaceholderCollection::createExportCollection([
+                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         'PLACEHOLDER',
                     ]),
                 ]),
@@ -207,7 +207,7 @@ class ClassDefinitionTest extends TestCase
                         new MethodDefinition('stepOne', new CodeBlock([
                             new SingleLineComment('click $"a"'),
                             new AssignmentStatement(
-                                ResolvablePlaceholder::createExport('STATEMENT'),
+                                VariablePlaceholder::createExport('STATEMENT'),
                                 new StaticObjectMethodInvocation(
                                     new StaticObject('Acme\\Statement'),
                                     'createAction',
@@ -217,14 +217,14 @@ class ClassDefinitionTest extends TestCase
                                 )
                             ),
                             new AssignmentStatement(
-                                ResolvablePlaceholder::createExport('CURRENT_STATEMENT'),
-                                ResolvablePlaceholder::createExport('STATEMENT')
+                                VariablePlaceholder::createExport('CURRENT_STATEMENT'),
+                                VariablePlaceholder::createExport('STATEMENT')
                             ),
                         ])),
                         new MethodDefinition('stepTwo', new CodeBlock([
                             new SingleLineComment('click $"b"'),
                             new AssignmentStatement(
-                                ResolvablePlaceholder::createExport('STATEMENT'),
+                                VariablePlaceholder::createExport('STATEMENT'),
                                 new StaticObjectMethodInvocation(
                                     new StaticObject('Acme\\Statement'),
                                     'createAction',
@@ -234,8 +234,8 @@ class ClassDefinitionTest extends TestCase
                                 )
                             ),
                             new AssignmentStatement(
-                                ResolvablePlaceholder::createExport('CURRENT_STATEMENT'),
-                                ResolvablePlaceholder::createExport('STATEMENT')
+                                VariablePlaceholder::createExport('CURRENT_STATEMENT'),
+                                VariablePlaceholder::createExport('STATEMENT')
                             ),
                         ])),
                     ]),
@@ -270,7 +270,7 @@ class ClassDefinitionTest extends TestCase
                                 new CodeBlock([
                                     new SingleLineComment('click $"a"'),
                                     new AssignmentStatement(
-                                        ResolvablePlaceholder::createExport('STATEMENT'),
+                                        VariablePlaceholder::createExport('STATEMENT'),
                                         new StaticObjectMethodInvocation(
                                             new StaticObject('Acme\\Statement'),
                                             'createAction',
@@ -280,8 +280,8 @@ class ClassDefinitionTest extends TestCase
                                         )
                                     ),
                                     new AssignmentStatement(
-                                        ResolvablePlaceholder::createExport('CURRENT_STATEMENT'),
-                                        ResolvablePlaceholder::createExport('STATEMENT')
+                                        VariablePlaceholder::createExport('CURRENT_STATEMENT'),
+                                        VariablePlaceholder::createExport('STATEMENT')
                                     ),
                                 ]),
                                 [
@@ -305,7 +305,7 @@ class ClassDefinitionTest extends TestCase
                         new MethodDefinition('stepTwo', new CodeBlock([
                             new SingleLineComment('click $"b"'),
                             new AssignmentStatement(
-                                ResolvablePlaceholder::createExport('STATEMENT'),
+                                VariablePlaceholder::createExport('STATEMENT'),
                                 new StaticObjectMethodInvocation(
                                     new StaticObject('Acme\\Statement'),
                                     'createAction',
@@ -315,8 +315,8 @@ class ClassDefinitionTest extends TestCase
                                 )
                             ),
                             new AssignmentStatement(
-                                ResolvablePlaceholder::createExport('CURRENT_STATEMENT'),
-                                ResolvablePlaceholder::createExport('STATEMENT')
+                                VariablePlaceholder::createExport('CURRENT_STATEMENT'),
+                                VariablePlaceholder::createExport('STATEMENT')
                             ),
                         ])),
                     ]),
