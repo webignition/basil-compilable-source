@@ -5,16 +5,23 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Tests\Unit\Line\MethodInvocation;
 
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
+use webignition\BasilCompilableSource\Block\CodeBlock;
 use webignition\BasilCompilableSource\Line\ClassDependency;
+use webignition\BasilCompilableSource\Line\ClosureExpression;
+use webignition\BasilCompilableSource\Line\EmptyLine;
 use webignition\BasilCompilableSource\Line\ExpressionInterface;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\Line\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSource\Line\MethodInvocation\MethodInvocationInterface;
 use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Line\MethodInvocation\StaticObjectMethodInvocation;
+use webignition\BasilCompilableSource\Line\SingleLineComment;
+use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
+use webignition\BasilCompilableSource\Line\Statement\ReturnStatement;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\ResolvablePlaceholder;
+use webignition\BasilCompilableSource\ResolvingPlaceholder;
 use webignition\BasilCompilableSource\StaticObject;
 
 class MethodInvocationTest extends \PHPUnit\Framework\TestCase
@@ -175,7 +182,18 @@ class MethodInvocationTest extends \PHPUnit\Framework\TestCase
                                 )
                             ]
                         ),
-                        new LiteralExpression('"literal for mutator"')
+                        new ClosureExpression(
+                            new CodeBlock([
+                                new AssignmentStatement(
+                                    new ResolvingPlaceholder('variable'),
+                                    new LiteralExpression('100')
+                                ),
+                                new EmptyLine(),
+                                new ReturnStatement(
+                                    new ResolvingPlaceholder('variable'),
+                                ),
+                            ])
+                        ),
                     ],
                     ObjectMethodInvocation::ARGUMENT_FORMAT_STACKED
                 ),
@@ -184,7 +202,11 @@ class MethodInvocationTest extends \PHPUnit\Framework\TestCase
                     '    {{ NAVIGATOR }}->find(ObjectMethodInvocation::fromJson({' . "\n" .
                     '        "locator": ".selector"' . "\n" .
                     '    })),' . "\n" .
-                    '    "literal for mutator"' . "\n" .
+                    '    (function () {' . "\n" .
+                    '        $variable = 100;' . "\n" .
+                    "\n" .
+                    '        return $variable;' . "\n" .
+                    '    })()' . "\n" .
                     ')'
                 ,
             ],

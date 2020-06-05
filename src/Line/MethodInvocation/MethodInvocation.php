@@ -131,13 +131,17 @@ class MethodInvocation implements MethodInvocationInterface
 
                 if (count($argumentLines) > 1) {
                     array_walk($argumentLines, function (&$line) {
-                        $line = '    ' . $line;
+                        if ('' !== $line) {
+                            $line = '    ' . $line;
+                        }
                     });
 
                     $argument = trim(implode("\n", $argumentLines));
                 }
 
-                $argument = '    ' . $argument;
+                if ('' !== $argument) {
+                    $argument = '    ' . $argument;
+                }
             });
 
             $argumentPrefix = "\n";
