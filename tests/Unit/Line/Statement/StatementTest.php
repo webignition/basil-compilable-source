@@ -13,8 +13,8 @@ use webignition\BasilCompilableSource\Line\Statement\Statement;
 use webignition\BasilCompilableSource\Line\Statement\StatementInterface;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\ResolvablePlaceholder;
-use webignition\BasilCompilableSource\ResolvablePlaceholderCollection;
+use webignition\BasilCompilableSource\VariablePlaceholder;
+use webignition\BasilCompilableSource\VariablePlaceholderCollection;
 
 class StatementTest extends \PHPUnit\Framework\TestCase
 {
@@ -33,17 +33,17 @@ class StatementTest extends \PHPUnit\Framework\TestCase
     {
         return [
             'variable dependency' => [
-                'expression' => ResolvablePlaceholder::createDependency('DEPENDENCY'),
+                'expression' => VariablePlaceholder::createDependency('DEPENDENCY'),
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         'DEPENDENCY',
                     ])
                 ]),
             ],
             'variable export' => [
-                'expression' => ResolvablePlaceholder::createExport('EXPORT'),
+                'expression' => VariablePlaceholder::createExport('EXPORT'),
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_EXPORTS => ResolvablePlaceholderCollection::createExportCollection([
+                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         'EXPORT',
                     ])
                 ]),
@@ -54,11 +54,11 @@ class StatementTest extends \PHPUnit\Framework\TestCase
             ],
             'object method invocation' => [
                 'expression' => new ObjectMethodInvocation(
-                    ResolvablePlaceholder::createDependency('OBJECT'),
+                    VariablePlaceholder::createDependency('OBJECT'),
                     'methodName'
                 ),
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         'OBJECT',
                     ])
                 ]),
@@ -79,13 +79,13 @@ class StatementTest extends \PHPUnit\Framework\TestCase
         return [
             'statement encapsulating variable dependency' => [
                 'statement' => new Statement(
-                    ResolvablePlaceholder::createDependency('DEPENDENCY')
+                    VariablePlaceholder::createDependency('DEPENDENCY')
                 ),
                 'expectedString' => '{{ DEPENDENCY }};',
             ],
             'statement encapsulating variable export' => [
                 'statement' => new Statement(
-                    ResolvablePlaceholder::createExport('EXPORT')
+                    VariablePlaceholder::createExport('EXPORT')
                 ),
                 'expectedString' => '{{ EXPORT }};',
             ],
@@ -98,7 +98,7 @@ class StatementTest extends \PHPUnit\Framework\TestCase
             'statement encapsulating object method invocation' => [
                 'statement' => new Statement(
                     new ObjectMethodInvocation(
-                        ResolvablePlaceholder::createDependency('OBJECT'),
+                        VariablePlaceholder::createDependency('OBJECT'),
                         'methodName'
                     )
                 ),

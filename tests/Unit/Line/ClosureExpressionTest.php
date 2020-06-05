@@ -26,8 +26,8 @@ use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\VariableName;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclaration;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclarationCollection;
-use webignition\BasilCompilableSource\ResolvablePlaceholder;
-use webignition\BasilCompilableSource\ResolvablePlaceholderCollection;
+use webignition\BasilCompilableSource\VariablePlaceholder;
+use webignition\BasilCompilableSource\VariablePlaceholderCollection;
 
 class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
 {
@@ -58,9 +58,9 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
             'non-empty, has metadata' => [
                 'codeBlock' => new CodeBlock([
                     new AssignmentStatement(
-                        ResolvablePlaceholder::createExport('EXPORT'),
+                        VariablePlaceholder::createExport('EXPORT'),
                         new ObjectMethodInvocation(
-                            ResolvablePlaceholder::createDependency('DEPENDENCY'),
+                            VariablePlaceholder::createDependency('DEPENDENCY'),
                             'dependencyMethodName'
                         )
                     ),
@@ -68,7 +68,7 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
                         new CompositeExpression([
                             new CastExpression(
                                 new ObjectMethodInvocation(
-                                    ResolvablePlaceholder::createExport('EXPORT'),
+                                    VariablePlaceholder::createExport('EXPORT'),
                                     'getWidth',
                                     [],
                                     MethodInvocation::ARGUMENT_FORMAT_INLINE
@@ -78,7 +78,7 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
                             new LiteralExpression(' . \'x\' . '),
                             new CastExpression(
                                 new ObjectMethodInvocation(
-                                    ResolvablePlaceholder::createExport('EXPORT'),
+                                    VariablePlaceholder::createExport('EXPORT'),
                                     'getHeight',
                                     [],
                                     MethodInvocation::ARGUMENT_FORMAT_INLINE
@@ -89,10 +89,10 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
                     )
                 ]),
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         'DEPENDENCY',
                     ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => ResolvablePlaceholderCollection::createExportCollection([
+                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         'EXPORT',
                     ]),
                 ]),
@@ -166,9 +166,9 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
                 'expression' => new ClosureExpression(
                     new CodeBlock([
                         new AssignmentStatement(
-                            ResolvablePlaceholder::createExport('EXPORT'),
+                            VariablePlaceholder::createExport('EXPORT'),
                             new ObjectMethodInvocation(
-                                ResolvablePlaceholder::createDependency('DEPENDENCY'),
+                                VariablePlaceholder::createDependency('DEPENDENCY'),
                                 'dependencyMethodName'
                             )
                         ),
@@ -177,7 +177,7 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
                             new CompositeExpression([
                                 new CastExpression(
                                     new ObjectMethodInvocation(
-                                        ResolvablePlaceholder::createExport('EXPORT'),
+                                        VariablePlaceholder::createExport('EXPORT'),
                                         'getWidth',
                                         [],
                                         MethodInvocation::ARGUMENT_FORMAT_INLINE
@@ -187,7 +187,7 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
                                 new LiteralExpression(' . \'x\' . '),
                                 new CastExpression(
                                     new ObjectMethodInvocation(
-                                        ResolvablePlaceholder::createExport('EXPORT'),
+                                        VariablePlaceholder::createExport('EXPORT'),
                                         'getHeight',
                                         [],
                                         MethodInvocation::ARGUMENT_FORMAT_INLINE

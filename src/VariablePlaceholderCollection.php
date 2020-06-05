@@ -7,7 +7,7 @@ namespace webignition\BasilCompilableSource;
 /**
  * @implements \IteratorAggregate<ResolvableVariablePlaceholderInterface>
  */
-class ResolvablePlaceholderCollection implements \IteratorAggregate
+class VariablePlaceholderCollection implements \IteratorAggregate
 {
     private string $placeholderType;
 
@@ -18,24 +18,24 @@ class ResolvablePlaceholderCollection implements \IteratorAggregate
 
     private function __construct(string $placeholderType)
     {
-        $this->placeholderType = ResolvablePlaceholder::isAllowedType($placeholderType)
+        $this->placeholderType = VariablePlaceholder::isAllowedType($placeholderType)
             ? $placeholderType
-            : ResolvablePlaceholder::TYPE_EXPORT;
+            : VariablePlaceholder::TYPE_EXPORT;
     }
 
     /**
      * @param string $placeholderType
      * @param string[] $names
      *
-     * @return ResolvablePlaceholderCollection
+     * @return VariablePlaceholderCollection
      */
-    public static function create(string $placeholderType, array $names = []): ResolvablePlaceholderCollection
+    public static function create(string $placeholderType, array $names = []): VariablePlaceholderCollection
     {
-        $collection = new ResolvablePlaceholderCollection($placeholderType);
+        $collection = new VariablePlaceholderCollection($placeholderType);
 
         foreach ($names as $name) {
             if (is_string($name)) {
-                $collection->add(new ResolvablePlaceholder($name, $collection->getPlaceholderType()));
+                $collection->add(new VariablePlaceholder($name, $collection->getPlaceholderType()));
             }
         }
 
@@ -45,21 +45,21 @@ class ResolvablePlaceholderCollection implements \IteratorAggregate
     /**
      * @param string[] $names
      *
-     * @return ResolvablePlaceholderCollection
+     * @return VariablePlaceholderCollection
      */
-    public static function createDependencyCollection(array $names = []): ResolvablePlaceholderCollection
+    public static function createDependencyCollection(array $names = []): VariablePlaceholderCollection
     {
-        return self::create(ResolvablePlaceholder::TYPE_DEPENDENCY, $names);
+        return self::create(VariablePlaceholder::TYPE_DEPENDENCY, $names);
     }
 
     /**
      * @param string[] $names
      *
-     * @return ResolvablePlaceholderCollection
+     * @return VariablePlaceholderCollection
      */
-    public static function createExportCollection(array $names = []): ResolvablePlaceholderCollection
+    public static function createExportCollection(array $names = []): VariablePlaceholderCollection
     {
-        return self::create(ResolvablePlaceholder::TYPE_EXPORT, $names);
+        return self::create(VariablePlaceholder::TYPE_EXPORT, $names);
     }
 
     public function createPlaceholder(string $name): ResolvableVariablePlaceholderInterface
@@ -67,7 +67,7 @@ class ResolvablePlaceholderCollection implements \IteratorAggregate
         $variablePlaceholder = $this->variablePlaceholders[$name] ?? null;
 
         if (null === $variablePlaceholder) {
-            $variablePlaceholder = new ResolvablePlaceholder($name, $this->placeholderType);
+            $variablePlaceholder = new VariablePlaceholder($name, $this->placeholderType);
             $this->add($variablePlaceholder);
         }
 
@@ -79,7 +79,7 @@ class ResolvablePlaceholderCollection implements \IteratorAggregate
         return $this->placeholderType;
     }
 
-    public function merge(ResolvablePlaceholderCollection $collection): ResolvablePlaceholderCollection
+    public function merge(VariablePlaceholderCollection $collection): VariablePlaceholderCollection
     {
         $new = clone $this;
 
