@@ -14,7 +14,7 @@ use webignition\BasilCompilableSource\Line\SingleLineComment;
 use webignition\BasilCompilableSource\Line\Statement\Statement;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclaration;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclarationCollection;
-use webignition\BasilCompilableSource\VariablePlaceholder;
+use webignition\BasilCompilableSource\VariableDependency;
 
 class TryCatchBlockTest extends \PHPUnit\Framework\TestCase
 {

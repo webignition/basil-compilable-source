@@ -12,15 +12,15 @@ class VariablePlaceholderCollection implements \IteratorAggregate
     private string $placeholderType;
 
     /**
-     * @var ResolvableVariablePlaceholderInterface[]
+     * @var VariableDependencyInterface[]
      */
     private array $variablePlaceholders = [];
 
     private function __construct(string $placeholderType)
     {
-        $this->placeholderType = VariablePlaceholder::isAllowedType($placeholderType)
+        $this->placeholderType = VariableDependency::isAllowedType($placeholderType)
             ? $placeholderType
-            : VariablePlaceholder::TYPE_EXPORT;
+            : VariableDependency::TYPE_EXPORT;
     }
 
     /**
@@ -35,7 +35,7 @@ class VariablePlaceholderCollection implements \IteratorAggregate
 
         foreach ($names as $name) {
             if (is_string($name)) {
-                $collection->add(new VariablePlaceholder($name, $collection->getPlaceholderType()));
+                $collection->add(new VariableDependency($name, $collection->getPlaceholderType()));
             }
         }
 
@@ -49,7 +49,7 @@ class VariablePlaceholderCollection implements \IteratorAggregate
      */
     public static function createDependencyCollection(array $names = []): VariablePlaceholderCollection
     {
-        return self::create(VariablePlaceholder::TYPE_DEPENDENCY, $names);
+        return self::create(VariableDependency::TYPE_DEPENDENCY, $names);
     }
 
     /**
@@ -59,15 +59,15 @@ class VariablePlaceholderCollection implements \IteratorAggregate
      */
     public static function createExportCollection(array $names = []): VariablePlaceholderCollection
     {
-        return self::create(VariablePlaceholder::TYPE_EXPORT, $names);
+        return self::create(VariableDependency::TYPE_EXPORT, $names);
     }
 
-    public function createPlaceholder(string $name): ResolvableVariablePlaceholderInterface
+    public function createPlaceholder(string $name): VariableDependencyInterface
     {
         $variablePlaceholder = $this->variablePlaceholders[$name] ?? null;
 
         if (null === $variablePlaceholder) {
-            $variablePlaceholder = new VariablePlaceholder($name, $this->placeholderType);
+            $variablePlaceholder = new VariableDependency($name, $this->placeholderType);
             $this->add($variablePlaceholder);
         }
 
@@ -92,7 +92,7 @@ class VariablePlaceholderCollection implements \IteratorAggregate
         return $new;
     }
 
-    public function add(ResolvableVariablePlaceholderInterface $variablePlaceholder): void
+    public function add(VariableDependencyInterface $variablePlaceholder): void
     {
         if ($variablePlaceholder->getType() === $this->getPlaceholderType()) {
             $name = $variablePlaceholder->getName();

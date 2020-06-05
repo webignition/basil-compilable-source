@@ -8,7 +8,7 @@ use webignition\BasilCompilableSource\Line\ExpressionInterface;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 
-class VariablePlaceholder implements ExpressionInterface, ResolvableVariablePlaceholderInterface
+class VariableDependency implements ExpressionInterface, VariableDependencyInterface
 {
     private const RENDER_PATTERN = '{{ %s }}';
 
@@ -42,12 +42,12 @@ class VariablePlaceholder implements ExpressionInterface, ResolvableVariablePlac
 
     public static function createDependency(string $content): self
     {
-        return new VariablePlaceholder($content, self::TYPE_DEPENDENCY);
+        return new VariableDependency($content, self::TYPE_DEPENDENCY);
     }
 
     public static function createExport(string $content): self
     {
-        return new VariablePlaceholder($content, self::TYPE_EXPORT);
+        return new VariableDependency($content, self::TYPE_EXPORT);
     }
 
     public function getType(): string

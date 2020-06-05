@@ -17,7 +17,7 @@ use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocati
 use webignition\BasilCompilableSource\Line\MethodInvocation\StaticObjectMethodInvocation;
 use webignition\BasilCompilableSource\Line\ObjectPropertyAccessExpression;
 use webignition\BasilCompilableSource\StaticObject;
-use webignition\BasilCompilableSource\VariablePlaceholder;
+use webignition\BasilCompilableSource\VariableDependency;
 
 class CastExpressionTest extends \PHPUnit\Framework\TestCase
 {
@@ -90,7 +90,7 @@ class CastExpressionTest extends \PHPUnit\Framework\TestCase
             'object property access expression as string' => [
                 'expression' => new CastExpression(
                     new ObjectPropertyAccessExpression(
-                        VariablePlaceholder::createDependency('OBJECT'),
+                        VariableDependency::createDependency('OBJECT'),
                         'property'
                     ),
                     'string'
@@ -107,7 +107,7 @@ class CastExpressionTest extends \PHPUnit\Framework\TestCase
             'object method invocation as string' => [
                 'expression' => new CastExpression(
                     new ObjectMethodInvocation(
-                        VariablePlaceholder::createDependency('OBJECT'),
+                        VariableDependency::createDependency('OBJECT'),
                         'methodName'
                     ),
                     'string'

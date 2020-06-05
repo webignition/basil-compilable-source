@@ -6,20 +6,20 @@ namespace webignition\BasilCompilableSource\Tests\Unit;
 
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\VariablePlaceholder;
+use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSource\VariablePlaceholderCollection;
 
-class VariablePlaceholderTest extends \PHPUnit\Framework\TestCase
+class VariableDependencyTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider constructDataProvider
      */
     public function testConstruct(string $name, string $type, string $expectedType)
     {
-        $placeholder = new VariablePlaceholder($name, $type);
+        $dependency = new VariableDependency($name, $type);
 
-        $this->assertSame($name, $placeholder->getName());
-        $this->assertSame($expectedType, $placeholder->getType());
+        $this->assertSame($name, $dependency->getName());
+        $this->assertSame($expectedType, $dependency->getType());
     }
 
     public function constructDataProvider(): array
@@ -27,52 +27,52 @@ class VariablePlaceholderTest extends \PHPUnit\Framework\TestCase
         return [
             'dependency' => [
                 'name' => 'DEPENDENCY',
-                'type' => VariablePlaceholder::TYPE_DEPENDENCY,
-                'expectedType' => VariablePlaceholder::TYPE_DEPENDENCY,
+                'type' => VariableDependency::TYPE_DEPENDENCY,
+                'expectedType' => VariableDependency::TYPE_DEPENDENCY,
             ],
             'export' => [
                 'name' => 'EXPORT',
-                'type' => VariablePlaceholder::TYPE_EXPORT,
-                'expectedType' => VariablePlaceholder::TYPE_EXPORT,
+                'type' => VariableDependency::TYPE_EXPORT,
+                'expectedType' => VariableDependency::TYPE_EXPORT,
             ],
             'invalid type' => [
                 'name' => 'EXPORT?',
                 'type' => 'invalid',
-                'expectedType' => VariablePlaceholder::TYPE_EXPORT,
+                'expectedType' => VariableDependency::TYPE_EXPORT,
             ],
         ];
     }
 
     public function testCreateDependency()
     {
-        $placeholder = VariablePlaceholder::createDependency('DEPENDENCY');
+        $dependency = VariableDependency::createDependency('DEPENDENCY');
 
-        $this->assertSame(VariablePlaceholder::TYPE_DEPENDENCY, $placeholder->getType());
+        $this->assertSame(VariableDependency::TYPE_DEPENDENCY, $dependency->getType());
     }
 
     public function testCreateExport()
     {
-        $placeholder = VariablePlaceholder::createExport('EXPORT');
+        $dependency = VariableDependency::createExport('EXPORT');
 
-        $this->assertSame(VariablePlaceholder::TYPE_EXPORT, $placeholder->getType());
+        $this->assertSame(VariableDependency::TYPE_EXPORT, $dependency->getType());
     }
 
     /**
      * @dataProvider getMetadataDataProvider
      */
-    public function testGetMetadata(VariablePlaceholder $placeholder, MetadataInterface $expectedMetadata)
+    public function testGetMetadata(VariableDependency $dependency, MetadataInterface $expectedMetadata)
     {
-        $this->assertEquals($expectedMetadata, $placeholder->getMetadata());
+        $this->assertEquals($expectedMetadata, $dependency->getMetadata());
     }
 
     public function getMetadataDataProvider(): array
     {
         return [
             'variable dependency' => [
-                'placeholder' => VariablePlaceholder::createDependency('DEPENDENCY'),
+                'placeholder' => VariableDependency::createDependency('DEPENDENCY'),
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::create(
-                        VariablePlaceholder::TYPE_DEPENDENCY,
+                        VariableDependency::TYPE_DEPENDENCY,
                         [
                             'DEPENDENCY',
                         ]
@@ -80,10 +80,10 @@ class VariablePlaceholderTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             'variable export' => [
-                'placeholder' => VariablePlaceholder::createExport('EXPORT'),
+                'placeholder' => VariableDependency::createExport('EXPORT'),
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::create(
-                        VariablePlaceholder::TYPE_EXPORT,
+                        VariableDependency::TYPE_EXPORT,
                         [
                             'EXPORT',
                         ]
@@ -96,20 +96,20 @@ class VariablePlaceholderTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider renderDataProvider
      */
-    public function testRender(VariablePlaceholder $placeholder, string $expectedString)
+    public function testRender(VariableDependency $dependency, string $expectedString)
     {
-        $this->assertSame($expectedString, $placeholder->render());
+        $this->assertSame($expectedString, $dependency->render());
     }
 
     public function renderDataProvider(): array
     {
         return [
             'empty' => [
-                'placeholder' => new VariablePlaceholder('', VariablePlaceholder::TYPE_EXPORT),
+                'placeholder' => new VariableDependency('', VariableDependency::TYPE_EXPORT),
                 'expectedString' => '{{  }}',
             ],
             'non-empty' => [
-                'placeholder' => new VariablePlaceholder('NAME', VariablePlaceholder::TYPE_EXPORT),
+                'placeholder' => new VariableDependency('NAME', VariableDependency::TYPE_EXPORT),
                 'expectedString' => '{{ NAME }}',
             ],
         ];

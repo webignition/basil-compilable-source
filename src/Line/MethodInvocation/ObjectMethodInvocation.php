@@ -6,7 +6,7 @@ namespace webignition\BasilCompilableSource\Line\MethodInvocation;
 
 use webignition\BasilCompilableSource\Line\ExpressionInterface;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\ResolvableVariablePlaceholderInterface;
+use webignition\BasilCompilableSource\VariableDependencyInterface;
 
 class ObjectMethodInvocation extends MethodInvocation
 {
@@ -35,7 +35,7 @@ class ObjectMethodInvocation extends MethodInvocation
     {
         $metadata = parent::getMetadata();
 
-        if ($this->object instanceof ResolvableVariablePlaceholderInterface) {
+        if ($this->object instanceof VariableDependencyInterface) {
             $metadata = $metadata->merge($this->object->getMetadata());
         }
 

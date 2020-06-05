@@ -13,7 +13,7 @@ use webignition\BasilCompilableSource\Line\Statement\Statement;
 use webignition\BasilCompilableSource\Line\Statement\StatementInterface;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\VariablePlaceholder;
+use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSource\VariablePlaceholderCollection;
 
 class StatementTest extends \PHPUnit\Framework\TestCase
@@ -33,7 +33,7 @@ class StatementTest extends \PHPUnit\Framework\TestCase
     {
         return [
             'variable dependency' => [
-                'expression' => VariablePlaceholder::createDependency('DEPENDENCY'),
+                'expression' => VariableDependency::createDependency('DEPENDENCY'),
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         'DEPENDENCY',
@@ -41,7 +41,7 @@ class StatementTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             'variable export' => [
-                'expression' => VariablePlaceholder::createExport('EXPORT'),
+                'expression' => VariableDependency::createExport('EXPORT'),
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         'EXPORT',
@@ -54,7 +54,7 @@ class StatementTest extends \PHPUnit\Framework\TestCase
             ],
             'object method invocation' => [
                 'expression' => new ObjectMethodInvocation(
-                    VariablePlaceholder::createDependency('OBJECT'),
+                    VariableDependency::createDependency('OBJECT'),
                     'methodName'
                 ),
                 'expectedMetadata' => new Metadata([
@@ -79,13 +79,13 @@ class StatementTest extends \PHPUnit\Framework\TestCase
         return [
             'statement encapsulating variable dependency' => [
                 'statement' => new Statement(
-                    VariablePlaceholder::createDependency('DEPENDENCY')
+                    VariableDependency::createDependency('DEPENDENCY')
                 ),
                 'expectedString' => '{{ DEPENDENCY }};',
             ],
             'statement encapsulating variable export' => [
                 'statement' => new Statement(
-                    VariablePlaceholder::createExport('EXPORT')
+                    VariableDependency::createExport('EXPORT')
                 ),
                 'expectedString' => '{{ EXPORT }};',
             ],
@@ -98,7 +98,7 @@ class StatementTest extends \PHPUnit\Framework\TestCase
             'statement encapsulating object method invocation' => [
                 'statement' => new Statement(
                     new ObjectMethodInvocation(
-                        VariablePlaceholder::createDependency('OBJECT'),
+                        VariableDependency::createDependency('OBJECT'),
                         'methodName'
                     )
                 ),

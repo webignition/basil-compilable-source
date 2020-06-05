@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Tests\Unit;
 
-use webignition\BasilCompilableSource\VariablePlaceholder;
+use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSource\VariablePlaceholderCollection;
 
 class VariablePlaceholderCollectionTest extends \PHPUnit\Framework\TestCase
@@ -14,7 +14,7 @@ class VariablePlaceholderCollectionTest extends \PHPUnit\Framework\TestCase
      *
      * @param string $type
      * @param string[] $names
-     * @param VariablePlaceholder[] $expectedPlaceholders
+     * @param VariableDependency[] $expectedPlaceholders
      */
     public function testCreate(string $type, array $names, array $expectedPlaceholders)
     {
@@ -29,7 +29,7 @@ class VariablePlaceholderCollectionTest extends \PHPUnit\Framework\TestCase
     {
         return [
             'dependency collection' => [
-                'type' => VariablePlaceholder::TYPE_DEPENDENCY,
+                'type' => VariableDependency::TYPE_DEPENDENCY,
                 'names' => [
                     'DEPENDENCY_1',
                     'DEPENDENCY_2',
@@ -37,13 +37,13 @@ class VariablePlaceholderCollectionTest extends \PHPUnit\Framework\TestCase
                     'DEPENDENCY_3',
                 ],
                 'expectedPlaceholders' => [
-                    'DEPENDENCY_1' => VariablePlaceholder::createDependency('DEPENDENCY_1'),
-                    'DEPENDENCY_2' => VariablePlaceholder::createDependency('DEPENDENCY_2'),
-                    'DEPENDENCY_3' => VariablePlaceholder::createDependency('DEPENDENCY_3'),
+                    'DEPENDENCY_1' => VariableDependency::createDependency('DEPENDENCY_1'),
+                    'DEPENDENCY_2' => VariableDependency::createDependency('DEPENDENCY_2'),
+                    'DEPENDENCY_3' => VariableDependency::createDependency('DEPENDENCY_3'),
                 ],
             ],
             'export collection' => [
-                'type' => VariablePlaceholder::TYPE_EXPORT,
+                'type' => VariableDependency::TYPE_EXPORT,
                 'names' => [
                     'EXPORT_1',
                     'EXPORT_1',
@@ -51,9 +51,9 @@ class VariablePlaceholderCollectionTest extends \PHPUnit\Framework\TestCase
                     'EXPORT_3',
                 ],
                 'expectedPlaceholders' => [
-                    'EXPORT_1' => VariablePlaceholder::createExport('EXPORT_1'),
-                    'EXPORT_2' => VariablePlaceholder::createExport('EXPORT_2'),
-                    'EXPORT_3' => VariablePlaceholder::createExport('EXPORT_3'),
+                    'EXPORT_1' => VariableDependency::createExport('EXPORT_1'),
+                    'EXPORT_2' => VariableDependency::createExport('EXPORT_2'),
+                    'EXPORT_3' => VariableDependency::createExport('EXPORT_3'),
                 ],
             ],
             'invalid type collection' => [
@@ -65,9 +65,9 @@ class VariablePlaceholderCollectionTest extends \PHPUnit\Framework\TestCase
                     'EXPORT_3',
                 ],
                 'expectedPlaceholders' => [
-                    'EXPORT_1' => VariablePlaceholder::createExport('EXPORT_1'),
-                    'EXPORT_2' => VariablePlaceholder::createExport('EXPORT_2'),
-                    'EXPORT_3' => VariablePlaceholder::createExport('EXPORT_3'),
+                    'EXPORT_1' => VariableDependency::createExport('EXPORT_1'),
+                    'EXPORT_2' => VariableDependency::createExport('EXPORT_2'),
+                    'EXPORT_3' => VariableDependency::createExport('EXPORT_3'),
                 ],
             ],
         ];
@@ -80,7 +80,7 @@ class VariablePlaceholderCollectionTest extends \PHPUnit\Framework\TestCase
 
         $placeholder = $collection->createPlaceholder('PLACEHOLDER');
 
-        $this->assertInstanceOf(VariablePlaceholder::class, $placeholder);
+        $this->assertInstanceOf(VariableDependency::class, $placeholder);
         $this->assertEquals(
             [
                 'PLACEHOLDER' => $placeholder,
@@ -103,10 +103,10 @@ class VariablePlaceholderCollectionTest extends \PHPUnit\Framework\TestCase
 
         $this->assertEquals(
             [
-                'ONE' => new VariablePlaceholder('ONE', VariablePlaceholder::TYPE_DEPENDENCY),
-                'TWO' => new VariablePlaceholder('TWO', VariablePlaceholder::TYPE_DEPENDENCY),
-                'THREE' => new VariablePlaceholder('THREE', VariablePlaceholder::TYPE_DEPENDENCY),
-                'FOUR' => new VariablePlaceholder('FOUR', VariablePlaceholder::TYPE_DEPENDENCY),
+                'ONE' => new VariableDependency('ONE', VariableDependency::TYPE_DEPENDENCY),
+                'TWO' => new VariableDependency('TWO', VariableDependency::TYPE_DEPENDENCY),
+                'THREE' => new VariableDependency('THREE', VariableDependency::TYPE_DEPENDENCY),
+                'FOUR' => new VariableDependency('FOUR', VariableDependency::TYPE_DEPENDENCY),
             ],
             $this->getCollectionVariablePlaceholders($collection)
         );
@@ -123,9 +123,9 @@ class VariablePlaceholderCollectionTest extends \PHPUnit\Framework\TestCase
         $collection = VariablePlaceholderCollection::createDependencyCollection(array_values($collectionValues));
 
         foreach ($collection as $id => $variablePlaceholder) {
-            $expectedPlaceholder = new VariablePlaceholder(
+            $expectedPlaceholder = new VariableDependency(
                 $collectionValues[$id],
-                VariablePlaceholder::TYPE_DEPENDENCY
+                VariableDependency::TYPE_DEPENDENCY
             );
 
             $this->assertEquals($expectedPlaceholder, $variablePlaceholder);
@@ -135,7 +135,7 @@ class VariablePlaceholderCollectionTest extends \PHPUnit\Framework\TestCase
     /**
      * @param VariablePlaceholderCollection $collection
      *
-     * @return VariablePlaceholder[]
+     * @return VariableDependency[]
      */
     private function getCollectionVariablePlaceholders(VariablePlaceholderCollection $collection): array
     {

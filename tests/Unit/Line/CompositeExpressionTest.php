@@ -8,7 +8,7 @@ use webignition\BasilCompilableSource\Line\CompositeExpression;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\VariablePlaceholder;
+use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSource\VariablePlaceholderCollection;
 
 class CompositeExpressionTest extends \PHPUnit\Framework\TestCase
@@ -35,7 +35,7 @@ class CompositeExpressionTest extends \PHPUnit\Framework\TestCase
             ],
             'variable dependency' => [
                 'expressions' => [
-                    VariablePlaceholder::createDependency('DEPENDENCY'),
+                    VariableDependency::createDependency('DEPENDENCY'),
                 ],
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
@@ -45,7 +45,7 @@ class CompositeExpressionTest extends \PHPUnit\Framework\TestCase
             ],
             'variable export' => [
                 'expressions' => [
-                    VariablePlaceholder::createExport('EXPORT'),
+                    VariableDependency::createExport('EXPORT'),
                 ],
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
@@ -55,8 +55,8 @@ class CompositeExpressionTest extends \PHPUnit\Framework\TestCase
             ],
             'variable dependency and variable export' => [
                 'expressions' => [
-                    VariablePlaceholder::createDependency('DEPENDENCY'),
-                    VariablePlaceholder::createExport('EXPORT'),
+                    VariableDependency::createDependency('DEPENDENCY'),
+                    VariableDependency::createExport('EXPORT'),
                 ],
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
@@ -69,7 +69,7 @@ class CompositeExpressionTest extends \PHPUnit\Framework\TestCase
             ],
             'variable dependency and array access' => [
                 'expressions' => [
-                    VariablePlaceholder::createDependency('ENV'),
+                    VariableDependency::createDependency('ENV'),
                     new LiteralExpression('[\'KEY\']')
                 ],
                 'expectedMetadata' => new Metadata([
@@ -98,26 +98,26 @@ class CompositeExpressionTest extends \PHPUnit\Framework\TestCase
             ],
             'variable dependency' => [
                 'expressions' => new CompositeExpression([
-                    VariablePlaceholder::createDependency('DEPENDENCY'),
+                    VariableDependency::createDependency('DEPENDENCY'),
                 ]),
                 'expectedString' => '{{ DEPENDENCY }}',
             ],
             'variable export' => [
                 'expressions' => new CompositeExpression([
-                    VariablePlaceholder::createExport('EXPORT'),
+                    VariableDependency::createExport('EXPORT'),
                 ]),
                 'expectedString' => '{{ EXPORT }}',
             ],
             'variable dependency and variable export' => [
                 'expressions' => new CompositeExpression([
-                    VariablePlaceholder::createDependency('DEPENDENCY'),
-                    VariablePlaceholder::createExport('EXPORT'),
+                    VariableDependency::createDependency('DEPENDENCY'),
+                    VariableDependency::createExport('EXPORT'),
                 ]),
                 'expectedString' => '{{ DEPENDENCY }}{{ EXPORT }}',
             ],
             'variable dependency and array access' => [
                 'expressions' => new CompositeExpression([
-                    VariablePlaceholder::createDependency('ENV'),
+                    VariableDependency::createDependency('ENV'),
                     new LiteralExpression('[\'KEY\']')
                 ]),
                 'expectedString' => '{{ ENV }}[\'KEY\']',

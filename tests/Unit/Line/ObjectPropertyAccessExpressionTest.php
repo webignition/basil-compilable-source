@@ -7,7 +7,7 @@ namespace webignition\BasilCompilableSource\Tests\Unit\Line;
 use webignition\BasilCompilableSource\Line\ObjectPropertyAccessExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\VariablePlaceholder;
+use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSource\VariablePlaceholderCollection;
 use webignition\BasilCompilableSource\VariableName;
 use webignition\BasilCompilableSource\VariablePlaceholderInterface;
@@ -33,7 +33,7 @@ class ObjectPropertyAccessExpressionTest extends \PHPUnit\Framework\TestCase
     {
         return [
             'has resolvable placeholder' => [
-                'objectPlaceholder' => VariablePlaceholder::createDependency('OBJECT'),
+                'objectPlaceholder' => VariableDependency::createDependency('OBJECT'),
                 'property' => 'propertyName',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
@@ -62,7 +62,7 @@ class ObjectPropertyAccessExpressionTest extends \PHPUnit\Framework\TestCase
         return [
             'has resolvable placeholder' => [
                 'expression' => new ObjectPropertyAccessExpression(
-                    VariablePlaceholder::createDependency('OBJECT'),
+                    VariableDependency::createDependency('OBJECT'),
                     'propertyName'
                 ),
                 'expectedString' => '{{ OBJECT }}->propertyName',

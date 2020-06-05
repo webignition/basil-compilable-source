@@ -25,7 +25,7 @@ use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\MethodDefinition;
 use webignition\BasilCompilableSource\MethodDefinitionInterface;
 use webignition\BasilCompilableSource\StaticObject;
-use webignition\BasilCompilableSource\VariablePlaceholder;
+use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSource\VariablePlaceholderCollection;
 
 class ClassDefinitionTest extends TestCase
@@ -126,12 +126,12 @@ class ClassDefinitionTest extends TestCase
                         new MethodDefinition('name', new CodeBlock([
                             new Statement(
                                 new ObjectMethodInvocation(
-                                    VariablePlaceholder::createDependency('DEPENDENCY'),
+                                    VariableDependency::createDependency('DEPENDENCY'),
                                     'methodName'
                                 )
                             ),
                             new AssignmentStatement(
-                                VariablePlaceholder::createExport('PLACEHOLDER'),
+                                VariableDependency::createExport('PLACEHOLDER'),
                                 new MethodInvocation('methodName')
                             ),
                         ])),
@@ -207,7 +207,7 @@ class ClassDefinitionTest extends TestCase
                         new MethodDefinition('stepOne', new CodeBlock([
                             new SingleLineComment('click $"a"'),
                             new AssignmentStatement(
-                                VariablePlaceholder::createExport('STATEMENT'),
+                                VariableDependency::createExport('STATEMENT'),
                                 new StaticObjectMethodInvocation(
                                     new StaticObject('Acme\\Statement'),
                                     'createAction',
@@ -217,14 +217,14 @@ class ClassDefinitionTest extends TestCase
                                 )
                             ),
                             new AssignmentStatement(
-                                VariablePlaceholder::createExport('CURRENT_STATEMENT'),
-                                VariablePlaceholder::createExport('STATEMENT')
+                                VariableDependency::createExport('CURRENT_STATEMENT'),
+                                VariableDependency::createExport('STATEMENT')
                             ),
                         ])),
                         new MethodDefinition('stepTwo', new CodeBlock([
                             new SingleLineComment('click $"b"'),
                             new AssignmentStatement(
-                                VariablePlaceholder::createExport('STATEMENT'),
+                                VariableDependency::createExport('STATEMENT'),
                                 new StaticObjectMethodInvocation(
                                     new StaticObject('Acme\\Statement'),
                                     'createAction',
@@ -234,8 +234,8 @@ class ClassDefinitionTest extends TestCase
                                 )
                             ),
                             new AssignmentStatement(
-                                VariablePlaceholder::createExport('CURRENT_STATEMENT'),
-                                VariablePlaceholder::createExport('STATEMENT')
+                                VariableDependency::createExport('CURRENT_STATEMENT'),
+                                VariableDependency::createExport('STATEMENT')
                             ),
                         ])),
                     ]),
@@ -270,7 +270,7 @@ class ClassDefinitionTest extends TestCase
                                 new CodeBlock([
                                     new SingleLineComment('click $"a"'),
                                     new AssignmentStatement(
-                                        VariablePlaceholder::createExport('STATEMENT'),
+                                        VariableDependency::createExport('STATEMENT'),
                                         new StaticObjectMethodInvocation(
                                             new StaticObject('Acme\\Statement'),
                                             'createAction',
@@ -280,8 +280,8 @@ class ClassDefinitionTest extends TestCase
                                         )
                                     ),
                                     new AssignmentStatement(
-                                        VariablePlaceholder::createExport('CURRENT_STATEMENT'),
-                                        VariablePlaceholder::createExport('STATEMENT')
+                                        VariableDependency::createExport('CURRENT_STATEMENT'),
+                                        VariableDependency::createExport('STATEMENT')
                                     ),
                                 ]),
                                 [
@@ -305,7 +305,7 @@ class ClassDefinitionTest extends TestCase
                         new MethodDefinition('stepTwo', new CodeBlock([
                             new SingleLineComment('click $"b"'),
                             new AssignmentStatement(
-                                VariablePlaceholder::createExport('STATEMENT'),
+                                VariableDependency::createExport('STATEMENT'),
                                 new StaticObjectMethodInvocation(
                                     new StaticObject('Acme\\Statement'),
                                     'createAction',
@@ -315,8 +315,8 @@ class ClassDefinitionTest extends TestCase
                                 )
                             ),
                             new AssignmentStatement(
-                                VariablePlaceholder::createExport('CURRENT_STATEMENT'),
-                                VariablePlaceholder::createExport('STATEMENT')
+                                VariableDependency::createExport('CURRENT_STATEMENT'),
+                                VariableDependency::createExport('STATEMENT')
                             ),
                         ])),
                     ]),

@@ -26,7 +26,7 @@ use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\VariableName;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclaration;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclarationCollection;
-use webignition\BasilCompilableSource\VariablePlaceholder;
+use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSource\VariablePlaceholderCollection;
 
 class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
@@ -58,9 +58,9 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
             'non-empty, has metadata' => [
                 'codeBlock' => new CodeBlock([
                     new AssignmentStatement(
-                        VariablePlaceholder::createExport('EXPORT'),
+                        VariableDependency::createExport('EXPORT'),
                         new ObjectMethodInvocation(
-                            VariablePlaceholder::createDependency('DEPENDENCY'),
+                            VariableDependency::createDependency('DEPENDENCY'),
                             'dependencyMethodName'
                         )
                     ),
@@ -68,7 +68,7 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
                         new CompositeExpression([
                             new CastExpression(
                                 new ObjectMethodInvocation(
-                                    VariablePlaceholder::createExport('EXPORT'),
+                                    VariableDependency::createExport('EXPORT'),
                                     'getWidth',
                                     [],
                                     MethodInvocation::ARGUMENT_FORMAT_INLINE
@@ -78,7 +78,7 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
                             new LiteralExpression(' . \'x\' . '),
                             new CastExpression(
                                 new ObjectMethodInvocation(
-                                    VariablePlaceholder::createExport('EXPORT'),
+                                    VariableDependency::createExport('EXPORT'),
                                     'getHeight',
                                     [],
                                     MethodInvocation::ARGUMENT_FORMAT_INLINE
@@ -166,9 +166,9 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
                 'expression' => new ClosureExpression(
                     new CodeBlock([
                         new AssignmentStatement(
-                            VariablePlaceholder::createExport('EXPORT'),
+                            VariableDependency::createExport('EXPORT'),
                             new ObjectMethodInvocation(
-                                VariablePlaceholder::createDependency('DEPENDENCY'),
+                                VariableDependency::createDependency('DEPENDENCY'),
                                 'dependencyMethodName'
                             )
                         ),
@@ -177,7 +177,7 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
                             new CompositeExpression([
                                 new CastExpression(
                                     new ObjectMethodInvocation(
-                                        VariablePlaceholder::createExport('EXPORT'),
+                                        VariableDependency::createExport('EXPORT'),
                                         'getWidth',
                                         [],
                                         MethodInvocation::ARGUMENT_FORMAT_INLINE
@@ -187,7 +187,7 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
                                 new LiteralExpression(' . \'x\' . '),
                                 new CastExpression(
                                     new ObjectMethodInvocation(
-                                        VariablePlaceholder::createExport('EXPORT'),
+                                        VariableDependency::createExport('EXPORT'),
                                         'getHeight',
                                         [],
                                         MethodInvocation::ARGUMENT_FORMAT_INLINE

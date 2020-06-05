@@ -8,7 +8,7 @@ use webignition\BasilCompilableSource\Line\ObjectPropertyAccessExpression;
 use webignition\BasilCompilableSource\Line\Statement\AssignmentStatementInterface;
 use webignition\BasilCompilableSource\Line\ExpressionInterface;
 use webignition\BasilCompilableSource\Line\Statement\ObjectPropertyAssignmentStatement;
-use webignition\BasilCompilableSource\VariablePlaceholder;
+use webignition\BasilCompilableSource\VariableDependency;
 
 class ObjectPropertyAssignmentStatementTest extends \PHPUnit\Framework\TestCase
 {
@@ -22,7 +22,7 @@ class ObjectPropertyAssignmentStatementTest extends \PHPUnit\Framework\TestCase
     ) {
         $statement = new ObjectPropertyAssignmentStatement($placeholder, $expression);
 
-        $this->assertEquals($expectedPlaceholder, $statement->getVariablePlaceholder());
+        $this->assertEquals($expectedPlaceholder, $statement->getVariableDependency());
         $this->assertSame($expression, $statement->getExpression());
     }
 
@@ -31,12 +31,12 @@ class ObjectPropertyAssignmentStatementTest extends \PHPUnit\Framework\TestCase
         return [
             'default' => [
                 'placeholder' => new ObjectPropertyAccessExpression(
-                    VariablePlaceholder::createExport('DEPENDENCY'),
+                    VariableDependency::createExport('DEPENDENCY'),
                     'propertyName'
                 ),
-                'expression' => VariablePlaceholder::createDependency('DEPENDENCY'),
+                'expression' => VariableDependency::createDependency('DEPENDENCY'),
                 'expectedPlaceholder' => new ObjectPropertyAccessExpression(
-                    VariablePlaceholder::createExport('DEPENDENCY'),
+                    VariableDependency::createExport('DEPENDENCY'),
                     'propertyName'
                 ),
             ],
@@ -57,10 +57,10 @@ class ObjectPropertyAssignmentStatementTest extends \PHPUnit\Framework\TestCase
             'default' => [
                 'statement' => new ObjectPropertyAssignmentStatement(
                     new ObjectPropertyAccessExpression(
-                        VariablePlaceholder::createExport('PLACEHOLDER'),
+                        VariableDependency::createExport('PLACEHOLDER'),
                         'propertyName'
                     ),
-                    VariablePlaceholder::createDependency('DEPENDENCY')
+                    VariableDependency::createDependency('DEPENDENCY')
                 ),
                 'expectedString' => '{{ PLACEHOLDER }}->propertyName = {{ DEPENDENCY }};',
             ],
