@@ -23,8 +23,9 @@ use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\SourceInterface;
 use webignition\BasilCompilableSource\StaticObject;
-use webignition\BasilCompilableSource\VariablePlaceholder;
-use webignition\BasilCompilableSource\VariablePlaceholderCollection;
+use webignition\BasilCompilableSource\VariableDependency;
+use webignition\BasilCompilableSource\VariableDependencyCollection;
+use webignition\BasilCompilableSource\VariableName;
 
 class CodeBlockTest extends \PHPUnit\Framework\TestCase
 {
@@ -57,16 +58,16 @@ class CodeBlockTest extends \PHPUnit\Framework\TestCase
                 'sources' => [
                     new MethodInvocation('methodName'),
                     new ObjectMethodInvocation(
-                        VariablePlaceholder::createDependency('OBJECT'),
+                        new VariableDependency('OBJECT'),
                         'methodName'
                     ),
                     new Statement(new MethodInvocation('methodName')),
                     new Statement(new ObjectMethodInvocation(
-                        VariablePlaceholder::createDependency('OBJECT'),
+                        new VariableDependency('OBJECT'),
                         'methodName'
                     )),
                     new AssignmentStatement(
-                        VariablePlaceholder::createExport('PLACEHOLDER'),
+                        new VariableName('variable'),
                         new MethodInvocation('methodName')
                     ),
                     new ClassDependency(ClassDependency::class),
@@ -76,11 +77,11 @@ class CodeBlockTest extends \PHPUnit\Framework\TestCase
                 'expectedLines' => [
                     new Statement(new MethodInvocation('methodName')),
                     new Statement(new ObjectMethodInvocation(
-                        VariablePlaceholder::createDependency('OBJECT'),
+                        new VariableDependency('OBJECT'),
                         'methodName'
                     )),
                     new AssignmentStatement(
-                        VariablePlaceholder::createExport('PLACEHOLDER'),
+                        new VariableName('variable'),
                         new MethodInvocation('methodName')
                     ),
                     new EmptyLine(),
@@ -93,12 +94,12 @@ class CodeBlockTest extends \PHPUnit\Framework\TestCase
                         new Statement(new MethodInvocation('methodName')),
                         new Statement(
                             new ObjectMethodInvocation(
-                                VariablePlaceholder::createDependency('OBJECT'),
+                                new VariableDependency('OBJECT'),
                                 'methodName'
                             )
                         ),
                         new AssignmentStatement(
-                            VariablePlaceholder::createExport('PLACEHOLDER'),
+                            new VariableName('variable'),
                             new MethodInvocation('methodName')
                         ),
                     ]),
@@ -111,12 +112,12 @@ class CodeBlockTest extends \PHPUnit\Framework\TestCase
                     new Statement(new MethodInvocation('methodName')),
                     new Statement(
                         new ObjectMethodInvocation(
-                            VariablePlaceholder::createDependency('OBJECT'),
+                            new VariableDependency('OBJECT'),
                             'methodName'
                         )
                     ),
                     new AssignmentStatement(
-                        VariablePlaceholder::createExport('PLACEHOLDER'),
+                        new VariableName('variable'),
                         new MethodInvocation('methodName')
                     ),
                     new EmptyLine(),
@@ -152,21 +153,18 @@ class CodeBlockTest extends \PHPUnit\Framework\TestCase
                 'codeBlock' => new CodeBlock([
                     new Statement(
                         new ObjectMethodInvocation(
-                            VariablePlaceholder::createDependency('DEPENDENCY'),
+                            new VariableDependency('DEPENDENCY'),
                             'methodName'
                         )
                     ),
                     new AssignmentStatement(
-                        VariablePlaceholder::createExport('PLACEHOLDER'),
+                        new VariableName('variable'),
                         new MethodInvocation('methodName')
                     ),
                 ]),
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         'DEPENDENCY',
-                    ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        'PLACEHOLDER',
                     ]),
                 ]),
             ],
@@ -184,30 +182,30 @@ class CodeBlockTest extends \PHPUnit\Framework\TestCase
     public function renderDataProvider(): array
     {
         return [
-            'empty' => [
-                'codeBlock' => new CodeBlock(),
-                'expectedString' => '',
-            ],
+//            'empty' => [
+//                'codeBlock' => new CodeBlock(),
+//                'expectedString' => '',
+//            ],
             'lines' => [
                 'codeBlock' => new CodeBlock([
                     new Statement(new MethodInvocation('methodName')),
                     new Statement(new ObjectMethodInvocation(
-                        VariablePlaceholder::createDependency('OBJECT'),
+                        new VariableDependency('OBJECT'),
                         'methodName'
                     )),
                     new AssignmentStatement(
-                        VariablePlaceholder::createExport('PLACEHOLDER'),
+                        new VariableName('variable'),
                         new MethodInvocation('methodName')
                     ),
                     new AssignmentStatement(
-                        VariablePlaceholder::createExport('PLACEHOLDER'),
+                        new VariableName('variable'),
                         new CastExpression(
                             new MethodInvocation('methodName', [], MethodInvocation::ARGUMENT_FORMAT_INLINE),
                             'string'
                         )
                     ),
                     new AssignmentStatement(
-                        VariablePlaceholder::createExport('PLACEHOLDER'),
+                        new VariableName('variable'),
                         new StaticObjectMethodInvocation(
                             new StaticObject(
                                 ClassDependency::class
@@ -216,9 +214,9 @@ class CodeBlockTest extends \PHPUnit\Framework\TestCase
                         )
                     ),
                     new AssignmentStatement(
-                        VariablePlaceholder::createExport('PLACEHOLDER'),
+                        new VariableName('variable'),
                         new ObjectMethodInvocation(
-                            VariablePlaceholder::createDependency('OBJECT'),
+                            new VariableDependency('OBJECT'),
                             'methodName',
                             [
                                 new LiteralExpression('\'string\''),
@@ -230,9 +228,9 @@ class CodeBlockTest extends \PHPUnit\Framework\TestCase
                         )
                     ),
                     new AssignmentStatement(
-                        VariablePlaceholder::createExport('PLACEHOLDER'),
+                        new VariableName('variable'),
                         new ObjectMethodInvocation(
-                            VariablePlaceholder::createDependency('OBJECT'),
+                            new VariableDependency('OBJECT'),
                             'methodName',
                             [
                                 new StaticObjectMethodInvocation(
@@ -253,11 +251,11 @@ class CodeBlockTest extends \PHPUnit\Framework\TestCase
                 'expectedString' =>
                     'methodName();' . "\n" .
                     '{{ OBJECT }}->methodName();' . "\n" .
-                    '{{ PLACEHOLDER }} = methodName();' . "\n" .
-                    '{{ PLACEHOLDER }} = (string) (methodName());' . "\n" .
-                    '{{ PLACEHOLDER }} = ClassDependency::methodName();' . "\n" .
-                    '{{ PLACEHOLDER }} = {{ OBJECT }}->methodName(\'string\', EmptyLine::innerMethodName());' . "\n" .
-                    '{{ PLACEHOLDER }} = {{ OBJECT }}->methodName(ClassDependency::innerMethodName(' . "\n" .
+                    '$variable = methodName();' . "\n" .
+                    '$variable = (string) (methodName());' . "\n" .
+                    '$variable = ClassDependency::methodName();' . "\n" .
+                    '$variable = {{ OBJECT }}->methodName(\'string\', EmptyLine::innerMethodName());' . "\n" .
+                    '$variable = {{ OBJECT }}->methodName(ClassDependency::innerMethodName(' . "\n" .
                     '    \'string1\',' . "\n" .
                     '    \'string2\'' . "\n" .
                     '));' . "\n" .

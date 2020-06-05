@@ -28,12 +28,10 @@ class CatchExpression implements ExpressionInterface
 
     public function render(): string
     {
-        $placeholder = new VariableName('exception');
-
         return sprintf(
             '%s %s',
             $this->classes->render(),
-            $placeholder->render(),
+            (new VariableName('exception'))->render(),
         );
     }
 }

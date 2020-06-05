@@ -11,30 +11,30 @@ class AssignmentStatement extends Statement implements AssignmentStatementInterf
 {
     private const RENDER_PATTERN = '%s = %s';
 
-    private ExpressionInterface $placeholder;
+    private ExpressionInterface $variableDependency;
 
-    public function __construct(ExpressionInterface $placeholder, ExpressionInterface $expression)
+    public function __construct(ExpressionInterface $variableDependency, ExpressionInterface $expression)
     {
         parent::__construct($expression);
 
-        $this->placeholder = $placeholder;
+        $this->variableDependency = $variableDependency;
     }
 
-    public function getVariablePlaceholder(): ExpressionInterface
+    public function getVariableDependency(): ExpressionInterface
     {
-        return $this->placeholder;
+        return $this->variableDependency;
     }
 
     public function getMetadata(): MetadataInterface
     {
-        return parent::getMetadata()->merge($this->placeholder->getMetadata());
+        return parent::getMetadata()->merge($this->variableDependency->getMetadata());
     }
 
     public function render(): string
     {
         return sprintf(
             self::RENDER_PATTERN,
-            $this->placeholder->render(),
+            $this->variableDependency->render(),
             parent::render()
         );
     }

@@ -8,5 +8,5 @@ use webignition\BasilCompilableSource\Line\ExpressionInterface;
 
 interface AssignmentStatementInterface extends StatementInterface
 {
-    public function getVariablePlaceholder(): ExpressionInterface;
+    public function getVariableDependency(): ExpressionInterface;
 }

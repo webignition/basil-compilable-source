@@ -15,8 +15,8 @@ use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\VariableName;
 use webignition\BasilCompilableSource\StaticObject;
-use webignition\BasilCompilableSource\VariablePlaceholder;
-use webignition\BasilCompilableSource\VariablePlaceholderCollection;
+use webignition\BasilCompilableSource\VariableDependency;
+use webignition\BasilCompilableSource\VariableDependencyCollection;
 
 class ObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
 {
@@ -48,31 +48,31 @@ class ObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
     {
         return [
             'no arguments' => [
-                'object' => VariablePlaceholder::createDependency('OBJECT'),
+                'object' => new VariableDependency('OBJECT'),
                 'methodName' => 'method',
                 'arguments' => [],
                 'argumentFormat' => MethodInvocation::ARGUMENT_FORMAT_INLINE,
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         'OBJECT',
                     ]),
                 ]),
             ],
             'single argument' => [
-                'object' => VariablePlaceholder::createDependency('OBJECT'),
+                'object' => new VariableDependency('OBJECT'),
                 'methodName' => 'method',
                 'arguments' => [
                     new LiteralExpression('1'),
                 ],
                 'argumentFormat' => MethodInvocation::ARGUMENT_FORMAT_INLINE,
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         'OBJECT',
                     ]),
                 ]),
             ],
             'multiple arguments, inline' => [
-                'object' => VariablePlaceholder::createDependency('OBJECT'),
+                'object' => new VariableDependency('OBJECT'),
                 'methodName' => 'method',
                 'arguments' => [
                     new LiteralExpression('2'),
@@ -81,13 +81,13 @@ class ObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
                 ],
                 'argumentFormat' => MethodInvocation::ARGUMENT_FORMAT_INLINE,
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         'OBJECT',
                     ]),
                 ]),
             ],
             'multiple arguments, stacked' => [
-                'object' => VariablePlaceholder::createDependency('OBJECT'),
+                'object' => new VariableDependency('OBJECT'),
                 'methodName' => 'method',
                 'arguments' => [
                     new LiteralExpression('2'),
@@ -96,13 +96,13 @@ class ObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
                 ],
                 'argumentFormat' => MethodInvocation::ARGUMENT_FORMAT_STACKED,
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         'OBJECT',
                     ]),
                 ]),
             ],
             'argument expressions contain additional metadata' => [
-                'object' => VariablePlaceholder::createDependency('OBJECT'),
+                'object' => new VariableDependency('OBJECT'),
                 'methodName' => 'method',
                 'arguments' => [
                     new StaticObjectMethodInvocation(
@@ -115,7 +115,7 @@ class ObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ClassDependency::class),
                     ]),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         'OBJECT',
                     ]),
                 ]),
@@ -143,14 +143,14 @@ class ObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
         return [
             'object and method name only' => [
                 'invocation' => new ObjectMethodInvocation(
-                    VariablePlaceholder::createDependency('OBJECT'),
+                    new VariableDependency('OBJECT'),
                     'methodName'
                 ),
                 'expectedString' => '{{ OBJECT }}->methodName()',
             ],
             'no arguments, inline' => [
                 'invocation' => new ObjectMethodInvocation(
-                    VariablePlaceholder::createDependency('OBJECT'),
+                    new VariableDependency('OBJECT'),
                     'methodName',
                     [],
                     MethodInvocation::ARGUMENT_FORMAT_INLINE
@@ -159,7 +159,7 @@ class ObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
             ],
             'no arguments, stacked' => [
                 'invocation' => new ObjectMethodInvocation(
-                    VariablePlaceholder::createDependency('OBJECT'),
+                    new VariableDependency('OBJECT'),
                     'methodName',
                     [],
                     MethodInvocation::ARGUMENT_FORMAT_STACKED
@@ -168,7 +168,7 @@ class ObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
             ],
             'has arguments, inline' => [
                 'invocation' => new ObjectMethodInvocation(
-                    VariablePlaceholder::createDependency('OBJECT'),
+                    new VariableDependency('OBJECT'),
                     'methodName',
                     [
                         new LiteralExpression('1'),
@@ -180,7 +180,7 @@ class ObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
             ],
             'has arguments, stacked' => [
                 'invocation' => new ObjectMethodInvocation(
-                    VariablePlaceholder::createDependency('OBJECT'),
+                    new VariableDependency('OBJECT'),
                     'methodName',
                     [
                         new LiteralExpression('1'),
@@ -195,7 +195,7 @@ class ObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
             ],
             'object and method name only, has errors suppressed' => [
                 'invocation' => $this->createInvocationWithErrorSuppression(
-                    VariablePlaceholder::createDependency('OBJECT'),
+                    new VariableDependency('OBJECT'),
                     'methodName'
                 ),
                 'expectedString' => '@{{ OBJECT }}->methodName()',
@@ -219,7 +219,7 @@ class ObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
             'object returned from object method call' => [
                 'invocation' => new ObjectMethodInvocation(
                     new ObjectMethodInvocation(
-                        VariablePlaceholder::createDependency('OBJECT'),
+                        new VariableDependency('OBJECT'),
                         'innerMethodName'
                     ),
                     'outerMethodName'
@@ -228,11 +228,11 @@ class ObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
             ],
             'indent stacked multi-line arguments' => [
                 'invocation' => new ObjectMethodInvocation(
-                    VariablePlaceholder::createDependency('MUTATOR'),
+                    new VariableDependency('MUTATOR'),
                     'setValue',
                     [
                         new ObjectMethodInvocation(
-                            VariablePlaceholder::createDependency('NAVIGATOR'),
+                            new VariableDependency('NAVIGATOR'),
                             'find',
                             [
                                 new StaticObjectMethodInvocation(
@@ -261,7 +261,7 @@ class ObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
     }
 
     private function createInvocationWithErrorSuppression(
-        VariablePlaceholder $objectPlaceholder,
+        VariableDependency $objectPlaceholder,
         string $name
     ): ObjectMethodInvocation {
         $methodInvocation = new ObjectMethodInvocation($objectPlaceholder, $name);

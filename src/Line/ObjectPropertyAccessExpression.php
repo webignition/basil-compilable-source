@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Line;
 
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\ResolvableVariablePlaceholderInterface;
+use webignition\BasilCompilableSource\VariableDependencyInterface;
 use webignition\BasilCompilableSource\VariablePlaceholderInterface;
 
 class ObjectPropertyAccessExpression extends AbstractExpression
@@ -37,7 +37,7 @@ class ObjectPropertyAccessExpression extends AbstractExpression
     {
         $metadata = parent::getMetadata();
 
-        if ($this->objectPlaceholder instanceof ResolvableVariablePlaceholderInterface) {
+        if ($this->objectPlaceholder instanceof VariableDependencyInterface) {
             $metadata = $metadata->merge($this->objectPlaceholder->getMetadata());
         }
 

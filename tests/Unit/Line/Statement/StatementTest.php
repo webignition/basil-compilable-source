@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Tests\Unit\Line\Statement;
 
-use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
-use webignition\BasilCompilableSource\Line\ClassDependency;
 use webignition\BasilCompilableSource\Line\ExpressionInterface;
 use webignition\BasilCompilableSource\Line\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
@@ -13,8 +11,8 @@ use webignition\BasilCompilableSource\Line\Statement\Statement;
 use webignition\BasilCompilableSource\Line\Statement\StatementInterface;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\VariablePlaceholder;
-use webignition\BasilCompilableSource\VariablePlaceholderCollection;
+use webignition\BasilCompilableSource\VariableDependency;
+use webignition\BasilCompilableSource\VariableDependencyCollection;
 
 class StatementTest extends \PHPUnit\Framework\TestCase
 {
@@ -33,18 +31,10 @@ class StatementTest extends \PHPUnit\Framework\TestCase
     {
         return [
             'variable dependency' => [
-                'expression' => VariablePlaceholder::createDependency('DEPENDENCY'),
+                'expression' => new VariableDependency('DEPENDENCY'),
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         'DEPENDENCY',
-                    ])
-                ]),
-            ],
-            'variable export' => [
-                'expression' => VariablePlaceholder::createExport('EXPORT'),
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        'EXPORT',
                     ])
                 ]),
             ],
@@ -54,11 +44,11 @@ class StatementTest extends \PHPUnit\Framework\TestCase
             ],
             'object method invocation' => [
                 'expression' => new ObjectMethodInvocation(
-                    VariablePlaceholder::createDependency('OBJECT'),
+                    new VariableDependency('OBJECT'),
                     'methodName'
                 ),
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         'OBJECT',
                     ])
                 ]),
@@ -79,15 +69,9 @@ class StatementTest extends \PHPUnit\Framework\TestCase
         return [
             'statement encapsulating variable dependency' => [
                 'statement' => new Statement(
-                    VariablePlaceholder::createDependency('DEPENDENCY')
+                    new VariableDependency('DEPENDENCY')
                 ),
                 'expectedString' => '{{ DEPENDENCY }};',
-            ],
-            'statement encapsulating variable export' => [
-                'statement' => new Statement(
-                    VariablePlaceholder::createExport('EXPORT')
-                ),
-                'expectedString' => '{{ EXPORT }};',
             ],
             'statement encapsulating method invocation' => [
                 'statement' => new Statement(
@@ -98,7 +82,7 @@ class StatementTest extends \PHPUnit\Framework\TestCase
             'statement encapsulating object method invocation' => [
                 'statement' => new Statement(
                     new ObjectMethodInvocation(
-                        VariablePlaceholder::createDependency('OBJECT'),
+                        new VariableDependency('OBJECT'),
                         'methodName'
                     )
                 ),

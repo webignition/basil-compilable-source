@@ -10,8 +10,8 @@ use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\VariablePlaceholder;
-use webignition\BasilCompilableSource\VariablePlaceholderCollection;
+use webignition\BasilCompilableSource\VariableDependency;
+use webignition\BasilCompilableSource\VariableDependencyCollection;
 
 class ComparisonExpressionTest extends \PHPUnit\Framework\TestCase
 {
@@ -43,13 +43,13 @@ class ComparisonExpressionTest extends \PHPUnit\Framework\TestCase
             ],
             'has metadata' => [
                 'leftHandSide' => new ObjectMethodInvocation(
-                    VariablePlaceholder::createDependency('DEPENDENCY'),
+                    new VariableDependency('DEPENDENCY'),
                     'methodName'
                 ),
                 'rightHandSide' => new LiteralExpression('literal'),
                 'comparison' => '!==',
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         'DEPENDENCY',
                     ])
                 ]),
@@ -80,7 +80,7 @@ class ComparisonExpressionTest extends \PHPUnit\Framework\TestCase
             'object method invocation and literal, null coalesce' => [
                 'expression' => new ComparisonExpression(
                     new ObjectMethodInvocation(
-                        VariablePlaceholder::createDependency('DEPENDENCY'),
+                        new VariableDependency('DEPENDENCY'),
                         'methodName'
                     ),
                     new LiteralExpression('value'),

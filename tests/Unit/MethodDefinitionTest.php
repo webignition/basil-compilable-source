@@ -19,8 +19,9 @@ use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\MethodDefinition;
 use webignition\BasilCompilableSource\MethodDefinitionInterface;
-use webignition\BasilCompilableSource\VariablePlaceholder;
-use webignition\BasilCompilableSource\VariablePlaceholderCollection;
+use webignition\BasilCompilableSource\VariableDependency;
+use webignition\BasilCompilableSource\VariableDependencyCollection;
+use webignition\BasilCompilableSource\VariableName;
 
 class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
 {
@@ -93,21 +94,18 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
                 'methodDefinition' => new MethodDefinition('name', new CodeBlock([
                     new Statement(
                         new ObjectMethodInvocation(
-                            VariablePlaceholder::createDependency('DEPENDENCY'),
+                            new VariableDependency('DEPENDENCY'),
                             'methodName'
                         )
                     ),
                     new AssignmentStatement(
-                        VariablePlaceholder::createExport('PLACEHOLDER'),
+                        new VariableName('variable'),
                         new MethodInvocation('methodName')
                     ),
                 ])),
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         'DEPENDENCY',
-                    ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        'PLACEHOLDER',
                     ]),
                 ]),
             ],
@@ -229,12 +227,12 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
                 'methodDefinition' => new MethodDefinition(
                     'nameOfMethod',
                     new CodeBlock([
-                        new SingleLineComment('Assign object method call to VALUE'),
+                        new SingleLineComment('Assign object method call to $value'),
                         new EmptyLine(),
                         new AssignmentStatement(
-                            VariablePlaceholder::createExport('VALUE'),
+                            new VariableName('value'),
                             new ObjectMethodInvocation(
-                                VariablePlaceholder::createDependency('OBJECT'),
+                                new VariableDependency('OBJECT'),
                                 'methodName',
                                 [
                                     new LiteralExpression('$x'),
@@ -248,9 +246,9 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
                 'expectedString' =>
                     'public function nameOfMethod($x, $y)' . "\n" .
                     '{' . "\n" .
-                    '    // Assign object method call to VALUE' . "\n" .
+                    '    // Assign object method call to $value' . "\n" .
                     "\n" .
-                    '    {{ VALUE }} = {{ OBJECT }}->methodName($x, $y);' . "\n" .
+                    '    $value = {{ OBJECT }}->methodName($x, $y);' . "\n" .
                     '}'
             ],
             'public, has arguments, no return type, has lines with trailing newline' => [
@@ -280,12 +278,12 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
                     new MethodDefinition(
                         'nameOfMethod',
                         new CodeBlock([
-                            new SingleLineComment('Assign object method call to VALUE'),
+                            new SingleLineComment('Assign object method call to $value'),
                             new EmptyLine(),
                             new AssignmentStatement(
-                                VariablePlaceholder::createExport('VALUE'),
+                                new VariableName('value'),
                                 new ObjectMethodInvocation(
-                                    VariablePlaceholder::createDependency('OBJECT'),
+                                    new VariableDependency('OBJECT'),
                                     'methodName',
                                     [
                                         new LiteralExpression('$x'),
@@ -306,9 +304,9 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
                     ' */' . "\n" .
                     'public function nameOfMethod($x, $y)' . "\n" .
                     '{' . "\n" .
-                    '    // Assign object method call to VALUE' . "\n" .
+                    '    // Assign object method call to $value' . "\n" .
                     "\n" .
-                    '    {{ VALUE }} = {{ OBJECT }}->methodName($x, $y);' . "\n" .
+                    '    $value = {{ OBJECT }}->methodName($x, $y);' . "\n" .
                     '}'
             ],
         ];

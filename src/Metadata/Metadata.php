@@ -5,17 +5,15 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Metadata;
 
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
-use webignition\BasilCompilableSource\VariablePlaceholderCollection;
+use webignition\BasilCompilableSource\VariableDependencyCollection;
 
 class Metadata implements MetadataInterface
 {
     public const KEY_CLASS_DEPENDENCIES = 'class-dependencies';
     public const KEY_VARIABLE_DEPENDENCIES = 'variable-dependencies';
-    public const KEY_VARIABLE_EXPORTS = 'variable-exports';
 
     private ClassDependencyCollection $classDependencies;
-    private VariablePlaceholderCollection $variableDependencies;
-    private VariablePlaceholderCollection $variableExports;
+    private VariableDependencyCollection $variableDependencies;
 
     /**
      * @param array<mixed> $components
@@ -27,21 +25,14 @@ class Metadata implements MetadataInterface
             ? $classDependencies
             : new ClassDependencyCollection();
 
-        $emptyVariableDependencies = VariablePlaceholderCollection::createDependencyCollection();
+        $emptyVariableDependencies = new VariableDependencyCollection();
         $variableDependencies = $components[self::KEY_VARIABLE_DEPENDENCIES] ?? $emptyVariableDependencies;
-        $variableDependencies = $variableDependencies instanceof VariablePlaceholderCollection
+        $variableDependencies = $variableDependencies instanceof VariableDependencyCollection
             ? $variableDependencies
             : $emptyVariableDependencies;
 
-        $emptyVariableExports = VariablePlaceholderCollection::createExportCollection();
-        $variableExports = $components[self::KEY_VARIABLE_EXPORTS] ?? $emptyVariableExports;
-        $variableExports = $variableExports instanceof VariablePlaceholderCollection
-            ? $variableExports
-            : $emptyVariableExports;
-
         $this->classDependencies = $classDependencies;
         $this->variableDependencies = $variableDependencies;
-        $this->variableExports = $variableExports;
     }
 
     public function getClassDependencies(): ClassDependencyCollection
@@ -49,12 +40,7 @@ class Metadata implements MetadataInterface
         return $this->classDependencies;
     }
 
-    public function getVariableExports(): VariablePlaceholderCollection
-    {
-        return $this->variableExports;
-    }
-
-    public function getVariableDependencies(): VariablePlaceholderCollection
+    public function getVariableDependencies(): VariableDependencyCollection
     {
         return $this->variableDependencies;
     }
@@ -64,7 +50,6 @@ class Metadata implements MetadataInterface
         $new = new Metadata();
         $new->classDependencies = $this->classDependencies->merge($metadata->getClassDependencies());
         $new->variableDependencies = $this->variableDependencies->merge($metadata->getVariableDependencies());
-        $new->variableExports = $this->variableExports->merge($metadata->getVariableExports());
 
         return $new;
     }
