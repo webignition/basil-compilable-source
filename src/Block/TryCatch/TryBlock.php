@@ -4,11 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Block\TryCatch;
 
-use webignition\BasilCompilableSource\Body\BodyInterface;
-use webignition\BasilCompilableSource\HasMetadataInterface;
-use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-
-class TryBlock implements HasMetadataInterface
+class TryBlock extends AbstractBlock
 {
     private const RENDER_TEMPLATE = <<<'EOD'
 try {
@@ -16,42 +12,13 @@ try {
 }
 EOD;
 
-    private BodyInterface $body;
-
-    public function __construct(BodyInterface $body)
+    protected function getRenderTemplate(): string
     {
-        $this->body = $body;
+        return self::RENDER_TEMPLATE;
     }
 
-    public function getMetadata(): MetadataInterface
+    protected function getAdditionalRenderComponents(): array
     {
-        return $this->body->getMetadata();
-    }
-
-    public function render(): string
-    {
-        $renderedBody = $this->body->render();
-
-        $renderedBody = $this->indent($renderedBody);
-        $renderedBody = rtrim($renderedBody, "\n");
-
-        return sprintf(self::RENDER_TEMPLATE, $renderedBody);
-    }
-
-    private function indent(string $content): string
-    {
-        if ('' === $content) {
-            return '';
-        }
-
-        $lines = explode("\n", $content);
-
-        array_walk($lines, function (&$line) {
-            if ('' !== $line) {
-                $line = '    ' . $line;
-            }
-        });
-
-        return implode("\n", $lines);
+        return [];
     }
 }

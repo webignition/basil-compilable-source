@@ -45,8 +45,8 @@ class CatchBlockTest extends \PHPUnit\Framework\TestCase
 
         $expectedMetadata = new Metadata([
             Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                new ClassDependency(\Exception::class),
                 new ClassDependency(\RuntimeException::class),
+                new ClassDependency(\Exception::class),
             ]),
             Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                 'DEPENDENCY',
