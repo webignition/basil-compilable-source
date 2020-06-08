@@ -2,24 +2,25 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilCompilableSource\Tests\Unit\Line;
+namespace webignition\BasilCompilableSource\Tests\Unit;
 
 use webignition\BasilCompilableSource\SingleLineComment;
+use webignition\BasilCompilableSource\Tests\Services\ObjectReflector;
 
 class SingleLineCommentTest extends \PHPUnit\Framework\TestCase
 {
     public function testCreate()
     {
         $content = 'comment content';
-        $comment = new \webignition\BasilCompilableSource\SingleLineComment($content);
+        $comment = new SingleLineComment($content);
 
-        $this->assertSame($content, $comment->getContent());
+        $this->assertSame($content, ObjectReflector::getProperty($comment, 'content'));
     }
 
     /**
      * @dataProvider renderDataProvider
      */
-    public function testRender(\webignition\BasilCompilableSource\SingleLineComment $comment, string $expectedString)
+    public function testRender(SingleLineComment $comment, string $expectedString)
     {
         $this->assertSame($expectedString, $comment->render());
     }
@@ -28,11 +29,11 @@ class SingleLineCommentTest extends \PHPUnit\Framework\TestCase
     {
         return [
             'empty' => [
-                'comment' => new \webignition\BasilCompilableSource\SingleLineComment(''),
+                'comment' => new SingleLineComment(''),
                 'expectedString' => '// ',
             ],
             'non-empty' => [
-                'comment' => new \webignition\BasilCompilableSource\SingleLineComment('non-empty'),
+                'comment' => new SingleLineComment('non-empty'),
                 'expectedString' => '// non-empty',
             ],
         ];

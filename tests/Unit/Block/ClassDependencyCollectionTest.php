@@ -9,7 +9,7 @@ use webignition\BasilCompilableSource\Expression\ClassDependency;
 use webignition\BasilCompilableSource\EmptyLine;
 use webignition\BasilCompilableSource\SingleLineComment;
 use webignition\BasilCompilableSource\Tests\Services\ObjectReflector;
-use webignition\BasilCompilableSource\Tests\Unit\Line\ClassDependencyTest;
+use webignition\BasilCompilableSource\Tests\Unit\Expression\ClassDependencyTest;
 
 class ClassDependencyCollectionTest extends \PHPUnit\Framework\TestCase
 {
@@ -78,7 +78,7 @@ class ClassDependencyCollectionTest extends \PHPUnit\Framework\TestCase
                 ]),
                 'expectedString' =>
                     'use webignition\BasilCompilableSource\Expression\ClassDependency;' . "\n" .
-                    'use webignition\BasilCompilableSource\Tests\Unit\Line\ClassDependencyTest as BaseTest;',
+                    'use webignition\BasilCompilableSource\Tests\Unit\Expression\ClassDependencyTest as BaseTest;',
             ],
             'lines are sorted' => [
                 'collection' => new ClassDependencyCollection([
