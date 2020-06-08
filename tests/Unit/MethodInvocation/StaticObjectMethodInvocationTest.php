@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilCompilableSource\Tests\Unit\Line\MethodInvocation;
+namespace webignition\BasilCompilableSource\Tests\Unit\MethodInvocation;
 
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSource\Line\ClassDependency;
 use webignition\BasilCompilableSource\Line\ExpressionInterface;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
-use webignition\BasilCompilableSource\Line\MethodInvocation\MethodInvocation;
-use webignition\BasilCompilableSource\Line\MethodInvocation\StaticObjectMethodInvocation;
-use webignition\BasilCompilableSource\Line\MethodInvocation\StaticObjectMethodInvocationInterface;
+use webignition\BasilCompilableSource\MethodInvocation\MethodInvocation;
+use webignition\BasilCompilableSource\MethodInvocation\StaticObjectMethodInvocation;
+use webignition\BasilCompilableSource\MethodInvocation\StaticObjectMethodInvocationInterface;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\StaticObject;

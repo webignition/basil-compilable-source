@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilCompilableSource\Tests\Unit\Line\MethodInvocation;
+namespace webignition\BasilCompilableSource\Tests\Unit\MethodInvocation;
 
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSource\Body\Body;
@@ -11,10 +11,9 @@ use webignition\BasilCompilableSource\Line\ClosureExpression;
 use webignition\BasilCompilableSource\Line\EmptyLine;
 use webignition\BasilCompilableSource\Line\ExpressionInterface;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
-use webignition\BasilCompilableSource\Line\MethodInvocation\MethodInvocation;
-use webignition\BasilCompilableSource\Line\MethodInvocation\MethodInvocationInterface;
-use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
-use webignition\BasilCompilableSource\Line\MethodInvocation\StaticObjectMethodInvocation;
+use webignition\BasilCompilableSource\MethodInvocation\MethodInvocation;
+use webignition\BasilCompilableSource\MethodInvocation\MethodInvocationInterface;
+use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\ReturnStatement;
 use webignition\BasilCompilableSource\Metadata\Metadata;
@@ -87,7 +86,7 @@ class MethodInvocationTest extends \PHPUnit\Framework\TestCase
             'has metadata' => [
                 'methodName' => 'methodName',
                 'arguments' => [
-                    new StaticObjectMethodInvocation(
+                    new \webignition\BasilCompilableSource\MethodInvocation\StaticObjectMethodInvocation(
                         new StaticObject(ClassDependency::class),
                         'staticMethodName'
                     )
@@ -172,7 +171,7 @@ class MethodInvocationTest extends \PHPUnit\Framework\TestCase
                             new VariableDependency('NAVIGATOR'),
                             'find',
                             [
-                                new StaticObjectMethodInvocation(
+                                new \webignition\BasilCompilableSource\MethodInvocation\StaticObjectMethodInvocation(
                                     new StaticObject(ObjectMethodInvocation::class),
                                     'fromJson',
                                     [

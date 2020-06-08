@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilCompilableSource\Line\MethodInvocation;
+namespace webignition\BasilCompilableSource\MethodInvocation;
 
 use webignition\BasilCompilableSource\HasMetadataTrait;
 use webignition\BasilCompilableSource\Line\ExpressionInterface;
@@ -23,8 +23,8 @@ class MethodInvocation implements MethodInvocationInterface
     /**
      * @var ExpressionInterface[]
      */
-    private array $arguments = [];
-    private string $argumentFormat = self::ARGUMENT_FORMAT_INLINE;
+    private array $arguments;
+    private string $argumentFormat;
 
     /**
      * @var bool
