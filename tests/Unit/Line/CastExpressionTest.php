@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Tests\Unit\Line;
 
 use webignition\BasilCompilableSource\Body\Body;
-use webignition\BasilCompilableSource\Line\ArrayExpression;
-use webignition\BasilCompilableSource\Line\CastExpression;
-use webignition\BasilCompilableSource\Line\ClosureExpression;
-use webignition\BasilCompilableSource\Line\ComparisonExpression;
-use webignition\BasilCompilableSource\Line\CompositeExpression;
-use webignition\BasilCompilableSource\Line\LiteralExpression;
+use webignition\BasilCompilableSource\Expression\ArrayExpression;
+use webignition\BasilCompilableSource\Expression\CastExpression;
+use webignition\BasilCompilableSource\Expression\ClosureExpression;
+use webignition\BasilCompilableSource\Expression\ComparisonExpression;
+use webignition\BasilCompilableSource\Expression\CompositeExpression;
+use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\MethodInvocation\StaticObjectMethodInvocation;
-use webignition\BasilCompilableSource\Line\ObjectPropertyAccessExpression;
+use webignition\BasilCompilableSource\Expression\ObjectPropertyAccessExpression;
 use webignition\BasilCompilableSource\StaticObject;
 use webignition\BasilCompilableSource\VariableDependency;
 

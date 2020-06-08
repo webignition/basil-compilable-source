@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Tests\Unit\Line;
 
-use webignition\BasilCompilableSource\Line\ComparisonExpression;
-use webignition\BasilCompilableSource\Line\ExpressionInterface;
-use webignition\BasilCompilableSource\Line\LiteralExpression;
+use webignition\BasilCompilableSource\Expression\ComparisonExpression;
+use webignition\BasilCompilableSource\Expression\ExpressionInterface;
+use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource;
 
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
-use webignition\BasilCompilableSource\Line\AbstractExpression;
-use webignition\BasilCompilableSource\Line\ClassDependency;
+use webignition\BasilCompilableSource\Expression\AbstractExpression;
+use webignition\BasilCompilableSource\Expression\ClassDependency;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 
 class StaticObject extends AbstractExpression

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Tests\Unit\Line;
 
-use webignition\BasilCompilableSource\Line\ArrayExpression;
+use webignition\BasilCompilableSource\Expression\ArrayExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 
 class ArrayExpressionTest extends \PHPUnit\Framework\TestCase

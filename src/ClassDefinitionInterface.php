@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource;
 
-use webignition\BasilCompilableSource\Line\ClassDependency;
+use webignition\BasilCompilableSource\Expression\ClassDependency;
 
 interface ClassDefinitionInterface extends HasMetadataInterface, SourceInterface
 {

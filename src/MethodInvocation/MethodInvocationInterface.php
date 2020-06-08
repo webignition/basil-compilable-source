@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\MethodInvocation;
 
-use webignition\BasilCompilableSource\Line\ExpressionInterface;
+use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 
 interface MethodInvocationInterface extends ExpressionInterface
 {

@@ -6,7 +6,7 @@ namespace webignition\BasilCompilableSource\Statement;
 
 use webignition\BasilCompilableSource\Body\BodyContentInterface;
 use webignition\BasilCompilableSource\Body\BodyInterface;
-use webignition\BasilCompilableSource\Line\ExpressionInterface;
+use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 
 interface StatementInterface extends BodyContentInterface, BodyInterface
 {

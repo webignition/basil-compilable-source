@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Tests\Unit\Line;
 
-use webignition\BasilCompilableSource\Line\LiteralExpression;
+use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 
 class LiteralExpressionTest extends \PHPUnit\Framework\TestCase

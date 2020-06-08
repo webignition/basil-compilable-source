@@ -6,11 +6,11 @@ namespace webignition\BasilCompilableSource\Tests\Unit\MethodInvocation;
 
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSource\Body\Body;
-use webignition\BasilCompilableSource\Line\ClassDependency;
-use webignition\BasilCompilableSource\Line\ClosureExpression;
+use webignition\BasilCompilableSource\Expression\ClassDependency;
+use webignition\BasilCompilableSource\Expression\ClosureExpression;
 use webignition\BasilCompilableSource\EmptyLine;
-use webignition\BasilCompilableSource\Line\ExpressionInterface;
-use webignition\BasilCompilableSource\Line\LiteralExpression;
+use webignition\BasilCompilableSource\Expression\ExpressionInterface;
+use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSource\MethodInvocation\MethodInvocationInterface;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;

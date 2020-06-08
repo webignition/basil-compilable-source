@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilCompilableSource\Line;
+namespace webignition\BasilCompilableSource\Expression;
 
 class LiteralExpression extends AbstractExpression
 {

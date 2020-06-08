@@ -8,7 +8,7 @@ use webignition\BasilCompilableSource\Block\DocBlock;
 use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\EmptyLine;
-use webignition\BasilCompilableSource\Line\LiteralExpression;
+use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\SingleLineComment;

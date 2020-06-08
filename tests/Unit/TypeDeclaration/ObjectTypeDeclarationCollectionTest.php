@@ -6,7 +6,7 @@ namespace webignition\BasilCompilableSource\Tests\Unit\TypeDeclaration;
 
 use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
-use webignition\BasilCompilableSource\Line\ClassDependency;
+use webignition\BasilCompilableSource\Expression\ClassDependency;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclaration;

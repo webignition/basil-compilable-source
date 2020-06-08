@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Statement;
 
-use webignition\BasilCompilableSource\Line\ExpressionInterface;
-use webignition\BasilCompilableSource\Line\ObjectPropertyAccessExpression;
+use webignition\BasilCompilableSource\Expression\ExpressionInterface;
+use webignition\BasilCompilableSource\Expression\ObjectPropertyAccessExpression;
 
 class ObjectPropertyAssignmentStatement extends AssignmentStatement
 {

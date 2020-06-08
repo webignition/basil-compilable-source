@@ -6,7 +6,7 @@ namespace webignition\BasilCompilableSource;
 
 use webignition\BasilCompilableSource\Block\DocBlock;
 use webignition\BasilCompilableSource\Body\Body;
-use webignition\BasilCompilableSource\Line\ArrayExpression;
+use webignition\BasilCompilableSource\Expression\ArrayExpression;
 use webignition\BasilCompilableSource\Statement\ReturnStatement;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 

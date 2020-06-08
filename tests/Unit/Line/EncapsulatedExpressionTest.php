@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Tests\Unit\Line;
 
-use webignition\BasilCompilableSource\Line\ComparisonExpression;
-use webignition\BasilCompilableSource\Line\EncapsulatedExpression;
-use webignition\BasilCompilableSource\Line\LiteralExpression;
+use webignition\BasilCompilableSource\Expression\ComparisonExpression;
+use webignition\BasilCompilableSource\Expression\EncapsulatedExpression;
+use webignition\BasilCompilableSource\Expression\LiteralExpression;
 
 class EncapsulatedExpressionTest extends \PHPUnit\Framework\TestCase
 {

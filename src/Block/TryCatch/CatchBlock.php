@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Block\TryCatch;
 
 use webignition\BasilCompilableSource\Body\BodyInterface;
-use webignition\BasilCompilableSource\Line\CatchExpression;
+use webignition\BasilCompilableSource\Expression\CatchExpression;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 
 class CatchBlock extends AbstractBlock
