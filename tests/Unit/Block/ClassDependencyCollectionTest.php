@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Tests\Unit\Block;
 
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
-use webignition\BasilCompilableSource\Line\ClassDependency;
-use webignition\BasilCompilableSource\Line\EmptyLine;
-use webignition\BasilCompilableSource\Line\SingleLineComment;
+use webignition\BasilCompilableSource\Expression\ClassDependency;
+use webignition\BasilCompilableSource\EmptyLine;
+use webignition\BasilCompilableSource\SingleLineComment;
 use webignition\BasilCompilableSource\Tests\Services\ObjectReflector;
-use webignition\BasilCompilableSource\Tests\Unit\Line\ClassDependencyTest;
+use webignition\BasilCompilableSource\Tests\Unit\Expression\ClassDependencyTest;
 
 class ClassDependencyCollectionTest extends \PHPUnit\Framework\TestCase
 {
@@ -77,8 +77,8 @@ class ClassDependencyCollectionTest extends \PHPUnit\Framework\TestCase
                     new ClassDependency(ClassDependencyTest::class, 'BaseTest'),
                 ]),
                 'expectedString' =>
-                    'use webignition\BasilCompilableSource\Line\ClassDependency;' . "\n" .
-                    'use webignition\BasilCompilableSource\Tests\Unit\Line\ClassDependencyTest as BaseTest;',
+                    'use webignition\BasilCompilableSource\Expression\ClassDependency;' . "\n" .
+                    'use webignition\BasilCompilableSource\Tests\Unit\Expression\ClassDependencyTest as BaseTest;',
             ],
             'lines are sorted' => [
                 'collection' => new ClassDependencyCollection([
