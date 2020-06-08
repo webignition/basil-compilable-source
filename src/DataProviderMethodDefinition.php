@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource;
 
-use webignition\BasilCompilableSource\Block\CodeBlock;
 use webignition\BasilCompilableSource\Block\DocBlock;
+use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\Line\ArrayExpression;
 use webignition\BasilCompilableSource\Line\Statement\ReturnStatement;
 use webignition\BasilCompilableSource\Metadata\Metadata;
@@ -27,7 +27,7 @@ class DataProviderMethodDefinition extends MethodDefinition implements DataProvi
     {
         $this->data = $data;
 
-        parent::__construct($name, new CodeBlock([
+        parent::__construct($name, new Body([
             new ReturnStatement(
                 new ArrayExpression($data)
             ),

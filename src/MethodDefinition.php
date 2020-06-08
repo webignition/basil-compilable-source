@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource;
 
 use webignition\BasilCompilableSource\Block\DocBlock;
+use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 
 class MethodDefinition implements MethodDefinitionInterface
@@ -24,7 +25,7 @@ EOD;
 
     private ?string $returnType;
     private string $name;
-    private FunctionBodyInterface $body;
+    private BodyInterface $body;
 
     /**
      * @var string[]
@@ -35,10 +36,10 @@ EOD;
 
     /**
      * @param string $name
-     * @param FunctionBodyInterface $body
+     * @param BodyInterface $body
      * @param string[] $arguments
      */
-    public function __construct(string $name, FunctionBodyInterface $body, array $arguments = [])
+    public function __construct(string $name, BodyInterface $body, array $arguments = [])
     {
         $this->visibility = self::VISIBILITY_PUBLIC;
         $this->returnType = null;

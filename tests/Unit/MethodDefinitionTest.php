@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Tests\Unit;
 
-use webignition\BasilCompilableSource\Block\CodeBlock;
-use webignition\BasilCompilableSource\Block\CodeBlockInterface;
 use webignition\BasilCompilableSource\Block\DocBlock;
+use webignition\BasilCompilableSource\Body\Body;
+use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\Line\EmptyLine;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\Line\MethodInvocation\MethodInvocation;
@@ -28,10 +28,10 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
      * @dataProvider createDataProvider
      *
      * @param string $name
-     * @param CodeBlockInterface $codeBlock
+     * @param BodyInterface $codeBlock
      * @param string[] $arguments
      */
-    public function testCreate(string $name, CodeBlockInterface $codeBlock, array $arguments = [])
+    public function testCreate(string $name, BodyInterface $codeBlock, array $arguments = [])
     {
         $methodDefinition = new MethodDefinition($name, $codeBlock, $arguments);
 
@@ -46,19 +46,21 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
 
     public function createDataProvider(): array
     {
+        $body = new Body([]);
+
         return [
             'no arguments' => [
                 'name' => 'noArguments',
-                'codeBlock' => new CodeBlock(),
+                'body' => $body,
             ],
             'empty arguments' => [
                 'name' => 'emptyArguments',
-                'codeBlock' => new CodeBlock(),
+                'body' => $body,
                 'arguments' => [],
             ],
             'has arguments' => [
                 'name' => 'hasArguments',
-                'codeBlock' => new CodeBlock(),
+                'body' => $body,
                 'arguments' => [
                     'arg1',
                     'arg2',
@@ -79,18 +81,18 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
     {
         return [
             'empty' => [
-                'methodDefinition' => new MethodDefinition('name', new CodeBlock()),
+                'methodDefinition' => new MethodDefinition('name', new Body([])),
                 'expectedMetadata' => new Metadata(),
             ],
             'lines without metadata' => [
-                'methodDefinition' => new MethodDefinition('name', new CodeBlock([
+                'methodDefinition' => new MethodDefinition('name', new Body([
                     new EmptyLine(),
                     new SingleLineComment('single line comment'),
                 ])),
                 'expectedMetadata' => new Metadata(),
             ],
             'lines with metadata' => [
-                'methodDefinition' => new MethodDefinition('name', new CodeBlock([
+                'methodDefinition' => new MethodDefinition('name', new Body([
                     new Statement(
                         new ObjectMethodInvocation(
                             new VariableDependency('DEPENDENCY'),
@@ -113,7 +115,7 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
 
     public function testVisibility()
     {
-        $methodDefinition = new MethodDefinition('name', new CodeBlock());
+        $methodDefinition = new MethodDefinition('name', new Body([]));
         $this->assertSame(MethodDefinition::VISIBILITY_PUBLIC, $methodDefinition->getVisibility());
 
         $methodDefinition->setProtected();
@@ -128,7 +130,7 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
 
     public function testSetReturnType()
     {
-        $methodDefinition = new MethodDefinition('name', new CodeBlock());
+        $methodDefinition = new MethodDefinition('name', new Body([]));
         $this->assertNull($methodDefinition->getReturnType());
 
         $methodDefinition->setReturnType('string');
@@ -143,7 +145,7 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
 
     public function testIsStatic()
     {
-        $methodDefinition = new MethodDefinition('name', new CodeBlock());
+        $methodDefinition = new MethodDefinition('name', new Body([]));
         $this->assertFalse($methodDefinition->isStatic());
 
         $methodDefinition->setStatic();
@@ -152,7 +154,7 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
 
     public function testSetDocBlock()
     {
-        $methodDefinition = new MethodDefinition('name', new CodeBlock());
+        $methodDefinition = new MethodDefinition('name', new Body([]));
         $this->assertNull($methodDefinition->getDocBlock());
 
         $docBlock = new DocBlock([]);
@@ -170,21 +172,21 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
 
     public function renderDataProvider(): array
     {
-        $emptyProtectedMethod = new MethodDefinition('emptyProtectedMethod', new CodeBlock());
+        $emptyProtectedMethod = new MethodDefinition('emptyProtectedMethod', new Body([]));
         $emptyProtectedMethod->setProtected();
 
-        $emptyPrivateMethod = new MethodDefinition('emptyPrivateMethod', new CodeBlock());
+        $emptyPrivateMethod = new MethodDefinition('emptyPrivateMethod', new Body([]));
         $emptyPrivateMethod->setPrivate();
 
-        $emptyMethodWithReturnType = new MethodDefinition('emptyPublicMethodWithReturnType', new CodeBlock());
+        $emptyMethodWithReturnType = new MethodDefinition('emptyPublicMethodWithReturnType', new Body([]));
         $emptyMethodWithReturnType->setReturnType('string');
 
-        $emptyPublicStaticMethod = new MethodDefinition('emptyPublicStaticMethod', new CodeBlock());
+        $emptyPublicStaticMethod = new MethodDefinition('emptyPublicStaticMethod', new Body([]));
         $emptyPublicStaticMethod->setStatic();
 
         return [
             'public, no arguments, no return type, no lines' => [
-                'methodDefinition' => new MethodDefinition('emptyPublicMethod', new CodeBlock()),
+                'methodDefinition' => new MethodDefinition('emptyPublicMethod', new Body([])),
                 'expectedString' =>
                     'public function emptyPublicMethod()' . "\n" .
                     '{' . "\n\n" .
@@ -205,7 +207,7 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
                     '}'
             ],
             'public, has arguments, no return type, no lines' => [
-                'methodDefinition' => new MethodDefinition('emptyPublicMethod', new CodeBlock(), [
+                'methodDefinition' => new MethodDefinition('emptyPublicMethod', new Body([]), [
                     'arg1',
                     'arg2',
                     'arg3',
@@ -225,7 +227,7 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
             'public, has arguments, no return type, has lines' => [
                 'methodDefinition' => new MethodDefinition(
                     'nameOfMethod',
-                    new CodeBlock([
+                    new Body([
                         new SingleLineComment('Assign object method call to $value'),
                         new EmptyLine(),
                         new AssignmentStatement(
@@ -253,7 +255,7 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
             'public, has arguments, no return type, has lines with trailing newline' => [
                 'methodDefinition' => new MethodDefinition(
                     'nameOfMethod',
-                    new CodeBlock([
+                    new Body([
                         new SingleLineComment('comment'),
                         new EmptyLine(),
                     ]),
@@ -276,7 +278,7 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
                 'methodDefinition' => $this->createMethodDefinitionWithDocBlock(
                     new MethodDefinition(
                         'nameOfMethod',
-                        new CodeBlock([
+                        new Body([
                             new SingleLineComment('Assign object method call to $value'),
                             new EmptyLine(),
                             new AssignmentStatement(

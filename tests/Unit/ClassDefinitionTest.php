@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use webignition\BasilCompilableSource\Block\CodeBlock;
 use webignition\BasilCompilableSource\Block\DocBlock;
+use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\ClassDefinition;
 use webignition\BasilCompilableSource\ClassDefinitionInterface;
 use webignition\BasilCompilableSource\DataProviderMethodDefinition;
@@ -65,12 +65,12 @@ class ClassDefinitionTest extends TestCase
             'valid methods' => [
                 'name' => 'noMethods',
                 'methods' => [
-                    new MethodDefinition('methodOne', new CodeBlock()),
-                    new MethodDefinition('methodTwo', new CodeBlock()),
+                    new MethodDefinition('methodOne', new Body([])),
+                    new MethodDefinition('methodTwo', new Body([])),
                 ],
                 'expectedMethods' => [
-                    'methodOne' => new MethodDefinition('methodOne', new CodeBlock()),
-                    'methodTwo' => new MethodDefinition('methodTwo', new CodeBlock()),
+                    'methodOne' => new MethodDefinition('methodOne', new Body([])),
+                    'methodTwo' => new MethodDefinition('methodTwo', new Body([])),
                 ],
             ],
         ];
@@ -102,7 +102,7 @@ class ClassDefinitionTest extends TestCase
                 'classDefinition' => new ClassDefinition(
                     'className',
                     [
-                        new MethodDefinition('methodName', new CodeBlock()),
+                        new MethodDefinition('methodName', new Body([])),
                     ]
                 ),
                 'expectedMetadata' => new Metadata(),
@@ -111,7 +111,7 @@ class ClassDefinitionTest extends TestCase
                 'classDefinition' => new ClassDefinition(
                     'className',
                     [
-                        new MethodDefinition('name', new CodeBlock([
+                        new MethodDefinition('name', new Body([
                             new EmptyLine(),
                             new SingleLineComment('single line comment'),
                         ])),
@@ -123,7 +123,7 @@ class ClassDefinitionTest extends TestCase
                 'classDefinition' => new ClassDefinition(
                     'className',
                     [
-                        new MethodDefinition('name', new CodeBlock([
+                        new MethodDefinition('name', new Body([
                             new Statement(
                                 new ObjectMethodInvocation(
                                     new VariableDependency('DEPENDENCY'),
@@ -186,7 +186,7 @@ class ClassDefinitionTest extends TestCase
             'single empty method' => [
                 'classDefinition' => $this->createClassDefinitionWithBaseClass(
                     new ClassDefinition('NameOfClass', [
-                        new MethodDefinition('methodName', new CodeBlock())
+                        new MethodDefinition('methodName', new Body([]))
                     ]),
                     new ClassDependency('TestCase')
                 ),
@@ -201,7 +201,7 @@ class ClassDefinitionTest extends TestCase
             'many methods' => [
                 'classDefinition' => $this->createClassDefinitionWithBaseClass(
                     new ClassDefinition('NameOfClass', [
-                        new MethodDefinition('stepOne', new CodeBlock([
+                        new MethodDefinition('stepOne', new Body([
                             new SingleLineComment('click $"a"'),
                             new AssignmentStatement(
                                 new VariableName('statement'),
@@ -218,7 +218,7 @@ class ClassDefinitionTest extends TestCase
                                 new VariableName('statement')
                             ),
                         ])),
-                        new MethodDefinition('stepTwo', new CodeBlock([
+                        new MethodDefinition('stepTwo', new Body([
                             new SingleLineComment('click $"b"'),
                             new AssignmentStatement(
                                 new VariableName('statement'),
@@ -264,7 +264,7 @@ class ClassDefinitionTest extends TestCase
                         $this->createMethodDefinitionWithDocBlock(
                             new MethodDefinition(
                                 'stepOne',
-                                new CodeBlock([
+                                new Body([
                                     new SingleLineComment('click $"a"'),
                                     new AssignmentStatement(
                                         new VariableName('statement'),
@@ -299,7 +299,7 @@ class ClassDefinitionTest extends TestCase
                                 'y' => '4',
                             ],
                         ]),
-                        new MethodDefinition('stepTwo', new CodeBlock([
+                        new MethodDefinition('stepTwo', new Body([
                             new SingleLineComment('click $"b"'),
                             new AssignmentStatement(
                                 new VariableName('statement'),
