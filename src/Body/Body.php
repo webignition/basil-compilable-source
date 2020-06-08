@@ -10,7 +10,7 @@ use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 
-class Body implements BodyContentInterface, BodyInterface
+class Body implements BodyInterface
 {
     /**
      * @var BodyContentInterface[]
