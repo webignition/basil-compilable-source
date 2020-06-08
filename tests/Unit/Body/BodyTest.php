@@ -81,6 +81,7 @@ class BodyTest extends \PHPUnit\Framework\TestCase
                             ])
                         )
                     ),
+                    new Body([]),
                 ],
                 'expectedContent' => [
                     new SingleLineComment('singe line comment'),
