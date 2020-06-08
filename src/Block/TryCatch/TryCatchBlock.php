@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Block\TryCatch;
 
+use webignition\BasilCompilableSource\Body\BodyContentInterface;
+use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\FunctionBodyInterface;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 
-class TryCatchBlock implements FunctionBodyInterface
+class TryCatchBlock implements FunctionBodyInterface, BodyInterface, BodyContentInterface
 {
     private TryBlock $tryBlock;
 
