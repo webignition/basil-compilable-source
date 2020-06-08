@@ -63,12 +63,30 @@ class Body implements BodyInterface
         $filteredContent = [];
 
         foreach ($content as $item) {
-            if ($item instanceof BodyContentInterface) {
+            if ($this->includeContent($item)) {
                 $filteredContent[] = clone $item;
             }
         }
 
         return $filteredContent;
+    }
+
+    /**
+     * @param mixed $item
+     *
+     * @return bool
+     */
+    private function includeContent($item): bool
+    {
+        if (!$item instanceof BodyContentInterface) {
+            return false;
+        }
+
+        if ($item instanceof self && 0 === count($item->content)) {
+            return false;
+        }
+
+        return true;
     }
 
     private function buildMetadata(): MetadataInterface
