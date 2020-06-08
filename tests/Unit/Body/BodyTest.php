@@ -9,8 +9,10 @@ use webignition\BasilCompilableSource\Block\TryCatch\TryBlock;
 use webignition\BasilCompilableSource\Block\TryCatch\TryCatchBlock;
 use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\Body\BodyContentInterface;
+use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\Line\CatchExpression;
 use webignition\BasilCompilableSource\Line\ClassDependency;
+use webignition\BasilCompilableSource\Line\ClosureExpression;
 use webignition\BasilCompilableSource\Line\EmptyLine;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\Line\SingleLineComment;
@@ -173,6 +175,38 @@ class BodyTest extends \PHPUnit\Framework\TestCase
                     '    // CatchBlock comment' . "\n" .
                     '}'
                 ,
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider createEnclosingBodyDataProvider
+     */
+    public function testCreateEnclosingBody(BodyInterface $body, BodyInterface $expectedBody)
+    {
+        $this->assertEquals($expectedBody, Body::createEnclosingBody($body));
+    }
+
+    public function createEnclosingBodyDataProvider(): array
+    {
+        return [
+            'enclose a code block' => [
+                'body' => new Body([
+                    new Statement(
+                        new LiteralExpression('"literal')
+                    ),
+                ]),
+                'expectedBody' => new Body([
+                    new Statement(
+                        new ClosureExpression(
+                            new Body([
+                                new Statement(
+                                    new LiteralExpression('"literal')
+                                ),
+                            ])
+                        )
+                    ),
+                ]),
             ],
         ];
     }
