@@ -7,6 +7,6 @@ namespace webignition\BasilCompilableSource\Body;
 use webignition\BasilCompilableSource\HasMetadataInterface;
 use webignition\BasilCompilableSource\SourceInterface;
 
-interface BodyInterface extends HasMetadataInterface, SourceInterface
+interface BodyInterface extends BodyContentInterface, HasMetadataInterface
 {
 }
