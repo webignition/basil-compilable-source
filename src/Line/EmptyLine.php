@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Line;
 
 use webignition\BasilCompilableSource\Body\BodyContentInterface;
-use webignition\BasilCompilableSource\LineInterface;
 
-class EmptyLine implements BodyContentInterface, LineInterface
+class EmptyLine implements BodyContentInterface
 {
     public function render(): string
     {
