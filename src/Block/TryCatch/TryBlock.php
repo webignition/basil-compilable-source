@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Block\TryCatch;
 
-use webignition\BasilCompilableSource\Block\CodeBlock;
-
-class TryBlock extends CodeBlock
+class TryBlock extends AbstractBlock
 {
     private const RENDER_TEMPLATE = <<<'EOD'
 try {
@@ -14,29 +12,13 @@ try {
 }
 EOD;
 
-    public function render(): string
+    protected function getRenderTemplate(): string
     {
-        $lines = parent::render();
-        $lines = $this->indent($lines);
-        $lines = rtrim($lines, "\n");
-
-        return sprintf(self::RENDER_TEMPLATE, $lines);
+        return self::RENDER_TEMPLATE;
     }
 
-    private function indent(string $content): string
+    protected function getAdditionalRenderComponents(): array
     {
-        if ('' === $content) {
-            return '';
-        }
-
-        $lines = explode("\n", $content);
-
-        array_walk($lines, function (&$line) {
-            if ('' !== $line) {
-                $line = '    ' . $line;
-            }
-        });
-
-        return implode("\n", $lines);
+        return [];
     }
 }

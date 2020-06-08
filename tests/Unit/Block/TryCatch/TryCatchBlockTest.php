@@ -7,6 +7,7 @@ namespace webignition\BasilCompilableSource\Tests\Unit\Block\TryCatch;
 use webignition\BasilCompilableSource\Block\TryCatch\CatchBlock;
 use webignition\BasilCompilableSource\Block\TryCatch\TryBlock;
 use webignition\BasilCompilableSource\Block\TryCatch\TryCatchBlock;
+use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\Line\CatchExpression;
 use webignition\BasilCompilableSource\Line\ClassDependency;
 use webignition\BasilCompilableSource\Line\MethodInvocation\MethodInvocation;
@@ -14,7 +15,6 @@ use webignition\BasilCompilableSource\Line\SingleLineComment;
 use webignition\BasilCompilableSource\Line\Statement\Statement;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclaration;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclarationCollection;
-use webignition\BasilCompilableSource\VariableDependency;
 
 class TryCatchBlockTest extends \PHPUnit\Framework\TestCase
 {
@@ -29,20 +29,11 @@ class TryCatchBlockTest extends \PHPUnit\Framework\TestCase
     public function renderDataProvider(): array
     {
         return [
-            'empty' => [
+            'default' => [
                 'tryCatch' => new TryCatchBlock(
-                    new TryBlock()
-                ),
-                'expectedString' =>
-                    'try {' . "\n" .
-                    "\n" .
-                    '}',
-            ],
-            'non-empty' => [
-                'tryCatch' => new TryCatchBlock(
-                    new TryBlock([
+                    new TryBlock(
                         new Statement(new MethodInvocation('methodName')),
-                    ]),
+                    ),
                     new CatchBlock(
                         new CatchExpression(
                             new ObjectTypeDeclarationCollection([
@@ -50,9 +41,9 @@ class TryCatchBlockTest extends \PHPUnit\Framework\TestCase
                                 new ObjectTypeDeclaration(new ClassDependency(\RuntimeException::class)),
                             ])
                         ),
-                        [
+                        new Body([
                             new SingleLineComment('handle LogicException and RuntimeException')
-                        ]
+                        ]),
                     ),
                     new CatchBlock(
                         new CatchExpression(
@@ -60,9 +51,9 @@ class TryCatchBlockTest extends \PHPUnit\Framework\TestCase
                                 new ObjectTypeDeclaration(new ClassDependency(\LengthException::class)),
                             ])
                         ),
-                        [
+                        new Body([
                             new SingleLineComment('handle LengthException')
-                        ]
+                        ])
                     )
                 ),
                 'expectedString' =>

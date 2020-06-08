@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Tests\Unit;
 
-use webignition\BasilCompilableSource\Block\CodeBlock;
 use webignition\BasilCompilableSource\DataProviderMethodDefinition;
 use webignition\BasilCompilableSource\DataProviderMethodDefinitionInterface;
-use webignition\BasilCompilableSource\Line\ArrayExpression;
-use webignition\BasilCompilableSource\Line\Statement\ReturnStatement;
 use webignition\BasilCompilableSource\MethodDefinition;
 
 class DataProviderMethodDefinitionTest extends \PHPUnit\Framework\TestCase

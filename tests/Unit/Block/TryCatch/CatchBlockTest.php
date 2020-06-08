@@ -4,17 +4,58 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Tests\Unit\Block\TryCatch;
 
+use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSource\Block\TryCatch\CatchBlock;
+use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\Line\CatchExpression;
 use webignition\BasilCompilableSource\Line\ClassDependency;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
-use webignition\BasilCompilableSource\Line\SingleLineComment;
-use webignition\BasilCompilableSource\Line\Statement\ReturnStatement;
+use webignition\BasilCompilableSource\Line\MethodInvocation\StaticObjectMethodInvocation;
+use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
+use webignition\BasilCompilableSource\Line\Statement\Statement;
+use webignition\BasilCompilableSource\Metadata\Metadata;
+use webignition\BasilCompilableSource\StaticObject;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclaration;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclarationCollection;
+use webignition\BasilCompilableSource\VariableDependency;
+use webignition\BasilCompilableSource\VariableDependencyCollection;
 
 class CatchBlockTest extends \PHPUnit\Framework\TestCase
 {
+    public function testGetMetadata()
+    {
+        $body = new Body([
+            new AssignmentStatement(
+                new VariableDependency('DEPENDENCY'),
+                new StaticObjectMethodInvocation(
+                    new StaticObject(\RuntimeException::class),
+                    'staticMethodName'
+                )
+            ),
+        ]);
+
+        $catchBlock = new CatchBlock(
+            new CatchExpression(
+                new ObjectTypeDeclarationCollection([
+                    new ObjectTypeDeclaration(new ClassDependency(\Exception::class)),
+                ])
+            ),
+            $body
+        );
+
+        $expectedMetadata = new Metadata([
+            Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
+                new ClassDependency(\RuntimeException::class),
+                new ClassDependency(\Exception::class),
+            ]),
+            Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'DEPENDENCY',
+            ]),
+        ]);
+
+        $this->assertEquals($expectedMetadata, $catchBlock->getMetadata());
+    }
+
     /**
      * @dataProvider renderDataProvider
      */
@@ -26,51 +67,37 @@ class CatchBlockTest extends \PHPUnit\Framework\TestCase
     public function renderDataProvider(): array
     {
         return [
-            'no lines, single-class expression' => [
-                'tryBlock' => new CatchBlock(
-                    new CatchExpression(
-                        new ObjectTypeDeclarationCollection([
-                            new ObjectTypeDeclaration(new ClassDependency(\Exception::class)),
-                        ])
-                    )
-                ),
-                'expectedString' =>
-                    'catch (Exception $exception) {' . "\n" .
-                    "\n" .
-                    '}',
-            ],
-            'no lines, multi-class expression' => [
-                'tryBlock' => new CatchBlock(
-                    new CatchExpression(
-                        new ObjectTypeDeclarationCollection([
-                            new ObjectTypeDeclaration(new ClassDependency(\LogicException::class)),
-                            new ObjectTypeDeclaration(new ClassDependency(\RuntimeException::class)),
-                        ])
-                    )
-                ),
-                'expectedString' =>
-                    'catch (LogicException | RuntimeException $exception) {' . "\n" .
-                    "\n" .
-                    '}',
-            ],
-            'has lines, single-class expression' => [
+            'single-class expression' => [
                 'tryBlock' => new CatchBlock(
                     new CatchExpression(
                         new ObjectTypeDeclarationCollection([
                             new ObjectTypeDeclaration(new ClassDependency(\Exception::class)),
                         ])
                     ),
-                    [
-                        new SingleLineComment('Single line comment'),
-                        new ReturnStatement(
-                            new LiteralExpression('100')
-                        ),
-                    ]
+                    new Statement(
+                        new LiteralExpression('"literal"')
+                    )
                 ),
                 'expectedString' =>
                     'catch (Exception $exception) {' . "\n" .
-                    '    // Single line comment' . "\n" .
-                    '    return 100;' . "\n" .
+                    '    "literal";' . "\n" .
+                    '}',
+            ],
+            'multi-class expression' => [
+                'tryBlock' => new CatchBlock(
+                    new CatchExpression(
+                        new ObjectTypeDeclarationCollection([
+                            new ObjectTypeDeclaration(new ClassDependency(\LogicException::class)),
+                            new ObjectTypeDeclaration(new ClassDependency(\RuntimeException::class)),
+                        ])
+                    ),
+                    new Statement(
+                        new LiteralExpression('"literal"')
+                    )
+                ),
+                'expectedString' =>
+                    'catch (LogicException | RuntimeException $exception) {' . "\n" .
+                    '    "literal";' . "\n" .
                     '}',
             ],
         ];
