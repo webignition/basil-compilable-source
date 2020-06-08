@@ -14,11 +14,11 @@ use webignition\BasilCompilableSource\Line\CatchExpression;
 use webignition\BasilCompilableSource\Line\ClassDependency;
 use webignition\BasilCompilableSource\Line\ClosureExpression;
 use webignition\BasilCompilableSource\Line\CompositeExpression;
-use webignition\BasilCompilableSource\Line\EmptyLine;
+use webignition\BasilCompilableSource\EmptyLine;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
-use webignition\BasilCompilableSource\Line\SingleLineComment;
+use webignition\BasilCompilableSource\SingleLineComment;
 use webignition\BasilCompilableSource\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Statement\ReturnStatement;
 use webignition\BasilCompilableSource\Statement\Statement;
@@ -148,7 +148,7 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
                     new Body([
                         new Statement(new LiteralExpression('3')),
                         new Statement(new LiteralExpression('4')),
-                        new EmptyLine(),
+                        new \webignition\BasilCompilableSource\EmptyLine(),
                         new ReturnStatement(new LiteralExpression('5')),
                     ])
                 ),
@@ -170,7 +170,7 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
                                 'dependencyMethodName'
                             )
                         ),
-                        new EmptyLine(),
+                        new \webignition\BasilCompilableSource\EmptyLine(),
                         new ReturnStatement(
                             new CompositeExpression([
                                 new CastExpression(
@@ -238,7 +238,7 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
                             new VariableName('variableName'),
                             new LiteralExpression('"literal value"')
                         ),
-                        new EmptyLine(),
+                        new \webignition\BasilCompilableSource\EmptyLine(),
                         new ReturnStatement(
                             new VariableName('variableName')
                         ),

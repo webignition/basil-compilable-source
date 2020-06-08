@@ -6,8 +6,8 @@ namespace webignition\BasilCompilableSource\Tests\Unit\Block;
 
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSource\Line\ClassDependency;
-use webignition\BasilCompilableSource\Line\EmptyLine;
-use webignition\BasilCompilableSource\Line\SingleLineComment;
+use webignition\BasilCompilableSource\EmptyLine;
+use webignition\BasilCompilableSource\SingleLineComment;
 use webignition\BasilCompilableSource\Tests\Services\ObjectReflector;
 use webignition\BasilCompilableSource\Tests\Unit\Line\ClassDependencyTest;
 

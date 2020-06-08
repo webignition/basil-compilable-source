@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Tests\Unit\Line;
 
-use webignition\BasilCompilableSource\Line\SingleLineComment;
+use webignition\BasilCompilableSource\SingleLineComment;
 
 class SingleLineCommentTest extends \PHPUnit\Framework\TestCase
 {
     public function testCreate()
     {
         $content = 'comment content';
-        $comment = new SingleLineComment($content);
+        $comment = new \webignition\BasilCompilableSource\SingleLineComment($content);
 
         $this->assertSame($content, $comment->getContent());
     }
@@ -19,7 +19,7 @@ class SingleLineCommentTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider renderDataProvider
      */
-    public function testRender(SingleLineComment $comment, string $expectedString)
+    public function testRender(\webignition\BasilCompilableSource\SingleLineComment $comment, string $expectedString)
     {
         $this->assertSame($expectedString, $comment->render());
     }
@@ -28,11 +28,11 @@ class SingleLineCommentTest extends \PHPUnit\Framework\TestCase
     {
         return [
             'empty' => [
-                'comment' => new SingleLineComment(''),
+                'comment' => new \webignition\BasilCompilableSource\SingleLineComment(''),
                 'expectedString' => '// ',
             ],
             'non-empty' => [
-                'comment' => new SingleLineComment('non-empty'),
+                'comment' => new \webignition\BasilCompilableSource\SingleLineComment('non-empty'),
                 'expectedString' => '// non-empty',
             ],
         ];

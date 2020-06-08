@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilCompilableSource\Line;
+namespace webignition\BasilCompilableSource;
 
-use webignition\BasilCompilableSource\AbstractStringLine;
 use webignition\BasilCompilableSource\Body\BodyContentInterface;
 
 class SingleLineComment extends AbstractStringLine implements BodyContentInterface

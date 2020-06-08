@@ -8,7 +8,7 @@ use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\Line\ClassDependency;
 use webignition\BasilCompilableSource\Line\ClosureExpression;
-use webignition\BasilCompilableSource\Line\EmptyLine;
+use webignition\BasilCompilableSource\EmptyLine;
 use webignition\BasilCompilableSource\Line\ExpressionInterface;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\MethodInvocation\MethodInvocation;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilCompilableSource\Line;
+namespace webignition\BasilCompilableSource;
 
 use webignition\BasilCompilableSource\Body\BodyContentInterface;
 
