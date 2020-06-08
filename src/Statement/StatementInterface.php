@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilCompilableSource\Line\Statement;
+namespace webignition\BasilCompilableSource\Statement;
 
 use webignition\BasilCompilableSource\Body\BodyContentInterface;
 use webignition\BasilCompilableSource\Body\BodyInterface;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilCompilableSource\Line\Statement;
+namespace webignition\BasilCompilableSource\Statement;
 
 class ReturnStatement extends Statement
 {

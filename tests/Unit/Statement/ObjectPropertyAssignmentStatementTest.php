@@ -2,12 +2,11 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilCompilableSource\Tests\Unit\Line\Statement;
+namespace webignition\BasilCompilableSource\Tests\Unit\Statement;
 
 use webignition\BasilCompilableSource\Line\ObjectPropertyAccessExpression;
-use webignition\BasilCompilableSource\Line\Statement\AssignmentStatementInterface;
 use webignition\BasilCompilableSource\Line\ExpressionInterface;
-use webignition\BasilCompilableSource\Line\Statement\ObjectPropertyAssignmentStatement;
+use webignition\BasilCompilableSource\Statement\ObjectPropertyAssignmentStatement;
 use webignition\BasilCompilableSource\VariableDependency;
 
 class ObjectPropertyAssignmentStatementTest extends \PHPUnit\Framework\TestCase
@@ -46,7 +45,7 @@ class ObjectPropertyAssignmentStatementTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider renderDataProvider
      */
-    public function testRender(AssignmentStatementInterface $statement, string $expectedString)
+    public function testRender(ObjectPropertyAssignmentStatement $statement, string $expectedString)
     {
         $this->assertSame($expectedString, $statement->render());
     }
