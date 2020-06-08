@@ -7,6 +7,7 @@ namespace webignition\BasilCompilableSource\Tests\Unit\Block\TryCatch;
 use webignition\BasilCompilableSource\Block\TryCatch\CatchBlock;
 use webignition\BasilCompilableSource\Block\TryCatch\TryBlock;
 use webignition\BasilCompilableSource\Block\TryCatch\TryCatchBlock;
+use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\Line\CatchExpression;
 use webignition\BasilCompilableSource\Line\ClassDependency;
 use webignition\BasilCompilableSource\Line\MethodInvocation\MethodInvocation;
@@ -40,9 +41,9 @@ class TryCatchBlockTest extends \PHPUnit\Framework\TestCase
                                 new ObjectTypeDeclaration(new ClassDependency(\RuntimeException::class)),
                             ])
                         ),
-                        [
+                        new Body([
                             new SingleLineComment('handle LogicException and RuntimeException')
-                        ]
+                        ]),
                     ),
                     new CatchBlock(
                         new CatchExpression(
@@ -50,9 +51,9 @@ class TryCatchBlockTest extends \PHPUnit\Framework\TestCase
                                 new ObjectTypeDeclaration(new ClassDependency(\LengthException::class)),
                             ])
                         ),
-                        [
+                        new Body([
                             new SingleLineComment('handle LengthException')
-                        ]
+                        ])
                     )
                 ),
                 'expectedString' =>

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Tests\Unit\Body;
 
-use webignition\BasilCompilableSource\Block\CodeBlock;
 use webignition\BasilCompilableSource\Block\TryCatch\CatchBlock;
 use webignition\BasilCompilableSource\Block\TryCatch\TryBlock;
 use webignition\BasilCompilableSource\Block\TryCatch\TryCatchBlock;
@@ -75,11 +74,9 @@ class BodyTest extends \PHPUnit\Framework\TestCase
                                     )
                                 ])
                             ),
-                            [
-                                new CodeBlock([
-                                    new SingleLineComment('CatchBlock comment'),
-                                ])
-                            ]
+                            new Body([
+                                new SingleLineComment('CatchBlock comment'),
+                            ])
                         )
                     ),
                 ],
@@ -108,11 +105,9 @@ class BodyTest extends \PHPUnit\Framework\TestCase
                                     )
                                 ])
                             ),
-                            [
-                                new CodeBlock([
-                                    new SingleLineComment('CatchBlock comment'),
-                                ])
-                            ]
+                            new Body([
+                                new SingleLineComment('CatchBlock comment'),
+                            ])
                         )
                     ),
                 ],
@@ -161,11 +156,9 @@ class BodyTest extends \PHPUnit\Framework\TestCase
                                     )
                                 ])
                             ),
-                            [
-                                new CodeBlock([
-                                    new SingleLineComment('CatchBlock comment'),
-                                ])
-                            ]
+                            new Body([
+                                new SingleLineComment('CatchBlock comment'),
+                            ])
                         )
                     ),
                 ]),

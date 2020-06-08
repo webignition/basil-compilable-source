@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Block\TryCatch;
 
-use webignition\BasilCompilableSource\Block\CodeBlock;
+use webignition\BasilCompilableSource\Body\BodyInterface;
+use webignition\BasilCompilableSource\HasMetadataInterface;
 use webignition\BasilCompilableSource\Line\CatchExpression;
+use webignition\BasilCompilableSource\Metadata\Metadata;
+use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 
-class CatchBlock extends CodeBlock
+class CatchBlock implements HasMetadataInterface
 {
     private const RENDER_TEMPLATE = <<<'EOD'
 catch (%s) {
@@ -16,21 +19,32 @@ catch (%s) {
 EOD;
 
     private CatchExpression $catchExpression;
+    private BodyInterface $body;
 
-    public function __construct(CatchExpression $catchExpression, array $sources = [])
+
+    public function __construct(CatchExpression $catchExpression, BodyInterface $body)
     {
-        parent::__construct($sources);
-
         $this->catchExpression = $catchExpression;
+        $this->body = $body;
+    }
+
+    public function getMetadata(): MetadataInterface
+    {
+        $metadata = new Metadata();
+        $metadata = $metadata->merge($this->catchExpression->getMetadata());
+        $metadata = $metadata->merge($this->body->getMetadata());
+
+        return $metadata;
     }
 
     public function render(): string
     {
-        $lines = parent::render();
-        $lines = $this->indent($lines);
-        $lines = rtrim($lines, "\n");
+        $renderedBody = $this->body->render();
 
-        return sprintf(self::RENDER_TEMPLATE, $this->catchExpression->render(), $lines);
+        $renderedBody = $this->indent($renderedBody);
+        $renderedBody = rtrim($renderedBody, "\n");
+
+        return sprintf(self::RENDER_TEMPLATE, $this->catchExpression->render(), $renderedBody);
     }
 
     private function indent(string $content): string

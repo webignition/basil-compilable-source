@@ -216,7 +216,10 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
                                 new ObjectTypeDeclarationCollection([
                                     new ObjectTypeDeclaration(new ClassDependency(\RuntimeException::class))
                                 ])
-                            )
+                            ),
+                            new Body([
+                                new SingleLineComment('CatchBlock comment'),
+                            ])
                         )
                     )
                 ),
@@ -225,7 +228,7 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
                     '    try {' . "\n" .
                     '        // TryBlock comment' . "\n" .
                     '    } catch (RuntimeException $exception) {' . "\n" .
-                    "\n" .
+                    '        // CatchBlock comment' . "\n" .
                     '    }' . "\n" .
                     '})()',
             ],
