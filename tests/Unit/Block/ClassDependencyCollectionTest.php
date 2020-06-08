@@ -8,7 +8,7 @@ use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSource\Line\ClassDependency;
 use webignition\BasilCompilableSource\Line\EmptyLine;
 use webignition\BasilCompilableSource\Line\SingleLineComment;
-use webignition\BasilCompilableSource\LineInterface;
+use webignition\BasilCompilableSource\Tests\Services\ObjectReflector;
 use webignition\BasilCompilableSource\Tests\Unit\Line\ClassDependencyTest;
 
 class ClassDependencyCollectionTest extends \PHPUnit\Framework\TestCase
@@ -16,44 +16,39 @@ class ClassDependencyCollectionTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider createDataProvider
      *
-     * @param LineInterface[] $lines
-     * @param LineInterface[] $expectedLines
+     * @param ClassDependency[] $dependencies
+     * @param ClassDependency[] $expectedDependencies
      */
-    public function testCreate(array $lines, array $expectedLines)
+    public function testCreate(array $dependencies, array $expectedDependencies)
     {
-        $classDependencyCollection = new ClassDependencyCollection($lines);
+        $collection = new ClassDependencyCollection($dependencies);
 
-        $collectionLines = [];
-        foreach ($classDependencyCollection as $line) {
-            $collectionLines[] = $line;
-        }
-
-        $this->assertEquals($expectedLines, $collectionLines);
+        $this->assertEquals($expectedDependencies, ObjectReflector::getProperty($collection, 'dependencies'));
     }
 
     public function createDataProvider(): array
     {
         return [
             'empty' => [
-                'lines' => [],
-                'expectedLines' => [],
+                'dependencies' => [],
+                'expectedDependencies' => [],
             ],
             'no class dependency lines' => [
-                'lines' => [
+                'dependencies' => [
                     new EmptyLine(),
                     new SingleLineComment(''),
                 ],
-                'expectedLines' => [],
+                'expectedDependencies' => [],
             ],
             'has class dependency lines' => [
-                'lines' => [
+                'dependencies' => [
                     new EmptyLine(),
                     new SingleLineComment(''),
                     new ClassDependency(EmptyLine::class),
                     new ClassDependency(SingleLineComment::class),
                     new ClassDependency(EmptyLine::class),
                 ],
-                'expectedLines' => [
+                'expectedDependencies' => [
                     new ClassDependency(EmptyLine::class),
                     new ClassDependency(SingleLineComment::class),
                 ],

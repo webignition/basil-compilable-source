@@ -5,43 +5,52 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Block;
 
 use webignition\BasilCompilableSource\Line\ClassDependency;
-use webignition\BasilCompilableSource\LineInterface;
+use webignition\BasilCompilableSource\SourceInterface;
 
-class ClassDependencyCollection extends AbstractBlock
+class ClassDependencyCollection implements SourceInterface
 {
-    public function render(): string
+    /**
+     * @var ClassDependency[]
+     */
+    private array $dependencies = [];
+
+    /**
+     * @param ClassDependency[] $dependencies
+     */
+    public function __construct(array $dependencies = [])
     {
-        $renderedContent = parent::render();
-
-        $renderedLines = explode("\n", $renderedContent);
-        sort($renderedLines);
-
-        return trim(implode("\n", $renderedLines));
+        foreach ($dependencies as $dependency) {
+            if ($dependency instanceof ClassDependency) {
+                if (!$this->containsClassDependency($dependency)) {
+                    $this->dependencies[] = $dependency;
+                }
+            }
+        }
     }
 
-    public function canLineBeAdded(LineInterface $line): bool
+    public function render(): string
     {
-        if ($line instanceof ClassDependency) {
-            return false === $this->containsClassDependency($line);
+        $renderedDependencies = [];
+        foreach ($this->dependencies as $dependency) {
+            $renderedDependencies[] = $dependency->render();
         }
 
-        return false;
+        sort($renderedDependencies);
+
+        return trim(implode("\n", $renderedDependencies));
     }
 
     public function merge(ClassDependencyCollection $collection): ClassDependencyCollection
     {
-        return new ClassDependencyCollection(array_merge($this->getLines(), $collection->getLines()));
+        return new ClassDependencyCollection(array_merge($this->dependencies, $collection->dependencies));
     }
 
     private function containsClassDependency(ClassDependency $classDependency): bool
     {
         $renderedClassDependency = $classDependency->render();
 
-        foreach ($this as $line) {
-            /* @var ClassDependency $line */
-            $renderedLine = $line->render();
-
-            if ($renderedLine === $renderedClassDependency) {
+        foreach ($this->dependencies as $dependency) {
+            if ($dependency->render() === $renderedClassDependency) {
                 return true;
             }
         }
