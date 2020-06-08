@@ -5,35 +5,24 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Tests\Unit\Block;
 
 use webignition\BasilCompilableSource\Block\DocBlock;
-use webignition\BasilCompilableSource\Line\ClassDependency;
-use webignition\BasilCompilableSource\Line\EmptyLine;
-use webignition\BasilCompilableSource\Line\Literal;
-use webignition\BasilCompilableSource\Line\MethodInvocation\MethodInvocation;
-use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
-use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
-use webignition\BasilCompilableSource\Line\Statement\Statement;
-use webignition\BasilCompilableSource\LineInterface;
-use webignition\BasilCompilableSource\VariableDependency;
-use webignition\BasilCompilableSource\VariableName;
+use webignition\BasilCompilableSource\Tests\Services\ObjectReflector;
 
 class DocBlockTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider createDataProvider
      *
-     * @param LineInterface[] $lines
-     * @param LineInterface[] $expectedLines
+     * @param string[] $lines
+     * @param string[] $expectedLines
      */
     public function testCreate(array $lines, array $expectedLines)
     {
         $docBlock = new DocBlock($lines);
 
-        $docBlockLines = [];
-        foreach ($docBlock as $line) {
-            $docBlockLines[] = $line;
-        }
-
-        $this->assertEquals($expectedLines, $docBlockLines);
+        $this->assertEquals(
+            $expectedLines,
+            ObjectReflector::getProperty($docBlock, 'lines')
+        );
     }
 
     public function createDataProvider(): array
@@ -43,29 +32,17 @@ class DocBlockTest extends \PHPUnit\Framework\TestCase
                 'lines' => [],
                 'expectedLines' => [],
             ],
-            'lines' => [
-                'sources' => [
-                    new MethodInvocation('methodName'),
-                    new ObjectMethodInvocation(
-                        new VariableDependency('OBJECT'),
-                        'methodName'
-                    ),
-                    new Statement(new MethodInvocation('methodName')),
-                    new Statement(new ObjectMethodInvocation(
-                        new VariableDependency('OBJECT'),
-                        'methodName'
-                    )),
-                    new AssignmentStatement(
-                        new VariableName('variable'),
-                        new MethodInvocation('methodName')
-                    ),
-                    new ClassDependency(ClassDependency::class),
-                    new EmptyLine(),
-                    new Literal('single line comment'),
+            'has lines' => [
+                'lines' => [
+                    new \stdClass(),
+                    "\n",
+                    'single line comment',
+                    true,
+                    1,
                 ],
                 'expectedLines' => [
-                    new EmptyLine(),
-                    new Literal('single line comment'),
+                    "\n",
+                    'single line comment',
                 ],
             ],
         ];
@@ -83,15 +60,15 @@ class DocBlockTest extends \PHPUnit\Framework\TestCase
     {
         return [
             'empty' => [
-                'docBlock' => new DocBlock(),
+                'docBlock' => new DocBlock([]),
                 'expectedString' =>
                     '/**' . "\n" .
                     ' */',
             ],
             'non-empty' => [
                 'docBlock' => new DocBlock([
-                    new EmptyLine(),
-                    new Literal('single line comment'),
+                    "\n",
+                    'single line comment',
                 ]),
                 'expectedString' =>
                     '/**' . "\n" .

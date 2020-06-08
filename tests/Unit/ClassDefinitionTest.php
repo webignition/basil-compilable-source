@@ -12,7 +12,6 @@ use webignition\BasilCompilableSource\ClassDefinitionInterface;
 use webignition\BasilCompilableSource\DataProviderMethodDefinition;
 use webignition\BasilCompilableSource\Line\ClassDependency;
 use webignition\BasilCompilableSource\Line\EmptyLine;
-use webignition\BasilCompilableSource\Line\Literal;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\Line\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
@@ -287,7 +286,7 @@ class ClassDefinitionTest extends TestCase
                                 ]
                             ),
                             new DocBlock([
-                                new Literal('@dataProvider stepOneDataProvider')
+                                '@dataProvider stepOneDataProvider',
                             ])
                         ),
                         new DataProviderMethodDefinition('stepOneDataProvider', [

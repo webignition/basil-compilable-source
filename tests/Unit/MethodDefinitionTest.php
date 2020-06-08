@@ -8,7 +8,6 @@ use webignition\BasilCompilableSource\Block\CodeBlock;
 use webignition\BasilCompilableSource\Block\CodeBlockInterface;
 use webignition\BasilCompilableSource\Block\DocBlock;
 use webignition\BasilCompilableSource\Line\EmptyLine;
-use webignition\BasilCompilableSource\Line\Literal;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\Line\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
@@ -156,7 +155,7 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
         $methodDefinition = new MethodDefinition('name', new CodeBlock());
         $this->assertNull($methodDefinition->getDocBlock());
 
-        $docBlock = new DocBlock();
+        $docBlock = new DocBlock([]);
         $methodDefinition->setDocBlock($docBlock);
         $this->assertSame($docBlock, $methodDefinition->getDocBlock());
     }
@@ -295,7 +294,7 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
                         ['x', 'y']
                     ),
                     new DocBlock([
-                        new Literal('@dataProvider nameOfMethodDataProvider'),
+                        '@dataProvider nameOfMethodDataProvider',
                     ])
                 ),
                 'expectedString' =>

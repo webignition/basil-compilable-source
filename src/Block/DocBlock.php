@@ -4,34 +4,39 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Block;
 
-use webignition\BasilCompilableSource\Line\EmptyLine;
-use webignition\BasilCompilableSource\Line\Literal;
-use webignition\BasilCompilableSource\LineInterface;
+use webignition\BasilCompilableSource\SourceInterface;
 
-class DocBlock extends AbstractBlock implements BlockInterface
+class DocBlock implements SourceInterface
 {
-    private const RENDER_TEMPLATE = '/**%s' . "\n" . ' */';
+    private const RENDER_TEMPLATE = '/**' . "\n" . '%s */';
 
-    public function canLineBeAdded(LineInterface $line): bool
+    /**
+     * @var string[]
+     */
+    private array $lines = [];
+
+    /**
+     * @param string[] $lines
+     */
+    public function __construct(array $lines)
     {
-        return $line instanceof EmptyLine || $line instanceof Literal;
+        foreach ($lines as $line) {
+            if (is_string($line)) {
+                $this->lines[] = $line;
+            }
+        }
     }
 
     public function render(): string
     {
-        $renderedContent = parent::render();
-        if ('' === $renderedContent) {
-            return sprintf(self::RENDER_TEMPLATE, '');
-        }
-
-        $renderedLines = explode("\n", $renderedContent);
+        $renderedLines = $this->lines;
 
         array_walk($renderedLines, function (string &$renderedLine) {
-            $prefix = "\n" . ' *';
-
-            $renderedLine = '' === $renderedLine
-                ? $prefix
-                : $prefix . ' ' . $renderedLine;
+            if ("\n" === $renderedLine) {
+                $renderedLine = ' *' . "\n";
+            } else {
+                $renderedLine = ' * ' . $renderedLine . "\n";
+            }
         });
 
         return sprintf(self::RENDER_TEMPLATE, implode('', $renderedLines));
