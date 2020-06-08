@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Tests\Unit\Line;
 
-use webignition\BasilCompilableSource\Block\CodeBlock;
-use webignition\BasilCompilableSource\Block\CodeBlockInterface;
 use webignition\BasilCompilableSource\Block\TryCatch\CatchBlock;
 use webignition\BasilCompilableSource\Block\TryCatch\TryBlock;
 use webignition\BasilCompilableSource\Block\TryCatch\TryCatchBlock;
 use webignition\BasilCompilableSource\Body\Body;
+use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\Line\CastExpression;
 use webignition\BasilCompilableSource\Line\CatchExpression;
 use webignition\BasilCompilableSource\Line\ClassDependency;
@@ -36,9 +35,9 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider createDataProvider
      */
-    public function testCreate(CodeBlockInterface $codeBlock, MetadataInterface $expectedMetadata)
+    public function testCreate(BodyInterface $body, MetadataInterface $expectedMetadata)
     {
-        $expression = new ClosureExpression($codeBlock);
+        $expression = new ClosureExpression($body);
 
         $this->assertEquals($expectedMetadata, $expression->getMetadata());
     }
@@ -47,18 +46,18 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
     {
         return [
             'empty' => [
-                'codeBlock' => new CodeBlock(),
+                'body' => new Body([]),
                 'expectedMetadata' => new Metadata(),
             ],
             'non-empty, no metadata' => [
-                'codeBlock' => new CodeBlock([
+                'body' => new Body([
                     new Statement(new LiteralExpression('5')),
                     new Statement(new LiteralExpression('"string"')),
                 ]),
                 'expectedMetadata' => new Metadata(),
             ],
             'non-empty, has metadata' => [
-                'codeBlock' => new CodeBlock([
+                'body' => new Body([
                     new AssignmentStatement(
                         new VariableName('variable'),
                         new ObjectMethodInvocation(
@@ -111,7 +110,7 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
     {
         return [
             'empty' => [
-                'expression' => new ClosureExpression(new CodeBlock()),
+                'expression' => new ClosureExpression(new Body([])),
                 'expectedString' =>
                     '(function () {' . "\n" .
                     '' . "\n" .
@@ -119,7 +118,7 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
             ],
             'single literal statement' => [
                 'expression' => new ClosureExpression(
-                    new CodeBlock([
+                    new Body([
                         new ReturnStatement(new LiteralExpression('5')),
                     ])
                 ),
@@ -130,7 +129,7 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
             ],
             'single literal statement, with return statement expression cast to string' => [
                 'expression' => new ClosureExpression(
-                    new CodeBlock([
+                    new Body([
                         new ReturnStatement(
                             new CastExpression(
                                 new LiteralExpression('5'),
@@ -146,7 +145,7 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
             ],
             'multiple literal statements' => [
                 'expression' => new ClosureExpression(
-                    new CodeBlock([
+                    new Body([
                         new Statement(new LiteralExpression('3')),
                         new Statement(new LiteralExpression('4')),
                         new EmptyLine(),
@@ -163,7 +162,7 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
             ],
             'non-empty, has metadata' => [
                 'expression' => new ClosureExpression(
-                    new CodeBlock([
+                    new Body([
                         new AssignmentStatement(
                             new VariableName('variable'),
                             new ObjectMethodInvocation(
@@ -234,7 +233,7 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
             ],
             'with resolving placeholder' => [
                 'expression' => new ClosureExpression(
-                    new CodeBlock([
+                    new Body([
                         new AssignmentStatement(
                             new VariableName('variableName'),
                             new LiteralExpression('"literal value"')

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Block;
 
-use webignition\BasilCompilableSource\FunctionBodyInterface;
+use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\Line\ClosureExpression;
 use webignition\BasilCompilableSource\Line\EmptyLine;
 use webignition\BasilCompilableSource\Line\ExpressionInterface;
@@ -40,7 +40,7 @@ class CodeBlock extends AbstractBlock implements CodeBlockInterface
         parent::__construct($lines);
     }
 
-    public static function createEnclosingCodeBlock(FunctionBodyInterface $body): self
+    public static function createEnclosingCodeBlock(BodyInterface $body): self
     {
         return new CodeBlock([
             new Statement(

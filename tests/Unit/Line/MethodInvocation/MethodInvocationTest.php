@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Tests\Unit\Line\MethodInvocation;
 
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
-use webignition\BasilCompilableSource\Block\CodeBlock;
+use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\Line\ClassDependency;
 use webignition\BasilCompilableSource\Line\ClosureExpression;
 use webignition\BasilCompilableSource\Line\EmptyLine;
@@ -182,7 +182,7 @@ class MethodInvocationTest extends \PHPUnit\Framework\TestCase
                             ]
                         ),
                         new ClosureExpression(
-                            new CodeBlock([
+                            new Body([
                                 new AssignmentStatement(
                                     new VariableName('variable'),
                                     new LiteralExpression('100')

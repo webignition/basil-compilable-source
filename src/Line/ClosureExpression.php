@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Line;
 
-use webignition\BasilCompilableSource\FunctionBodyInterface;
+use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 
 class ClosureExpression extends AbstractExpression
@@ -15,9 +15,9 @@ class ClosureExpression extends AbstractExpression
 })()
 EOD;
 
-    private FunctionBodyInterface $body;
+    private BodyInterface $body;
 
-    public function __construct(FunctionBodyInterface $body)
+    public function __construct(BodyInterface $body)
     {
         parent::__construct();
 

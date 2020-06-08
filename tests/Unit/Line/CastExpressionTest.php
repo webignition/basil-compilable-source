@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Tests\Unit\Line;
 
-use webignition\BasilCompilableSource\Block\CodeBlock;
+use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\Line\ArrayExpression;
 use webignition\BasilCompilableSource\Line\CastExpression;
 use webignition\BasilCompilableSource\Line\ClosureExpression;
@@ -58,7 +58,7 @@ class CastExpressionTest extends \PHPUnit\Framework\TestCase
                 'expectedString' => '(object) ([])',
             ],
             'empty closure expression as string' => [
-                'expression' => new CastExpression(new ClosureExpression(new CodeBlock()), 'string'),
+                'expression' => new CastExpression(new ClosureExpression(new Body([])), 'string'),
                 'expectedString' =>
                     '(string) ((function () {' . "\n" .
                     "\n" .
