@@ -62,9 +62,11 @@ class BodyTest extends \PHPUnit\Framework\TestCase
                         )
                     ]),
                     new TryCatchBlock(
-                        new TryBlock([
-                            new SingleLineComment('TryBlock comment'),
-                        ]),
+                        new TryBlock(
+                            new Body([
+                                new SingleLineComment('TryBlock comment'),
+                            ])
+                        ),
                         new CatchBlock(
                             new CatchExpression(
                                 new ObjectTypeDeclarationCollection([
@@ -93,9 +95,11 @@ class BodyTest extends \PHPUnit\Framework\TestCase
                         )
                     ]),
                     new TryCatchBlock(
-                        new TryBlock([
-                            new SingleLineComment('TryBlock comment'),
-                        ]),
+                        new TryBlock(
+                            new Body([
+                                new SingleLineComment('TryBlock comment'),
+                            ])
+                        ),
                         new CatchBlock(
                             new CatchExpression(
                                 new ObjectTypeDeclarationCollection([
@@ -144,9 +148,11 @@ class BodyTest extends \PHPUnit\Framework\TestCase
                         )
                     ]),
                     new TryCatchBlock(
-                        new TryBlock([
-                            new SingleLineComment('TryBlock comment'),
-                        ]),
+                        new TryBlock(
+                            new Body([
+                                new SingleLineComment('TryBlock comment'),
+                            ])
+                        ),
                         new CatchBlock(
                             new CatchExpression(
                                 new ObjectTypeDeclarationCollection([

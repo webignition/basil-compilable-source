@@ -4,13 +4,47 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Tests\Unit\Block\TryCatch;
 
+use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSource\Block\TryCatch\TryBlock;
-use webignition\BasilCompilableSource\Line\MethodInvocation\MethodInvocation;
-use webignition\BasilCompilableSource\Line\SingleLineComment;
+use webignition\BasilCompilableSource\Body\Body;
+use webignition\BasilCompilableSource\Line\ClassDependency;
+use webignition\BasilCompilableSource\Line\LiteralExpression;
+use webignition\BasilCompilableSource\Line\MethodInvocation\StaticObjectMethodInvocation;
+use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\Statement;
+use webignition\BasilCompilableSource\Metadata\Metadata;
+use webignition\BasilCompilableSource\StaticObject;
+use webignition\BasilCompilableSource\VariableDependency;
+use webignition\BasilCompilableSource\VariableDependencyCollection;
 
 class TryBlockTest extends \PHPUnit\Framework\TestCase
 {
+    public function testGetMetadata()
+    {
+        $body = new Body([
+            new AssignmentStatement(
+                new VariableDependency('DEPENDENCY'),
+                new StaticObjectMethodInvocation(
+                    new StaticObject(\RuntimeException::class),
+                    'staticMethodName'
+                )
+            ),
+        ]);
+
+        $tryBlock = new TryBlock($body);
+
+        $expectedMetadata = new Metadata([
+            Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
+                new ClassDependency(\RuntimeException::class),
+            ]),
+            Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'DEPENDENCY',
+            ]),
+        ]);
+
+        $this->assertEquals($expectedMetadata, $tryBlock->getMetadata());
+    }
+
     /**
      * @dataProvider renderDataProvider
      */
@@ -22,22 +56,15 @@ class TryBlockTest extends \PHPUnit\Framework\TestCase
     public function renderDataProvider(): array
     {
         return [
-            'empty' => [
-                'tryBlock' => new TryBlock(),
+            'default' => [
+                'tryBlock' => new TryBlock(
+                    new Statement(
+                        new LiteralExpression('"literal expression"')
+                    )
+                ),
                 'expectedString' =>
                     'try {' . "\n" .
-                    "\n" .
-                    '}',
-            ],
-            'non-empty' => [
-                'tryBlock' => new TryBlock([
-                    new SingleLineComment('single line comment'),
-                    new Statement(new MethodInvocation('methodName')),
-                ]),
-                'expectedString' =>
-                    'try {' . "\n" .
-                    '    // single line comment' . "\n" .
-                    '    methodName();' . "\n" .
+                    '    "literal expression";' . "\n" .
                     '}',
             ],
         ];

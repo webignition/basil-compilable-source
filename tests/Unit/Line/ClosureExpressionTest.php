@@ -9,6 +9,7 @@ use webignition\BasilCompilableSource\Block\CodeBlockInterface;
 use webignition\BasilCompilableSource\Block\TryCatch\CatchBlock;
 use webignition\BasilCompilableSource\Block\TryCatch\TryBlock;
 use webignition\BasilCompilableSource\Block\TryCatch\TryCatchBlock;
+use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\Line\CastExpression;
 use webignition\BasilCompilableSource\Line\CatchExpression;
 use webignition\BasilCompilableSource\Line\ClassDependency;
@@ -18,6 +19,7 @@ use webignition\BasilCompilableSource\Line\EmptyLine;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\Line\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSource\Line\SingleLineComment;
 use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\ReturnStatement;
 use webignition\BasilCompilableSource\Line\Statement\Statement;
@@ -204,7 +206,11 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
             'try/catch block' => [
                 'expression' => new ClosureExpression(
                     new TryCatchBlock(
-                        new TryBlock(),
+                        new TryBlock(
+                            new Body([
+                                new SingleLineComment('TryBlock comment'),
+                            ])
+                        ),
                         new CatchBlock(
                             new CatchExpression(
                                 new ObjectTypeDeclarationCollection([
@@ -217,7 +223,7 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
                 'expectedString' =>
                     '(function () {' . "\n" .
                     '    try {' . "\n" .
-                    "\n" .
+                    '        // TryBlock comment' . "\n" .
                     '    } catch (RuntimeException $exception) {' . "\n" .
                     "\n" .
                     '    }' . "\n" .
