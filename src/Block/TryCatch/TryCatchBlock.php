@@ -9,7 +9,7 @@ use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 
-class TryCatchBlock implements BodyInterface, BodyContentInterface
+class TryCatchBlock implements BodyInterface
 {
     private TryBlock $tryBlock;
 
