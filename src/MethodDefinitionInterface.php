@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource;
 
-use webignition\BasilCompilableSource\Block\DocBlock;
+use webignition\BasilCompilableSource\DocBlock\DocBlock;
 
 interface MethodDefinitionInterface extends HasMetadataInterface, SourceInterface
 {
