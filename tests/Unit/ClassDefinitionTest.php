@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
+use webignition\BasilCompilableSource\DataProvidedMethodDefinition;
 use webignition\BasilCompilableSource\DocBlock\DocBlock;
 use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\ClassDefinition;
@@ -258,10 +259,10 @@ class ClassDefinitionTest extends TestCase
                     '    }' . "\n" .
                     '}'
             ],
-            'many methods, with docblock ?????' => [
+            'many methods, with data provider' => [
                 'classDefinition' => $this->createClassDefinitionWithBaseClass(
                     new ClassDefinition('NameOfClass', [
-                        $this->createMethodDefinitionWithDocBlock(
+                        new DataProvidedMethodDefinition(
                             new MethodDefinition(
                                 'stepOne',
                                 new Body([
@@ -285,20 +286,17 @@ class ClassDefinitionTest extends TestCase
                                     'x', 'y',
                                 ]
                             ),
-                            new DocBlock([
-                                '@dataProvider stepOneDataProvider',
+                            new DataProviderMethodDefinition('stepOneDataProvider', [
+                                0 => [
+                                    'x' => '1',
+                                    'y' => '2',
+                                ],
+                                1 => [
+                                    'x' => '3',
+                                    'y' => '4',
+                                ],
                             ])
                         ),
-                        new DataProviderMethodDefinition('stepOneDataProvider', [
-                            0 => [
-                                'x' => '1',
-                                'y' => '2',
-                            ],
-                            1 => [
-                                'x' => '3',
-                                'y' => '4',
-                            ],
-                        ]),
                         new MethodDefinition('stepTwo', new Body([
                             new SingleLineComment('click $"b"'),
                             new AssignmentStatement(
@@ -326,6 +324,9 @@ class ClassDefinitionTest extends TestCase
                     '{' . "\n" .
                     '    /**' . "\n" .
                     '     * @dataProvider stepOneDataProvider' . "\n" .
+                    '     * ' . "\n" .
+                    '     * @param string $x' . "\n" .
+                    '     * @param string $y' . "\n" .
                     '     */' . "\n" .
                     '    public function stepOne($x, $y)' . "\n" .
                     '    {' . "\n" .
@@ -357,15 +358,6 @@ class ClassDefinitionTest extends TestCase
                     '}'
             ],
         ];
-    }
-
-    private function createMethodDefinitionWithDocBlock(
-        MethodDefinition $methodDefinition,
-        DocBlock $docBlock
-    ): MethodDefinitionInterface {
-        $methodDefinition->setDocBlock($docBlock);
-
-        return $methodDefinition;
     }
 
     private function createClassDefinitionWithBaseClass(

@@ -11,6 +11,55 @@ use webignition\BasilCompilableSource\VariableName;
 class DocBlockTest extends \PHPUnit\Framework\TestCase
 {
     /**
+     * @dataProvider mergeDataProvider
+     */
+    public function testMerge(DocBlock $docBlock, DocBlock $merge, DocBlock $expectedDocBlock)
+    {
+        $this->assertEquals($expectedDocBlock, $docBlock->merge($merge));
+    }
+
+    public function mergeDataProvider(): array
+    {
+        return [
+            'empty, empty' => [
+                'docBlock' => new DocBlock([]),
+                'merge' => new DocBlock([]),
+                'expectedDocBlock' => new DocBlock([]),
+            ],
+            'non-empty, empty' => [
+                'docBlock' => new DocBlock([
+                    'docBlock line',
+                ]),
+                'merge' => new DocBlock([]),
+                'expectedDocBlock' => new DocBlock([
+                    'docBlock line',
+                ]),
+            ],
+            'empty, non-empty' => [
+                'docBlock' => new DocBlock([]),
+                'merge' => new DocBlock([
+                    'merge line',
+                ]),
+                'expectedDocBlock' => new DocBlock([
+                    'merge line',
+                ]),
+            ],
+            'non-empty, non-empty' => [
+                'docBlock' => new DocBlock([
+                    'docBlock line',
+                ]),
+                'merge' => new DocBlock([
+                    'merge line',
+                ]),
+                'expectedDocBlock' => new DocBlock([
+                    'docBlock line',
+                    'merge line',
+                ]),
+            ],
+        ];
+    }
+
+    /**
      * @dataProvider renderDataProvider
      */
     public function testRender(DocBlock $docBlock, string $expectedString)

@@ -42,7 +42,6 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
         $this->assertsame(MethodDefinition::VISIBILITY_PUBLIC, $methodDefinition->getVisibility());
         $this->assertNull($methodDefinition->getReturnType());
         $this->assertFalse($methodDefinition->isStatic());
-        $this->assertNull($methodDefinition->getDocBlock());
     }
 
     public function createDataProvider(): array
@@ -153,16 +152,6 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($methodDefinition->isStatic());
     }
 
-    public function testSetDocBlock()
-    {
-        $methodDefinition = new MethodDefinition('name', new Body([]));
-        $this->assertNull($methodDefinition->getDocBlock());
-
-        $docBlock = new DocBlock([]);
-        $methodDefinition->setDocBlock($docBlock);
-        $this->assertSame($docBlock, $methodDefinition->getDocBlock());
-    }
-
     /**
      * @dataProvider renderDataProvider
      */
@@ -214,6 +203,11 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
                     'arg3',
                 ]),
                 'expectedString' =>
+                    '/**' . "\n" .
+                    ' * @param string $arg1' . "\n" .
+                    ' * @param string $arg2' . "\n" .
+                    ' * @param string $arg3' . "\n" .
+                    ' */' . "\n" .
                     'public function emptyPublicMethod($arg1, $arg2, $arg3)' . "\n" .
                     '{' . "\n\n" .
                     '}'
@@ -246,6 +240,10 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
                     ['x', 'y']
                 ),
                 'expectedString' =>
+                    '/**' . "\n" .
+                    ' * @param string $x' . "\n" .
+                    ' * @param string $y' . "\n" .
+                    ' */' . "\n" .
                     'public function nameOfMethod($x, $y)' . "\n" .
                     '{' . "\n" .
                     '    // Assign object method call to $value' . "\n" .
@@ -263,6 +261,10 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
                     ['x', 'y']
                 ),
                 'expectedString' =>
+                    '/**' . "\n" .
+                    ' * @param string $x' . "\n" .
+                    ' * @param string $y' . "\n" .
+                    ' */' . "\n" .
                     'public function nameOfMethod($x, $y)' . "\n" .
                     '{' . "\n" .
                     '    // comment' . "\n" .
@@ -275,49 +277,13 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
                     '{' . "\n\n" .
                     '}'
             ],
-            'public, has arguments, no return type, has lines, with docblock' => [
-                'methodDefinition' => $this->createMethodDefinitionWithDocBlock(
-                    new MethodDefinition(
-                        'nameOfMethod',
-                        new Body([
-                            new SingleLineComment('Assign object method call to $value'),
-                            new EmptyLine(),
-                            new AssignmentStatement(
-                                new VariableName('value'),
-                                new ObjectMethodInvocation(
-                                    new VariableDependency('OBJECT'),
-                                    'methodName',
-                                    [
-                                        new LiteralExpression('$x'),
-                                        new LiteralExpression('$y'),
-                                    ]
-                                )
-                            ),
-                        ]),
-                        ['x', 'y']
-                    ),
-                    new DocBlock([
-                        '@dataProvider nameOfMethodDataProvider',
-                    ])
-                ),
-                'expectedString' =>
-                    '/**' . "\n" .
-                    ' * @dataProvider nameOfMethodDataProvider' . "\n" .
-                    ' */' . "\n" .
-                    'public function nameOfMethod($x, $y)' . "\n" .
-                    '{' . "\n" .
-                    '    // Assign object method call to $value' . "\n" .
-                    "\n" .
-                    '    $value = {{ OBJECT }}->methodName($x, $y);' . "\n" .
-                    '}'
-            ],
         ];
     }
 
     /**
      * @dataProvider createDocBlockDataProvider
      */
-    public function testCreateDocBlock(MethodDefinition $methodDefinition, DocBlock $expectedDocBlock)
+    public function testCreateDocBlock(MethodDefinition $methodDefinition, ?DocBlock $expectedDocBlock)
     {
         $this->assertEquals($expectedDocBlock, $methodDefinition->createDocBlock());
     }
@@ -331,7 +297,7 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
                     new Body([]),
                     []
                 ),
-                'expectedDocBlock' => new DocBlock([]),
+                'expectedDocBlock' => null,
             ],
             'has arguments' => [
                 'methodDefinition' => new MethodDefinition(
@@ -350,14 +316,5 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
         ];
-    }
-
-    private function createMethodDefinitionWithDocBlock(
-        MethodDefinition $methodDefinition,
-        DocBlock $docBlock
-    ): MethodDefinitionInterface {
-        $methodDefinition->setDocBlock($docBlock);
-
-        return $methodDefinition;
     }
 }

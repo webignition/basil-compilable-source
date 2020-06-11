@@ -33,7 +33,6 @@ EOD;
      */
     private array $arguments;
     private bool $isStatic;
-    private ?DocBlock $docBlock = null;
 
     /**
      * @param string $name
@@ -105,20 +104,13 @@ EOD;
         return $this->visibility;
     }
 
-    public function setDocBlock(DocBlock $docBlock): void
+    public function createDocBlock(): ?DocBlock
     {
-        $this->docBlock = $docBlock;
-    }
+        if (0 === count($this->arguments)) {
+            return null;
+        }
 
-    public function getDocBlock(): ?DocBlock
-    {
-        return $this->docBlock;
-    }
-
-    public function createDocBlock(): DocBlock
-    {
         $lines = [];
-
         foreach ($this->arguments as $argument) {
             $lines[] = new ParameterAnnotation('string', new VariableName($argument));
         }
@@ -136,11 +128,23 @@ EOD;
 
         $content = sprintf(self::RENDER_TEMPLATE, $signature, $lines);
 
-        if ($this->docBlock instanceof DocBlock) {
-            $content = $this->docBlock->render() . "\n" . $content;
+        $docBlock = $this->createDocBlock();
+        if (null !== $docBlock) {
+            $content = $docBlock->render() . "\n" . $content;
         }
 
         return $content;
+    }
+
+    public function renderMethod(): string
+    {
+        $signature = $this->createSignature();
+
+        $lines = $this->body->render();
+        $lines = $this->indent($lines);
+        $lines = rtrim($lines, "\n");
+
+        return sprintf(self::RENDER_TEMPLATE, $signature, $lines);
     }
 
     private function createSignature(): string
