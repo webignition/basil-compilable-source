@@ -324,7 +324,7 @@ class ClassDefinitionTest extends TestCase
                     '{' . "\n" .
                     '    /**' . "\n" .
                     '     * @dataProvider stepOneDataProvider' . "\n" .
-                    '     * ' . "\n" .
+                    '     *' . "\n" .
                     '     * @param string $x' . "\n" .
                     '     * @param string $y' . "\n" .
                     '     */' . "\n" .

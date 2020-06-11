@@ -77,7 +77,7 @@ class DataProvidedMethodDefinitionTest extends \PHPUnit\Framework\TestCase
                 'expectedString' =>
                     '/**' . "\n" .
                     ' * @dataProvider dataProviderMethodName' . "\n" .
-                    ' * ' . "\n" .
+                    ' *' . "\n" .
                     ' * @param string $alpha' . "\n" .
                     ' * @param string $charlie' . "\n" .
                     ' */' . "\n" .
