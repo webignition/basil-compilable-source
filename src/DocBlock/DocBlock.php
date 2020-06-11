@@ -24,6 +24,11 @@ class DocBlock implements SourceInterface
         $this->lines = $lines;
     }
 
+    public function merge(DocBlock $docBlock): DocBlock
+    {
+        return new DocBlock(array_merge($this->lines, $docBlock->lines));
+    }
+
     public function render(): string
     {
         $renderedLines = [];
