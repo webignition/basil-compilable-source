@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource;
 
+use webignition\BasilCompilableSource\Annotation\ParameterAnnotation;
 use webignition\BasilCompilableSource\DocBlock\DocBlock;
 use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
@@ -112,6 +113,17 @@ EOD;
     public function getDocBlock(): ?DocBlock
     {
         return $this->docBlock;
+    }
+
+    public function createDocBlock(): DocBlock
+    {
+        $lines = [];
+
+        foreach ($this->arguments as $argument) {
+            $lines[] = new ParameterAnnotation('string', new VariableName($argument));
+        }
+
+        return new DocBlock($lines);
     }
 
     public function render(): string

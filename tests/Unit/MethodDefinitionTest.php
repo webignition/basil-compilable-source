@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Tests\Unit;
 
+use webignition\BasilCompilableSource\Annotation\ParameterAnnotation;
 use webignition\BasilCompilableSource\DocBlock\DocBlock;
 use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\Body\BodyInterface;
@@ -309,6 +310,44 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
                     "\n" .
                     '    $value = {{ OBJECT }}->methodName($x, $y);' . "\n" .
                     '}'
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider createDocBlockDataProvider
+     */
+    public function testCreateDocBlock(MethodDefinition $methodDefinition, DocBlock $expectedDocBlock)
+    {
+        $this->assertEquals($expectedDocBlock, $methodDefinition->createDocBlock());
+    }
+
+    public function createDocBlockDataProvider(): array
+    {
+        return [
+            'no arguments' => [
+                'methodDefinition' => new MethodDefinition(
+                    'methodName',
+                    new Body([]),
+                    []
+                ),
+                'expectedDocBlock' => new DocBlock([]),
+            ],
+            'has arguments' => [
+                'methodDefinition' => new MethodDefinition(
+                    'methodName',
+                    new Body([]),
+                    [
+                        'zulu',
+                        'alpha',
+                        'charlie',
+                    ]
+                ),
+                'expectedDocBlock' => new DocBlock([
+                    new ParameterAnnotation('string', new VariableName('zulu')),
+                    new ParameterAnnotation('string', new VariableName('alpha')),
+                    new ParameterAnnotation('string', new VariableName('charlie')),
+                ]),
             ],
         ];
     }
