@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilCompilableSource\Block;
+namespace webignition\BasilCompilableSource\DocBlock;
 
 use webignition\BasilCompilableSource\SourceInterface;
 

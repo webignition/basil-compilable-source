@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilCompilableSource\Tests\Unit\Block;
+namespace webignition\BasilCompilableSource\Tests\Unit\DocBlock;
 
-use webignition\BasilCompilableSource\Block\DocBlock;
+use webignition\BasilCompilableSource\DocBlock\DocBlock;
 use webignition\BasilCompilableSource\Tests\Services\ObjectReflector;
 
 class DocBlockTest extends \PHPUnit\Framework\TestCase
