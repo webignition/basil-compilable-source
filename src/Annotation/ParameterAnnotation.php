@@ -2,12 +2,11 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilCompilableSource\DocBlock;
+namespace webignition\BasilCompilableSource\Annotation;
 
-use webignition\BasilCompilableSource\SourceInterface;
 use webignition\BasilCompilableSource\VariableName;
 
-class ParameterAnnotation implements SourceInterface
+class ParameterAnnotation implements AnnotationInterface
 {
     private const RENDER_TEMPLATE = '@param %s %s';
 

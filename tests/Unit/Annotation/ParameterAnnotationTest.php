@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilCompilableSource\Tests\Unit\DocBlock;
+namespace webignition\BasilCompilableSource\Tests\Unit\Annotation;
 
-use webignition\BasilCompilableSource\DocBlock\ParameterAnnotation;
+use webignition\BasilCompilableSource\Annotation\ParameterAnnotation;
 use webignition\BasilCompilableSource\VariableName;
 
 class ParameterAnnotationTest extends \PHPUnit\Framework\TestCase
