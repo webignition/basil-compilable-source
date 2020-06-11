@@ -30,7 +30,6 @@ class DataProvidedMethodDefinitionTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($methodDefinition->getName(), $dataProvidedMethodDefinition->getName());
         $this->assertSame($methodDefinition->getReturnType(), $dataProvidedMethodDefinition->getReturnType());
         $this->assertSame($methodDefinition->getVisibility(), $dataProvidedMethodDefinition->getVisibility());
-        $this->assertSame($methodDefinition->getDocBlock(), $dataProvidedMethodDefinition->getDocBlock());
         $this->assertSame($methodDefinition->isStatic(), $dataProvidedMethodDefinition->isStatic());
     }
 
@@ -85,6 +84,16 @@ class DataProvidedMethodDefinitionTest extends \PHPUnit\Framework\TestCase
                     'public function methodName($alpha, $charlie)' . "\n" .
                     '{' . "\n" .
                     "\n" .
+                    '}' . "\n" .
+                    "\n" .
+                    'public function dataProviderMethodName(): array' . "\n" .
+                    '{' . "\n" .
+                    '    return [' . "\n" .
+                    '        \'0\' => [' . "\n" .
+                    '            \'alpha\' => \'value1\',' . "\n" .
+                    '            \'charlie\' => \'value1\',' . "\n" .
+                    '        ],' . "\n" .
+                    '    ];' . "\n" .
                     '}'
                 ,
             ],

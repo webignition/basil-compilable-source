@@ -10,6 +10,13 @@ use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 
 class DataProvidedMethodDefinition implements MethodDefinitionInterface
 {
+    private const RENDER_TEMPLATE = <<<'EOD'
+%s
+%s
+
+%s
+EOD;
+
     private MethodDefinitionInterface $methodDefinition;
     private DataProviderMethodDefinitionInterface $dataProviderMethodDefinition;
 
@@ -46,11 +53,6 @@ class DataProvidedMethodDefinition implements MethodDefinitionInterface
         return $this->methodDefinition->getVisibility();
     }
 
-    public function getDocBlock(): ?DocBlock
-    {
-        return $this->methodDefinition->getDocBlock();
-    }
-
     public function isStatic(): bool
     {
         return $this->methodDefinition->isStatic();
@@ -70,6 +72,16 @@ class DataProvidedMethodDefinition implements MethodDefinitionInterface
     {
         $docBlock = $this->createDocBlock();
 
-        return $docBlock->render() . "\n" . $this->methodDefinition->render();
+        return sprintf(
+            self::RENDER_TEMPLATE,
+            $docBlock->render(),
+            $this->methodDefinition->renderMethod(),
+            $this->dataProviderMethodDefinition->render()
+        );
+    }
+
+    public function renderMethod(): string
+    {
+        return $this->methodDefinition->renderMethod();
     }
 }
