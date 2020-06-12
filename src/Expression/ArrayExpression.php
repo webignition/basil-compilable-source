@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Expression;
 
+use webignition\BasilCompilableSource\LiteralSourceInterface;
+
 class ArrayExpression extends AbstractExpression
 {
     /**
@@ -65,12 +67,16 @@ class ArrayExpression extends AbstractExpression
         foreach ($array as $key => $value) {
             $keyAsString = (string) $key;
 
-            if (is_array($value)) {
-                ksort($value);
-
-                $valueAsString = $this->convertArrayToString($value, $indentCount + 1);
+            if ($value instanceof LiteralSourceInterface) {
+                $valueAsString = $value->render() . ',';
             } else {
-                $valueAsString = "'" . ((string) $value) . "',";
+                if (is_array($value)) {
+                    ksort($value);
+
+                    $valueAsString = $this->convertArrayToString($value, $indentCount + 1);
+                } else {
+                    $valueAsString = "'" . ((string) $value) . "',";
+                }
             }
 
             $keyValueStrings[] = sprintf($keyValueTemplate, $keyAsString, $valueAsString);
