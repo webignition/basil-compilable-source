@@ -6,6 +6,8 @@ namespace webignition\BasilCompilableSource\Tests\Unit\Expression;
 
 use webignition\BasilCompilableSource\Expression\ArrayExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
+use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSource\VariableName;
 
 class ArrayExpressionTest extends \PHPUnit\Framework\TestCase
@@ -132,7 +134,7 @@ class ArrayExpressionTest extends \PHPUnit\Framework\TestCase
                     "    ],\n" .
                     "]",
             ],
-            'single data set with literal source value' => [
+            'single data set with VariableName value' => [
                 'expression' => new ArrayExpression([
                     'data-set-one' => [
                         'key1' => new VariableName('variableName'),
@@ -142,6 +144,22 @@ class ArrayExpressionTest extends \PHPUnit\Framework\TestCase
                     "[\n" .
                     "    'data-set-one' => [\n" .
                     "        'key1' => \$variableName,\n" .
+                    "    ],\n" .
+                    "]",
+            ],
+            'single data set with ObjectMethodInvocation value' => [
+                'expression' => new ArrayExpression([
+                    'data-set-one' => [
+                        'key1' => new ObjectMethodInvocation(
+                            new VariableDependency('OBJECT'),
+                            'methodName'
+                        ),
+                    ],
+                ]),
+                'expectedString' =>
+                    "[\n" .
+                    "    'data-set-one' => [\n" .
+                    "        'key1' => {{ OBJECT }}->methodName(),\n" .
                     "    ],\n" .
                     "]",
             ],
