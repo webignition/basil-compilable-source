@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Expression;
 
-use webignition\BasilCompilableSource\LiteralSourceInterface;
+use webignition\BasilCompilableSource\SourceInterface;
 
 class ArrayExpression extends AbstractExpression
 {
@@ -67,13 +67,13 @@ class ArrayExpression extends AbstractExpression
         foreach ($array as $key => $value) {
             $keyAsString = (string) $key;
 
-            if ($value instanceof LiteralSourceInterface) {
-                $valueAsString = $value->render() . ',';
-            } else {
-                if (is_array($value)) {
-                    ksort($value);
+            if (is_array($value)) {
+                ksort($value);
 
-                    $valueAsString = $this->convertArrayToString($value, $indentCount + 1);
+                $valueAsString = $this->convertArrayToString($value, $indentCount + 1);
+            } else {
+                if ($value instanceof SourceInterface) {
+                    $valueAsString = $value->render() . ',';
                 } else {
                     $valueAsString = "'" . ((string) $value) . "',";
                 }
