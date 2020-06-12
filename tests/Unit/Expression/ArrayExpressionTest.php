@@ -6,6 +6,7 @@ namespace webignition\BasilCompilableSource\Tests\Unit\Expression;
 
 use webignition\BasilCompilableSource\Expression\ArrayExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
+use webignition\BasilCompilableSource\VariableName;
 
 class ArrayExpressionTest extends \PHPUnit\Framework\TestCase
 {
@@ -128,6 +129,19 @@ class ArrayExpressionTest extends \PHPUnit\Framework\TestCase
                     "    '1' => [\n" .
                     "        'key1' => 'value3',\n" .
                     "        'key2' => 'value4',\n" .
+                    "    ],\n" .
+                    "]",
+            ],
+            'single data set with literal source value' => [
+                'expression' => new ArrayExpression([
+                    'data-set-one' => [
+                        'key1' => new VariableName('variableName'),
+                    ],
+                ]),
+                'expectedString' =>
+                    "[\n" .
+                    "    'data-set-one' => [\n" .
+                    "        'key1' => \$variableName,\n" .
                     "    ],\n" .
                     "]",
             ],
