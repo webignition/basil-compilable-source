@@ -6,8 +6,8 @@ namespace webignition\BasilCompilableSource\Expression;
 
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\VariableName;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclarationCollection;
+use webignition\BasilCompilableSource\VariableName;
 
 class CatchExpression implements ExpressionInterface
 {
@@ -21,9 +21,7 @@ class CatchExpression implements ExpressionInterface
     public function getMetadata(): MetadataInterface
     {
         $metadata = new Metadata();
-        $metadata = $metadata->merge($this->classes->getMetadata());
-
-        return $metadata;
+        return $metadata->merge($this->classes->getMetadata());
     }
 
     public function render(): string

@@ -39,7 +39,7 @@ class ObjectTypeDeclarationTest extends TestCase
     {
         return [
             'class in root namespace' => [
-                'declaration' =>  new ObjectTypeDeclaration(
+                'declaration' => new ObjectTypeDeclaration(
                     new ClassDependency(\Exception::class)
                 ),
                 'expectedString' => 'Exception',
