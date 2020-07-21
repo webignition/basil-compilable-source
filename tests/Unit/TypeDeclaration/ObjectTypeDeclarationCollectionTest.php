@@ -56,30 +56,30 @@ class ObjectTypeDeclarationCollectionTest extends TestCase
     {
         return [
             'empty' => [
-                'declaration' =>  new ObjectTypeDeclarationCollection([]),
+                'declaration' => new ObjectTypeDeclarationCollection([]),
                 'expectedString' => '',
             ],
             'single' => [
-                'declaration' =>  new ObjectTypeDeclarationCollection([
+                'declaration' => new ObjectTypeDeclarationCollection([
                     new ObjectTypeDeclaration(new ClassDependency(\Exception::class)),
                 ]),
                 'expectedString' => 'Exception',
             ],
             'single with alias' => [
-                'declaration' =>  new ObjectTypeDeclarationCollection([
+                'declaration' => new ObjectTypeDeclarationCollection([
                     new ObjectTypeDeclaration(new ClassDependency(\Exception::class, 'AliasName')),
                 ]),
                 'expectedString' => 'AliasName',
             ],
             'multiple' => [
-                'declaration' =>  new ObjectTypeDeclarationCollection([
+                'declaration' => new ObjectTypeDeclarationCollection([
                     new ObjectTypeDeclaration(new ClassDependency(\Exception::class)),
                     new ObjectTypeDeclaration(new ClassDependency(\Traversable::class)),
                 ]),
                 'expectedString' => 'Exception | Traversable',
             ],
             'class names are sorted' => [
-                'declaration' =>  new ObjectTypeDeclarationCollection([
+                'declaration' => new ObjectTypeDeclarationCollection([
                     new ObjectTypeDeclaration(new ClassDependency(\Exception::class, 'Charlie')),
                     new ObjectTypeDeclaration(new ClassDependency(\Traversable::class, 'Alpha')),
                     new ObjectTypeDeclaration(new ClassDependency(ObjectTypeDeclarationCollection::class, 'Bravo')),

@@ -10,10 +10,10 @@ use webignition\BasilCompilableSource\Block\TryCatch\TryCatchBlock;
 use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\Body\BodyContentInterface;
 use webignition\BasilCompilableSource\Body\BodyInterface;
+use webignition\BasilCompilableSource\EmptyLine;
 use webignition\BasilCompilableSource\Expression\CatchExpression;
 use webignition\BasilCompilableSource\Expression\ClassDependency;
 use webignition\BasilCompilableSource\Expression\ClosureExpression;
-use webignition\BasilCompilableSource\EmptyLine;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\SingleLineComment;
 use webignition\BasilCompilableSource\Statement\Statement;
@@ -174,8 +174,7 @@ class BodyTest extends \PHPUnit\Framework\TestCase
                     '    // TryBlock comment' . "\n" .
                     '} catch (LogicException $exception) {' . "\n" .
                     '    // CatchBlock comment' . "\n" .
-                    '}'
-                ,
+                    '}',
             ],
         ];
     }

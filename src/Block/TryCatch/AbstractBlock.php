@@ -6,8 +6,6 @@ namespace webignition\BasilCompilableSource\Block\TryCatch;
 
 use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\HasMetadataInterface;
-use webignition\BasilCompilableSource\Expression\CatchExpression;
-use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 
 abstract class AbstractBlock implements HasMetadataInterface

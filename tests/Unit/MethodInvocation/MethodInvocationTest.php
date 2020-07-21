@@ -6,21 +6,21 @@ namespace webignition\BasilCompilableSource\Tests\Unit\MethodInvocation;
 
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSource\Body\Body;
+use webignition\BasilCompilableSource\EmptyLine;
 use webignition\BasilCompilableSource\Expression\ClassDependency;
 use webignition\BasilCompilableSource\Expression\ClosureExpression;
-use webignition\BasilCompilableSource\EmptyLine;
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
+use webignition\BasilCompilableSource\Metadata\Metadata;
+use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSource\MethodInvocation\MethodInvocationInterface;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Statement\ReturnStatement;
-use webignition\BasilCompilableSource\Metadata\Metadata;
-use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\BasilCompilableSource\StaticObject;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSource\VariableName;
-use webignition\BasilCompilableSource\StaticObject;
 
 class MethodInvocationTest extends \PHPUnit\Framework\TestCase
 {
@@ -205,8 +205,7 @@ class MethodInvocationTest extends \PHPUnit\Framework\TestCase
                     "\n" .
                     '        return $variable;' . "\n" .
                     '    })()' . "\n" .
-                    ')'
-                ,
+                    ')',
             ],
         ];
     }

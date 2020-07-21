@@ -35,15 +35,13 @@ class ObjectConstructor extends MethodInvocation
     {
         $metadata = parent::getMetadata();
 
-        $metadata = $metadata->merge(
+        return $metadata->merge(
             new Metadata([
                 Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                     $this->class,
                 ]),
             ])
         );
-
-        return $metadata;
     }
 
     public function render(): string

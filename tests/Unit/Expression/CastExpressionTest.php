@@ -11,10 +11,10 @@ use webignition\BasilCompilableSource\Expression\ClosureExpression;
 use webignition\BasilCompilableSource\Expression\ComparisonExpression;
 use webignition\BasilCompilableSource\Expression\CompositeExpression;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
+use webignition\BasilCompilableSource\Expression\ObjectPropertyAccessExpression;
 use webignition\BasilCompilableSource\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\MethodInvocation\StaticObjectMethodInvocation;
-use webignition\BasilCompilableSource\Expression\ObjectPropertyAccessExpression;
 use webignition\BasilCompilableSource\StaticObject;
 use webignition\BasilCompilableSource\VariableDependency;
 
@@ -62,8 +62,7 @@ class CastExpressionTest extends \PHPUnit\Framework\TestCase
                 'expectedString' =>
                     '(string) ((function () {' . "\n" .
                     "\n" .
-                    '})())'
-                ,
+                    '})())',
             ],
             'comparison expression as int' => [
                 'expression' => new CastExpression(

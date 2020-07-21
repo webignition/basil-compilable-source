@@ -8,14 +8,14 @@ use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSource\Expression\ClassDependency;
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
-use webignition\BasilCompilableSource\MethodInvocation\MethodInvocation;
-use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\VariableName;
+use webignition\BasilCompilableSource\MethodInvocation\MethodInvocation;
+use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\StaticObject;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSource\VariableDependencyCollection;
+use webignition\BasilCompilableSource\VariableName;
 
 class ObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
 {
@@ -253,8 +253,7 @@ class ObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
                     '        "locator": ".selector"' . "\n" .
                     '    })),' . "\n" .
                     '    "literal for mutator"' . "\n" .
-                    ')'
-                ,
+                    ')',
             ],
         ];
     }

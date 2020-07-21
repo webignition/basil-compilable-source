@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Tests\Unit;
 
+use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\DataProvidedMethodDefinition;
 use webignition\BasilCompilableSource\DataProviderMethodDefinition;
 use webignition\BasilCompilableSource\DataProviderMethodDefinitionInterface;
-use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\MethodDefinition;
 use webignition\BasilCompilableSource\MethodDefinitionInterface;
 
@@ -94,8 +94,7 @@ class DataProvidedMethodDefinitionTest extends \PHPUnit\Framework\TestCase
                     '            \'charlie\' => \'value1\',' . "\n" .
                     '        ],' . "\n" .
                     '    ];' . "\n" .
-                    '}'
-                ,
+                    '}',
             ],
         ];
     }

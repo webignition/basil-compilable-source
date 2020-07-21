@@ -8,10 +8,10 @@ use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSource\Expression\ClassDependency;
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
-use webignition\BasilCompilableSource\MethodInvocation\MethodInvocation;
-use webignition\BasilCompilableSource\MethodInvocation\ObjectConstructor;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\BasilCompilableSource\MethodInvocation\MethodInvocation;
+use webignition\BasilCompilableSource\MethodInvocation\ObjectConstructor;
 
 class ObjectConstructorTest extends \PHPUnit\Framework\TestCase
 {

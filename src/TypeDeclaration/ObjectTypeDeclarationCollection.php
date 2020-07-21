@@ -6,7 +6,6 @@ namespace webignition\BasilCompilableSource\TypeDeclaration;
 
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\SourceInterface;
 
 class ObjectTypeDeclarationCollection implements TypeDeclarationCollectionInterface
 {
