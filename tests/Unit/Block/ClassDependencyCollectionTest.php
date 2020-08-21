@@ -82,14 +82,30 @@ class ClassDependencyCollectionTest extends \PHPUnit\Framework\TestCase
             ],
             'lines are sorted' => [
                 'collection' => new ClassDependencyCollection([
-                    new ClassDependency('C'),
-                    new ClassDependency('A'),
-                    new ClassDependency('B'),
+                    new ClassDependency('Acme\C'),
+                    new ClassDependency('Acme\A'),
+                    new ClassDependency('Acme\B'),
                 ]),
                 'expectedString' =>
-                    'use A;' . "\n" .
-                    'use B;' . "\n" .
-                    'use C;',
+                    'use Acme\A;' . "\n" .
+                    'use Acme\B;' . "\n" .
+                    'use Acme\C;',
+            ],
+            'single item in root namespace' => [
+                'collection' => new ClassDependencyCollection([
+                    new ClassDependency(\Throwable::class),
+                ]),
+                'expectedString' => '',
+            ],
+            'items in root namespace and not in root namespace' => [
+                'collection' => new ClassDependencyCollection([
+                    new ClassDependency('Acme\A'),
+                    new ClassDependency('B'),
+                    new ClassDependency('Acme\C'),
+                ]),
+                'expectedString' =>
+                    'use Acme\A;' . "\n" .
+                    'use Acme\C;',
             ],
         ];
     }
