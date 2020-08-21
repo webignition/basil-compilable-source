@@ -5,24 +5,27 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Block;
 
 use webignition\BasilCompilableSource\ClassName;
+use webignition\BasilCompilableSource\Expression\UseExpression;
 use webignition\BasilCompilableSource\SourceInterface;
+use webignition\BasilCompilableSource\Statement\Statement;
+use webignition\BasilCompilableSource\Statement\StatementInterface;
 
 class ClassDependencyCollection implements SourceInterface
 {
     /**
      * @var ClassName[]
      */
-    private array $dependencies = [];
+    private array $classNames = [];
 
     /**
-     * @param ClassName[] $dependencies
+     * @param ClassName[] $classNames
      */
-    public function __construct(array $dependencies = [])
+    public function __construct(array $classNames = [])
     {
-        foreach ($dependencies as $dependency) {
-            if ($dependency instanceof ClassName) {
-                if (!$this->containsClassDependency($dependency)) {
-                    $this->dependencies[] = $dependency;
+        foreach ($classNames as $className) {
+            if ($className instanceof ClassName) {
+                if (!$this->containsClassName($className)) {
+                    $this->classNames[] = $className;
                 }
             }
         }
@@ -30,35 +33,44 @@ class ClassDependencyCollection implements SourceInterface
 
     public function render(): string
     {
-        $nonRootNamespaceDependencies = array_filter($this->dependencies, function (ClassName $dependency) {
-            return false === $dependency->isInRootNamespace();
+        $nonRootNamespaceClassNames = array_filter($this->classNames, function (ClassName $className) {
+            return false === $className->isInRootNamespace();
         });
 
-        $renderedDependencies = [];
-        foreach ($nonRootNamespaceDependencies as $dependency) {
-            $renderedDependencies[] = $dependency->render();
+        $renderedUseStatements = [];
+        foreach ($nonRootNamespaceClassNames as $className) {
+            $renderedUseStatements[] = $this->createUseStatement($className)->render();
         }
 
-        sort($renderedDependencies);
+        sort($renderedUseStatements);
 
-        return trim(implode("\n", $renderedDependencies));
+        return trim(implode("\n", $renderedUseStatements));
     }
 
     public function merge(ClassDependencyCollection $collection): ClassDependencyCollection
     {
-        return new ClassDependencyCollection(array_merge($this->dependencies, $collection->dependencies));
+        return new ClassDependencyCollection(array_merge($this->classNames, $collection->classNames));
     }
 
-    private function containsClassDependency(ClassName $classDependency): bool
+    private function containsClassName(ClassName $className): bool
     {
-        $renderedClassDependency = $classDependency->render();
+        $renderedClassName = $className->render();
 
-        foreach ($this->dependencies as $dependency) {
-            if ($dependency->render() === $renderedClassDependency) {
+        foreach ($this->classNames as $className) {
+            if ($className->render() === $renderedClassName) {
                 return true;
             }
         }
 
         return false;
+    }
+
+    private function createUseStatement(ClassName $className): StatementInterface
+    {
+        return new Statement(
+            new UseExpression(
+                $className
+            )
+        );
     }
 }

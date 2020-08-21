@@ -6,7 +6,6 @@ namespace webignition\BasilCompilableSource;
 
 class ClassName
 {
-    private const RENDER_PATTERN = 'use %s;';
     private const FQCN_PART_DELIMITER = '\\';
 
     private string $className;
@@ -47,12 +46,6 @@ class ClassName
 
     public function render(): string
     {
-        $content = $this->className;
-
-        if (null !== $this->alias) {
-            $content .= ' as ' . $this->alias;
-        }
-
-        return sprintf(self::RENDER_PATTERN, $content);
+        return $this->alias ?? $this->getClass();
     }
 }

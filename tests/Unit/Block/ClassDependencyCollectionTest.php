@@ -23,32 +23,32 @@ class ClassDependencyCollectionTest extends \PHPUnit\Framework\TestCase
     {
         $collection = new ClassDependencyCollection($dependencies);
 
-        $this->assertEquals($expectedDependencies, ObjectReflector::getProperty($collection, 'dependencies'));
+        $this->assertEquals($expectedDependencies, ObjectReflector::getProperty($collection, 'classNames'));
     }
 
     public function createDataProvider(): array
     {
         return [
             'empty' => [
-                'dependencies' => [],
-                'expectedDependencies' => [],
+                'classNames' => [],
+                'expectedClassNames' => [],
             ],
             'no class dependency lines' => [
-                'dependencies' => [
+                'classNames' => [
                     new EmptyLine(),
                     new SingleLineComment(''),
                 ],
-                'expectedDependencies' => [],
+                'expectedClassNames' => [],
             ],
             'has class dependency lines' => [
-                'dependencies' => [
+                'classNames' => [
                     new EmptyLine(),
                     new SingleLineComment(''),
                     new ClassName(EmptyLine::class),
                     new ClassName(SingleLineComment::class),
                     new ClassName(EmptyLine::class),
                 ],
-                'expectedDependencies' => [
+                'expectedClassNames' => [
                     new ClassName(EmptyLine::class),
                     new ClassName(SingleLineComment::class),
                 ],

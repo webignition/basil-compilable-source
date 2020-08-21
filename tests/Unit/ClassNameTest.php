@@ -69,12 +69,11 @@ class ClassNameTest extends \PHPUnit\Framework\TestCase
         return [
             'no alias' => [
                 'className' => new ClassName(ClassName::class),
-                'expectedString' => 'use webignition\BasilCompilableSource\ClassName;',
+                'expectedString' => 'ClassName',
             ],
             'has alias' => [
                 'className' => new ClassName(ClassNameTest::class, 'BaseTest'),
-                'expectedString' =>
-                    'use webignition\BasilCompilableSource\Tests\Unit\ClassNameTest as BaseTest;',
+                'expectedString' => 'BaseTest',
             ],
         ];
     }
