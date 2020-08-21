@@ -43,8 +43,6 @@ class ClassDependencyCollection implements SourceInterface
 
         $renderedUseStatements = [];
         foreach ($classNamesToRender as $className) {
-
-
             $renderedUseStatements[] = $this->createUseStatement($className)->render();
         }
 
