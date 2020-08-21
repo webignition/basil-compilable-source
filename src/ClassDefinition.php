@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource;
 
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
-use webignition\BasilCompilableSource\Expression\ClassDependency;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 

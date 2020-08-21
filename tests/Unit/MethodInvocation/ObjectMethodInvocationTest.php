@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Tests\Unit\MethodInvocation;
 
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
-use webignition\BasilCompilableSource\Expression\ClassDependency;
+use webignition\BasilCompilableSource\ClassDependency;
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;

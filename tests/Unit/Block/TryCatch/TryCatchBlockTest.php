@@ -9,7 +9,7 @@ use webignition\BasilCompilableSource\Block\TryCatch\TryBlock;
 use webignition\BasilCompilableSource\Block\TryCatch\TryCatchBlock;
 use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\Expression\CatchExpression;
-use webignition\BasilCompilableSource\Expression\ClassDependency;
+use webignition\BasilCompilableSource\ClassDependency;
 use webignition\BasilCompilableSource\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSource\SingleLineComment;
 use webignition\BasilCompilableSource\Statement\Statement;

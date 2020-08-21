@@ -12,7 +12,7 @@ use webignition\BasilCompilableSource\Body\BodyContentInterface;
 use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\EmptyLine;
 use webignition\BasilCompilableSource\Expression\CatchExpression;
-use webignition\BasilCompilableSource\Expression\ClassDependency;
+use webignition\BasilCompilableSource\ClassDependency;
 use webignition\BasilCompilableSource\Expression\ClosureExpression;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\SingleLineComment;

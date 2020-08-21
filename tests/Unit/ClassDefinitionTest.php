@@ -11,7 +11,7 @@ use webignition\BasilCompilableSource\ClassDefinitionInterface;
 use webignition\BasilCompilableSource\DataProvidedMethodDefinition;
 use webignition\BasilCompilableSource\DataProviderMethodDefinition;
 use webignition\BasilCompilableSource\EmptyLine;
-use webignition\BasilCompilableSource\Expression\ClassDependency;
+use webignition\BasilCompilableSource\ClassDependency;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;

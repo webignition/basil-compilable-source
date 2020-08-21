@@ -7,7 +7,7 @@ namespace webignition\BasilCompilableSource\Tests\Unit\Block\TryCatch;
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSource\Block\TryCatch\TryBlock;
 use webignition\BasilCompilableSource\Body\Body;
-use webignition\BasilCompilableSource\Expression\ClassDependency;
+use webignition\BasilCompilableSource\ClassDependency;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\MethodInvocation\StaticObjectMethodInvocation;
