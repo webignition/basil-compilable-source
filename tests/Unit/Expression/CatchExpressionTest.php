@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Tests\Unit\Expression;
 
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
-use webignition\BasilCompilableSource\Expression\CatchExpression;
 use webignition\BasilCompilableSource\ClassDependency;
+use webignition\BasilCompilableSource\Expression\CatchExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclaration;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclarationCollection;
