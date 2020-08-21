@@ -6,8 +6,8 @@ namespace webignition\BasilCompilableSource\Tests\Unit\MethodInvocation;
 
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSource\Body\Body;
+use webignition\BasilCompilableSource\ClassDependency;
 use webignition\BasilCompilableSource\EmptyLine;
-use webignition\BasilCompilableSource\Expression\ClassDependency;
 use webignition\BasilCompilableSource\Expression\ClosureExpression;
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilCompilableSource\Expression;
+namespace webignition\BasilCompilableSource;
 
 class ClassDependency
 {

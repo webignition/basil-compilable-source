@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilCompilableSource\Tests\Unit\Expression;
+namespace webignition\BasilCompilableSource\Tests\Unit;
 
-use webignition\BasilCompilableSource\Expression\ClassDependency;
+use webignition\BasilCompilableSource\ClassDependency;
 use webignition\BasilCompilableSource\Tests\Services\ObjectReflector;
 
 class ClassDependencyTest extends \PHPUnit\Framework\TestCase
@@ -69,12 +69,12 @@ class ClassDependencyTest extends \PHPUnit\Framework\TestCase
         return [
             'no alias' => [
                 'classDependency' => new ClassDependency(ClassDependency::class),
-                'expectedString' => 'use webignition\BasilCompilableSource\Expression\ClassDependency;',
+                'expectedString' => 'use webignition\BasilCompilableSource\ClassDependency;',
             ],
             'has alias' => [
                 'classDependency' => new ClassDependency(ClassDependencyTest::class, 'BaseTest'),
                 'expectedString' =>
-                    'use webignition\BasilCompilableSource\Tests\Unit\Expression\ClassDependencyTest as BaseTest;',
+                    'use webignition\BasilCompilableSource\Tests\Unit\ClassDependencyTest as BaseTest;',
             ],
         ];
     }

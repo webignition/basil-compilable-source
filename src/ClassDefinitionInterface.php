@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource;
 
-use webignition\BasilCompilableSource\Expression\ClassDependency;
-
 interface ClassDefinitionInterface extends HasMetadataInterface, SourceInterface
 {
     public function getName(): string;
