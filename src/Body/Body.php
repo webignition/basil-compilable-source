@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Body;
 
 use webignition\BasilCompilableSource\Expression\ClosureExpression;
+use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\HasMetadataInterface;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\BasilCompilableSource\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Statement\Statement;
 
 class Body implements BodyInterface
@@ -34,6 +36,37 @@ class Body implements BodyInterface
             new Statement(
                 new ClosureExpression($body)
             ),
+        ]);
+    }
+
+    /**
+     * @param array<mixed> $expressions
+     *
+     * @return self
+     *
+     * @throws \InvalidArgumentException
+     */
+    public static function createFromExpressions(array $expressions): self
+    {
+        $statements = [];
+
+        foreach ($expressions as $index => $expression) {
+            if ($expression instanceof ExpressionInterface) {
+                $statements[] = new Statement($expression);
+            } else {
+                throw new \InvalidArgumentException('Non-expression at index ' . (string) $index);
+            }
+        }
+
+        return new Body($statements);
+    }
+
+    public static function createForSingleAssignmentStatement(
+        ExpressionInterface $leftHandSide,
+        ExpressionInterface $rightHandSide
+    ): self {
+        return new Body([
+            new AssignmentStatement($leftHandSide, $rightHandSide)
         ]);
     }
 
