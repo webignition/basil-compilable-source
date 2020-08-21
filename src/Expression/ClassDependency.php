@@ -40,6 +40,11 @@ class ClassDependency
         return $this->alias;
     }
 
+    public function isInRootNamespace(): bool
+    {
+        return $this->getClass() === $this->className;
+    }
+
     public function render(): string
     {
         $content = $this->className;

@@ -30,8 +30,12 @@ class ClassDependencyCollection implements SourceInterface
 
     public function render(): string
     {
+        $nonRootNamespaceDependencies = array_filter($this->dependencies, function (ClassDependency $dependency) {
+            return false === $dependency->isInRootNamespace();
+        });
+
         $renderedDependencies = [];
-        foreach ($this->dependencies as $dependency) {
+        foreach ($nonRootNamespaceDependencies as $dependency) {
             $renderedDependencies[] = $dependency->render();
         }
 

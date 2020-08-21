@@ -68,13 +68,43 @@ class ClassDependencyTest extends \PHPUnit\Framework\TestCase
     {
         return [
             'no alias' => [
-                'comment' => new ClassDependency(ClassDependency::class),
+                'classDependency' => new ClassDependency(ClassDependency::class),
                 'expectedString' => 'use webignition\BasilCompilableSource\Expression\ClassDependency;',
             ],
             'has alias' => [
-                'comment' => new ClassDependency(ClassDependencyTest::class, 'BaseTest'),
+                'classDependency' => new ClassDependency(ClassDependencyTest::class, 'BaseTest'),
                 'expectedString' =>
                     'use webignition\BasilCompilableSource\Tests\Unit\Expression\ClassDependencyTest as BaseTest;',
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider isInRootNamespaceDataProvider
+     */
+    public function testIsInRootNamespace(ClassDependency $classDependency, bool $expectedIsInRootNamespace)
+    {
+        $this->assertSame($expectedIsInRootNamespace, $classDependency->isInRootNamespace());
+    }
+
+    public function isInRootNamespaceDataProvider(): array
+    {
+        return [
+            'not in root namespace, no alias' => [
+                'classDependency' => new ClassDependency(ClassDependency::class),
+                'expectedIsInRootNamespace' => false,
+            ],
+            'not in root namespace, has alias' => [
+                'classDependency' => new ClassDependency(ClassDependencyTest::class, 'BaseTest'),
+                'expectedIsInRootNamespace' => false,
+            ],
+            'is in root namespace, no alias' => [
+                'classDependency' => new ClassDependency(\Throwable::class),
+                'expectedIsInRootNamespace' => true,
+            ],
+            'is in root namespace, has alias' => [
+                'classDependency' => new ClassDependency(\Throwable::class, 'Bouncy'),
+                'expectedIsInRootNamespace' => true,
             ],
         ];
     }
