@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Tests\Unit;
 
 use webignition\BasilCompilableSource\ClassDependency;
-use webignition\BasilCompilableSource\Tests\Services\ObjectReflector;
+use webignition\ObjectReflector\ObjectReflector;
 
 class ClassDependencyTest extends \PHPUnit\Framework\TestCase
 {

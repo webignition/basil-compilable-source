@@ -8,8 +8,8 @@ use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSource\ClassDependency;
 use webignition\BasilCompilableSource\EmptyLine;
 use webignition\BasilCompilableSource\SingleLineComment;
-use webignition\BasilCompilableSource\Tests\Services\ObjectReflector;
 use webignition\BasilCompilableSource\Tests\Unit\ClassDependencyTest;
+use webignition\ObjectReflector\ObjectReflector;
 
 class ClassDependencyCollectionTest extends \PHPUnit\Framework\TestCase
 {
