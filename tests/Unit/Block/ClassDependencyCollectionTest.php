@@ -97,6 +97,12 @@ class ClassDependencyCollectionTest extends \PHPUnit\Framework\TestCase
                 ]),
                 'expectedString' => '',
             ],
+            'single item, with alias, in root namespace' => [
+                'collection' => new ClassDependencyCollection([
+                    new ClassName(\Throwable::class, 'Bouncy'),
+                ]),
+                'expectedString' => 'use Throwable as Bouncy;',
+            ],
             'items in root namespace and not in root namespace' => [
                 'collection' => new ClassDependencyCollection([
                     new ClassName('Acme\A'),

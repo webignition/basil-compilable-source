@@ -33,12 +33,16 @@ class ClassDependencyCollection implements SourceInterface
 
     public function render(): string
     {
-        $nonRootNamespaceClassNames = array_filter($this->classNames, function (ClassName $className) {
-            return false === $className->isInRootNamespace();
+        $classNamesToRender = array_filter($this->classNames, function (ClassName $className) {
+            if (false === $className->isInRootNamespace()) {
+                return true;
+            }
+
+            return is_string($className->getAlias());
         });
 
         $renderedUseStatements = [];
-        foreach ($nonRootNamespaceClassNames as $className) {
+        foreach ($classNamesToRender as $className) {
             $renderedUseStatements[] = $this->createUseStatement($className)->render();
         }
 
