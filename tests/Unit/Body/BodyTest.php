@@ -16,9 +16,11 @@ use webignition\BasilCompilableSource\Expression\CatchExpression;
 use webignition\BasilCompilableSource\Expression\ClosureExpression;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\SingleLineComment;
+use webignition\BasilCompilableSource\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclaration;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclarationCollection;
+use webignition\BasilCompilableSource\VariableDependency;
 use webignition\ObjectReflector\ObjectReflector;
 
 class BodyTest extends \PHPUnit\Framework\TestCase
@@ -209,5 +211,66 @@ class BodyTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
         ];
+    }
+
+    public function testCreateFromExpressionsThrowsInvalidArgumentExceptionForNonExpression()
+    {
+        self::expectExceptionObject(new \InvalidArgumentException('Non-expression at index 1'));
+
+        Body::createFromExpressions([
+            new LiteralExpression('"literal one"'),
+            true,
+            new LiteralExpression('"literal two"'),
+        ]);
+    }
+
+    /**
+     * @dataProvider createFromExpressionsDataProvider
+     *
+     * @param array<mixed> $expressions
+     * @param Body $expectedBody
+     */
+    public function testCreateFromExpressions(array $expressions, Body $expectedBody)
+    {
+        self::assertEquals($expectedBody, Body::createFromExpressions($expressions));
+    }
+
+    public function createFromExpressionsDataProvider(): array
+    {
+        return [
+            'empty' => [
+                'expressions' => [],
+                'expectedBody' => new Body([]),
+            ],
+            'non-empty' => [
+                'expressions' => [
+                    new LiteralExpression('"literal one"'),
+                    new LiteralExpression('"literal two"'),
+                ],
+                'expectedBody' => new Body([
+                    new Statement(
+                        new LiteralExpression('"literal one"')
+                    ),
+                    new Statement(
+                        new LiteralExpression('"literal two"')
+                    ),
+                ]),
+            ],
+        ];
+    }
+
+    public function testCreateForSingleAssignmentStatement()
+    {
+        $leftHandSide = new VariableDependency('LHS');
+        $rightHandSide = new LiteralExpression('"value"');
+
+        $expectedBody = new Body([
+            new AssignmentStatement(
+                $leftHandSide,
+                $rightHandSide
+            )
+        ]);
+
+        self::assertEquals($expectedBody, Body::createForSingleAssignmentStatement($leftHandSide, $rightHandSide));
     }
 }
