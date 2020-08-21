@@ -63,11 +63,11 @@ class StaticObjectTest extends \PHPUnit\Framework\TestCase
                 'object' => new StaticObject('parent'),
                 'expectedString' => 'parent',
             ],
-            'global classname' => [
+            'root-namespaced class' => [
                 'object' => new StaticObject(\StdClass::class),
-                'expectedString' => 'StdClass',
+                'expectedString' => '\StdClass',
             ],
-            'namespaced classname' => [
+            'namespaced class' => [
                 'object' => new StaticObject(ClassName::class),
                 'expectedString' => 'ClassName',
             ],

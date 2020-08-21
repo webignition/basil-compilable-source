@@ -112,10 +112,20 @@ class CastExpressionTest extends \PHPUnit\Framework\TestCase
                 ),
                 'expectedString' => '(string) ({{ OBJECT }}->methodName())',
             ],
-            'static object method invocation as string' => [
+            'static object method invocation as string, class in root namespace' => [
                 'expression' => new CastExpression(
                     new StaticObjectMethodInvocation(
                         new StaticObject('Object'),
+                        'methodName'
+                    ),
+                    'string'
+                ),
+                'expectedString' => '(string) (\Object::methodName())',
+            ],
+            'static object method invocation as string, class not in root namespace' => [
+                'expression' => new CastExpression(
+                    new StaticObjectMethodInvocation(
+                        new StaticObject('Acme\Object'),
                         'methodName'
                     ),
                     'string'
