@@ -59,11 +59,17 @@ class ObjectTypeDeclarationCollectionTest extends TestCase
                 'declaration' => new ObjectTypeDeclarationCollection([]),
                 'expectedString' => '',
             ],
-            'single' => [
+            'single, root namespace' => [
                 'declaration' => new ObjectTypeDeclarationCollection([
                     new ObjectTypeDeclaration(new ClassName(\Exception::class)),
                 ]),
-                'expectedString' => 'Exception',
+                'expectedString' => '\Exception',
+            ],
+            'single, non-root namespace' => [
+                'declaration' => new ObjectTypeDeclarationCollection([
+                    new ObjectTypeDeclaration(new ClassName(TestCase::class)),
+                ]),
+                'expectedString' => 'TestCase',
             ],
             'single with alias' => [
                 'declaration' => new ObjectTypeDeclarationCollection([
@@ -74,17 +80,19 @@ class ObjectTypeDeclarationCollectionTest extends TestCase
             'multiple' => [
                 'declaration' => new ObjectTypeDeclarationCollection([
                     new ObjectTypeDeclaration(new ClassName(\Exception::class)),
+                    new ObjectTypeDeclaration(new ClassName(TestCase::class)),
                     new ObjectTypeDeclaration(new ClassName(\Traversable::class)),
                 ]),
-                'expectedString' => 'Exception | Traversable',
+                'expectedString' => '\Exception | TestCase | \Traversable',
             ],
-            'class names are sorted' => [
+            'class names are sorted ignoring leading namespace separator' => [
                 'declaration' => new ObjectTypeDeclarationCollection([
                     new ObjectTypeDeclaration(new ClassName(\Exception::class, 'Charlie')),
                     new ObjectTypeDeclaration(new ClassName(\Traversable::class, 'Alpha')),
+                    new ObjectTypeDeclaration(new ClassName(\Exception::class)),
                     new ObjectTypeDeclaration(new ClassName(ObjectTypeDeclarationCollection::class, 'Bravo')),
                 ]),
-                'expectedString' => 'Alpha | Bravo | Charlie',
+                'expectedString' => 'Alpha | Bravo | Charlie | \Exception',
             ],
         ];
     }

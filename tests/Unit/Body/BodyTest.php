@@ -172,7 +172,7 @@ class BodyTest extends \PHPUnit\Framework\TestCase
                     '"literal from statement from body";' . "\n" .
                     'try {' . "\n" .
                     '    // TryBlock comment' . "\n" .
-                    '} catch (LogicException $exception) {' . "\n" .
+                    '} catch (\LogicException $exception) {' . "\n" .
                     '    // CatchBlock comment' . "\n" .
                     '}',
             ],

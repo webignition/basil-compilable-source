@@ -44,7 +44,18 @@ class ObjectTypeDeclarationCollection implements TypeDeclarationCollectionInterf
             $renderedDeclarations[] = $declaration->render();
         }
 
-        sort($renderedDeclarations);
+        $namespaceSeparator = '\\';
+
+        usort($renderedDeclarations, function (string $a, string $b) use ($namespaceSeparator) {
+            $a = ltrim($a, $namespaceSeparator);
+            $b = ltrim($b, $namespaceSeparator);
+
+            if ($a === $b) {
+                return 0;
+            }
+
+            return ($a < $b) ? -1 : 1;
+        });
 
         return implode(' | ', $renderedDeclarations);
     }

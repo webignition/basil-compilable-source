@@ -225,7 +225,7 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
                     '(function () {' . "\n" .
                     '    try {' . "\n" .
                     '        // TryBlock comment' . "\n" .
-                    '    } catch (RuntimeException $exception) {' . "\n" .
+                    '    } catch (\RuntimeException $exception) {' . "\n" .
                     '        // CatchBlock comment' . "\n" .
                     '    }' . "\n" .
                     '})()',

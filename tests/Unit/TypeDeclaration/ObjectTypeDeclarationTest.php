@@ -42,13 +42,13 @@ class ObjectTypeDeclarationTest extends TestCase
                 'declaration' => new ObjectTypeDeclaration(
                     new ClassName(\Exception::class)
                 ),
-                'expectedString' => 'Exception',
+                'expectedString' => '\Exception',
             ],
             'interface in root namespace' => [
                 'declaration' => new ObjectTypeDeclaration(
                     new ClassName(\Traversable::class)
                 ),
-                'expectedString' => 'Traversable',
+                'expectedString' => '\Traversable',
             ],
             'class not in root namespace' => [
                 'declaration' => new ObjectTypeDeclaration(
