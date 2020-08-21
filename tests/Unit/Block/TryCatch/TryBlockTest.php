@@ -7,7 +7,7 @@ namespace webignition\BasilCompilableSource\Tests\Unit\Block\TryCatch;
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSource\Block\TryCatch\TryBlock;
 use webignition\BasilCompilableSource\Body\Body;
-use webignition\BasilCompilableSource\ClassDependency;
+use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\MethodInvocation\StaticObjectMethodInvocation;
@@ -35,7 +35,7 @@ class TryBlockTest extends \PHPUnit\Framework\TestCase
 
         $expectedMetadata = new Metadata([
             Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                new ClassDependency(\RuntimeException::class),
+                new ClassName(\RuntimeException::class),
             ]),
             Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                 'DEPENDENCY',

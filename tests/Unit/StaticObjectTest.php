@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Tests\Unit;
 
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
-use webignition\BasilCompilableSource\ClassDependency;
+use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\StaticObject;
@@ -33,15 +33,15 @@ class StaticObjectTest extends \PHPUnit\Framework\TestCase
                 'object' => \StdClass::class,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassDependency(\StdClass::class),
+                        new ClassName(\StdClass::class),
                     ]),
                 ]),
             ],
             'namespaced classname' => [
-                'object' => ClassDependency::class,
+                'object' => ClassName::class,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassDependency(ClassDependency::class),
+                        new ClassName(ClassName::class),
                     ]),
                 ]),
             ],
@@ -68,8 +68,8 @@ class StaticObjectTest extends \PHPUnit\Framework\TestCase
                 'expectedString' => 'StdClass',
             ],
             'namespaced classname' => [
-                'object' => new StaticObject(ClassDependency::class),
-                'expectedString' => 'ClassDependency',
+                'object' => new StaticObject(ClassName::class),
+                'expectedString' => 'ClassName',
             ],
         ];
     }

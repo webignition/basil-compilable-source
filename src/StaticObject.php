@@ -16,8 +16,8 @@ class StaticObject extends AbstractExpression
     {
         $metadata = null;
 
-        if (ClassDependency::isFullyQualifiedClassName($object)) {
-            $classDependency = new ClassDependency($object);
+        if (ClassName::isFullyQualifiedClassName($object)) {
+            $classDependency = new ClassName($object);
             $object = $classDependency->getClass();
 
             $metadata = new Metadata([

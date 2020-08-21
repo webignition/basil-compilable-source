@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Tests\Unit\MethodInvocation;
 
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
-use webignition\BasilCompilableSource\ClassDependency;
+use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
@@ -18,13 +18,13 @@ class ObjectConstructorTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider createDataProvider
      *
-     * @param \webignition\BasilCompilableSource\ClassDependency $class
+     * @param \webignition\BasilCompilableSource\ClassName $class
      * @param ExpressionInterface[] $arguments
      * @param string $argumentFormat
      * @param MetadataInterface $expectedMetadata
      */
     public function testCreate(
-        ClassDependency $class,
+        ClassName $class,
         array $arguments,
         string $argumentFormat,
         MetadataInterface $expectedMetadata
@@ -41,24 +41,24 @@ class ObjectConstructorTest extends \PHPUnit\Framework\TestCase
     {
         return [
             'no arguments' => [
-                'class' => new ClassDependency(ObjectConstructor::class),
+                'class' => new ClassName(ObjectConstructor::class),
                 'arguments' => [],
                 'argumentFormat' => MethodInvocation::ARGUMENT_FORMAT_INLINE,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassDependency(ObjectConstructor::class)
+                        new ClassName(ObjectConstructor::class)
                     ]),
                 ]),
             ],
             'single argument' => [
-                'class' => new ClassDependency(ObjectConstructor::class),
+                'class' => new ClassName(ObjectConstructor::class),
                 'arguments' => [
                     new LiteralExpression('1'),
                 ],
                 'argumentFormat' => MethodInvocation::ARGUMENT_FORMAT_INLINE,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassDependency(ObjectConstructor::class)
+                        new ClassName(ObjectConstructor::class)
                     ]),
                 ]),
             ],
@@ -75,7 +75,7 @@ class ObjectConstructorTest extends \PHPUnit\Framework\TestCase
 
     public function renderDataProvider(): array
     {
-        $classDependency = new ClassDependency('Acme\\Model');
+        $classDependency = new ClassName('Acme\\Model');
 
         return [
             'no arguments, inline' => [

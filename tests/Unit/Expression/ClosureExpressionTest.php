@@ -9,7 +9,7 @@ use webignition\BasilCompilableSource\Block\TryCatch\TryBlock;
 use webignition\BasilCompilableSource\Block\TryCatch\TryCatchBlock;
 use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\Body\BodyInterface;
-use webignition\BasilCompilableSource\ClassDependency;
+use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\Expression\CastExpression;
 use webignition\BasilCompilableSource\Expression\CatchExpression;
 use webignition\BasilCompilableSource\Expression\ClosureExpression;
@@ -212,7 +212,7 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
                         new CatchBlock(
                             new CatchExpression(
                                 new ObjectTypeDeclarationCollection([
-                                    new ObjectTypeDeclaration(new ClassDependency(\RuntimeException::class))
+                                    new ObjectTypeDeclaration(new ClassName(\RuntimeException::class))
                                 ])
                             ),
                             new Body([

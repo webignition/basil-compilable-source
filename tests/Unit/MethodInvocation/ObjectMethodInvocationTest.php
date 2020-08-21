@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Tests\Unit\MethodInvocation;
 
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
-use webignition\BasilCompilableSource\ClassDependency;
+use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
@@ -105,14 +105,14 @@ class ObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
                 'methodName' => 'method',
                 'arguments' => [
                     new \webignition\BasilCompilableSource\MethodInvocation\StaticObjectMethodInvocation(
-                        new StaticObject(ClassDependency::class),
+                        new StaticObject(ClassName::class),
                         'staticMethodName'
                     )
                 ],
                 'argumentFormat' => MethodInvocation::ARGUMENT_FORMAT_STACKED,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassDependency(ClassDependency::class),
+                        new ClassName(ClassName::class),
                     ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         'OBJECT',

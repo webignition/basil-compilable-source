@@ -10,7 +10,7 @@ use webignition\BasilCompilableSource\Block\TryCatch\TryCatchBlock;
 use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\Body\BodyContentInterface;
 use webignition\BasilCompilableSource\Body\BodyInterface;
-use webignition\BasilCompilableSource\ClassDependency;
+use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\EmptyLine;
 use webignition\BasilCompilableSource\Expression\CatchExpression;
 use webignition\BasilCompilableSource\Expression\ClosureExpression;
@@ -72,7 +72,7 @@ class BodyTest extends \PHPUnit\Framework\TestCase
                             new CatchExpression(
                                 new ObjectTypeDeclarationCollection([
                                     new ObjectTypeDeclaration(
-                                        new ClassDependency(\LogicException::class)
+                                        new ClassName(\LogicException::class)
                                     )
                                 ])
                             ),
@@ -104,7 +104,7 @@ class BodyTest extends \PHPUnit\Framework\TestCase
                             new CatchExpression(
                                 new ObjectTypeDeclarationCollection([
                                     new ObjectTypeDeclaration(
-                                        new ClassDependency(\LogicException::class)
+                                        new ClassName(\LogicException::class)
                                     )
                                 ])
                             ),
@@ -155,7 +155,7 @@ class BodyTest extends \PHPUnit\Framework\TestCase
                             new CatchExpression(
                                 new ObjectTypeDeclarationCollection([
                                     new ObjectTypeDeclaration(
-                                        new ClassDependency(\LogicException::class)
+                                        new ClassName(\LogicException::class)
                                     )
                                 ])
                             ),

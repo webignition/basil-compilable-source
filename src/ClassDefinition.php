@@ -22,7 +22,7 @@ EOD;
 
     private string $name;
 
-    private ?ClassDependency $baseClass;
+    private ?ClassName $baseClass;
 
     /**
      * @var MethodDefinitionInterface[]
@@ -50,12 +50,12 @@ EOD;
         return $this->name;
     }
 
-    public function getBaseClass(): ?ClassDependency
+    public function getBaseClass(): ?ClassName
     {
         return $this->baseClass;
     }
 
-    public function setBaseClass(ClassDependency $baseClass): void
+    public function setBaseClass(ClassName $baseClass): void
     {
         $this->baseClass = $baseClass;
     }
@@ -85,7 +85,7 @@ EOD;
     {
         $classDependencies = $this->getMetadata()->getClassDependencies();
 
-        if ($this->baseClass instanceof ClassDependency) {
+        if ($this->baseClass instanceof ClassName) {
             $baseClassIsInRootNamespace = substr_count(
                 $this->baseClass->getClassName(),
                 self::NAMESPACE_SEPARATOR
@@ -110,7 +110,7 @@ EOD;
     {
         $extendsSegment = '';
 
-        if ($this->baseClass instanceof ClassDependency) {
+        if ($this->baseClass instanceof ClassName) {
             $extendsSegment = 'extends ' . $this->baseClass->getClass();
         }
 
