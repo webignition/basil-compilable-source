@@ -17,9 +17,9 @@ use webignition\BasilCompilableSource\Expression\ClosureExpression;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\SingleLineComment;
 use webignition\BasilCompilableSource\Statement\Statement;
-use webignition\BasilCompilableSource\Tests\Services\ObjectReflector;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclaration;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclarationCollection;
+use webignition\ObjectReflector\ObjectReflector;
 
 class BodyTest extends \PHPUnit\Framework\TestCase
 {
