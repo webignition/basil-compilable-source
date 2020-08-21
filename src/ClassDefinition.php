@@ -18,10 +18,7 @@ class ClassDefinition implements ClassDefinitionInterface
 EOD;
 
     private const CLASS_SIGNATURE_TEMPLATE = 'class %s %s';
-    private const NAMESPACE_SEPARATOR = '\\';
-
     private string $name;
-
     private ?ClassName $baseClass;
 
     /**
@@ -86,16 +83,9 @@ EOD;
         $classDependencies = $this->getMetadata()->getClassDependencies();
 
         if ($this->baseClass instanceof ClassName) {
-            $baseClassIsInRootNamespace = substr_count(
-                $this->baseClass->getClassName(),
-                self::NAMESPACE_SEPARATOR
-            ) === 0;
-
-            if (false === $baseClassIsInRootNamespace) {
-                $classDependencies = $classDependencies->merge(new ClassDependencyCollection([
-                    $this->baseClass,
-                ]));
-            }
+            $classDependencies = $classDependencies->merge(new ClassDependencyCollection([
+                $this->baseClass,
+            ]));
         }
 
         return trim(sprintf(
@@ -111,7 +101,7 @@ EOD;
         $extendsSegment = '';
 
         if ($this->baseClass instanceof ClassName) {
-            $extendsSegment = 'extends ' . $this->baseClass->getClass();
+            $extendsSegment = 'extends ' . $this->baseClass->renderClassName();
         }
 
         return trim(sprintf(self::CLASS_SIGNATURE_TEMPLATE, $this->getName(), $extendsSegment));
