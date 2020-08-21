@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Tests\Unit\Block;
 
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
-use webignition\BasilCompilableSource\ClassDependency;
+use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\EmptyLine;
 use webignition\BasilCompilableSource\SingleLineComment;
-use webignition\BasilCompilableSource\Tests\Unit\ClassDependencyTest;
+use webignition\BasilCompilableSource\Tests\Unit\ClassNameTest;
 use webignition\ObjectReflector\ObjectReflector;
 
 class ClassDependencyCollectionTest extends \PHPUnit\Framework\TestCase
@@ -16,8 +16,8 @@ class ClassDependencyCollectionTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider createDataProvider
      *
-     * @param ClassDependency[] $dependencies
-     * @param ClassDependency[] $expectedDependencies
+     * @param ClassName[] $dependencies
+     * @param ClassName[] $expectedDependencies
      */
     public function testCreate(array $dependencies, array $expectedDependencies)
     {
@@ -44,13 +44,13 @@ class ClassDependencyCollectionTest extends \PHPUnit\Framework\TestCase
                 'dependencies' => [
                     new EmptyLine(),
                     new SingleLineComment(''),
-                    new ClassDependency(EmptyLine::class),
-                    new ClassDependency(SingleLineComment::class),
-                    new ClassDependency(EmptyLine::class),
+                    new ClassName(EmptyLine::class),
+                    new ClassName(SingleLineComment::class),
+                    new ClassName(EmptyLine::class),
                 ],
                 'expectedDependencies' => [
-                    new ClassDependency(EmptyLine::class),
-                    new ClassDependency(SingleLineComment::class),
+                    new ClassName(EmptyLine::class),
+                    new ClassName(SingleLineComment::class),
                 ],
             ],
         ];
@@ -73,18 +73,18 @@ class ClassDependencyCollectionTest extends \PHPUnit\Framework\TestCase
             ],
             'non-empty' => [
                 'collection' => new ClassDependencyCollection([
-                    new ClassDependency(ClassDependency::class),
-                    new ClassDependency(ClassDependencyTest::class, 'BaseTest'),
+                    new ClassName(ClassName::class),
+                    new ClassName(ClassNameTest::class, 'BaseTest'),
                 ]),
                 'expectedString' =>
-                    'use webignition\BasilCompilableSource\ClassDependency;' . "\n" .
-                    'use webignition\BasilCompilableSource\Tests\Unit\ClassDependencyTest as BaseTest;',
+                    'use webignition\BasilCompilableSource\ClassName;' . "\n" .
+                    'use webignition\BasilCompilableSource\Tests\Unit\ClassNameTest as BaseTest;',
             ],
             'lines are sorted' => [
                 'collection' => new ClassDependencyCollection([
-                    new ClassDependency('Acme\C'),
-                    new ClassDependency('Acme\A'),
-                    new ClassDependency('Acme\B'),
+                    new ClassName('Acme\C'),
+                    new ClassName('Acme\A'),
+                    new ClassName('Acme\B'),
                 ]),
                 'expectedString' =>
                     'use Acme\A;' . "\n" .
@@ -93,15 +93,15 @@ class ClassDependencyCollectionTest extends \PHPUnit\Framework\TestCase
             ],
             'single item in root namespace' => [
                 'collection' => new ClassDependencyCollection([
-                    new ClassDependency(\Throwable::class),
+                    new ClassName(\Throwable::class),
                 ]),
                 'expectedString' => '',
             ],
             'items in root namespace and not in root namespace' => [
                 'collection' => new ClassDependencyCollection([
-                    new ClassDependency('Acme\A'),
-                    new ClassDependency('B'),
-                    new ClassDependency('Acme\C'),
+                    new ClassName('Acme\A'),
+                    new ClassName('B'),
+                    new ClassName('Acme\C'),
                 ]),
                 'expectedString' =>
                     'use Acme\A;' . "\n" .

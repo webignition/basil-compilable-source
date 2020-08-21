@@ -7,7 +7,7 @@ namespace webignition\BasilCompilableSource\Tests\Unit\Block\TryCatch;
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSource\Block\TryCatch\CatchBlock;
 use webignition\BasilCompilableSource\Body\Body;
-use webignition\BasilCompilableSource\ClassDependency;
+use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\Expression\CatchExpression;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
@@ -37,7 +37,7 @@ class CatchBlockTest extends \PHPUnit\Framework\TestCase
         $catchBlock = new CatchBlock(
             new CatchExpression(
                 new ObjectTypeDeclarationCollection([
-                    new ObjectTypeDeclaration(new ClassDependency(\Exception::class)),
+                    new ObjectTypeDeclaration(new ClassName(\Exception::class)),
                 ])
             ),
             $body
@@ -45,8 +45,8 @@ class CatchBlockTest extends \PHPUnit\Framework\TestCase
 
         $expectedMetadata = new Metadata([
             Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                new ClassDependency(\RuntimeException::class),
-                new ClassDependency(\Exception::class),
+                new ClassName(\RuntimeException::class),
+                new ClassName(\Exception::class),
             ]),
             Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                 'DEPENDENCY',
@@ -71,7 +71,7 @@ class CatchBlockTest extends \PHPUnit\Framework\TestCase
                 'tryBlock' => new CatchBlock(
                     new CatchExpression(
                         new ObjectTypeDeclarationCollection([
-                            new ObjectTypeDeclaration(new ClassDependency(\Exception::class)),
+                            new ObjectTypeDeclaration(new ClassName(\Exception::class)),
                         ])
                     ),
                     new Statement(
@@ -87,8 +87,8 @@ class CatchBlockTest extends \PHPUnit\Framework\TestCase
                 'tryBlock' => new CatchBlock(
                     new CatchExpression(
                         new ObjectTypeDeclarationCollection([
-                            new ObjectTypeDeclaration(new ClassDependency(\LogicException::class)),
-                            new ObjectTypeDeclaration(new ClassDependency(\RuntimeException::class)),
+                            new ObjectTypeDeclaration(new ClassName(\LogicException::class)),
+                            new ObjectTypeDeclaration(new ClassName(\RuntimeException::class)),
                         ])
                     ),
                     new Statement(

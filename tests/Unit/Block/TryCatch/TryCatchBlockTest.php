@@ -8,7 +8,7 @@ use webignition\BasilCompilableSource\Block\TryCatch\CatchBlock;
 use webignition\BasilCompilableSource\Block\TryCatch\TryBlock;
 use webignition\BasilCompilableSource\Block\TryCatch\TryCatchBlock;
 use webignition\BasilCompilableSource\Body\Body;
-use webignition\BasilCompilableSource\ClassDependency;
+use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\Expression\CatchExpression;
 use webignition\BasilCompilableSource\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSource\SingleLineComment;
@@ -37,8 +37,8 @@ class TryCatchBlockTest extends \PHPUnit\Framework\TestCase
                     new CatchBlock(
                         new CatchExpression(
                             new ObjectTypeDeclarationCollection([
-                                new ObjectTypeDeclaration(new ClassDependency(\LogicException::class)),
-                                new ObjectTypeDeclaration(new ClassDependency(\RuntimeException::class)),
+                                new ObjectTypeDeclaration(new ClassName(\LogicException::class)),
+                                new ObjectTypeDeclaration(new ClassName(\RuntimeException::class)),
                             ])
                         ),
                         new Body([
@@ -48,7 +48,7 @@ class TryCatchBlockTest extends \PHPUnit\Framework\TestCase
                     new CatchBlock(
                         new CatchExpression(
                             new ObjectTypeDeclarationCollection([
-                                new ObjectTypeDeclaration(new ClassDependency(\LengthException::class)),
+                                new ObjectTypeDeclaration(new ClassName(\LengthException::class)),
                             ])
                         ),
                         new Body([

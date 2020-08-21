@@ -4,23 +4,23 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Block;
 
-use webignition\BasilCompilableSource\ClassDependency;
+use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\SourceInterface;
 
 class ClassDependencyCollection implements SourceInterface
 {
     /**
-     * @var ClassDependency[]
+     * @var ClassName[]
      */
     private array $dependencies = [];
 
     /**
-     * @param ClassDependency[] $dependencies
+     * @param ClassName[] $dependencies
      */
     public function __construct(array $dependencies = [])
     {
         foreach ($dependencies as $dependency) {
-            if ($dependency instanceof ClassDependency) {
+            if ($dependency instanceof ClassName) {
                 if (!$this->containsClassDependency($dependency)) {
                     $this->dependencies[] = $dependency;
                 }
@@ -30,7 +30,7 @@ class ClassDependencyCollection implements SourceInterface
 
     public function render(): string
     {
-        $nonRootNamespaceDependencies = array_filter($this->dependencies, function (ClassDependency $dependency) {
+        $nonRootNamespaceDependencies = array_filter($this->dependencies, function (ClassName $dependency) {
             return false === $dependency->isInRootNamespace();
         });
 
@@ -49,7 +49,7 @@ class ClassDependencyCollection implements SourceInterface
         return new ClassDependencyCollection(array_merge($this->dependencies, $collection->dependencies));
     }
 
-    private function containsClassDependency(ClassDependency $classDependency): bool
+    private function containsClassDependency(ClassName $classDependency): bool
     {
         $renderedClassDependency = $classDependency->render();
 

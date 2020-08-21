@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\TypeDeclaration;
 
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
-use webignition\BasilCompilableSource\ClassDependency;
+use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 
 class ObjectTypeDeclaration implements TypeDeclarationInterface
 {
-    private ClassDependency $type;
+    private ClassName $type;
     private MetadataInterface $metadata;
 
-    public function __construct(ClassDependency $type)
+    public function __construct(ClassName $type)
     {
         $this->type = $type;
         $this->metadata = new Metadata([

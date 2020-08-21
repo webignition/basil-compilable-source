@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\MethodInvocation;
 
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
-use webignition\BasilCompilableSource\ClassDependency;
+use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
@@ -14,15 +14,15 @@ class ObjectConstructor extends MethodInvocation
 {
     private const RENDER_PATTERN = 'new %s';
 
-    private ClassDependency $class;
+    private ClassName $class;
 
     /**
-     * @param ClassDependency $class
+     * @param ClassName $class
      * @param ExpressionInterface[] $arguments
      * @param string $argumentFormat
      */
     public function __construct(
-        ClassDependency $class,
+        ClassName $class,
         array $arguments = [],
         string $argumentFormat = self::ARGUMENT_FORMAT_INLINE
     ) {

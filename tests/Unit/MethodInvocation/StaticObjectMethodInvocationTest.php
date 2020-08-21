@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Tests\Unit\MethodInvocation;
 
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
-use webignition\BasilCompilableSource\ClassDependency;
+use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
@@ -55,20 +55,20 @@ class StaticObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
             ],
             'no arguments, object reference' => [
                 'staticObject' => new StaticObject(
-                    ClassDependency::class
+                    ClassName::class
                 ),
                 'methodName' => 'method',
                 'arguments' => [],
                 'argumentFormat' => MethodInvocation::ARGUMENT_FORMAT_INLINE,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassDependency(ClassDependency::class),
+                        new ClassName(ClassName::class),
                     ]),
                 ]),
             ],
             'single argument' => [
                 'staticObject' => new StaticObject(
-                    ClassDependency::class
+                    ClassName::class
                 ),
                 'methodName' => 'method',
                 'arguments' => [
@@ -77,13 +77,13 @@ class StaticObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
                 'argumentFormat' => MethodInvocation::ARGUMENT_FORMAT_INLINE,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassDependency(ClassDependency::class),
+                        new ClassName(ClassName::class),
                     ]),
                 ]),
             ],
             'multiple arguments, inline' => [
                 'staticObject' => new StaticObject(
-                    ClassDependency::class
+                    ClassName::class
                 ),
                 'methodName' => 'method',
                 'arguments' => [
@@ -94,13 +94,13 @@ class StaticObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
                 'argumentFormat' => MethodInvocation::ARGUMENT_FORMAT_INLINE,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassDependency(ClassDependency::class),
+                        new ClassName(ClassName::class),
                     ]),
                 ]),
             ],
             'multiple arguments, stacked' => [
                 'staticObject' => new StaticObject(
-                    ClassDependency::class
+                    ClassName::class
                 ),
                 'methodName' => 'method',
                 'arguments' => [
@@ -111,13 +111,13 @@ class StaticObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
                 'argumentFormat' => MethodInvocation::ARGUMENT_FORMAT_STACKED,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassDependency(ClassDependency::class),
+                        new ClassName(ClassName::class),
                     ]),
                 ]),
             ],
             'argument expressions contain additional metadata' => [
                 'staticObject' => new StaticObject(
-                    ClassDependency::class
+                    ClassName::class
                 ),
                 'methodName' => 'method',
                 'arguments' => [
@@ -129,8 +129,8 @@ class StaticObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
                 'argumentFormat' => MethodInvocation::ARGUMENT_FORMAT_STACKED,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassDependency(StaticObject::class),
-                        new ClassDependency(ClassDependency::class),
+                        new ClassName(StaticObject::class),
+                        new ClassName(ClassName::class),
                     ]),
                 ]),
             ],
@@ -160,38 +160,38 @@ class StaticObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
             'object and method name only, object reference' => [
                 'invocation' => new StaticObjectMethodInvocation(
                     new StaticObject(
-                        ClassDependency::class
+                        ClassName::class
                     ),
                     'methodName'
                 ),
-                'expectedString' => 'ClassDependency::methodName()',
+                'expectedString' => 'ClassName::methodName()',
             ],
             'no arguments, inline' => [
                 'invocation' => new StaticObjectMethodInvocation(
                     new StaticObject(
-                        ClassDependency::class
+                        ClassName::class
                     ),
                     'methodName',
                     [],
                     MethodInvocation::ARGUMENT_FORMAT_INLINE
                 ),
-                'expectedString' => 'ClassDependency::methodName()',
+                'expectedString' => 'ClassName::methodName()',
             ],
             'no arguments, stacked' => [
                 'invocation' => new StaticObjectMethodInvocation(
                     new StaticObject(
-                        ClassDependency::class
+                        ClassName::class
                     ),
                     'methodName',
                     [],
                     MethodInvocation::ARGUMENT_FORMAT_STACKED
                 ),
-                'expectedString' => 'ClassDependency::methodName()',
+                'expectedString' => 'ClassName::methodName()',
             ],
             'has arguments, inline' => [
                 'invocation' => new StaticObjectMethodInvocation(
                     new StaticObject(
-                        ClassDependency::class
+                        ClassName::class
                     ),
                     'methodName',
                     [
@@ -200,12 +200,12 @@ class StaticObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
                     ],
                     MethodInvocation::ARGUMENT_FORMAT_INLINE
                 ),
-                'expectedString' => "ClassDependency::methodName(1, \'single-quoted value\')",
+                'expectedString' => "ClassName::methodName(1, \'single-quoted value\')",
             ],
             'has arguments, stacked' => [
                 'invocation' => new StaticObjectMethodInvocation(
                     new StaticObject(
-                        ClassDependency::class
+                        ClassName::class
                     ),
                     'methodName',
                     [
@@ -214,7 +214,7 @@ class StaticObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
                     ],
                     MethodInvocation::ARGUMENT_FORMAT_STACKED
                 ),
-                'expectedString' => "ClassDependency::methodName(\n" .
+                'expectedString' => "ClassName::methodName(\n" .
                     "    1,\n" .
                     "    \'single-quoted value\'\n" .
                     ")",

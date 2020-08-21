@@ -6,7 +6,7 @@ namespace webignition\BasilCompilableSource\Tests\Unit\MethodInvocation;
 
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSource\Body\Body;
-use webignition\BasilCompilableSource\ClassDependency;
+use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\EmptyLine;
 use webignition\BasilCompilableSource\Expression\ClosureExpression;
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
@@ -87,14 +87,14 @@ class MethodInvocationTest extends \PHPUnit\Framework\TestCase
                 'methodName' => 'methodName',
                 'arguments' => [
                     new \webignition\BasilCompilableSource\MethodInvocation\StaticObjectMethodInvocation(
-                        new StaticObject(ClassDependency::class),
+                        new StaticObject(ClassName::class),
                         'staticMethodName'
                     )
                 ],
                 'argumentFormat' => MethodInvocation::ARGUMENT_FORMAT_INLINE,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassDependency(ClassDependency::class),
+                        new ClassName(ClassName::class),
                     ])
                 ]),
             ],

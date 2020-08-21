@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Tests\Unit;
 
-use webignition\BasilCompilableSource\ClassDependency;
+use webignition\BasilCompilableSource\ClassName;
 use webignition\ObjectReflector\ObjectReflector;
 
-class ClassDependencyTest extends \PHPUnit\Framework\TestCase
+class ClassNameTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider createDataProvider
      */
     public function testCreate(string $className, ?string $alias)
     {
-        $classDependency = new ClassDependency($className, $alias);
+        $classDependency = new ClassName($className, $alias);
 
         $this->assertSame($className, $classDependency->getClassName());
         $this->assertSame($alias, ObjectReflector::getProperty($classDependency, 'alias'));
@@ -24,7 +24,7 @@ class ClassDependencyTest extends \PHPUnit\Framework\TestCase
     {
         return [
             'no alias' => [
-                'className' => ClassDependencyTest::class,
+                'className' => ClassNameTest::class,
                 'alias' => null,
             ],
             'has alias' => [
@@ -37,7 +37,7 @@ class ClassDependencyTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider getClassDataProvider
      */
-    public function testGetClass(ClassDependency $classDependency, string $expectedClass)
+    public function testGetClass(ClassName $classDependency, string $expectedClass)
     {
         $this->assertSame($expectedClass, $classDependency->getClass());
     }
@@ -46,12 +46,12 @@ class ClassDependencyTest extends \PHPUnit\Framework\TestCase
     {
         return [
             'global namespace' => [
-                'classDependency' => new ClassDependency('Global'),
+                'className' => new ClassName('Global'),
                 'expectedClass' => 'Global',
             ],
             'namespaced' => [
-                'classDependency' => new ClassDependency(ClassDependency::class),
-                'expectedClass' => 'ClassDependency',
+                'className' => new ClassName(ClassName::class),
+                'expectedClass' => 'ClassName',
             ],
         ];
     }
@@ -59,7 +59,7 @@ class ClassDependencyTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider renderDataProvider
      */
-    public function testRender(ClassDependency $classDependency, string $expectedString)
+    public function testRender(ClassName $classDependency, string $expectedString)
     {
         $this->assertSame($expectedString, $classDependency->render());
     }
@@ -68,13 +68,13 @@ class ClassDependencyTest extends \PHPUnit\Framework\TestCase
     {
         return [
             'no alias' => [
-                'classDependency' => new ClassDependency(ClassDependency::class),
-                'expectedString' => 'use webignition\BasilCompilableSource\ClassDependency;',
+                'className' => new ClassName(ClassName::class),
+                'expectedString' => 'use webignition\BasilCompilableSource\ClassName;',
             ],
             'has alias' => [
-                'classDependency' => new ClassDependency(ClassDependencyTest::class, 'BaseTest'),
+                'className' => new ClassName(ClassNameTest::class, 'BaseTest'),
                 'expectedString' =>
-                    'use webignition\BasilCompilableSource\Tests\Unit\ClassDependencyTest as BaseTest;',
+                    'use webignition\BasilCompilableSource\Tests\Unit\ClassNameTest as BaseTest;',
             ],
         ];
     }
@@ -82,7 +82,7 @@ class ClassDependencyTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider isInRootNamespaceDataProvider
      */
-    public function testIsInRootNamespace(ClassDependency $classDependency, bool $expectedIsInRootNamespace)
+    public function testIsInRootNamespace(ClassName $classDependency, bool $expectedIsInRootNamespace)
     {
         $this->assertSame($expectedIsInRootNamespace, $classDependency->isInRootNamespace());
     }
@@ -91,19 +91,19 @@ class ClassDependencyTest extends \PHPUnit\Framework\TestCase
     {
         return [
             'not in root namespace, no alias' => [
-                'classDependency' => new ClassDependency(ClassDependency::class),
+                'className' => new ClassName(ClassName::class),
                 'expectedIsInRootNamespace' => false,
             ],
             'not in root namespace, has alias' => [
-                'classDependency' => new ClassDependency(ClassDependencyTest::class, 'BaseTest'),
+                'className' => new ClassName(ClassNameTest::class, 'BaseTest'),
                 'expectedIsInRootNamespace' => false,
             ],
             'is in root namespace, no alias' => [
-                'classDependency' => new ClassDependency(\Throwable::class),
+                'className' => new ClassName(\Throwable::class),
                 'expectedIsInRootNamespace' => true,
             ],
             'is in root namespace, has alias' => [
-                'classDependency' => new ClassDependency(\Throwable::class, 'Bouncy'),
+                'className' => new ClassName(\Throwable::class, 'Bouncy'),
                 'expectedIsInRootNamespace' => true,
             ],
         ];

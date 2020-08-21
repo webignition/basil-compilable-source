@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource;
 
-class ClassDependency
+class ClassName
 {
     private const RENDER_PATTERN = 'use %s;';
     private const FQCN_PART_DELIMITER = '\\';

@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\ClassDefinition;
 use webignition\BasilCompilableSource\ClassDefinitionInterface;
-use webignition\BasilCompilableSource\ClassDependency;
+use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\DataProvidedMethodDefinition;
 use webignition\BasilCompilableSource\DataProviderMethodDefinition;
 use webignition\BasilCompilableSource\EmptyLine;
@@ -81,7 +81,7 @@ class ClassDefinitionTest extends TestCase
         $classDefinition = new ClassDefinition('className', []);
         $this->assertNull($classDefinition->getBaseClass());
 
-        $baseClass = new ClassDependency('BaseClass');
+        $baseClass = new ClassName('BaseClass');
 
         $classDefinition->setBaseClass($baseClass);
         $this->assertEquals($baseClass, $classDefinition->getBaseClass());
@@ -166,7 +166,7 @@ class ClassDefinitionTest extends TestCase
             'no methods, base class in root namespace' => [
                 'classDefinition' => $this->createClassDefinitionWithBaseClass(
                     new ClassDefinition('NameOfClass', []),
-                    new ClassDependency('TestCase')
+                    new ClassName('TestCase')
                 ),
                 'expectedString' =>
                     'class NameOfClass extends TestCase' . "\n" .
@@ -175,7 +175,7 @@ class ClassDefinitionTest extends TestCase
             'no methods, base class in non-root namespace' => [
                 'classDefinition' => $this->createClassDefinitionWithBaseClass(
                     new ClassDefinition('NameOfClass', []),
-                    new ClassDependency(TestCase::class)
+                    new ClassName(TestCase::class)
                 ),
                 'expectedString' =>
                     'use PHPUnit\Framework\TestCase;' . "\n" .
@@ -188,7 +188,7 @@ class ClassDefinitionTest extends TestCase
                     new ClassDefinition('NameOfClass', [
                         new MethodDefinition('methodName', new Body([]))
                     ]),
-                    new ClassDependency('TestCase')
+                    new ClassName('TestCase')
                 ),
                 'expectedString' =>
                     'class NameOfClass extends TestCase' . "\n" .
@@ -236,7 +236,7 @@ class ClassDefinitionTest extends TestCase
                             ),
                         ])),
                     ]),
-                    new ClassDependency('TestCase')
+                    new ClassName('TestCase')
                 ),
                 'expectedString' =>
                     'use Acme\Statement;' . "\n" .
@@ -314,7 +314,7 @@ class ClassDefinitionTest extends TestCase
                             ),
                         ])),
                     ]),
-                    new ClassDependency('TestCase')
+                    new ClassName('TestCase')
                 ),
                 'expectedString' =>
                     'use Acme\Statement;' . "\n" .
@@ -361,7 +361,7 @@ class ClassDefinitionTest extends TestCase
 
     private function createClassDefinitionWithBaseClass(
         ClassDefinition $classDefinition,
-        ClassDependency $baseClass
+        ClassName $baseClass
     ): ClassDefinitionInterface {
         $classDefinition->setBaseClass($baseClass);
 

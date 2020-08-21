@@ -6,7 +6,7 @@ namespace webignition\BasilCompilableSource\Tests\Unit\TypeDeclaration;
 
 use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
-use webignition\BasilCompilableSource\ClassDependency;
+use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclaration;
@@ -31,13 +31,13 @@ class ObjectTypeDeclarationCollectionTest extends TestCase
             ],
             'non-empty' => [
                 'collection' => new ObjectTypeDeclarationCollection([
-                    new ObjectTypeDeclaration(new ClassDependency(\Exception::class)),
-                    new ObjectTypeDeclaration(new ClassDependency(\Traversable::class)),
+                    new ObjectTypeDeclaration(new ClassName(\Exception::class)),
+                    new ObjectTypeDeclaration(new ClassName(\Traversable::class)),
                 ]),
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassDependency(\Exception::class),
-                        new ClassDependency(\Traversable::class),
+                        new ClassName(\Exception::class),
+                        new ClassName(\Traversable::class),
                     ]),
                 ]),
             ],
@@ -61,28 +61,28 @@ class ObjectTypeDeclarationCollectionTest extends TestCase
             ],
             'single' => [
                 'declaration' => new ObjectTypeDeclarationCollection([
-                    new ObjectTypeDeclaration(new ClassDependency(\Exception::class)),
+                    new ObjectTypeDeclaration(new ClassName(\Exception::class)),
                 ]),
                 'expectedString' => 'Exception',
             ],
             'single with alias' => [
                 'declaration' => new ObjectTypeDeclarationCollection([
-                    new ObjectTypeDeclaration(new ClassDependency(\Exception::class, 'AliasName')),
+                    new ObjectTypeDeclaration(new ClassName(\Exception::class, 'AliasName')),
                 ]),
                 'expectedString' => 'AliasName',
             ],
             'multiple' => [
                 'declaration' => new ObjectTypeDeclarationCollection([
-                    new ObjectTypeDeclaration(new ClassDependency(\Exception::class)),
-                    new ObjectTypeDeclaration(new ClassDependency(\Traversable::class)),
+                    new ObjectTypeDeclaration(new ClassName(\Exception::class)),
+                    new ObjectTypeDeclaration(new ClassName(\Traversable::class)),
                 ]),
                 'expectedString' => 'Exception | Traversable',
             ],
             'class names are sorted' => [
                 'declaration' => new ObjectTypeDeclarationCollection([
-                    new ObjectTypeDeclaration(new ClassDependency(\Exception::class, 'Charlie')),
-                    new ObjectTypeDeclaration(new ClassDependency(\Traversable::class, 'Alpha')),
-                    new ObjectTypeDeclaration(new ClassDependency(ObjectTypeDeclarationCollection::class, 'Bravo')),
+                    new ObjectTypeDeclaration(new ClassName(\Exception::class, 'Charlie')),
+                    new ObjectTypeDeclaration(new ClassName(\Traversable::class, 'Alpha')),
+                    new ObjectTypeDeclaration(new ClassName(ObjectTypeDeclarationCollection::class, 'Bravo')),
                 ]),
                 'expectedString' => 'Alpha | Bravo | Charlie',
             ],
