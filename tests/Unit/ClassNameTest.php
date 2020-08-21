@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Tests\Unit;
 
+use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSource\ClassName;
 use webignition\ObjectReflector\ObjectReflector;
 
@@ -142,6 +143,40 @@ class ClassNameTest extends \PHPUnit\Framework\TestCase
             'has alias, in root namespace' => [
                 'className' => new ClassName(\Throwable::class, 'Bouncy'),
                 'expectedString' => 'Bouncy',
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider isFullyQualifiedClassNameDataProvider
+     */
+    public function testIsFullyQualifiedClassName(string $className, bool $expectedIsFullyQualifiedClassName)
+    {
+        self::assertSame($expectedIsFullyQualifiedClassName, ClassName::isFullyQualifiedClassName($className));
+    }
+
+    public function isFullyQualifiedClassNameDataProvider(): array
+    {
+        return [
+            'namespaced class name' => [
+                'className' => TestCase::class,
+                'expectedIsFullyQualifiedClassName' => true,
+            ],
+            'root-namespaced class name' => [
+                'className' => \Throwable::class,
+                'expectedIsFullyQualifiedClassName' => true,
+            ],
+            'self' => [
+                'className' => 'self',
+                'expectedIsFullyQualifiedClassName' => false,
+            ],
+            'static' => [
+                'className' => 'static',
+                'expectedIsFullyQualifiedClassName' => false,
+            ],
+            'parent' => [
+                'className' => 'parent',
+                'expectedIsFullyQualifiedClassName' => false,
             ],
         ];
     }
