@@ -169,7 +169,7 @@ class ClassDefinitionTest extends TestCase
                     new ClassName('TestCase')
                 ),
                 'expectedString' =>
-                    'class NameOfClass extends TestCase' . "\n" .
+                    'class NameOfClass extends \TestCase' . "\n" .
                     '{}'
             ],
             'no methods, base class in non-root namespace' => [
@@ -191,7 +191,7 @@ class ClassDefinitionTest extends TestCase
                     new ClassName('TestCase')
                 ),
                 'expectedString' =>
-                    'class NameOfClass extends TestCase' . "\n" .
+                    'class NameOfClass extends \TestCase' . "\n" .
                     '{' . "\n" .
                     '    public function methodName()' . "\n" .
                     '    {' . "\n\n" .
@@ -241,7 +241,7 @@ class ClassDefinitionTest extends TestCase
                 'expectedString' =>
                     'use Acme\Statement;' . "\n" .
                     "\n" .
-                    'class NameOfClass extends TestCase' . "\n" .
+                    'class NameOfClass extends \TestCase' . "\n" .
                     '{' . "\n" .
                     '    public function stepOne()' . "\n" .
                     '    {' . "\n" .
@@ -319,7 +319,7 @@ class ClassDefinitionTest extends TestCase
                 'expectedString' =>
                     'use Acme\Statement;' . "\n" .
                     "\n" .
-                    'class NameOfClass extends TestCase' . "\n" .
+                    'class NameOfClass extends \TestCase' . "\n" .
                     '{' . "\n" .
                     '    /**' . "\n" .
                     '     * @dataProvider stepOneDataProvider' . "\n" .

@@ -17,12 +17,12 @@ class StaticObject extends AbstractExpression
         $metadata = null;
 
         if (ClassName::isFullyQualifiedClassName($object)) {
-            $classDependency = new ClassName($object);
-            $object = $classDependency->getClass();
+            $className = new ClassName($object);
+            $object = $className->renderClassName();
 
             $metadata = new Metadata([
                 Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                    $classDependency,
+                    $className,
                 ]),
             ]);
         }

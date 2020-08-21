@@ -166,6 +166,15 @@ class StaticObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
                 ),
                 'expectedString' => 'ClassName::methodName()',
             ],
+            'object and method name only, object reference, class in root namespace' => [
+                'invocation' => new StaticObjectMethodInvocation(
+                    new StaticObject(
+                        \Throwable::class
+                    ),
+                    'methodName'
+                ),
+                'expectedString' => '\Throwable::methodName()',
+            ],
             'no arguments, inline' => [
                 'invocation' => new StaticObjectMethodInvocation(
                     new StaticObject(

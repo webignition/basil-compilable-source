@@ -42,7 +42,7 @@ class CatchExpressionTest extends \PHPUnit\Framework\TestCase
         $expression = new CatchExpression($typeDeclarationCollection);
 
         $this->assertSame(
-            'LogicException | RuntimeException $exception',
+            '\LogicException | \RuntimeException $exception',
             $expression->render()
         );
     }

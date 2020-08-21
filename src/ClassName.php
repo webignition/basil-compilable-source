@@ -11,6 +11,15 @@ class ClassName
     private string $className;
     private ?string $alias;
 
+    /**
+     * @var string[]
+     */
+    private static array $specialClasses = [
+        'self',
+        'static',
+        'parent',
+    ];
+
     public function __construct(string $className, ?string $alias = null)
     {
         $this->className = $className;
@@ -19,6 +28,10 @@ class ClassName
 
     public static function isFullyQualifiedClassName(string $className): bool
     {
+        if (in_array($className, self::$specialClasses)) {
+            return false;
+        }
+
         return strtolower($className) !== $className;
     }
 
@@ -47,5 +60,19 @@ class ClassName
     public function render(): string
     {
         return $this->alias ?? $this->getClass();
+    }
+
+    public function renderClassName(): string
+    {
+        if (is_string($this->alias)) {
+            return $this->alias;
+        }
+
+        $rendered = $this->getClass();
+        if ($this->isInRootNamespace()) {
+            $rendered = '\\' . $rendered;
+        }
+
+        return $rendered;
     }
 }

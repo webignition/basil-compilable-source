@@ -84,6 +84,12 @@ class ObjectConstructorTest extends \PHPUnit\Framework\TestCase
                 ),
                 'expectedString' => 'new Model()',
             ],
+            'no arguments, inline, class in root namespace' => [
+                'constructor' => new ObjectConstructor(
+                    new ClassName(\Exception::class)
+                ),
+                'expectedString' => 'new \Exception()',
+            ],
             'no arguments, stacked' => [
                 'constructor' => new ObjectConstructor(
                     $classDependency,

@@ -26,7 +26,7 @@ class ObjectConstructor extends MethodInvocation
         array $arguments = [],
         string $argumentFormat = self::ARGUMENT_FORMAT_INLINE
     ) {
-        parent::__construct($class->getClass(), $arguments, $argumentFormat);
+        parent::__construct($class->renderClassName(), $arguments, $argumentFormat);
 
         $this->class = $class;
     }

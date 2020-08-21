@@ -59,9 +59,9 @@ class TryCatchBlockTest extends \PHPUnit\Framework\TestCase
                 'expectedString' =>
                     'try {' . "\n" .
                     '    methodName();' . "\n" .
-                    '} catch (LogicException | RuntimeException $exception) {' . "\n" .
+                    '} catch (\LogicException | \RuntimeException $exception) {' . "\n" .
                     '    // handle LogicException and RuntimeException' . "\n" .
-                    '} catch (LengthException $exception) {' . "\n" .
+                    '} catch (\LengthException $exception) {' . "\n" .
                     '    // handle LengthException' . "\n" .
                     '}',
             ],

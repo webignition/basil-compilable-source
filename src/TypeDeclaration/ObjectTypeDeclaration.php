@@ -31,10 +31,6 @@ class ObjectTypeDeclaration implements TypeDeclarationInterface
 
     public function render(): string
     {
-        $alias = $this->type->getAlias();
-
-        return null === $alias
-            ? $this->type->getClass()
-            : $alias;
+        return $this->type->renderClassName();
     }
 }

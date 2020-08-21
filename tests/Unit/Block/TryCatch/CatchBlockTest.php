@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Tests\Unit\Block\TryCatch;
 
+use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSource\Block\TryCatch\CatchBlock;
 use webignition\BasilCompilableSource\Body\Body;
@@ -67,7 +68,7 @@ class CatchBlockTest extends \PHPUnit\Framework\TestCase
     public function renderDataProvider(): array
     {
         return [
-            'single-class expression' => [
+            'single-class expression, all in root namespace' => [
                 'tryBlock' => new CatchBlock(
                     new CatchExpression(
                         new ObjectTypeDeclarationCollection([
@@ -79,11 +80,11 @@ class CatchBlockTest extends \PHPUnit\Framework\TestCase
                     )
                 ),
                 'expectedString' =>
-                    'catch (Exception $exception) {' . "\n" .
+                    'catch (\Exception $exception) {' . "\n" .
                     '    "literal";' . "\n" .
                     '}',
             ],
-            'multi-class expression' => [
+            'multi-class expression, all in root namespace' => [
                 'tryBlock' => new CatchBlock(
                     new CatchExpression(
                         new ObjectTypeDeclarationCollection([
@@ -96,7 +97,25 @@ class CatchBlockTest extends \PHPUnit\Framework\TestCase
                     )
                 ),
                 'expectedString' =>
-                    'catch (LogicException | RuntimeException $exception) {' . "\n" .
+                    'catch (\LogicException | \RuntimeException $exception) {' . "\n" .
+                    '    "literal";' . "\n" .
+                    '}',
+            ],
+            'multi-class expression, not all in root namespace' => [
+                'tryBlock' => new CatchBlock(
+                    new CatchExpression(
+                        new ObjectTypeDeclarationCollection([
+                            new ObjectTypeDeclaration(new ClassName(\LogicException::class)),
+                            new ObjectTypeDeclaration(new ClassName(\RuntimeException::class)),
+                            new ObjectTypeDeclaration(new ClassName(TestCase::class)),
+                        ])
+                    ),
+                    new Statement(
+                        new LiteralExpression('"literal"')
+                    )
+                ),
+                'expectedString' =>
+                    'catch (\LogicException | \RuntimeException | TestCase $exception) {' . "\n" .
                     '    "literal";' . "\n" .
                     '}',
             ],
