@@ -75,6 +75,14 @@ class ClassNameTest extends \PHPUnit\Framework\TestCase
                 'className' => new ClassName(ClassNameTest::class, 'BaseTest'),
                 'expectedString' => 'BaseTest',
             ],
+            'no alias, in root namespace' => [
+                'className' => new ClassName(\Throwable::class),
+                'expectedString' => 'Throwable',
+            ],
+            'has alias, in root namespace' => [
+                'className' => new ClassName(\Throwable::class, 'Bouncy'),
+                'expectedString' => 'Bouncy',
+            ],
         ];
     }
 
@@ -104,6 +112,36 @@ class ClassNameTest extends \PHPUnit\Framework\TestCase
             'is in root namespace, has alias' => [
                 'className' => new ClassName(\Throwable::class, 'Bouncy'),
                 'expectedIsInRootNamespace' => true,
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider renderClassNameDataProvider
+     */
+    public function testRenderClassName(ClassName $classDependency, string $expectedString)
+    {
+        $this->assertSame($expectedString, $classDependency->renderClassName());
+    }
+
+    public function renderClassNameDataProvider(): array
+    {
+        return [
+            'no alias' => [
+                'className' => new ClassName(ClassName::class),
+                'expectedString' => 'ClassName',
+            ],
+            'has alias' => [
+                'className' => new ClassName(ClassNameTest::class, 'BaseTest'),
+                'expectedString' => 'BaseTest',
+            ],
+            'no alias, in root namespace' => [
+                'className' => new ClassName(\Throwable::class),
+                'expectedString' => '\Throwable',
+            ],
+            'has alias, in root namespace' => [
+                'className' => new ClassName(\Throwable::class, 'Bouncy'),
+                'expectedString' => 'Bouncy',
             ],
         ];
     }

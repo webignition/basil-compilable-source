@@ -48,4 +48,18 @@ class ClassName
     {
         return $this->alias ?? $this->getClass();
     }
+
+    public function renderClassName(): string
+    {
+        if (is_string($this->alias)) {
+            return $this->alias;
+        }
+
+        $rendered = $this->getClass();
+        if ($this->isInRootNamespace()) {
+            $rendered = '\\' . $rendered;
+        }
+
+        return $rendered;
+    }
 }
