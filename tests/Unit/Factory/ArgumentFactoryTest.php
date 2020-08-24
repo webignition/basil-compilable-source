@@ -28,7 +28,7 @@ class ArgumentFactoryTest extends \PHPUnit\Framework\TestCase
      */
     public function testCreate(array $arguments, array $expectedArguments)
     {
-        self::assertEquals($expectedArguments, $this->factory->create($arguments));
+        self::assertEquals($expectedArguments, $this->factory->create(...$arguments));
     }
 
     public function createDataProvider(): array
