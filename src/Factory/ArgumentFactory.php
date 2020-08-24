@@ -24,7 +24,7 @@ class ArgumentFactory
     }
 
     /**
-     * @param array<int|float|string|bool|ExpressionInterface> $arguments
+     * @param array<null|int|float|string|bool|ExpressionInterface> $arguments
      *
      * @return ExpressionInterface[]
      */
@@ -33,6 +33,10 @@ class ArgumentFactory
         $expressionArguments = [];
 
         foreach ($arguments as $argument) {
+            if (null === $argument) {
+                $argument = new LiteralExpression('null');
+            }
+
             if (is_scalar($argument)) {
                 $argument = $this->createExpressionFromScalar($argument);
             }
