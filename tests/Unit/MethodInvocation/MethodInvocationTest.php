@@ -29,20 +29,18 @@ class MethodInvocationTest extends \PHPUnit\Framework\TestCase
      *
      * @param string $methodName
      * @param ExpressionInterface[] $arguments
-     * @param string $argumentFormat
      * @param MetadataInterface $expectedMetadata
      */
     public function testCreate(
         string $methodName,
         array $arguments,
-        string $argumentFormat,
         MetadataInterface $expectedMetadata
     ) {
-        $invocation = new MethodInvocation($methodName, $arguments, $argumentFormat);
+        $invocation = new MethodInvocation($methodName, $arguments);
 
         $this->assertSame($methodName, $invocation->getMethodName());
         $this->assertSame($arguments, $invocation->getArguments());
-        $this->assertSame($argumentFormat, $invocation->getArgumentFormat());
+        $this->assertSame(MethodInvocation::ARGUMENT_FORMAT_INLINE, $invocation->getArgumentFormat());
         $this->assertEquals($expectedMetadata, $invocation->getMetadata());
     }
 
@@ -52,7 +50,6 @@ class MethodInvocationTest extends \PHPUnit\Framework\TestCase
             'no arguments' => [
                 'methodName' => 'method',
                 'arguments' => [],
-                'argumentFormat' => MethodInvocation::ARGUMENT_FORMAT_INLINE,
                 'expectedMetadata' => new Metadata(),
             ],
             'single argument' => [
@@ -60,27 +57,15 @@ class MethodInvocationTest extends \PHPUnit\Framework\TestCase
                 'arguments' => [
                     new LiteralExpression('1'),
                 ],
-                'argumentFormat' => MethodInvocation::ARGUMENT_FORMAT_INLINE,
                 'expectedMetadata' => new Metadata(),
             ],
-            'multiple arguments, inline' => [
+            'multiple arguments' => [
                 'methodName' => 'method',
                 'arguments' => [
                     new LiteralExpression('2'),
                     new LiteralExpression("\'single-quoted value\'"),
                     new LiteralExpression('"double-quoted value"'),
                 ],
-                'argumentFormat' => MethodInvocation::ARGUMENT_FORMAT_INLINE,
-                'expectedMetadata' => new Metadata(),
-            ],
-            'multiple arguments, stacked' => [
-                'methodName' => 'method',
-                'arguments' => [
-                    new LiteralExpression('2'),
-                    new LiteralExpression("\'single-quoted value\'"),
-                    new LiteralExpression('"double-quoted value"'),
-                ],
-                'argumentFormat' => MethodInvocation::ARGUMENT_FORMAT_STACKED,
                 'expectedMetadata' => new Metadata(),
             ],
             'has metadata' => [
@@ -91,7 +76,6 @@ class MethodInvocationTest extends \PHPUnit\Framework\TestCase
                         'staticMethodName'
                     )
                 ],
-                'argumentFormat' => MethodInvocation::ARGUMENT_FORMAT_INLINE,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassName(ClassName::class),
@@ -112,48 +96,32 @@ class MethodInvocationTest extends \PHPUnit\Framework\TestCase
     public function renderDataProvider(): array
     {
         return [
-            'name only' => [
-                'invocation' => new MethodInvocation(
-                    'methodName'
-                ),
-                'expectedString' => 'methodName()',
-            ],
             'no arguments, inline' => [
-                'invocation' => new MethodInvocation(
-                    'methodName',
-                    [],
-                    MethodInvocation::ARGUMENT_FORMAT_INLINE
-                ),
+                'invocation' => (new MethodInvocation('methodName'))->withInlineArguments(),
                 'expectedString' => 'methodName()',
             ],
             'no arguments, stacked' => [
-                'invocation' => new MethodInvocation(
-                    'methodName',
-                    [],
-                    MethodInvocation::ARGUMENT_FORMAT_STACKED
-                ),
+                'invocation' => (new MethodInvocation('methodName'))->withStackedArguments(),
                 'expectedString' => 'methodName()',
             ],
             'has arguments, inline' => [
-                'invocation' => new MethodInvocation(
+                'invocation' => (new MethodInvocation(
                     'methodName',
                     [
                         new LiteralExpression('1'),
                         new LiteralExpression("\'single-quoted value\'"),
-                    ],
-                    MethodInvocation::ARGUMENT_FORMAT_INLINE
-                ),
+                    ]
+                ))->withInlineArguments(),
                 'expectedString' => "methodName(1, \'single-quoted value\')",
             ],
             'has arguments, stacked' => [
-                'invocation' => new MethodInvocation(
+                'invocation' => (new MethodInvocation(
                     'methodName',
                     [
                         new LiteralExpression('1'),
                         new LiteralExpression("\'single-quoted value\'"),
-                    ],
-                    MethodInvocation::ARGUMENT_FORMAT_STACKED
-                ),
+                    ]
+                ))->withStackedArguments(),
                 'expectedString' => "methodName(\n" .
                     "    1,\n" .
                     "    \'single-quoted value\'\n" .
@@ -164,7 +132,7 @@ class MethodInvocationTest extends \PHPUnit\Framework\TestCase
                 'expectedString' => '@methodName()',
             ],
             'indent stacked multi-line arguments' => [
-                'invocation' => new MethodInvocation(
+                'invocation' => (new MethodInvocation(
                     'setValue',
                     [
                         new ObjectMethodInvocation(
@@ -192,9 +160,8 @@ class MethodInvocationTest extends \PHPUnit\Framework\TestCase
                                 ),
                             ])
                         ),
-                    ],
-                    ObjectMethodInvocation::ARGUMENT_FORMAT_STACKED
-                ),
+                    ]
+                ))->withStackedArguments(),
                 'expectedString' =>
                     'setValue(' . "\n" .
                     '    {{ NAVIGATOR }}->find(ObjectMethodInvocation::fromJson({' . "\n" .

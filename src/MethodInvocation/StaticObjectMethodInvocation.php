@@ -13,13 +13,9 @@ class StaticObjectMethodInvocation extends MethodInvocation implements StaticObj
 
     private StaticObject $staticObject;
 
-    public function __construct(
-        StaticObject $staticObject,
-        string $methodName,
-        array $arguments = [],
-        string $argumentFormat = self::ARGUMENT_FORMAT_INLINE
-    ) {
-        parent::__construct($methodName, $arguments, $argumentFormat);
+    public function __construct(StaticObject $staticObject, string $methodName, array $arguments = [])
+    {
+        parent::__construct($methodName, $arguments);
 
         $this->staticObject = $staticObject;
     }

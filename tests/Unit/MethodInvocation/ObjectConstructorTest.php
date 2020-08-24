@@ -10,7 +10,6 @@ use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectConstructor;
 
 class ObjectConstructorTest extends \PHPUnit\Framework\TestCase
@@ -20,20 +19,18 @@ class ObjectConstructorTest extends \PHPUnit\Framework\TestCase
      *
      * @param \webignition\BasilCompilableSource\ClassName $class
      * @param ExpressionInterface[] $arguments
-     * @param string $argumentFormat
      * @param MetadataInterface $expectedMetadata
      */
     public function testCreate(
         ClassName $class,
         array $arguments,
-        string $argumentFormat,
         MetadataInterface $expectedMetadata
     ) {
-        $constructor = new ObjectConstructor($class, $arguments, $argumentFormat);
+        $constructor = new ObjectConstructor($class, $arguments);
 
         $this->assertSame($class->getClass(), $constructor->getMethodName());
         $this->assertSame($arguments, $constructor->getArguments());
-        $this->assertSame($argumentFormat, $constructor->getArgumentFormat());
+        $this->assertSame(ObjectConstructor::ARGUMENT_FORMAT_INLINE, $constructor->getArgumentFormat());
         $this->assertEquals($expectedMetadata, $constructor->getMetadata());
     }
 
@@ -43,7 +40,6 @@ class ObjectConstructorTest extends \PHPUnit\Framework\TestCase
             'no arguments' => [
                 'class' => new ClassName(ObjectConstructor::class),
                 'arguments' => [],
-                'argumentFormat' => MethodInvocation::ARGUMENT_FORMAT_INLINE,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassName(ObjectConstructor::class)
@@ -55,7 +51,6 @@ class ObjectConstructorTest extends \PHPUnit\Framework\TestCase
                 'arguments' => [
                     new LiteralExpression('1'),
                 ],
-                'argumentFormat' => MethodInvocation::ARGUMENT_FORMAT_INLINE,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassName(ObjectConstructor::class)
@@ -79,9 +74,7 @@ class ObjectConstructorTest extends \PHPUnit\Framework\TestCase
 
         return [
             'no arguments, inline' => [
-                'constructor' => new ObjectConstructor(
-                    $classDependency
-                ),
+                'constructor' => (new ObjectConstructor($classDependency))->withInlineArguments(),
                 'expectedString' => 'new Model()',
             ],
             'no arguments, inline, class in root namespace' => [
@@ -91,33 +84,27 @@ class ObjectConstructorTest extends \PHPUnit\Framework\TestCase
                 'expectedString' => 'new \Exception()',
             ],
             'no arguments, stacked' => [
-                'constructor' => new ObjectConstructor(
-                    $classDependency,
-                    [],
-                    ObjectConstructor::ARGUMENT_FORMAT_STACKED
-                ),
+                'constructor' => (new ObjectConstructor($classDependency))->withStackedArguments(),
                 'expectedString' => 'new Model()',
             ],
             'has arguments, inline' => [
-                'constructor' => new ObjectConstructor(
+                'constructor' => (new ObjectConstructor(
                     $classDependency,
                     [
                         new LiteralExpression('1'),
                         new LiteralExpression("\'single-quoted value\'"),
-                    ],
-                    MethodInvocation::ARGUMENT_FORMAT_INLINE
-                ),
+                    ]
+                ))->withInlineArguments(),
                 'expectedString' => "new Model(1, \'single-quoted value\')",
             ],
             'has arguments, stacked' => [
-                'constructor' => new ObjectConstructor(
+                'constructor' => (new ObjectConstructor(
                     $classDependency,
                     [
                         new LiteralExpression('1'),
                         new LiteralExpression("\'single-quoted value\'"),
-                    ],
-                    MethodInvocation::ARGUMENT_FORMAT_STACKED
-                ),
+                    ]
+                ))->withStackedArguments(),
                 'expectedString' => "new Model(\n" .
                     "    1,\n" .
                     "    \'single-quoted value\'\n" .

@@ -18,15 +18,13 @@ class ObjectMethodInvocation extends MethodInvocation
      * @param ExpressionInterface $object
      * @param string $methodName
      * @param ExpressionInterface[] $arguments
-     * @param string $argumentFormat
      */
     public function __construct(
         ExpressionInterface $object,
         string $methodName,
-        array $arguments = [],
-        string $argumentFormat = self::ARGUMENT_FORMAT_INLINE
+        array $arguments = []
     ) {
-        parent::__construct($methodName, $arguments, $argumentFormat);
+        parent::__construct($methodName, $arguments);
 
         $this->object = $object;
     }

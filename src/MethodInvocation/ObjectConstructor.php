@@ -19,14 +19,10 @@ class ObjectConstructor extends MethodInvocation
     /**
      * @param ClassName $class
      * @param ExpressionInterface[] $arguments
-     * @param string $argumentFormat
      */
-    public function __construct(
-        ClassName $class,
-        array $arguments = [],
-        string $argumentFormat = self::ARGUMENT_FORMAT_INLINE
-    ) {
-        parent::__construct($class->renderClassName(), $arguments, $argumentFormat);
+    public function __construct(ClassName $class, array $arguments = [])
+    {
+        parent::__construct($class->renderClassName(), $arguments);
 
         $this->class = $class;
     }
