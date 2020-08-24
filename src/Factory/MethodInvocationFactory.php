@@ -29,7 +29,7 @@ class MethodInvocationFactory
      *
      * @return MethodInvocationInterface
      */
-    public function create(string $methodName, array $arguments): MethodInvocationInterface
+    public function create(string $methodName, array $arguments = []): MethodInvocationInterface
     {
         return new MethodInvocation($methodName, $this->argumentFactory->create($arguments));
     }
