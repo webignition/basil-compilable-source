@@ -24,11 +24,11 @@ class ArgumentFactory
     }
 
     /**
-     * @param array<null|int|float|string|bool|ExpressionInterface> $arguments
+     * @param array<null|int|float|string|bool|ExpressionInterface> ...$arguments
      *
      * @return ExpressionInterface[]
      */
-    public function create(array $arguments): array
+    public function create(...$arguments): array
     {
         $expressionArguments = [];
 
