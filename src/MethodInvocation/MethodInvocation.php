@@ -39,15 +39,11 @@ class MethodInvocation implements MethodInvocationInterface
     /**
      * @param string $methodName
      * @param ExpressionInterface[] $arguments
-     * @param string $argumentFormat
      */
-    public function __construct(
-        string $methodName,
-        array $arguments = [],
-        string $argumentFormat = self::ARGUMENT_FORMAT_INLINE
-    ) {
+    public function __construct(string $methodName, array $arguments = [])
+    {
         $this->methodName = $methodName;
-        $this->argumentFormat = $argumentFormat;
+        $this->argumentFormat = self::ARGUMENT_FORMAT_INLINE;
         $this->arguments = array_filter($arguments, function ($argument) {
             return $argument instanceof ExpressionInterface;
         });
@@ -71,6 +67,24 @@ class MethodInvocation implements MethodInvocationInterface
     public function getArgumentFormat(): string
     {
         return $this->argumentFormat;
+    }
+
+    public function withInlineArguments(): self
+    {
+        return $this->withArgumentFormat(self::ARGUMENT_FORMAT_INLINE);
+    }
+
+    public function withStackedArguments(): self
+    {
+        return $this->withArgumentFormat(self::ARGUMENT_FORMAT_STACKED);
+    }
+
+    private function withArgumentFormat(string $argumentFormat): self
+    {
+        $new = clone $this;
+        $new->argumentFormat = $argumentFormat;
+
+        return $new;
     }
 
     public function render(): string

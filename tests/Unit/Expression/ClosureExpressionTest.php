@@ -17,7 +17,6 @@ use webignition\BasilCompilableSource\Expression\CompositeExpression;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\SingleLineComment;
 use webignition\BasilCompilableSource\Statement\AssignmentStatement;
@@ -69,9 +68,7 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
                             new CastExpression(
                                 new ObjectMethodInvocation(
                                     new VariableName('variable'),
-                                    'getWidth',
-                                    [],
-                                    MethodInvocation::ARGUMENT_FORMAT_INLINE
+                                    'getWidth'
                                 ),
                                 'string'
                             ),
@@ -80,8 +77,7 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
                                 new ObjectMethodInvocation(
                                     new VariableName('variable'),
                                     'getHeight',
-                                    [],
-                                    MethodInvocation::ARGUMENT_FORMAT_INLINE
+                                    []
                                 ),
                                 'string'
                             ),
@@ -175,9 +171,7 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
                                 new CastExpression(
                                     new ObjectMethodInvocation(
                                         new VariableName('variable'),
-                                        'getWidth',
-                                        [],
-                                        MethodInvocation::ARGUMENT_FORMAT_INLINE
+                                        'getWidth'
                                     ),
                                     'string'
                                 ),
@@ -185,9 +179,7 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
                                 new CastExpression(
                                     new ObjectMethodInvocation(
                                         new VariableName('variable'),
-                                        'getHeight',
-                                        [],
-                                        MethodInvocation::ARGUMENT_FORMAT_INLINE
+                                        'getHeight'
                                     ),
                                     'string'
                                 ),

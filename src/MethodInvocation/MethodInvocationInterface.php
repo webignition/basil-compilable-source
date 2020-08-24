@@ -19,4 +19,7 @@ interface MethodInvocationInterface extends ExpressionInterface
 
     public function enableErrorSuppression(): void;
     public function disableErrorSuppression(): void;
+
+    public function withInlineArguments(): self;
+    public function withStackedArguments(): self;
 }
