@@ -24,6 +24,7 @@ abstract class AbstractMethodInvocationFactoryTest extends \PHPUnit\Framework\Te
             false,
             new \stdClass(),
             new StaticObject('self'),
+            null,
         ];
     }
 
@@ -40,6 +41,7 @@ abstract class AbstractMethodInvocationFactoryTest extends \PHPUnit\Framework\Te
             new LiteralExpression('true'),
             new LiteralExpression('false'),
             new StaticObject('self'),
+            new LiteralExpression('null'),
         ];
     }
 }
