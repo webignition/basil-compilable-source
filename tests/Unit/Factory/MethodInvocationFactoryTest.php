@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Tests\Unit\Factory;
 
-use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\Factory\MethodInvocationFactory;
 use webignition\BasilCompilableSource\MethodInvocation\MethodInvocation;
-use webignition\BasilCompilableSource\StaticObject;
 
-class MethodInvocationFactoryTest extends \PHPUnit\Framework\TestCase
+class MethodInvocationFactoryTest extends AbstractMethodInvocationFactoryTest
 {
     private MethodInvocationFactory $factory;
 
@@ -45,27 +43,10 @@ class MethodInvocationFactoryTest extends \PHPUnit\Framework\TestCase
             ],
             'non-empty' => [
                 'methodName' => 'methodName',
-                'arguments' => [
-                    100,
-                    M_PI,
-                    'string without single quotes',
-                    'string with \'single\' quotes',
-                    true,
-                    false,
-                    new \stdClass(),
-                    new StaticObject('self'),
-                ],
+                'arguments' => $this->getArguments(),
                 'expectedInvocation' => new MethodInvocation(
                     'methodName',
-                    [
-                        new LiteralExpression('100'),
-                        new LiteralExpression((string) M_PI),
-                        new LiteralExpression('\'string without single quotes\''),
-                        new LiteralExpression('\'string with \\\'single\\\' quotes\''),
-                        new LiteralExpression('true'),
-                        new LiteralExpression('false'),
-                        new StaticObject('self'),
-                    ]
+                    $this->getExpectedArguments()
                 ),
             ],
         ];

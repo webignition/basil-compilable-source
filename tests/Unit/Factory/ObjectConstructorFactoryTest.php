@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Tests\Unit\Factory;
 
 use webignition\BasilCompilableSource\ClassName;
-use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\Factory\ObjectConstructorFactory;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectConstructor;
-use webignition\BasilCompilableSource\StaticObject;
 
-class ObjectConstructorFactoryTest extends \PHPUnit\Framework\TestCase
+class ObjectConstructorFactoryTest extends AbstractMethodInvocationFactoryTest
 {
     private ObjectConstructorFactory $factory;
 
@@ -48,27 +46,10 @@ class ObjectConstructorFactoryTest extends \PHPUnit\Framework\TestCase
             ],
             'non-empty' => [
                 'className' => $className,
-                'arguments' => [
-                    100,
-                    M_PI,
-                    'string without single quotes',
-                    'string with \'single\' quotes',
-                    true,
-                    false,
-                    new \stdClass(),
-                    new StaticObject('self'),
-                ],
+                'arguments' => $this->getArguments(),
                 'expectedInvocation' => new ObjectConstructor(
                     $className,
-                    [
-                        new LiteralExpression('100'),
-                        new LiteralExpression((string) M_PI),
-                        new LiteralExpression('\'string without single quotes\''),
-                        new LiteralExpression('\'string with \\\'single\\\' quotes\''),
-                        new LiteralExpression('true'),
-                        new LiteralExpression('false'),
-                        new StaticObject('self'),
-                    ]
+                    $this->getExpectedArguments()
                 ),
             ],
         ];

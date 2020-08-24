@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Tests\Unit\Factory;
 
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
-use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\Factory\ArgumentFactory;
-use webignition\BasilCompilableSource\StaticObject;
 
-class ArgumentFactoryTest extends \PHPUnit\Framework\TestCase
+class ArgumentFactoryTest extends AbstractMethodInvocationFactoryTest
 {
     private ArgumentFactory $factory;
 
@@ -39,25 +37,8 @@ class ArgumentFactoryTest extends \PHPUnit\Framework\TestCase
                 'expectedArguments' => [],
             ],
             'non-empty' => [
-                'arguments' => [
-                    100,
-                    M_PI,
-                    'string without single quotes',
-                    'string with \'single\' quotes',
-                    true,
-                    false,
-                    new \stdClass(),
-                    new StaticObject('self'),
-                ],
-                'expectedArguments' => [
-                    new LiteralExpression('100'),
-                    new LiteralExpression((string) M_PI),
-                    new LiteralExpression('\'string without single quotes\''),
-                    new LiteralExpression('\'string with \\\'single\\\' quotes\''),
-                    new LiteralExpression('true'),
-                    new LiteralExpression('false'),
-                    new StaticObject('self'),
-                ],
+                'arguments' => $this->getArguments(),
+                'expectedArguments' => $this->getExpectedArguments(),
             ],
         ];
     }

@@ -5,13 +5,11 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Tests\Unit\Factory;
 
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
-use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\Factory\ObjectMethodInvocationFactory;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
-use webignition\BasilCompilableSource\StaticObject;
 use webignition\BasilCompilableSource\VariableDependency;
 
-class ObjectMethodInvocationFactoryTest extends \PHPUnit\Framework\TestCase
+class ObjectMethodInvocationFactoryTest extends AbstractMethodInvocationFactoryTest
 {
     private ObjectMethodInvocationFactory $factory;
 
@@ -52,28 +50,11 @@ class ObjectMethodInvocationFactoryTest extends \PHPUnit\Framework\TestCase
             'non-empty' => [
                 'object' => new VariableDependency('DEPENDENCY'),
                 'methodName' => 'methodName',
-                'arguments' => [
-                    100,
-                    M_PI,
-                    'string without single quotes',
-                    'string with \'single\' quotes',
-                    true,
-                    false,
-                    new \stdClass(),
-                    new StaticObject('self'),
-                ],
+                'arguments' => $this->getArguments(),
                 'expectedInvocation' => new ObjectMethodInvocation(
                     $object,
                     'methodName',
-                    [
-                        new LiteralExpression('100'),
-                        new LiteralExpression((string) M_PI),
-                        new LiteralExpression('\'string without single quotes\''),
-                        new LiteralExpression('\'string with \\\'single\\\' quotes\''),
-                        new LiteralExpression('true'),
-                        new LiteralExpression('false'),
-                        new StaticObject('self'),
-                    ]
+                    $this->getExpectedArguments()
                 ),
             ],
         ];
