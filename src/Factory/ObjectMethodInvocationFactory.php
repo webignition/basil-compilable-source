@@ -7,15 +7,8 @@ namespace webignition\BasilCompilableSource\Factory;
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 
-class ObjectMethodInvocationFactory
+class ObjectMethodInvocationFactory extends AbstractMethodInvocationFactory
 {
-    private ArgumentFactory $argumentFactory;
-
-    public function __construct(ArgumentFactory $argumentFactory)
-    {
-        $this->argumentFactory = $argumentFactory;
-    }
-
     public static function createFactory(): self
     {
         return new ObjectMethodInvocationFactory(

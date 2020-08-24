@@ -8,15 +8,8 @@ use webignition\BasilCompilableSource\MethodInvocation\StaticObjectMethodInvocat
 use webignition\BasilCompilableSource\MethodInvocation\StaticObjectMethodInvocationInterface;
 use webignition\BasilCompilableSource\StaticObject;
 
-class StaticObjectMethodInvocationFactory
+class StaticObjectMethodInvocationFactory extends AbstractMethodInvocationFactory
 {
-    private ArgumentFactory $argumentFactory;
-
-    public function __construct(ArgumentFactory $argumentFactory)
-    {
-        $this->argumentFactory = $argumentFactory;
-    }
-
     public static function createFactory(): self
     {
         return new StaticObjectMethodInvocationFactory(
