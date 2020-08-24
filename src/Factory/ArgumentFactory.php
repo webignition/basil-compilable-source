@@ -24,7 +24,7 @@ class ArgumentFactory
     }
 
     /**
-     * @param array<null|int|float|string|bool|ExpressionInterface> ...$arguments
+     * @param mixed ...$arguments
      *
      * @return ExpressionInterface[]
      */
