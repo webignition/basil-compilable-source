@@ -1,0 +1,64 @@
+<?php
+
+declare(strict_types=1);
+
+namespace webignition\BasilCompilableSource\Tests\Unit\Factory;
+
+use webignition\BasilCompilableSource\Expression\ExpressionInterface;
+use webignition\BasilCompilableSource\Expression\LiteralExpression;
+use webignition\BasilCompilableSource\Factory\ArgumentFactory;
+use webignition\BasilCompilableSource\StaticObject;
+
+class ArgumentFactoryTest extends \PHPUnit\Framework\TestCase
+{
+    private ArgumentFactory $factory;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->factory = ArgumentFactory::createFactory();
+    }
+
+    /**
+     * @dataProvider createDataProvider
+     *
+     * @param array<mixed> $arguments
+     * @param ExpressionInterface[] $expectedArguments
+     */
+    public function testCreate(array $arguments, array $expectedArguments)
+    {
+        self::assertEquals($expectedArguments, $this->factory->create($arguments));
+    }
+
+    public function createDataProvider(): array
+    {
+        return [
+            'empty' => [
+                'arguments' => [],
+                'expectedArguments' => [],
+            ],
+            'non-empty' => [
+                'arguments' => [
+                    100,
+                    M_PI,
+                    'string without single quotes',
+                    'string with \'single\' quotes',
+                    true,
+                    false,
+                    new \stdClass(),
+                    new StaticObject('self'),
+                ],
+                'expectedArguments' => [
+                    new LiteralExpression('100'),
+                    new LiteralExpression((string) M_PI),
+                    new LiteralExpression('\'string without single quotes\''),
+                    new LiteralExpression('\'string with \\\'single\\\' quotes\''),
+                    new LiteralExpression('true'),
+                    new LiteralExpression('false'),
+                    new StaticObject('self'),
+                ],
+            ],
+        ];
+    }
+}
