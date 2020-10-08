@@ -194,8 +194,7 @@ class BodyTest extends \PHPUnit\Framework\TestCase
                 ]),
                 'expectedString' =>
                     '"literal from statement";' . "\n" .
-                    'return;'
-                ,
+                    'return;',
             ],
         ];
     }
