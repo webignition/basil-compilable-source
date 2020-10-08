@@ -14,6 +14,7 @@ use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\MethodInvocation\StaticObjectMethodInvocation;
 use webignition\BasilCompilableSource\Statement\AssignmentStatement;
+use webignition\BasilCompilableSource\Statement\EmptyReturnStatement;
 use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\BasilCompilableSource\StaticObject;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclaration;
@@ -117,6 +118,20 @@ class CatchBlockTest extends \PHPUnit\Framework\TestCase
                 'expectedString' =>
                     'catch (\LogicException | \RuntimeException | TestCase $exception) {' . "\n" .
                     '    "literal";' . "\n" .
+                    '}',
+            ],
+            'empty return statement only' => [
+                'tryBlock' => new CatchBlock(
+                    new CatchExpression(
+                        new ObjectTypeDeclarationCollection([
+                            new ObjectTypeDeclaration(new ClassName(\Exception::class)),
+                        ])
+                    ),
+                    new EmptyReturnStatement()
+                ),
+                'expectedString' =>
+                    'catch (\Exception $exception) {' . "\n" .
+                    '    return;' . "\n" .
                     '}',
             ],
         ];
