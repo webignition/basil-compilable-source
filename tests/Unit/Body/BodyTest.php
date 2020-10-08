@@ -17,6 +17,7 @@ use webignition\BasilCompilableSource\Expression\ClosureExpression;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\SingleLineComment;
 use webignition\BasilCompilableSource\Statement\AssignmentStatement;
+use webignition\BasilCompilableSource\Statement\EmptyReturnStatement;
 use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclaration;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclarationCollection;
@@ -177,6 +178,24 @@ class BodyTest extends \PHPUnit\Framework\TestCase
                     '} catch (\LogicException $exception) {' . "\n" .
                     '    // CatchBlock comment' . "\n" .
                     '}',
+            ],
+            'empty return only' => [
+                'body' => new Body([
+                    new EmptyReturnStatement()
+                ]),
+                'expectedString' => 'return;',
+            ],
+            'expression and empty return' => [
+                'body' => new Body([
+                    new Statement(
+                        new LiteralExpression('"literal from statement"')
+                    ),
+                    new EmptyReturnStatement()
+                ]),
+                'expectedString' =>
+                    '"literal from statement";' . "\n" .
+                    'return;'
+                ,
             ],
         ];
     }

@@ -12,6 +12,7 @@ use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\MethodInvocation\StaticObjectMethodInvocation;
 use webignition\BasilCompilableSource\Statement\AssignmentStatement;
+use webignition\BasilCompilableSource\Statement\EmptyReturnStatement;
 use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\BasilCompilableSource\StaticObject;
 use webignition\BasilCompilableSource\VariableDependency;
@@ -65,6 +66,15 @@ class TryBlockTest extends \PHPUnit\Framework\TestCase
                 'expectedString' =>
                     'try {' . "\n" .
                     '    "literal expression";' . "\n" .
+                    '}',
+            ],
+            'empty return only' => [
+                'tryBlock' => new TryBlock(
+                    new EmptyReturnStatement()
+                ),
+                'expectedString' =>
+                    'try {' . "\n" .
+                    '    return;' . "\n" .
                     '}',
             ],
         ];
