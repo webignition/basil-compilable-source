@@ -16,11 +16,6 @@ class MethodInvocation implements MethodInvocationInterface
     private MethodArgumentsInterface $arguments;
 
     /**
-     * @var bool
-     */
-    protected bool $suppressErrors = false;
-
-    /**
      * @param string $methodName
      * @param MethodArgumentsInterface|null $arguments
      */
@@ -47,34 +42,9 @@ class MethodInvocation implements MethodInvocationInterface
 
     public function render(): string
     {
-        $methodName = $this->getCall();
-        if ($this->suppressErrors === true) {
-            $methodName = '@' . $methodName;
-        }
-
-        return $this->renderMethodCall($methodName);
-    }
-
-    public function enableErrorSuppression(): void
-    {
-        $this->suppressErrors = true;
-    }
-
-    public function disableErrorSuppression(): void
-    {
-        $this->suppressErrors = false;
-    }
-
-    protected function renderWithoutErrorSuppression(): string
-    {
-        return $this->renderMethodCall($this->getCall());
-    }
-
-    private function renderMethodCall(string $methodName): string
-    {
         return sprintf(
             self::RENDER_PATTERN,
-            $methodName,
+            $this->getCall(),
             $this->arguments->render()
         );
     }
