@@ -10,7 +10,7 @@ use webignition\BasilCompilableSource\MethodArguments\MethodArgumentsInterface;
 
 class ObjectMethodInvocation extends AbstractMethodInvocationEncapsulator implements MethodInvocationInterface
 {
-    private const RENDER_PATTERN = '%s->%s';
+    private const RENDER_TEMPLATE = '{{ object }}->{{ method_invocation }}';
 
     private ExpressionInterface $object;
 
@@ -28,12 +28,16 @@ class ObjectMethodInvocation extends AbstractMethodInvocationEncapsulator implem
         return $this->object->getMetadata();
     }
 
-    public function render(): string
+    protected function getRenderTemplate(): string
     {
-        return sprintf(
-            self::RENDER_PATTERN,
-            $this->object->render(),
-            $this->invocation->render()
-        );
+        return self::RENDER_TEMPLATE;
+    }
+
+    protected function getRenderContext(): array
+    {
+        return [
+            'object' => $this->object->render(),
+            'method_invocation' => $this->invocation->render(),
+        ];
     }
 }

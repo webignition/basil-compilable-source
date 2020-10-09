@@ -12,7 +12,7 @@ use webignition\BasilCompilableSource\MethodArguments\MethodArgumentsInterface;
 
 class ObjectConstructor extends AbstractMethodInvocationEncapsulator
 {
-    private const RENDER_PATTERN = 'new %s';
+    private const RENDER_TEMPLATE = 'new {{ method_invocation }}';
 
     private ClassName $class;
     public function __construct(ClassName $class, ?MethodArgumentsInterface $arguments = null)
@@ -31,11 +31,15 @@ class ObjectConstructor extends AbstractMethodInvocationEncapsulator
         ]);
     }
 
-    public function render(): string
+    protected function getRenderTemplate(): string
     {
-        return sprintf(
-            self::RENDER_PATTERN,
-            $this->invocation->render()
-        );
+        return self::RENDER_TEMPLATE;
+    }
+
+    protected function getRenderContext(): array
+    {
+        return [
+            'method_invocation' => $this->invocation->render(),
+        ];
     }
 }

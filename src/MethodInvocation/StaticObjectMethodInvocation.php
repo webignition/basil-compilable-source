@@ -11,7 +11,7 @@ use webignition\BasilCompilableSource\StaticObject;
 class StaticObjectMethodInvocation extends AbstractMethodInvocationEncapsulator implements
     StaticObjectMethodInvocationInterface
 {
-    private const RENDER_PATTERN = '%s::%s';
+    private const RENDER_TEMPLATE = '{{ object }}::{{ method_invocation }}';
 
     private StaticObject $staticObject;
 
@@ -35,12 +35,16 @@ class StaticObjectMethodInvocation extends AbstractMethodInvocationEncapsulator 
         return $this->staticObject;
     }
 
-    public function render(): string
+    protected function getRenderTemplate(): string
     {
-        return sprintf(
-            self::RENDER_PATTERN,
-            $this->getStaticObject()->render(),
-            $this->invocation->render()
-        );
+        return self::RENDER_TEMPLATE;
+    }
+
+    protected function getRenderContext(): array
+    {
+        return [
+            'object' => $this->staticObject->render(),
+            'method_invocation' => $this->invocation->render(),
+        ];
     }
 }
