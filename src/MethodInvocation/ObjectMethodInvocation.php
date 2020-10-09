@@ -7,9 +7,8 @@ namespace webignition\BasilCompilableSource\MethodInvocation;
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\MethodArguments\MethodArgumentsInterface;
-use webignition\BasilCompilableSource\VariableDependencyInterface;
 
-class ObjectMethodInvocation extends MethodInvocation
+class ObjectMethodInvocation extends AbstractMethodInvocationEncapsulator implements MethodInvocationInterface
 {
     private const RENDER_PATTERN = '%s->%s';
 
@@ -21,19 +20,12 @@ class ObjectMethodInvocation extends MethodInvocation
         ?MethodArgumentsInterface $arguments = null
     ) {
         parent::__construct($methodName, $arguments);
-
         $this->object = $object;
     }
 
-    public function getMetadata(): MetadataInterface
+    protected function getAdditionalMetadata(): MetadataInterface
     {
-        $metadata = parent::getMetadata();
-
-        if ($this->object instanceof VariableDependencyInterface) {
-            $metadata = $metadata->merge($this->object->getMetadata());
-        }
-
-        return $metadata;
+        return $this->object->getMetadata();
     }
 
     public function render(): string
@@ -41,7 +33,7 @@ class ObjectMethodInvocation extends MethodInvocation
         return sprintf(
             self::RENDER_PATTERN,
             $this->object->render(),
-            parent::render()
+            $this->invocation->render()
         );
     }
 }

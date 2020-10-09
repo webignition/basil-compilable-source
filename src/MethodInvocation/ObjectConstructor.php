@@ -10,38 +10,25 @@ use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\MethodArguments\MethodArgumentsInterface;
 
-class ObjectConstructor implements InvocableInterface
+class ObjectConstructor extends AbstractMethodInvocationEncapsulator
 {
     private const RENDER_PATTERN = 'new %s';
 
     private ClassName $class;
-    private MethodInvocation $invocation;
-
     public function __construct(ClassName $class, ?MethodArgumentsInterface $arguments = null)
     {
+        parent::__construct($class->renderClassName(), $arguments);
+
         $this->class = $class;
-        $this->invocation = new MethodInvocation($class->renderClassName(), $arguments);
     }
 
-    public function getMetadata(): MetadataInterface
+    protected function getAdditionalMetadata(): MetadataInterface
     {
-        return $this->invocation->getMetadata()->merge(
-            new Metadata([
-                Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                    $this->class,
-                ]),
-            ])
-        );
-    }
-
-    public function getCall(): string
-    {
-        return $this->invocation->getCall();
-    }
-
-    public function getArguments(): MethodArgumentsInterface
-    {
-        return $this->invocation->getArguments();
+        return new Metadata([
+            Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
+                $this->class,
+            ]),
+        ]);
     }
 
     public function render(): string
