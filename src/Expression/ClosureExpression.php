@@ -6,12 +6,15 @@ namespace webignition\BasilCompilableSource\Expression;
 
 use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\BasilCompilableSource\RenderFromTemplateTrait;
 
 class ClosureExpression extends AbstractExpression
 {
+    use RenderFromTemplateTrait;
+
     private const RENDER_TEMPLATE = <<<'EOD'
 (function () {
-%s
+{{ body }}
 })()
 EOD;
 
@@ -29,12 +32,16 @@ EOD;
         return $this->body->getMetadata();
     }
 
-    public function render(): string
+    protected function getRenderTemplate(): string
     {
-        return sprintf(
-            self::RENDER_TEMPLATE,
-            $this->indent($this->body->render())
-        );
+        return self::RENDER_TEMPLATE;
+    }
+
+    protected function getRenderContext(): array
+    {
+        return [
+            'body' => $this->indent($this->body->render()),
+        ];
     }
 
     private function indent(string $content): string
