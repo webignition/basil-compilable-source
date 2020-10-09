@@ -10,9 +10,6 @@ use webignition\BasilCompilableSource\MethodArguments\MethodArgumentsInterface;
 
 class MethodInvocation implements MethodInvocationInterface
 {
-    public const ARGUMENT_FORMAT_INLINE = 'inline';
-    public const ARGUMENT_FORMAT_STACKED = 'stacked';
-
     private const RENDER_PATTERN = '%s(%s)';
 
     private string $methodName;
@@ -33,7 +30,7 @@ class MethodInvocation implements MethodInvocationInterface
         $this->arguments = $arguments ?? new MethodArguments([]);
     }
 
-    public function getMethodName(): string
+    public function getCall(): string
     {
         return $this->methodName;
     }
@@ -50,7 +47,7 @@ class MethodInvocation implements MethodInvocationInterface
 
     public function render(): string
     {
-        $methodName = $this->getMethodName();
+        $methodName = $this->getCall();
         if ($this->suppressErrors === true) {
             $methodName = '@' . $methodName;
         }
@@ -70,7 +67,7 @@ class MethodInvocation implements MethodInvocationInterface
 
     protected function renderWithoutErrorSuppression(): string
     {
-        return $this->renderMethodCall($this->getMethodName());
+        return $this->renderMethodCall($this->getCall());
     }
 
     private function renderMethodCall(string $methodName): string

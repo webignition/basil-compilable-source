@@ -29,7 +29,7 @@ class StaticObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
         $invocation = new StaticObjectMethodInvocation($staticObject, $methodName, $arguments);
 
         $this->assertSame($staticObject, $invocation->getStaticObject());
-        $this->assertSame($methodName, $invocation->getMethodName());
+        $this->assertSame($methodName, $invocation->getCall());
         $this->assertSame($arguments, $invocation->getArguments());
         $this->assertEquals($expectedMetadata, $invocation->getMetadata());
     }

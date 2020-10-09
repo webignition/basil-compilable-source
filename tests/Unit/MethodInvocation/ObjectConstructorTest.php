@@ -25,7 +25,7 @@ class ObjectConstructorTest extends \PHPUnit\Framework\TestCase
     ) {
         $constructor = new ObjectConstructor($class, $arguments);
 
-        $this->assertSame($class->getClass(), $constructor->getMethodName());
+        $this->assertSame($class->getClass(), $constructor->getCall());
         $this->assertSame($arguments, $constructor->getArguments());
         $this->assertEquals($expectedMetadata, $constructor->getMetadata());
     }
