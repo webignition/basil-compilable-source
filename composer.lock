@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "62f89dadfbcf3396739d3da99c3ebcad",
+    "content-hash": "7d76c57f33e16fd98388a6c727d013a3",
     "packages": [
         {
             "name": "webignition/stubble",
-            "version": "0.3",
+            "version": "0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webignition/stubble.git",
-                "reference": "cb95c46a838f7d3c4d153d878a8177e310dc680c"
+                "reference": "bf9c8b6be1d359ed33108900762303e6548129ef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webignition/stubble/zipball/cb95c46a838f7d3c4d153d878a8177e310dc680c",
-                "reference": "cb95c46a838f7d3c4d153d878a8177e310dc680c",
+                "url": "https://api.github.com/repos/webignition/stubble/zipball/bf9c8b6be1d359ed33108900762303e6548129ef",
+                "reference": "bf9c8b6be1d359ed33108900762303e6548129ef",
                 "shasum": ""
             },
             "require": {
@@ -57,9 +57,9 @@
             ],
             "support": {
                 "issues": "https://github.com/webignition/stubble/issues",
-                "source": "https://github.com/webignition/stubble/tree/0.3"
+                "source": "https://github.com/webignition/stubble/tree/0.5"
             },
-            "time": "2020-10-09T09:49:51+00:00"
+            "time": "2020-10-09T11:24:36+00:00"
         }
     ],
     "packages-dev": [
