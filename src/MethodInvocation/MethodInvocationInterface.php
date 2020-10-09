@@ -6,6 +6,4 @@ namespace webignition\BasilCompilableSource\MethodInvocation;
 
 interface MethodInvocationInterface extends InvocableInterface
 {
-    public function enableErrorSuppression(): void;
-    public function disableErrorSuppression(): void;
 }

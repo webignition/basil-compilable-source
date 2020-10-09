@@ -148,25 +148,6 @@ class StaticObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
                     "    \'single-quoted value\'\n" .
                     ")",
             ],
-            'object and method name only, string reference, has errors suppressed' => [
-                'invocation' => $this->createInvocationWithErrorSuppression(
-                    new StaticObject(
-                        'parent'
-                    ),
-                    'methodName'
-                ),
-                'expectedString' => '@parent::methodName()',
-            ],
         ];
-    }
-
-    private function createInvocationWithErrorSuppression(
-        StaticObject $staticObject,
-        string $name
-    ): StaticObjectMethodInvocationInterface {
-        $methodInvocation = new StaticObjectMethodInvocation($staticObject, $name);
-        $methodInvocation->enableErrorSuppression();
-
-        return $methodInvocation;
     }
 }

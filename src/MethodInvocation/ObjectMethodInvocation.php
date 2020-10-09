@@ -38,15 +38,10 @@ class ObjectMethodInvocation extends MethodInvocation
 
     public function render(): string
     {
-        $objectPlaceholder = $this->object->render();
-        if ($this->suppressErrors === true) {
-            $objectPlaceholder = '@' . $objectPlaceholder;
-        }
-
         return sprintf(
             self::RENDER_PATTERN,
-            $objectPlaceholder,
-            parent::renderWithoutErrorSuppression()
+            $this->object->render(),
+            parent::render()
         );
     }
 }
