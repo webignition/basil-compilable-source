@@ -6,10 +6,11 @@ namespace webignition\BasilCompilableSource\Tests\Unit\MethodInvocation;
 
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSource\ClassName;
-use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\BasilCompilableSource\MethodArguments\MethodArguments;
+use webignition\BasilCompilableSource\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSource\MethodInvocation\StaticObjectMethodInvocation;
 use webignition\BasilCompilableSource\MethodInvocation\StaticObjectMethodInvocationInterface;
 use webignition\BasilCompilableSource\StaticObject;
@@ -18,15 +19,11 @@ class StaticObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider createDataProvider
-     *
-     * @param StaticObject $staticObject
-     * @param string $methodName
-     * @param ExpressionInterface[] $arguments
      */
     public function testCreate(
         StaticObject $staticObject,
         string $methodName,
-        array $arguments,
+        MethodArgumentsInterface $arguments,
         MetadataInterface $expectedMetadata
     ) {
         $invocation = new StaticObjectMethodInvocation($staticObject, $methodName, $arguments);
@@ -34,7 +31,6 @@ class StaticObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($staticObject, $invocation->getStaticObject());
         $this->assertSame($methodName, $invocation->getMethodName());
         $this->assertSame($arguments, $invocation->getArguments());
-        $this->assertSame(StaticObjectMethodInvocation::ARGUMENT_FORMAT_INLINE, $invocation->getArgumentFormat());
         $this->assertEquals($expectedMetadata, $invocation->getMetadata());
     }
 
@@ -46,7 +42,7 @@ class StaticObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
                     'parent'
                 ),
                 'methodName' => 'method',
-                'arguments' => [],
+                'arguments' => new MethodArguments(),
                 'expectedMetadata' => new Metadata(),
             ],
             'no arguments, object reference' => [
@@ -54,37 +50,7 @@ class StaticObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
                     ClassName::class
                 ),
                 'methodName' => 'method',
-                'arguments' => [],
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassName(ClassName::class),
-                    ]),
-                ]),
-            ],
-            'single argument' => [
-                'staticObject' => new StaticObject(
-                    ClassName::class
-                ),
-                'methodName' => 'method',
-                'arguments' => [
-                    new LiteralExpression('1'),
-                ],
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassName(ClassName::class),
-                    ]),
-                ]),
-            ],
-            'multiple arguments' => [
-                'staticObject' => new StaticObject(
-                    ClassName::class
-                ),
-                'methodName' => 'method',
-                'arguments' => [
-                    new LiteralExpression('2'),
-                    new LiteralExpression("'single-quoted value'"),
-                    new LiteralExpression('"double-quoted value"'),
-                ],
+                'arguments' => new MethodArguments(),
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassName(ClassName::class),
@@ -96,12 +62,12 @@ class StaticObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
                     ClassName::class
                 ),
                 'methodName' => 'method',
-                'arguments' => [
+                'arguments' => new MethodArguments([
                     new StaticObjectMethodInvocation(
                         new StaticObject(StaticObject::class),
                         'staticMethodName'
                     )
-                ],
+                ]),
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassName(StaticObject::class),
@@ -150,48 +116,33 @@ class StaticObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
                 ),
                 'expectedString' => '\Throwable::methodName()',
             ],
-            'no arguments, inline' => [
-                'invocation' => (new StaticObjectMethodInvocation(
-                    new StaticObject(
-                        ClassName::class
-                    ),
-                    'methodName'
-                ))->withInlineArguments(),
-                'expectedString' => 'ClassName::methodName()',
-            ],
-            'no arguments, stacked' => [
-                'invocation' => (new StaticObjectMethodInvocation(
-                    new StaticObject(
-                        ClassName::class
-                    ),
-                    'methodName'
-                ))->withStackedArguments(),
-                'expectedString' => 'ClassName::methodName()',
-            ],
             'has arguments, inline' => [
-                'invocation' => (new StaticObjectMethodInvocation(
+                'invocation' => new StaticObjectMethodInvocation(
                     new StaticObject(
                         ClassName::class
                     ),
                     'methodName',
-                    [
+                    new MethodArguments([
                         new LiteralExpression('1'),
                         new LiteralExpression("\'single-quoted value\'"),
-                    ]
-                ))->withInlineArguments(),
+                    ])
+                ),
                 'expectedString' => "ClassName::methodName(1, \'single-quoted value\')",
             ],
             'has arguments, stacked' => [
-                'invocation' => (new StaticObjectMethodInvocation(
+                'invocation' => new StaticObjectMethodInvocation(
                     new StaticObject(
                         ClassName::class
                     ),
                     'methodName',
-                    [
-                        new LiteralExpression('1'),
-                        new LiteralExpression("\'single-quoted value\'"),
-                    ]
-                ))->withStackedArguments(),
+                    new MethodArguments(
+                        [
+                            new LiteralExpression('1'),
+                            new LiteralExpression("\'single-quoted value\'"),
+                        ],
+                        MethodArguments::FORMAT_STACKED
+                    )
+                ),
                 'expectedString' => "ClassName::methodName(\n" .
                     "    1,\n" .
                     "    \'single-quoted value\'\n" .

@@ -76,8 +76,7 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
                             new CastExpression(
                                 new ObjectMethodInvocation(
                                     new VariableName('variable'),
-                                    'getHeight',
-                                    []
+                                    'getHeight'
                                 ),
                                 'string'
                             ),

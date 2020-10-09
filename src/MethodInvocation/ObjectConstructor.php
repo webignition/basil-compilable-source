@@ -6,9 +6,9 @@ namespace webignition\BasilCompilableSource\MethodInvocation;
 
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSource\ClassName;
-use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\BasilCompilableSource\MethodArguments\MethodArgumentsInterface;
 
 class ObjectConstructor extends MethodInvocation
 {
@@ -16,11 +16,7 @@ class ObjectConstructor extends MethodInvocation
 
     private ClassName $class;
 
-    /**
-     * @param ClassName $class
-     * @param ExpressionInterface[] $arguments
-     */
-    public function __construct(ClassName $class, array $arguments = [])
+    public function __construct(ClassName $class, ?MethodArgumentsInterface $arguments = null)
     {
         parent::__construct($class->renderClassName(), $arguments);
 

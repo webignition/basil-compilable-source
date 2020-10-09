@@ -133,15 +133,15 @@ class MethodArgumentsTest extends \PHPUnit\Framework\TestCase
                         new ObjectMethodInvocation(
                             new VariableDependency('NAVIGATOR'),
                             'find',
-                            [
+                            new MethodArguments([
                                 new \webignition\BasilCompilableSource\MethodInvocation\StaticObjectMethodInvocation(
                                     new StaticObject(ObjectMethodInvocation::class),
                                     'fromJson',
-                                    [
+                                    new MethodArguments([
                                         new LiteralExpression('{' . "\n" . '    "locator": ".selector"' . "\n" . '}'),
-                                    ]
+                                    ])
                                 )
-                            ]
+                            ])
                         ),
                         new ClosureExpression(
                             new Body([

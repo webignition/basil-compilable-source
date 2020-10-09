@@ -15,6 +15,7 @@ use webignition\BasilCompilableSource\EmptyLine;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\BasilCompilableSource\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSource\MethodDefinition;
 use webignition\BasilCompilableSource\MethodDefinitionInterface;
 use webignition\BasilCompilableSource\MethodInvocation\MethodInvocation;
@@ -208,9 +209,9 @@ class ClassDefinitionTest extends TestCase
                                 new StaticObjectMethodInvocation(
                                     new StaticObject('Acme\\Statement'),
                                     'createAction',
-                                    [
+                                    new MethodArguments([
                                         new LiteralExpression('\'$"a" exists\''),
-                                    ]
+                                    ])
                                 )
                             ),
                             new AssignmentStatement(
@@ -225,9 +226,9 @@ class ClassDefinitionTest extends TestCase
                                 new StaticObjectMethodInvocation(
                                     new StaticObject('Acme\\Statement'),
                                     'createAction',
-                                    [
+                                    new MethodArguments([
                                         new LiteralExpression('\'$"b" exists\''),
-                                    ]
+                                    ])
                                 )
                             ),
                             new AssignmentStatement(
@@ -271,9 +272,9 @@ class ClassDefinitionTest extends TestCase
                                         new StaticObjectMethodInvocation(
                                             new StaticObject('Acme\\Statement'),
                                             'createAction',
-                                            [
+                                            new MethodArguments([
                                                 new LiteralExpression('\'$"a" exists\''),
-                                            ]
+                                            ])
                                         )
                                     ),
                                     new AssignmentStatement(
@@ -303,9 +304,9 @@ class ClassDefinitionTest extends TestCase
                                 new StaticObjectMethodInvocation(
                                     new StaticObject('Acme\\Statement'),
                                     'createAction',
-                                    [
+                                    new MethodArguments([
                                         new LiteralExpression('\'$"b" exists\''),
-                                    ]
+                                    ])
                                 )
                             ),
                             new AssignmentStatement(

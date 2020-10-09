@@ -10,6 +10,8 @@ use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\BasilCompilableSource\MethodArguments\MethodArguments;
+use webignition\BasilCompilableSource\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSource\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\MethodInvocation\StaticObjectMethodInvocation;
@@ -22,23 +24,17 @@ class ObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider createDataProvider
-     *
-     * @param ExpressionInterface $object
-     * @param string $methodName
-     * @param ExpressionInterface[] $arguments
-     * @param MetadataInterface $expectedMetadata
      */
     public function testCreate(
         ExpressionInterface $object,
         string $methodName,
-        array $arguments,
+        ?MethodArgumentsInterface $arguments,
         MetadataInterface $expectedMetadata
     ) {
         $invocation = new ObjectMethodInvocation($object, $methodName, $arguments);
 
         $this->assertSame($methodName, $invocation->getMethodName());
         $this->assertSame($arguments, $invocation->getArguments());
-        $this->assertSame(ObjectMethodInvocation::ARGUMENT_FORMAT_INLINE, $invocation->getArgumentFormat());
         $this->assertEquals($expectedMetadata, $invocation->getMetadata());
     }
 
@@ -48,33 +44,19 @@ class ObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
             'no arguments' => [
                 'object' => new VariableDependency('OBJECT'),
                 'methodName' => 'method',
-                'arguments' => [],
+                'arguments' => new MethodArguments(),
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         'OBJECT',
                     ]),
                 ]),
             ],
-            'single argument' => [
+            'has arguments' => [
                 'object' => new VariableDependency('OBJECT'),
                 'methodName' => 'method',
-                'arguments' => [
+                'arguments' => new MethodArguments([
                     new LiteralExpression('1'),
-                ],
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
-                        'OBJECT',
-                    ]),
                 ]),
-            ],
-            'multiple arguments' => [
-                'object' => new VariableDependency('OBJECT'),
-                'methodName' => 'method',
-                'arguments' => [
-                    new LiteralExpression('2'),
-                    new LiteralExpression("'single-quoted value'"),
-                    new LiteralExpression('"double-quoted value"'),
-                ],
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         'OBJECT',
@@ -84,12 +66,12 @@ class ObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
             'argument expressions contain additional metadata' => [
                 'object' => new VariableDependency('OBJECT'),
                 'methodName' => 'method',
-                'arguments' => [
+                'arguments' => new MethodArguments([
                     new StaticObjectMethodInvocation(
                         new StaticObject(ClassName::class),
                         'staticMethodName'
                     )
-                ],
+                ]),
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassName(ClassName::class),
@@ -102,7 +84,7 @@ class ObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
             'no arguments, resolving placeholder' => [
                 'object' => new VariableName('object'),
                 'methodName' => 'method',
-                'arguments' => [],
+                'arguments' => new MethodArguments(),
                 'expectedMetadata' => new Metadata(),
             ],
         ];
@@ -126,40 +108,29 @@ class ObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
                 ),
                 'expectedString' => '{{ OBJECT }}->methodName()',
             ],
-            'no arguments, inline' => [
-                'invocation' => (new ObjectMethodInvocation(
-                    new VariableDependency('OBJECT'),
-                    'methodName'
-                ))->withInlineArguments(),
-                'expectedString' => '{{ OBJECT }}->methodName()',
-            ],
-            'no arguments, stacked' => [
-                'invocation' => (new ObjectMethodInvocation(
-                    new VariableDependency('OBJECT'),
-                    'methodName'
-                ))->withStackedArguments(),
-                'expectedString' => '{{ OBJECT }}->methodName()',
-            ],
             'has arguments, inline' => [
-                'invocation' => (new ObjectMethodInvocation(
+                'invocation' => new ObjectMethodInvocation(
                     new VariableDependency('OBJECT'),
                     'methodName',
-                    [
+                    new MethodArguments([
                         new LiteralExpression('1'),
                         new LiteralExpression("\'single-quoted value\'"),
-                    ]
-                ))->withInlineArguments(),
+                    ])
+                ),
                 'expectedString' => "{{ OBJECT }}->methodName(1, \'single-quoted value\')",
             ],
             'has arguments, stacked' => [
-                'invocation' => (new ObjectMethodInvocation(
+                'invocation' => new ObjectMethodInvocation(
                     new VariableDependency('OBJECT'),
                     'methodName',
-                    [
-                        new LiteralExpression('1'),
-                        new LiteralExpression("\'single-quoted value\'"),
-                    ]
-                ))->withStackedArguments(),
+                    new MethodArguments(
+                        [
+                            new LiteralExpression('1'),
+                            new LiteralExpression("\'single-quoted value\'"),
+                        ],
+                        MethodArguments::FORMAT_STACKED
+                    )
+                ),
                 'expectedString' => "{{ OBJECT }}->methodName(\n" .
                     "    1,\n" .
                     "    \'single-quoted value\'\n" .
@@ -197,35 +168,6 @@ class ObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
                     'outerMethodName'
                 ),
                 'expectedString' => '{{ OBJECT }}->innerMethodName()->outerMethodName()',
-            ],
-            'indent stacked multi-line arguments' => [
-                'invocation' => (new ObjectMethodInvocation(
-                    new VariableDependency('MUTATOR'),
-                    'setValue',
-                    [
-                        new ObjectMethodInvocation(
-                            new VariableDependency('NAVIGATOR'),
-                            'find',
-                            [
-                                new StaticObjectMethodInvocation(
-                                    new StaticObject(ObjectMethodInvocation::class),
-                                    'fromJson',
-                                    [
-                                        new LiteralExpression('{' . "\n" . '    "locator": ".selector"' . "\n" . '}'),
-                                    ]
-                                )
-                            ]
-                        ),
-                        new LiteralExpression('"literal for mutator"')
-                    ]
-                ))->withStackedArguments(),
-                'expectedString' =>
-                    '{{ MUTATOR }}->setValue(' . "\n" .
-                    '    {{ NAVIGATOR }}->find(ObjectMethodInvocation::fromJson({' . "\n" .
-                    '        "locator": ".selector"' . "\n" .
-                    '    })),' . "\n" .
-                    '    "literal for mutator"' . "\n" .
-                    ')',
             ],
         ];
     }
