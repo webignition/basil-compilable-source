@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Expression;
 
+use webignition\BasilCompilableSource\RenderFromTemplateTrait;
+
 class CastExpression extends AbstractExpression
 {
+    use RenderFromTemplateTrait;
+
     private ExpressionInterface $expression;
     private string $castTo;
 
@@ -17,8 +21,16 @@ class CastExpression extends AbstractExpression
         parent::__construct($expression->getMetadata());
     }
 
-    public function render(): string
+    protected function getRenderTemplate(): string
     {
-        return '(' . $this->castTo . ') ' . $this->expression->render();
+        return '({{ cast_type }}) {{ expression }}';
+    }
+
+    protected function getRenderContext(): array
+    {
+        return [
+            'cast_type' => $this->castTo,
+            'expression' => $this->expression->render(),
+        ];
     }
 }
