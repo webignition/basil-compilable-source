@@ -6,6 +6,7 @@ namespace webignition\BasilCompilableSource\MethodInvocation;
 
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\BasilCompilableSource\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSource\VariableDependencyInterface;
 
 class ObjectMethodInvocation extends MethodInvocation
@@ -14,15 +15,10 @@ class ObjectMethodInvocation extends MethodInvocation
 
     private ExpressionInterface $object;
 
-    /**
-     * @param ExpressionInterface $object
-     * @param string $methodName
-     * @param ExpressionInterface[] $arguments
-     */
     public function __construct(
         ExpressionInterface $object,
         string $methodName,
-        array $arguments = []
+        ?MethodArgumentsInterface $arguments = null
     ) {
         parent::__construct($methodName, $arguments);
 

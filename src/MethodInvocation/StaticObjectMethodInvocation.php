@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\MethodInvocation;
 
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\BasilCompilableSource\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSource\StaticObject;
 
 class StaticObjectMethodInvocation extends MethodInvocation implements StaticObjectMethodInvocationInterface
@@ -13,8 +14,11 @@ class StaticObjectMethodInvocation extends MethodInvocation implements StaticObj
 
     private StaticObject $staticObject;
 
-    public function __construct(StaticObject $staticObject, string $methodName, array $arguments = [])
-    {
+    public function __construct(
+        StaticObject $staticObject,
+        string $methodName,
+        ?MethodArgumentsInterface $arguments = null
+    ) {
         parent::__construct($methodName, $arguments);
 
         $this->staticObject = $staticObject;

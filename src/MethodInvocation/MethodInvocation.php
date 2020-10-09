@@ -4,27 +4,19 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\MethodInvocation;
 
-use webignition\BasilCompilableSource\Expression\ExpressionInterface;
-use webignition\BasilCompilableSource\HasMetadataTrait;
-use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\BasilCompilableSource\MethodArguments\MethodArguments;
+use webignition\BasilCompilableSource\MethodArguments\MethodArgumentsInterface;
 
 class MethodInvocation implements MethodInvocationInterface
 {
-    use HasMetadataTrait;
-
     public const ARGUMENT_FORMAT_INLINE = 'inline';
     public const ARGUMENT_FORMAT_STACKED = 'stacked';
 
     private const RENDER_PATTERN = '%s(%s)';
 
     private string $methodName;
-
-    /**
-     * @var ExpressionInterface[]
-     */
-    private array $arguments;
-    private string $argumentFormat;
+    private MethodArgumentsInterface $arguments;
 
     /**
      * @var bool
@@ -32,26 +24,13 @@ class MethodInvocation implements MethodInvocationInterface
     protected bool $suppressErrors = false;
 
     /**
-     * @var MetadataInterface
-     */
-    private MetadataInterface $metadata;
-
-    /**
      * @param string $methodName
-     * @param ExpressionInterface[] $arguments
+     * @param MethodArgumentsInterface|null $arguments
      */
-    public function __construct(string $methodName, array $arguments = [])
+    public function __construct(string $methodName, ?MethodArgumentsInterface $arguments = null)
     {
         $this->methodName = $methodName;
-        $this->argumentFormat = self::ARGUMENT_FORMAT_INLINE;
-        $this->arguments = array_filter($arguments, function ($argument) {
-            return $argument instanceof ExpressionInterface;
-        });
-
-        $this->metadata = new Metadata();
-        foreach ($this->arguments as $expression) {
-            $this->metadata = $this->metadata->merge($expression->getMetadata());
-        }
+        $this->arguments = $arguments ?? new MethodArguments([]);
     }
 
     public function getMethodName(): string
@@ -59,32 +38,14 @@ class MethodInvocation implements MethodInvocationInterface
         return $this->methodName;
     }
 
-    public function getArguments(): array
+    public function getArguments(): MethodArgumentsInterface
     {
         return $this->arguments;
     }
 
-    public function getArgumentFormat(): string
+    public function getMetadata(): MetadataInterface
     {
-        return $this->argumentFormat;
-    }
-
-    public function withInlineArguments(): self
-    {
-        return $this->withArgumentFormat(self::ARGUMENT_FORMAT_INLINE);
-    }
-
-    public function withStackedArguments(): self
-    {
-        return $this->withArgumentFormat(self::ARGUMENT_FORMAT_STACKED);
-    }
-
-    private function withArgumentFormat(string $argumentFormat): self
-    {
-        $new = clone $this;
-        $new->argumentFormat = $argumentFormat;
-
-        return $new;
+        return $this->arguments->getMetadata();
     }
 
     public function render(): string
@@ -117,57 +78,7 @@ class MethodInvocation implements MethodInvocationInterface
         return sprintf(
             self::RENDER_PATTERN,
             $methodName,
-            $this->createArgumentsString()
+            $this->arguments->render()
         );
-    }
-
-    private function createArgumentsString(): string
-    {
-        $arguments = $this->getArguments();
-        if ([] === $arguments) {
-            return '';
-        }
-
-        $renderedArguments = array_map(
-            function (ExpressionInterface $expression) {
-                return $expression->render();
-            },
-            $arguments
-        );
-
-        $argumentPrefix = '';
-        $join = ', ';
-        $stringSuffix = '';
-
-        if (self::ARGUMENT_FORMAT_STACKED === $this->getArgumentFormat()) {
-            array_walk($renderedArguments, function (&$argument) {
-                $argumentLines = explode("\n", $argument);
-                array_walk($argumentLines, function (&$line) {
-                    $line = $this->indentLine($line);
-                });
-
-                $argument = trim(implode("\n", $argumentLines));
-                $argument = $this->indentLine($argument);
-            });
-
-            $argumentPrefix = "\n";
-            $join = ',';
-            $stringSuffix = "\n";
-        }
-
-        array_walk($renderedArguments, function (&$argument) use ($argumentPrefix) {
-            $argument = $argumentPrefix . $argument;
-        });
-
-        return implode($join, $renderedArguments) . $stringSuffix;
-    }
-
-    private function indentLine(string $content): string
-    {
-        if ('' !== $content) {
-            $content = '    ' . $content;
-        }
-
-        return $content;
     }
 }
