@@ -20,7 +20,7 @@ class MethodInvocationTest extends \PHPUnit\Framework\TestCase
         $methodName = 'methodName';
 
         $invocation = new MethodInvocation($methodName);
-        $this->assertSame($methodName, $invocation->getMethodName());
+        $this->assertSame($methodName, $invocation->getCall());
         $this->assertEquals(new MethodArguments([]), $invocation->getArguments());
         $this->assertEquals(new Metadata(), $invocation->getMetadata());
     }
@@ -36,7 +36,7 @@ class MethodInvocationTest extends \PHPUnit\Framework\TestCase
         ]);
 
         $invocation = new MethodInvocation($methodName, $arguments);
-        $this->assertSame($methodName, $invocation->getMethodName());
+        $this->assertSame($methodName, $invocation->getCall());
         $this->assertEquals($arguments, $invocation->getArguments());
         $this->assertEquals($arguments->getMetadata(), $invocation->getMetadata());
     }

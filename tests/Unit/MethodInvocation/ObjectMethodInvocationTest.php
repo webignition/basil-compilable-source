@@ -33,7 +33,7 @@ class ObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
     ) {
         $invocation = new ObjectMethodInvocation($object, $methodName, $arguments);
 
-        $this->assertSame($methodName, $invocation->getMethodName());
+        $this->assertSame($methodName, $invocation->getCall());
         $this->assertSame($arguments, $invocation->getArguments());
         $this->assertEquals($expectedMetadata, $invocation->getMetadata());
     }
