@@ -11,8 +11,8 @@ use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 class CatchBlock extends AbstractBlock
 {
     private const RENDER_TEMPLATE = <<<'EOD'
-catch (%s) {
-%s
+catch ({{ catch_expression }}) {
+{{ body }}
 }
 EOD;
 
@@ -30,10 +30,11 @@ EOD;
         return self::RENDER_TEMPLATE;
     }
 
-    protected function getAdditionalRenderComponents(): array
+    protected function getRenderContext(): array
     {
         return [
-            $this->catchExpression->render(),
+            'catch_expression' => $this->catchExpression->render(),
+            'body' => $this->renderBody(),
         ];
     }
 

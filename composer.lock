@@ -4,8 +4,64 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6ac9fc609b369bacc2ab087ed168a0e2",
-    "packages": [],
+    "content-hash": "62f89dadfbcf3396739d3da99c3ebcad",
+    "packages": [
+        {
+            "name": "webignition/stubble",
+            "version": "0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/webignition/stubble.git",
+                "reference": "cb95c46a838f7d3c4d153d878a8177e310dc680c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/webignition/stubble/zipball/cb95c46a838f7d3c4d153d878a8177e310dc680c",
+                "reference": "cb95c46a838f7d3c4d153d878a8177e310dc680c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.4"
+            },
+            "require-dev": {
+                "phpstan/extension-installer": "~1.0",
+                "phpstan/phpstan": "~0.12",
+                "phpunit/phpunit": "~9.4",
+                "squizlabs/php_codesniffer": "~3.5",
+                "symplify/easy-coding-standard": "~8.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "webignition\\Stubble\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jon Cram",
+                    "email": "webignition@gmail.com"
+                }
+            ],
+            "description": "A minimal library to replace mustache-like variables in strings",
+            "homepage": "https://github.com/webignition/stubble",
+            "keywords": [
+                "handlebars",
+                "mustache",
+                "replace",
+                "replacement",
+                "string"
+            ],
+            "support": {
+                "issues": "https://github.com/webignition/stubble/issues",
+                "source": "https://github.com/webignition/stubble/tree/0.3"
+            },
+            "time": "2020-10-09T09:49:51+00:00"
+        }
+    ],
     "packages-dev": [
         {
             "name": "composer/package-versions-deprecated",

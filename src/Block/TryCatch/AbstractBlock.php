@@ -7,6 +7,8 @@ namespace webignition\BasilCompilableSource\Block\TryCatch;
 use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\HasMetadataInterface;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\Stubble\UnresolvedVariableException;
+use webignition\Stubble\VariableResolver;
 
 abstract class AbstractBlock implements HasMetadataInterface
 {
@@ -20,9 +22,9 @@ abstract class AbstractBlock implements HasMetadataInterface
     abstract protected function getRenderTemplate(): string;
 
     /**
-     * @return string[]
+     * @return array<string, string>
      */
-    abstract protected function getAdditionalRenderComponents(): array;
+    abstract protected function getRenderContext(): array;
 
     public function getMetadata(): MetadataInterface
     {
@@ -31,15 +33,22 @@ abstract class AbstractBlock implements HasMetadataInterface
 
     public function render(): string
     {
+        try {
+            return VariableResolver::resolveTemplate(
+                $this->getRenderTemplate(),
+                $this->getRenderContext()
+            );
+        } catch (UnresolvedVariableException $unresolvedVariableException) {
+            return $unresolvedVariableException->getTemplate();
+        }
+    }
+
+    protected function renderBody(): string
+    {
         $renderedBody = $this->body->render();
 
         $renderedBody = $this->indent($renderedBody);
-        $renderedBody = rtrim($renderedBody, "\n");
-
-        return sprintf(
-            $this->getRenderTemplate(),
-            ...array_merge($this->getAdditionalRenderComponents(), [$renderedBody])
-        );
+        return rtrim($renderedBody, "\n");
     }
 
     private function indent(string $content): string
