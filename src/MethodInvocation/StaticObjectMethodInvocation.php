@@ -8,7 +8,8 @@ use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSource\StaticObject;
 
-class StaticObjectMethodInvocation extends MethodInvocation implements StaticObjectMethodInvocationInterface
+class StaticObjectMethodInvocation extends AbstractMethodInvocationEncapsulator implements
+    StaticObjectMethodInvocationInterface
 {
     private const RENDER_PATTERN = '%s::%s';
 
@@ -24,14 +25,14 @@ class StaticObjectMethodInvocation extends MethodInvocation implements StaticObj
         $this->staticObject = $staticObject;
     }
 
+    protected function getAdditionalMetadata(): MetadataInterface
+    {
+        return $this->staticObject->getMetadata();
+    }
+
     public function getStaticObject(): StaticObject
     {
         return $this->staticObject;
-    }
-
-    public function getMetadata(): MetadataInterface
-    {
-        return parent::getMetadata()->merge($this->staticObject->getMetadata());
     }
 
     public function render(): string
@@ -39,7 +40,7 @@ class StaticObjectMethodInvocation extends MethodInvocation implements StaticObj
         return sprintf(
             self::RENDER_PATTERN,
             $this->getStaticObject()->render(),
-            parent::render()
+            $this->invocation->render()
         );
     }
 }
