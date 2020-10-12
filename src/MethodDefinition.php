@@ -140,6 +140,14 @@ EOD;
         return sprintf(self::RENDER_TEMPLATE, $signature, $lines);
     }
 
+    public function withDocBlock(DocBlock $docBlock): self
+    {
+        $new = clone $this;
+        $new->docblock = $docBlock;
+
+        return $new;
+    }
+
     private function createSignature(): string
     {
         $signature = $this->getVisibility() . ' ';

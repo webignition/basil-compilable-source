@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Tests\Unit;
 
+use webignition\BasilCompilableSource\Annotation\DataProviderAnnotation;
 use webignition\BasilCompilableSource\Annotation\ParameterAnnotation;
 use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\Body\BodyInterface;
@@ -280,6 +281,38 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
                 'expectedString' =>
                     'public static function emptyPublicStaticMethod()' . "\n" .
                     '{' . "\n\n" .
+                    '}'
+            ],
+            'public, has arguments, no return type, has mutated docblock' => [
+                'methodDefinition' => (function () {
+                    $methodDefinition = new MethodDefinition(
+                        'nameOfMethod',
+                        new Body([
+                            new SingleLineComment('comment'),
+                        ]),
+                        ['x', 'y']
+                    );
+
+                    $docblock = $methodDefinition->getDocBlock();
+                    if ($docblock instanceof DocBlock) {
+                        $docblock = $docblock->prepend(new DocBlock([
+                            new DataProviderAnnotation('dataProviderMethodName'),
+                            "\n",
+                        ]));
+                    }
+
+                    return $methodDefinition->withDocBlock($docblock);
+                })(),
+                'expectedString' =>
+                    '/**' . "\n" .
+                    ' * @dataProvider dataProviderMethodName' . "\n" .
+                    ' *' . "\n" .
+                    ' * @param string $x' . "\n" .
+                    ' * @param string $y' . "\n" .
+                    ' */' . "\n" .
+                    'public function nameOfMethod($x, $y)' . "\n" .
+                    '{' . "\n" .
+                    '    // comment' . "\n" .
                     '}'
             ],
         ];
