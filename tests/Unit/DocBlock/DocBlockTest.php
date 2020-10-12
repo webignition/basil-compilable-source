@@ -11,14 +11,14 @@ use webignition\BasilCompilableSource\VariableName;
 class DocBlockTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @dataProvider mergeDataProvider
+     * @dataProvider appendDataProvider
      */
-    public function testMerge(DocBlock $docBlock, DocBlock $merge, DocBlock $expectedDocBlock)
+    public function testAppend(DocBlock $docBlock, DocBlock $merge, DocBlock $expectedDocBlock)
     {
-        $this->assertEquals($expectedDocBlock, $docBlock->merge($merge));
+        $this->assertEquals($expectedDocBlock, $docBlock->append($merge));
     }
 
-    public function mergeDataProvider(): array
+    public function appendDataProvider(): array
     {
         return [
             'empty, empty' => [

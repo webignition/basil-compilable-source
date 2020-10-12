@@ -63,7 +63,7 @@ EOD;
         return (new DocBlock([
             new DataProviderAnnotation($this->dataProviderMethodDefinition->getName()),
             "\n",
-        ]))->merge(
+        ]))->append(
             $this->methodDefinition->getDocBlock()
         );
     }
