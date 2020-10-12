@@ -14,7 +14,7 @@ class DocBlock implements SourceInterface
     /**
      * @var array<int, string|AnnotationInterface>
      */
-    private array $lines = [];
+    private array $lines;
 
     /**
      * @param array<int, string|AnnotationInterface> $lines
@@ -24,9 +24,14 @@ class DocBlock implements SourceInterface
         $this->lines = $lines;
     }
 
-    public function merge(DocBlock $docBlock): DocBlock
+    public function append(DocBlock $addition): self
     {
-        return new DocBlock(array_merge($this->lines, $docBlock->lines));
+        return $this->merge($this, $addition);
+    }
+
+    public function prepend(DocBlock $addition): self
+    {
+        return $this->merge($addition, $this);
     }
 
     public function render(): string
@@ -51,5 +56,10 @@ class DocBlock implements SourceInterface
         });
 
         return sprintf(self::RENDER_TEMPLATE, implode('', $renderedLines));
+    }
+
+    private function merge(DocBlock $source, DocBlock $addition): self
+    {
+        return new DocBlock(array_merge($source->lines, $addition->lines));
     }
 }

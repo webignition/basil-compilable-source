@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
+use webignition\BasilCompilableSource\Annotation\DataProviderAnnotation;
 use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\ClassDefinition;
 use webignition\BasilCompilableSource\ClassDefinitionInterface;
 use webignition\BasilCompilableSource\ClassName;
-use webignition\BasilCompilableSource\DataProvidedMethodDefinition;
 use webignition\BasilCompilableSource\DataProviderMethodDefinition;
+use webignition\BasilCompilableSource\DocBlock\DocBlock;
 use webignition\BasilCompilableSource\EmptyLine;
 use webignition\BasilCompilableSource\Expression\AssignmentExpression;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
@@ -272,8 +273,8 @@ class ClassDefinitionTest extends TestCase
             'many methods, with data provider' => [
                 'classDefinition' => $this->createClassDefinitionWithBaseClass(
                     new ClassDefinition('NameOfClass', [
-                        new DataProvidedMethodDefinition(
-                            new MethodDefinition(
+                        (function () {
+                            $methodDefinition = new MethodDefinition(
                                 'stepOne',
                                 new Body([
                                     new SingleLineComment('click $"a"'),
@@ -299,18 +300,30 @@ class ClassDefinitionTest extends TestCase
                                 [
                                     'x', 'y',
                                 ]
-                            ),
-                            new DataProviderMethodDefinition('stepOneDataProvider', [
-                                0 => [
-                                    'x' => '1',
-                                    'y' => '2',
-                                ],
-                                1 => [
-                                    'x' => '3',
-                                    'y' => '4',
-                                ],
-                            ])
-                        ),
+                            );
+
+                            $docblock = $methodDefinition->getDocBlock();
+                            if ($docblock instanceof DocBlock) {
+                                $docblock = $docblock->prepend(new DocBlock([
+                                    new DataProviderAnnotation('stepOneDataProvider'),
+                                    "\n",
+                                ]));
+
+                                $methodDefinition = $methodDefinition->withDocBlock($docblock);
+                            }
+
+                            return $methodDefinition;
+                        })(),
+                        new DataProviderMethodDefinition('stepOneDataProvider', [
+                            0 => [
+                                'x' => '1',
+                                'y' => '2',
+                            ],
+                            1 => [
+                                'x' => '3',
+                                'y' => '4',
+                            ],
+                        ]),
                         new MethodDefinition('stepTwo', new Body([
                             new SingleLineComment('click $"b"'),
                             new Statement(
