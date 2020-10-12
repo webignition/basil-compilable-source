@@ -7,8 +7,9 @@ namespace webignition\BasilCompilableSource;
 use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\DocBlock\DocBlock;
 use webignition\BasilCompilableSource\Expression\ArrayExpression;
+use webignition\BasilCompilableSource\Expression\ReturnExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
-use webignition\BasilCompilableSource\Statement\ReturnStatement;
+use webignition\BasilCompilableSource\Statement\Statement;
 
 class DataProviderMethodDefinition extends MethodDefinition implements DataProviderMethodDefinitionInterface
 {
@@ -28,8 +29,10 @@ class DataProviderMethodDefinition extends MethodDefinition implements DataProvi
         $this->data = $data;
 
         parent::__construct($name, new Body([
-            ReturnStatement::create(
-                new ArrayExpression($data)
+            new Statement(
+                new ReturnExpression(
+                    new ArrayExpression($data)
+                )
             ),
         ]));
 
