@@ -12,9 +12,9 @@ use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\Expression\AssignmentExpression;
 use webignition\BasilCompilableSource\Expression\CatchExpression;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
+use webignition\BasilCompilableSource\Expression\ReturnExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\MethodInvocation\StaticObjectMethodInvocation;
-use webignition\BasilCompilableSource\Statement\EmptyReturnStatement;
 use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\BasilCompilableSource\StaticObject;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclaration;
@@ -129,7 +129,9 @@ class CatchBlockTest extends \PHPUnit\Framework\TestCase
                             new ObjectTypeDeclaration(new ClassName(\Exception::class)),
                         ])
                     ),
-                    new EmptyReturnStatement()
+                    new Statement(
+                        new ReturnExpression()
+                    )
                 ),
                 'expectedString' =>
                     'catch (\Exception $exception) {' . "\n" .

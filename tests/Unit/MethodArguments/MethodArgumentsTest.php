@@ -12,11 +12,11 @@ use webignition\BasilCompilableSource\Expression\AssignmentExpression;
 use webignition\BasilCompilableSource\Expression\ClosureExpression;
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
+use webignition\BasilCompilableSource\Expression\ReturnExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
-use webignition\BasilCompilableSource\Statement\ReturnStatement;
 use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\BasilCompilableSource\StaticObject;
 use webignition\BasilCompilableSource\VariableDependency;
@@ -153,8 +153,10 @@ class MethodArgumentsTest extends \PHPUnit\Framework\TestCase
                                     )
                                 ),
                                 new EmptyLine(),
-                                ReturnStatement::create(
-                                    new VariableName('variable'),
+                                new Statement(
+                                    new ReturnExpression(
+                                        new VariableName('variable'),
+                                    )
                                 ),
                             ])
                         ),

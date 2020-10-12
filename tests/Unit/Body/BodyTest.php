@@ -16,8 +16,8 @@ use webignition\BasilCompilableSource\Expression\AssignmentExpression;
 use webignition\BasilCompilableSource\Expression\CatchExpression;
 use webignition\BasilCompilableSource\Expression\ClosureExpression;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
+use webignition\BasilCompilableSource\Expression\ReturnExpression;
 use webignition\BasilCompilableSource\SingleLineComment;
-use webignition\BasilCompilableSource\Statement\EmptyReturnStatement;
 use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclaration;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclarationCollection;
@@ -181,7 +181,9 @@ class BodyTest extends \PHPUnit\Framework\TestCase
             ],
             'empty return only' => [
                 'body' => new Body([
-                    new EmptyReturnStatement()
+                    new Statement(
+                        new ReturnExpression()
+                    )
                 ]),
                 'expectedString' => 'return;',
             ],
@@ -190,7 +192,9 @@ class BodyTest extends \PHPUnit\Framework\TestCase
                     new Statement(
                         new LiteralExpression('"literal from statement"')
                     ),
-                    new EmptyReturnStatement()
+                    new Statement(
+                        new ReturnExpression()
+                    )
                 ]),
                 'expectedString' =>
                     '"literal from statement";' . "\n" .
