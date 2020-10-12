@@ -11,6 +11,7 @@ use webignition\BasilCompilableSource\VariableName;
 class DocBlockTest extends \PHPUnit\Framework\TestCase
 {
     /**
+     * @dataProvider mergeDataProvider
      * @dataProvider appendDataProvider
      */
     public function testAppend(DocBlock $docBlock, DocBlock $merge, DocBlock $expectedDocBlock)
@@ -21,12 +22,57 @@ class DocBlockTest extends \PHPUnit\Framework\TestCase
     public function appendDataProvider(): array
     {
         return [
-            'empty, empty' => [
+            'append: non-empty, non-empty' => [
+                'docBlock' => new DocBlock([
+                    'docBlock line',
+                ]),
+                'merge' => new DocBlock([
+                    'merge line',
+                ]),
+                'expectedDocBlock' => new DocBlock([
+                    'docBlock line',
+                    'merge line',
+                ]),
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider mergeDataProvider
+     * @dataProvider prependDataProvider
+     */
+    public function testPrepend(DocBlock $docBlock, DocBlock $merge, DocBlock $expectedDocBlock)
+    {
+        $this->assertEquals($expectedDocBlock, $docBlock->prepend($merge));
+    }
+
+    public function prependDataProvider(): array
+    {
+        return [
+            'prepend: non-empty, non-empty' => [
+                'docBlock' => new DocBlock([
+                    'docBlock line',
+                ]),
+                'merge' => new DocBlock([
+                    'merge line',
+                ]),
+                'expectedDocBlock' => new DocBlock([
+                    'merge line',
+                    'docBlock line',
+                ]),
+            ],
+        ];
+    }
+
+    public function mergeDataProvider(): array
+    {
+        return [
+            'merge: empty, empty' => [
                 'docBlock' => new DocBlock([]),
                 'merge' => new DocBlock([]),
                 'expectedDocBlock' => new DocBlock([]),
             ],
-            'non-empty, empty' => [
+            'merge: non-empty, empty' => [
                 'docBlock' => new DocBlock([
                     'docBlock line',
                 ]),
@@ -35,24 +81,12 @@ class DocBlockTest extends \PHPUnit\Framework\TestCase
                     'docBlock line',
                 ]),
             ],
-            'empty, non-empty' => [
+            'merge: empty, non-empty' => [
                 'docBlock' => new DocBlock([]),
                 'merge' => new DocBlock([
                     'merge line',
                 ]),
                 'expectedDocBlock' => new DocBlock([
-                    'merge line',
-                ]),
-            ],
-            'non-empty, non-empty' => [
-                'docBlock' => new DocBlock([
-                    'docBlock line',
-                ]),
-                'merge' => new DocBlock([
-                    'merge line',
-                ]),
-                'expectedDocBlock' => new DocBlock([
-                    'docBlock line',
                     'merge line',
                 ]),
             ],
