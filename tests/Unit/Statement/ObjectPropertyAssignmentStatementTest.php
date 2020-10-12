@@ -12,20 +12,20 @@ use webignition\BasilCompilableSource\VariableDependency;
 class ObjectPropertyAssignmentStatementTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @dataProvider createDataProvider
+     * @dataProvider createFromExpressionDataProvider
      */
-    public function testCreate(
+    public function testCreateFromExpression(
         ObjectPropertyAccessExpression $placeholder,
         ExpressionInterface $expression,
         ObjectPropertyAccessExpression $expectedPlaceholder
     ) {
-        $statement = new ObjectPropertyAssignmentStatement($placeholder, $expression);
+        $statement = ObjectPropertyAssignmentStatement::createFromExpression($placeholder, $expression);
 
         $this->assertEquals($expectedPlaceholder, $statement->getVariableDependency());
         $this->assertSame($expression, $statement->getExpression());
     }
 
-    public function createDataProvider(): array
+    public function createFromExpressionDataProvider(): array
     {
         return [
             'default' => [
@@ -54,7 +54,7 @@ class ObjectPropertyAssignmentStatementTest extends \PHPUnit\Framework\TestCase
     {
         return [
             'default' => [
-                'statement' => new ObjectPropertyAssignmentStatement(
+                'statement' => ObjectPropertyAssignmentStatement::createFromExpression(
                     new ObjectPropertyAccessExpression(
                         new VariableDependency('PLACEHOLDER'),
                         'propertyName'
