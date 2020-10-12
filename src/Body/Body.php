@@ -66,7 +66,7 @@ class Body implements BodyInterface
         ExpressionInterface $rightHandSide
     ): self {
         return new Body([
-            new AssignmentStatement($leftHandSide, $rightHandSide)
+            AssignmentStatement::create($leftHandSide, $rightHandSide)
         ]);
     }
 

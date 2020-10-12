@@ -100,7 +100,7 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
                             'methodName'
                         )
                     ),
-                    new AssignmentStatement(
+                    AssignmentStatement::create(
                         new VariableName('variable'),
                         new MethodInvocation('methodName')
                     ),
@@ -226,7 +226,7 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
                     new Body([
                         new SingleLineComment('Assign object method call to $value'),
                         new EmptyLine(),
-                        new AssignmentStatement(
+                        AssignmentStatement::create(
                             new VariableName('value'),
                             new ObjectMethodInvocation(
                                 new VariableDependency('OBJECT'),

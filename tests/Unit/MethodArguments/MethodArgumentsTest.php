@@ -145,12 +145,12 @@ class MethodArgumentsTest extends \PHPUnit\Framework\TestCase
                         ),
                         new ClosureExpression(
                             new Body([
-                                new AssignmentStatement(
+                                AssignmentStatement::create(
                                     new VariableName('variable'),
                                     new LiteralExpression('100')
                                 ),
                                 new EmptyLine(),
-                                new ReturnStatement(
+                                ReturnStatement::create(
                                     new VariableName('variable'),
                                 ),
                             ])

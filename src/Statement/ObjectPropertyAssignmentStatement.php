@@ -7,16 +7,29 @@ namespace webignition\BasilCompilableSource\Statement;
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\Expression\ObjectPropertyAccessExpression;
 
-class ObjectPropertyAssignmentStatement extends AssignmentStatement
+class ObjectPropertyAssignmentStatement extends AbstractAssignmentStatement implements AssignmentStatementInterface
 {
-    public function __construct(ObjectPropertyAccessExpression $accessExpression, ExpressionInterface $valueExpression)
+    private ObjectPropertyAccessExpression $accessExpression;
+
+    private function __construct(ObjectPropertyAccessExpression $accessExpression, Statement $valueStatement)
     {
-        parent::__construct(
-            new ObjectPropertyAccessExpression(
-                $accessExpression->getObjectPlaceholder(),
-                $accessExpression->getProperty()
-            ),
-            $valueExpression
+        parent::__construct($valueStatement);
+
+        $this->accessExpression = $accessExpression;
+    }
+
+    public static function create(
+        ObjectPropertyAccessExpression $accessExpression,
+        ExpressionInterface $valueExpression
+    ): self {
+        return new ObjectPropertyAssignmentStatement(
+            $accessExpression,
+            new Statement($valueExpression)
         );
+    }
+
+    public function getVariableDependency(): ExpressionInterface
+    {
+        return $this->accessExpression;
     }
 }

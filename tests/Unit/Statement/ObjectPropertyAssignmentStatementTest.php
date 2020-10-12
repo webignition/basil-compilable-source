@@ -19,7 +19,7 @@ class ObjectPropertyAssignmentStatementTest extends \PHPUnit\Framework\TestCase
         ExpressionInterface $expression,
         ObjectPropertyAccessExpression $expectedPlaceholder
     ) {
-        $statement = new ObjectPropertyAssignmentStatement($placeholder, $expression);
+        $statement = ObjectPropertyAssignmentStatement::create($placeholder, $expression);
 
         $this->assertEquals($expectedPlaceholder, $statement->getVariableDependency());
         $this->assertSame($expression, $statement->getExpression());
@@ -54,7 +54,7 @@ class ObjectPropertyAssignmentStatementTest extends \PHPUnit\Framework\TestCase
     {
         return [
             'default' => [
-                'statement' => new ObjectPropertyAssignmentStatement(
+                'statement' => ObjectPropertyAssignmentStatement::create(
                     new ObjectPropertyAccessExpression(
                         new VariableDependency('PLACEHOLDER'),
                         'propertyName'

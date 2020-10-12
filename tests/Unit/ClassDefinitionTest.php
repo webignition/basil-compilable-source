@@ -131,7 +131,7 @@ class ClassDefinitionTest extends TestCase
                                     'methodName'
                                 )
                             ),
-                            new AssignmentStatement(
+                            AssignmentStatement::create(
                                 new VariableName('variable'),
                                 new MethodInvocation('methodName')
                             ),
@@ -204,7 +204,7 @@ class ClassDefinitionTest extends TestCase
                     new ClassDefinition('NameOfClass', [
                         new MethodDefinition('stepOne', new Body([
                             new SingleLineComment('click $"a"'),
-                            new AssignmentStatement(
+                            AssignmentStatement::create(
                                 new VariableName('statement'),
                                 new StaticObjectMethodInvocation(
                                     new StaticObject('Acme\\Statement'),
@@ -214,14 +214,14 @@ class ClassDefinitionTest extends TestCase
                                     ])
                                 )
                             ),
-                            new AssignmentStatement(
+                            AssignmentStatement::create(
                                 new VariableName('currentStatement'),
                                 new VariableName('statement')
                             ),
                         ])),
                         new MethodDefinition('stepTwo', new Body([
                             new SingleLineComment('click $"b"'),
-                            new AssignmentStatement(
+                            AssignmentStatement::create(
                                 new VariableName('statement'),
                                 new StaticObjectMethodInvocation(
                                     new StaticObject('Acme\\Statement'),
@@ -231,7 +231,7 @@ class ClassDefinitionTest extends TestCase
                                     ])
                                 )
                             ),
-                            new AssignmentStatement(
+                            AssignmentStatement::create(
                                 new VariableName('currentStatement'),
                                 new VariableName('statement')
                             ),
@@ -267,7 +267,7 @@ class ClassDefinitionTest extends TestCase
                                 'stepOne',
                                 new Body([
                                     new SingleLineComment('click $"a"'),
-                                    new AssignmentStatement(
+                                    AssignmentStatement::create(
                                         new VariableName('statement'),
                                         new StaticObjectMethodInvocation(
                                             new StaticObject('Acme\\Statement'),
@@ -277,7 +277,7 @@ class ClassDefinitionTest extends TestCase
                                             ])
                                         )
                                     ),
-                                    new AssignmentStatement(
+                                    AssignmentStatement::create(
                                         new VariableName('currentStatement'),
                                         new VariableName('statement')
                                     ),
@@ -299,7 +299,7 @@ class ClassDefinitionTest extends TestCase
                         ),
                         new MethodDefinition('stepTwo', new Body([
                             new SingleLineComment('click $"b"'),
-                            new AssignmentStatement(
+                            AssignmentStatement::create(
                                 new VariableName('statement'),
                                 new StaticObjectMethodInvocation(
                                     new StaticObject('Acme\\Statement'),
@@ -309,7 +309,7 @@ class ClassDefinitionTest extends TestCase
                                     ])
                                 )
                             ),
-                            new AssignmentStatement(
+                            AssignmentStatement::create(
                                 new VariableName('currentStatement'),
                                 new VariableName('statement')
                             ),
