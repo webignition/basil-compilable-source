@@ -7,10 +7,13 @@ namespace webignition\BasilCompilableSource\Expression;
 use webignition\BasilCompilableSource\Construct\ReturnConstruct;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\BasilCompilableSource\RenderFromTemplateTrait;
 
 class ReturnExpression implements ExpressionInterface
 {
-    private const RENDER_TEMPLATE = '%s%s';
+    use RenderFromTemplateTrait;
+
+    private const RENDER_TEMPLATE = '{{ return_construct }}{{ expression_content }}';
 
     private ?ExpressionInterface $expression;
 
@@ -26,17 +29,21 @@ class ReturnExpression implements ExpressionInterface
             : new Metadata();
     }
 
-    public function render(): string
+    protected function getRenderTemplate(): string
+    {
+        return self::RENDER_TEMPLATE;
+    }
+
+    protected function getRenderContext(): array
     {
         $expressionContent = '';
         if ($this->expression instanceof ExpressionInterface) {
             $expressionContent = ' ' . $this->expression->render();
         }
 
-        return sprintf(
-            self::RENDER_TEMPLATE,
-            (new ReturnConstruct())->render(),
-            $expressionContent
-        );
+        return [
+            'return_construct' => (new ReturnConstruct())->render(),
+            'expression_content' => $expressionContent,
+        ];
     }
 }
