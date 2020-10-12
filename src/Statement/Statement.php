@@ -6,10 +6,13 @@ namespace webignition\BasilCompilableSource\Statement;
 
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\BasilCompilableSource\RenderFromTemplateTrait;
 
 class Statement implements StatementInterface
 {
-    private const RENDER_PATTERN = '%s;';
+    use RenderFromTemplateTrait;
+
+    private const RENDER_TEMPLATE = '{{ expression }};';
 
     private ExpressionInterface $expression;
 
@@ -28,11 +31,15 @@ class Statement implements StatementInterface
         return $this->expression->getMetadata();
     }
 
-    public function render(): string
+    protected function getRenderTemplate(): string
     {
-        return sprintf(
-            self::RENDER_PATTERN,
-            $this->expression->render()
-        );
+        return self::RENDER_TEMPLATE;
+    }
+
+    protected function getRenderContext(): array
+    {
+        return [
+            'expression' => $this->expression->render(),
+        ];
     }
 }
