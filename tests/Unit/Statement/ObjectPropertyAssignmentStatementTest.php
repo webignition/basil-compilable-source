@@ -21,7 +21,7 @@ class ObjectPropertyAssignmentStatementTest extends \PHPUnit\Framework\TestCase
     ) {
         $statement = ObjectPropertyAssignmentStatement::create($placeholder, $expression);
 
-        $this->assertEquals($expectedPlaceholder, $statement->getVariableDependency());
+        $this->assertEquals($expectedPlaceholder, $statement->getVariable());
         $this->assertSame($expression, $statement->getExpression());
     }
 
