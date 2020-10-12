@@ -18,7 +18,7 @@ class ObjectPropertyAssignmentStatement extends AbstractAssignmentStatement impl
         $this->accessExpression = $accessExpression;
     }
 
-    public static function createFromExpression(
+    public static function create(
         ObjectPropertyAccessExpression $accessExpression,
         ExpressionInterface $valueExpression
     ): self {

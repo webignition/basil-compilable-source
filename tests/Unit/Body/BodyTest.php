@@ -283,7 +283,7 @@ class BodyTest extends \PHPUnit\Framework\TestCase
         $rightHandSide = new LiteralExpression('"value"');
 
         $expectedBody = new Body([
-            AssignmentStatement::createFromExpression(
+            AssignmentStatement::create(
                 $leftHandSide,
                 $rightHandSide
             )

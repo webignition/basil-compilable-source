@@ -19,11 +19,11 @@ class ReturnStatement implements StatementInterface
         $this->statement = $statement;
     }
 
-    public static function createFromExpression(ExpressionInterface $expression): self
+    public static function create(ExpressionInterface $expression): self
     {
-        $statement = new Statement($expression);
-
-        return new ReturnStatement($statement);
+        return new ReturnStatement(
+            new Statement($expression)
+        );
     }
 
     public function getMetadata(): MetadataInterface

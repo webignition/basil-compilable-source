@@ -17,10 +17,8 @@ class AssignmentStatement extends AbstractAssignmentStatement implements Assignm
         $this->variableDependency = $variableDependency;
     }
 
-    public static function createFromExpression(
-        ExpressionInterface $variableDependency,
-        ExpressionInterface $valueExpression
-    ): AssignmentStatementInterface {
+    public static function create(ExpressionInterface $variableDependency, ExpressionInterface $valueExpression): self
+    {
         return new AssignmentStatement(
             $variableDependency,
             new Statement($valueExpression)

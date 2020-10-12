@@ -11,7 +11,7 @@ class ReturnStatementTest extends \PHPUnit\Framework\TestCase
 {
     public function testRender()
     {
-        $statement = ReturnStatement::createFromExpression(
+        $statement = ReturnStatement::create(
             new VariableDependency('DEPENDENCY')
         );
 

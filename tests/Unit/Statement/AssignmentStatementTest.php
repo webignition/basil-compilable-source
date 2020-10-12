@@ -20,17 +20,17 @@ use webignition\BasilCompilableSource\VariableName;
 class AssignmentStatementTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @dataProvider createFromExpressionDataProvider
+     * @dataProvider createDataProvider
      */
-    public function testCreateFromExpression(VariableDependency $placeholder, ExpressionInterface $expression)
+    public function testCreate(VariableDependency $placeholder, ExpressionInterface $expression)
     {
-        $statement = AssignmentStatement::createFromExpression($placeholder, $expression);
+        $statement = AssignmentStatement::create($placeholder, $expression);
 
         $this->assertSame($placeholder, $statement->getVariableDependency());
         $this->assertSame($expression, $statement->getExpression());
     }
 
-    public function createFromExpressionDataProvider(): array
+    public function createDataProvider(): array
     {
         return [
             'variable dependency' => [
@@ -63,7 +63,7 @@ class AssignmentStatementTest extends \PHPUnit\Framework\TestCase
     {
         return [
             'expression is variable dependency' => [
-                'statement' => AssignmentStatement::createFromExpression(
+                'statement' => AssignmentStatement::create(
                     new VariableDependency('PLACEHOLDER'),
                     new VariableDependency('DEPENDENCY')
                 ),
@@ -89,28 +89,28 @@ class AssignmentStatementTest extends \PHPUnit\Framework\TestCase
     {
         return [
             'statement encapsulating variable dependency' => [
-                'statement' => AssignmentStatement::createFromExpression(
+                'statement' => AssignmentStatement::create(
                     new VariableDependency('PLACEHOLDER'),
                     new VariableDependency('DEPENDENCY')
                 ),
                 'expectedString' => '{{ PLACEHOLDER }} = {{ DEPENDENCY }};',
             ],
             'statement encapsulating variable, variable is cast to string' => [
-                'statement' => AssignmentStatement::createFromExpression(
+                'statement' => AssignmentStatement::create(
                     new VariableDependency('PLACEHOLDER'),
                     new CastExpression(new VariableName('variable'), 'string')
                 ),
                 'expectedString' => '{{ PLACEHOLDER }} = (string) ($variable);',
             ],
             'statement encapsulating method invocation' => [
-                'statement' => AssignmentStatement::createFromExpression(
+                'statement' => AssignmentStatement::create(
                     new VariableDependency('PLACEHOLDER'),
                     new MethodInvocation('methodName')
                 ),
                 'expectedString' => '{{ PLACEHOLDER }} = methodName();',
             ],
             'statement encapsulating object method invocation' => [
-                'statement' => AssignmentStatement::createFromExpression(
+                'statement' => AssignmentStatement::create(
                     new VariableDependency('PLACEHOLDER'),
                     new ObjectMethodInvocation(
                         new VariableDependency('OBJECT'),
@@ -120,7 +120,7 @@ class AssignmentStatementTest extends \PHPUnit\Framework\TestCase
                 'expectedString' => '{{ PLACEHOLDER }} = {{ OBJECT }}->methodName();',
             ],
             'placeholder is object property access expression' => [
-                'statement' => AssignmentStatement::createFromExpression(
+                'statement' => AssignmentStatement::create(
                     new ObjectPropertyAccessExpression(
                         new VariableDependency('TARGET'),
                         'propertyName'

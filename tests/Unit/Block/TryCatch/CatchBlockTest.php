@@ -27,7 +27,7 @@ class CatchBlockTest extends \PHPUnit\Framework\TestCase
     public function testGetMetadata()
     {
         $body = new Body([
-            AssignmentStatement::createFromExpression(
+            AssignmentStatement::create(
                 new VariableDependency('DEPENDENCY'),
                 new StaticObjectMethodInvocation(
                     new StaticObject(\RuntimeException::class),

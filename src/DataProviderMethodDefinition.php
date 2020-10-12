@@ -28,7 +28,7 @@ class DataProviderMethodDefinition extends MethodDefinition implements DataProvi
         $this->data = $data;
 
         parent::__construct($name, new Body([
-            ReturnStatement::createFromExpression(
+            ReturnStatement::create(
                 new ArrayExpression($data)
             ),
         ]));
