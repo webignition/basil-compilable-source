@@ -8,7 +8,9 @@ use webignition\BasilCompilableSource\Body\BodyContentInterface;
 
 class SingleLineComment implements BodyContentInterface
 {
-    private const RENDER_TEMPLATE = '// %s';
+    use RenderFromTemplateTrait;
+
+    private const RENDER_TEMPLATE = '// {{ content }}';
 
     private string $content;
 
@@ -17,8 +19,15 @@ class SingleLineComment implements BodyContentInterface
         $this->content = $content;
     }
 
-    public function render(): string
+    protected function getRenderTemplate(): string
     {
-        return sprintf(self::RENDER_TEMPLATE, $this->content);
+        return self::RENDER_TEMPLATE;
+    }
+
+    protected function getRenderContext(): array
+    {
+        return [
+            'content' => $this->content,
+        ];
     }
 }
