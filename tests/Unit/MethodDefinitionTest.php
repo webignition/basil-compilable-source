@@ -9,6 +9,7 @@ use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\DocBlock\DocBlock;
 use webignition\BasilCompilableSource\EmptyLine;
+use webignition\BasilCompilableSource\Expression\AssignmentExpression;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
@@ -18,7 +19,6 @@ use webignition\BasilCompilableSource\MethodDefinitionInterface;
 use webignition\BasilCompilableSource\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\SingleLineComment;
-use webignition\BasilCompilableSource\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSource\VariableDependencyCollection;
@@ -100,9 +100,11 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
                             'methodName'
                         )
                     ),
-                    AssignmentStatement::create(
-                        new VariableName('variable'),
-                        new MethodInvocation('methodName')
+                    new Statement(
+                        new AssignmentExpression(
+                            new VariableName('variable'),
+                            new MethodInvocation('methodName')
+                        )
                     ),
                 ])),
                 'expectedMetadata' => new Metadata([
@@ -226,15 +228,17 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
                     new Body([
                         new SingleLineComment('Assign object method call to $value'),
                         new EmptyLine(),
-                        AssignmentStatement::create(
-                            new VariableName('value'),
-                            new ObjectMethodInvocation(
-                                new VariableDependency('OBJECT'),
-                                'methodName',
-                                new MethodArguments([
-                                    new LiteralExpression('$x'),
-                                    new LiteralExpression('$y'),
-                                ])
+                        new Statement(
+                            new AssignmentExpression(
+                                new VariableName('value'),
+                                new ObjectMethodInvocation(
+                                    new VariableDependency('OBJECT'),
+                                    'methodName',
+                                    new MethodArguments([
+                                        new LiteralExpression('$x'),
+                                        new LiteralExpression('$y'),
+                                    ])
+                                )
                             )
                         ),
                     ]),

@@ -10,6 +10,7 @@ use webignition\BasilCompilableSource\Block\TryCatch\TryCatchBlock;
 use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\ClassName;
+use webignition\BasilCompilableSource\Expression\AssignmentExpression;
 use webignition\BasilCompilableSource\Expression\CastExpression;
 use webignition\BasilCompilableSource\Expression\CatchExpression;
 use webignition\BasilCompilableSource\Expression\ClosureExpression;
@@ -19,7 +20,6 @@ use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\SingleLineComment;
-use webignition\BasilCompilableSource\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Statement\ReturnStatement;
 use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclaration;
@@ -56,11 +56,13 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
             ],
             'non-empty, has metadata' => [
                 'body' => new Body([
-                    AssignmentStatement::create(
-                        new VariableName('variable'),
-                        new ObjectMethodInvocation(
-                            new VariableDependency('DEPENDENCY'),
-                            'dependencyMethodName'
+                    new Statement(
+                        new AssignmentExpression(
+                            new VariableName('variable'),
+                            new ObjectMethodInvocation(
+                                new VariableDependency('DEPENDENCY'),
+                                'dependencyMethodName'
+                            )
                         )
                     ),
                     ReturnStatement::create(
@@ -157,11 +159,13 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
             'non-empty, has metadata' => [
                 'expression' => new ClosureExpression(
                     new Body([
-                        AssignmentStatement::create(
-                            new VariableName('variable'),
-                            new ObjectMethodInvocation(
-                                new VariableDependency('DEPENDENCY'),
-                                'dependencyMethodName'
+                        new Statement(
+                            new AssignmentExpression(
+                                new VariableName('variable'),
+                                new ObjectMethodInvocation(
+                                    new VariableDependency('DEPENDENCY'),
+                                    'dependencyMethodName'
+                                )
                             )
                         ),
                         new \webignition\BasilCompilableSource\EmptyLine(),
@@ -224,9 +228,11 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
             'with resolving placeholder' => [
                 'expression' => new ClosureExpression(
                     new Body([
-                        AssignmentStatement::create(
-                            new VariableName('variableName'),
-                            new LiteralExpression('"literal value"')
+                        new Statement(
+                            new AssignmentExpression(
+                                new VariableName('variableName'),
+                                new LiteralExpression('"literal value"')
+                            )
                         ),
                         new \webignition\BasilCompilableSource\EmptyLine(),
                         ReturnStatement::create(

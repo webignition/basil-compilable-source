@@ -8,6 +8,7 @@ use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\EmptyLine;
+use webignition\BasilCompilableSource\Expression\AssignmentExpression;
 use webignition\BasilCompilableSource\Expression\ClosureExpression;
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
@@ -15,8 +16,8 @@ use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
-use webignition\BasilCompilableSource\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Statement\ReturnStatement;
+use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\BasilCompilableSource\StaticObject;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSource\VariableName;
@@ -145,9 +146,11 @@ class MethodArgumentsTest extends \PHPUnit\Framework\TestCase
                         ),
                         new ClosureExpression(
                             new Body([
-                                AssignmentStatement::create(
-                                    new VariableName('variable'),
-                                    new LiteralExpression('100')
+                                new Statement(
+                                    new AssignmentExpression(
+                                        new VariableName('variable'),
+                                        new LiteralExpression('100')
+                                    )
                                 ),
                                 new EmptyLine(),
                                 ReturnStatement::create(

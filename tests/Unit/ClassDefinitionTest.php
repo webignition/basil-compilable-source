@@ -12,6 +12,7 @@ use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\DataProvidedMethodDefinition;
 use webignition\BasilCompilableSource\DataProviderMethodDefinition;
 use webignition\BasilCompilableSource\EmptyLine;
+use webignition\BasilCompilableSource\Expression\AssignmentExpression;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
@@ -22,7 +23,6 @@ use webignition\BasilCompilableSource\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\MethodInvocation\StaticObjectMethodInvocation;
 use webignition\BasilCompilableSource\SingleLineComment;
-use webignition\BasilCompilableSource\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\BasilCompilableSource\StaticObject;
 use webignition\BasilCompilableSource\VariableDependency;
@@ -131,10 +131,12 @@ class ClassDefinitionTest extends TestCase
                                     'methodName'
                                 )
                             ),
-                            AssignmentStatement::create(
-                                new VariableName('variable'),
-                                new MethodInvocation('methodName')
-                            ),
+                            new Statement(
+                                new AssignmentExpression(
+                                    new VariableName('variable'),
+                                    new MethodInvocation('methodName')
+                                )
+                            )
                         ])),
                     ]
                 ),
@@ -204,36 +206,44 @@ class ClassDefinitionTest extends TestCase
                     new ClassDefinition('NameOfClass', [
                         new MethodDefinition('stepOne', new Body([
                             new SingleLineComment('click $"a"'),
-                            AssignmentStatement::create(
-                                new VariableName('statement'),
-                                new StaticObjectMethodInvocation(
-                                    new StaticObject('Acme\\Statement'),
-                                    'createAction',
-                                    new MethodArguments([
-                                        new LiteralExpression('\'$"a" exists\''),
-                                    ])
+                            new Statement(
+                                new AssignmentExpression(
+                                    new VariableName('statement'),
+                                    new StaticObjectMethodInvocation(
+                                        new StaticObject('Acme\\Statement'),
+                                        'createAction',
+                                        new MethodArguments([
+                                            new LiteralExpression('\'$"a" exists\''),
+                                        ])
+                                    )
                                 )
                             ),
-                            AssignmentStatement::create(
-                                new VariableName('currentStatement'),
-                                new VariableName('statement')
+                            new Statement(
+                                new AssignmentExpression(
+                                    new VariableName('currentStatement'),
+                                    new VariableName('statement')
+                                )
                             ),
                         ])),
                         new MethodDefinition('stepTwo', new Body([
                             new SingleLineComment('click $"b"'),
-                            AssignmentStatement::create(
-                                new VariableName('statement'),
-                                new StaticObjectMethodInvocation(
-                                    new StaticObject('Acme\\Statement'),
-                                    'createAction',
-                                    new MethodArguments([
-                                        new LiteralExpression('\'$"b" exists\''),
-                                    ])
+                            new Statement(
+                                new AssignmentExpression(
+                                    new VariableName('statement'),
+                                    new StaticObjectMethodInvocation(
+                                        new StaticObject('Acme\\Statement'),
+                                        'createAction',
+                                        new MethodArguments([
+                                            new LiteralExpression('\'$"b" exists\''),
+                                        ])
+                                    )
                                 )
                             ),
-                            AssignmentStatement::create(
-                                new VariableName('currentStatement'),
-                                new VariableName('statement')
+                            new Statement(
+                                new AssignmentExpression(
+                                    new VariableName('currentStatement'),
+                                    new VariableName('statement')
+                                )
                             ),
                         ])),
                     ]),
@@ -267,19 +277,23 @@ class ClassDefinitionTest extends TestCase
                                 'stepOne',
                                 new Body([
                                     new SingleLineComment('click $"a"'),
-                                    AssignmentStatement::create(
-                                        new VariableName('statement'),
-                                        new StaticObjectMethodInvocation(
-                                            new StaticObject('Acme\\Statement'),
-                                            'createAction',
-                                            new MethodArguments([
-                                                new LiteralExpression('\'$"a" exists\''),
-                                            ])
+                                    new Statement(
+                                        new AssignmentExpression(
+                                            new VariableName('statement'),
+                                            new StaticObjectMethodInvocation(
+                                                new StaticObject('Acme\\Statement'),
+                                                'createAction',
+                                                new MethodArguments([
+                                                    new LiteralExpression('\'$"a" exists\''),
+                                                ])
+                                            )
                                         )
                                     ),
-                                    AssignmentStatement::create(
-                                        new VariableName('currentStatement'),
-                                        new VariableName('statement')
+                                    new Statement(
+                                        new AssignmentExpression(
+                                            new VariableName('currentStatement'),
+                                            new VariableName('statement')
+                                        )
                                     ),
                                 ]),
                                 [
@@ -299,19 +313,23 @@ class ClassDefinitionTest extends TestCase
                         ),
                         new MethodDefinition('stepTwo', new Body([
                             new SingleLineComment('click $"b"'),
-                            AssignmentStatement::create(
-                                new VariableName('statement'),
-                                new StaticObjectMethodInvocation(
-                                    new StaticObject('Acme\\Statement'),
-                                    'createAction',
-                                    new MethodArguments([
-                                        new LiteralExpression('\'$"b" exists\''),
-                                    ])
+                            new Statement(
+                                new AssignmentExpression(
+                                    new VariableName('statement'),
+                                    new StaticObjectMethodInvocation(
+                                        new StaticObject('Acme\\Statement'),
+                                        'createAction',
+                                        new MethodArguments([
+                                            new LiteralExpression('\'$"b" exists\''),
+                                        ])
+                                    )
                                 )
                             ),
-                            AssignmentStatement::create(
-                                new VariableName('currentStatement'),
-                                new VariableName('statement')
+                            new Statement(
+                                new AssignmentExpression(
+                                    new VariableName('currentStatement'),
+                                    new VariableName('statement')
+                                )
                             ),
                         ])),
                     ]),
