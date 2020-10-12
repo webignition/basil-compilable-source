@@ -26,7 +26,7 @@ class AssignmentStatementTest extends \PHPUnit\Framework\TestCase
     {
         $statement = AssignmentStatement::create($placeholder, $expression);
 
-        $this->assertSame($placeholder, $statement->getVariableDependency());
+        $this->assertSame($placeholder, $statement->getVariable());
         $this->assertSame($expression, $statement->getExpression());
     }
 

@@ -11,16 +11,18 @@ abstract class AbstractAssignmentStatement implements AssignmentStatementInterfa
 {
     private const RENDER_PATTERN = '%s = %s';
 
+    private ExpressionInterface $variable;
     private Statement $valueStatement;
 
-    protected function __construct(Statement $valueStatement)
+    protected function __construct(ExpressionInterface $variable, Statement $valueStatement)
     {
+        $this->variable = $variable;
         $this->valueStatement = $valueStatement;
     }
 
     public function getMetadata(): MetadataInterface
     {
-        $metadata = $this->getVariableDependency()->getMetadata();
+        $metadata = $this->getVariable()->getMetadata();
         return $metadata->merge($this->valueStatement->getMetadata());
     }
 
@@ -29,11 +31,16 @@ abstract class AbstractAssignmentStatement implements AssignmentStatementInterfa
         return $this->valueStatement->getExpression();
     }
 
+    public function getVariable(): ExpressionInterface
+    {
+        return $this->variable;
+    }
+
     public function render(): string
     {
         return sprintf(
             self::RENDER_PATTERN,
-            $this->getVariableDependency()->render(),
+            $this->getVariable()->render(),
             $this->valueStatement->render()
         );
     }
