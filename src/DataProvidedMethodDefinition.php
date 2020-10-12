@@ -58,19 +58,19 @@ EOD;
         return $this->methodDefinition->isStatic();
     }
 
-    public function createDocBlock(): DocBlock
+    public function getDocBlock(): DocBlock
     {
         return (new DocBlock([
             new DataProviderAnnotation($this->dataProviderMethodDefinition->getName()),
             "\n",
         ]))->merge(
-            $this->methodDefinition->createDocBlock()
+            $this->methodDefinition->getDocBlock()
         );
     }
 
     public function render(): string
     {
-        $docBlock = $this->createDocBlock();
+        $docBlock = $this->getDocBlock();
 
         return sprintf(
             self::RENDER_TEMPLATE,

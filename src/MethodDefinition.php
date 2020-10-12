@@ -33,6 +33,7 @@ EOD;
      */
     private array $arguments;
     private bool $isStatic;
+    private ?DocBlock $docblock;
 
     /**
      * @param string $name
@@ -47,6 +48,7 @@ EOD;
         $this->body = $body;
         $this->arguments = $arguments;
         $this->isStatic = false;
+        $this->docblock = $this->createDocBlock($arguments);
     }
 
     public function getName(): string
@@ -104,18 +106,9 @@ EOD;
         return $this->visibility;
     }
 
-    public function createDocBlock(): ?DocBlock
+    public function getDocBlock(): ?DocBlock
     {
-        if (0 === count($this->arguments)) {
-            return null;
-        }
-
-        $lines = [];
-        foreach ($this->arguments as $argument) {
-            $lines[] = new ParameterAnnotation('string', new VariableName($argument));
-        }
-
-        return new DocBlock($lines);
+        return $this->docblock;
     }
 
     public function render(): string
@@ -128,7 +121,7 @@ EOD;
 
         $content = sprintf(self::RENDER_TEMPLATE, $signature, $lines);
 
-        $docBlock = $this->createDocBlock();
+        $docBlock = $this->getDocBlock();
         if (null !== $docBlock) {
             $content = $docBlock->render() . "\n" . $content;
         }
@@ -198,5 +191,24 @@ EOD;
         });
 
         return implode("\n", $lines);
+    }
+
+    /**
+     * @param string[] $arguments
+     *
+     * @return DocBlock|null
+     */
+    private function createDocBlock(array $arguments): ?DocBlock
+    {
+        if (0 === count($arguments)) {
+            return null;
+        }
+
+        $lines = [];
+        foreach ($arguments as $argument) {
+            $lines[] = new ParameterAnnotation('string', new VariableName($argument));
+        }
+
+        return new DocBlock($lines);
     }
 }

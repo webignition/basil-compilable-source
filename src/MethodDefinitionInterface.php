@@ -16,6 +16,6 @@ interface MethodDefinitionInterface extends HasMetadataInterface, SourceInterfac
     public function getReturnType(): ?string;
     public function getVisibility(): string;
     public function isStatic(): bool;
-    public function createDocBlock(): ?DocBlock;
+    public function getDocBlock(): ?DocBlock;
     public function renderMethod(): string;
 }

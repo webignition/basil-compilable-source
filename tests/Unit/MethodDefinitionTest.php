@@ -286,14 +286,14 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @dataProvider createDocBlockDataProvider
+     * @dataProvider getDocBlockDataProvider
      */
-    public function testCreateDocBlock(MethodDefinition $methodDefinition, ?DocBlock $expectedDocBlock)
+    public function testGetDocBlock(MethodDefinition $methodDefinition, ?DocBlock $expectedDocBlock)
     {
-        $this->assertEquals($expectedDocBlock, $methodDefinition->createDocBlock());
+        $this->assertEquals($expectedDocBlock, $methodDefinition->getDocBlock());
     }
 
-    public function createDocBlockDataProvider(): array
+    public function getDocBlockDataProvider(): array
     {
         return [
             'no arguments' => [
