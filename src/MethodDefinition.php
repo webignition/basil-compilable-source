@@ -114,24 +114,6 @@ EOD;
         return $this->docblock;
     }
 
-//    public function render(): string
-//    {
-//        $signature = $this->createSignature();
-//
-//        $lines = $this->body->render();
-//        $lines = $this->indent($lines);
-//        $lines = rtrim($lines, "\n");
-//
-//        $content = sprintf(self::RENDER_TEMPLATE, $signature, $lines);
-//
-//        $docBlock = $this->getDocBlock();
-//        if (null !== $docBlock) {
-//            $content = $docBlock->render() . "\n" . $content;
-//        }
-//
-//        return $content;
-//    }
-
     private function renderBody(): string
     {
         $lines = $this->body->render();
