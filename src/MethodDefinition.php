@@ -11,10 +11,13 @@ use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 
 class MethodDefinition implements MethodDefinitionInterface
 {
+    use RenderFromTemplateTrait;
+
     private const RENDER_TEMPLATE = <<<'EOD'
-%s
+{{ docblock }}
+{{ signature }}
 {
-%s
+{{ body }}
 }
 EOD;
 
@@ -111,22 +114,31 @@ EOD;
         return $this->docblock;
     }
 
-    public function render(): string
-    {
-        $signature = $this->createSignature();
+//    public function render(): string
+//    {
+//        $signature = $this->createSignature();
+//
+//        $lines = $this->body->render();
+//        $lines = $this->indent($lines);
+//        $lines = rtrim($lines, "\n");
+//
+//        $content = sprintf(self::RENDER_TEMPLATE, $signature, $lines);
+//
+//        $docBlock = $this->getDocBlock();
+//        if (null !== $docBlock) {
+//            $content = $docBlock->render() . "\n" . $content;
+//        }
+//
+//        return $content;
+//    }
 
+    private function renderBody(): string
+    {
         $lines = $this->body->render();
         $lines = $this->indent($lines);
         $lines = rtrim($lines, "\n");
 
-        $content = sprintf(self::RENDER_TEMPLATE, $signature, $lines);
-
-        $docBlock = $this->getDocBlock();
-        if (null !== $docBlock) {
-            $content = $docBlock->render() . "\n" . $content;
-        }
-
-        return $content;
+        return $lines;
     }
 
     public function withDocBlock(DocBlock $docBlock): self
@@ -207,5 +219,30 @@ EOD;
         }
 
         return new DocBlock($lines);
+    }
+
+    protected function getRenderTemplate(): string
+    {
+        $template = self::RENDER_TEMPLATE;
+
+        if (null === $this->docblock) {
+            $template = ltrim(str_replace('{{ docblock }}', '', $template));
+        }
+
+        return $template;
+    }
+
+    protected function getRenderContext(): array
+    {
+        $context = [
+            'signature' => $this->createSignature(),
+            'body' => $this->renderBody(),
+        ];
+
+        if ($this->docblock instanceof DocBlock) {
+            $context['docblock'] = $this->docblock->render();
+        }
+
+        return $context;
     }
 }
