@@ -129,17 +129,6 @@ EOD;
         return $content;
     }
 
-    public function renderMethod(): string
-    {
-        $signature = $this->createSignature();
-
-        $lines = $this->body->render();
-        $lines = $this->indent($lines);
-        $lines = rtrim($lines, "\n");
-
-        return sprintf(self::RENDER_TEMPLATE, $signature, $lines);
-    }
-
     public function withDocBlock(DocBlock $docBlock): self
     {
         $new = clone $this;
