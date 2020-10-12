@@ -21,9 +21,7 @@ abstract class AbstractAssignmentStatement implements AssignmentStatementInterfa
     public function getMetadata(): MetadataInterface
     {
         $metadata = $this->getVariableDependency()->getMetadata();
-        $metadata = $metadata->merge($this->valueStatement->getMetadata());
-
-        return $metadata;
+        return $metadata->merge($this->valueStatement->getMetadata());
     }
 
     public function getExpression(): ExpressionInterface

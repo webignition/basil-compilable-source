@@ -23,7 +23,7 @@ class TryBlockTest extends \PHPUnit\Framework\TestCase
     public function testGetMetadata()
     {
         $body = new Body([
-            new AssignmentStatement(
+            AssignmentStatement::createFromExpression(
                 new VariableDependency('DEPENDENCY'),
                 new StaticObjectMethodInvocation(
                     new StaticObject(\RuntimeException::class),

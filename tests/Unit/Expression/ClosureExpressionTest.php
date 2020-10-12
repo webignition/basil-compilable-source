@@ -56,14 +56,14 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
             ],
             'non-empty, has metadata' => [
                 'body' => new Body([
-                    new AssignmentStatement(
+                    AssignmentStatement::createFromExpression(
                         new VariableName('variable'),
                         new ObjectMethodInvocation(
                             new VariableDependency('DEPENDENCY'),
                             'dependencyMethodName'
                         )
                     ),
-                    new ReturnStatement(
+                    ReturnStatement::createFromExpression(
                         new CompositeExpression([
                             new CastExpression(
                                 new ObjectMethodInvocation(
@@ -113,7 +113,7 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
             'single literal statement' => [
                 'expression' => new ClosureExpression(
                     new Body([
-                        new ReturnStatement(new LiteralExpression('5')),
+                        ReturnStatement::createFromExpression(new LiteralExpression('5')),
                     ])
                 ),
                 'expectedString' =>
@@ -124,7 +124,7 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
             'single literal statement, with return statement expression cast to string' => [
                 'expression' => new ClosureExpression(
                     new Body([
-                        new ReturnStatement(
+                        ReturnStatement::createFromExpression(
                             new CastExpression(
                                 new LiteralExpression('5'),
                                 'string'
@@ -143,7 +143,7 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
                         new Statement(new LiteralExpression('3')),
                         new Statement(new LiteralExpression('4')),
                         new \webignition\BasilCompilableSource\EmptyLine(),
-                        new ReturnStatement(new LiteralExpression('5')),
+                        ReturnStatement::createFromExpression(new LiteralExpression('5')),
                     ])
                 ),
                 'expectedString' =>
@@ -157,7 +157,7 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
             'non-empty, has metadata' => [
                 'expression' => new ClosureExpression(
                     new Body([
-                        new AssignmentStatement(
+                        AssignmentStatement::createFromExpression(
                             new VariableName('variable'),
                             new ObjectMethodInvocation(
                                 new VariableDependency('DEPENDENCY'),
@@ -165,7 +165,7 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
                             )
                         ),
                         new \webignition\BasilCompilableSource\EmptyLine(),
-                        new ReturnStatement(
+                        ReturnStatement::createFromExpression(
                             new CompositeExpression([
                                 new CastExpression(
                                     new ObjectMethodInvocation(
@@ -224,12 +224,12 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
             'with resolving placeholder' => [
                 'expression' => new ClosureExpression(
                     new Body([
-                        new AssignmentStatement(
+                        AssignmentStatement::createFromExpression(
                             new VariableName('variableName'),
                             new LiteralExpression('"literal value"')
                         ),
                         new \webignition\BasilCompilableSource\EmptyLine(),
-                        new ReturnStatement(
+                        ReturnStatement::createFromExpression(
                             new VariableName('variableName')
                         ),
                     ])
