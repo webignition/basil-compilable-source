@@ -6,8 +6,8 @@ namespace webignition\BasilCompilableSource\Expression;
 
 use webignition\BasilCompilableSource\RenderableInterface;
 use webignition\BasilCompilableSource\RenderFromTemplateTrait;
-use webignition\BasilCompilableSource\RenderSource;
-use webignition\BasilCompilableSource\RenderSourceInterface;
+use webignition\Stubble\Resolvable;
+use webignition\Stubble\ResolvableInterface;
 
 class CastExpression extends AbstractExpression implements RenderableInterface
 {
@@ -26,9 +26,9 @@ class CastExpression extends AbstractExpression implements RenderableInterface
         parent::__construct($expression->getMetadata());
     }
 
-    public function getRenderSource(): RenderSourceInterface
+    public function getResolvable(): ResolvableInterface
     {
-        return new RenderSource(
+        return new Resolvable(
             self::RENDER_TEMPLATE,
             [
                 'cast_type' => $this->castTo,

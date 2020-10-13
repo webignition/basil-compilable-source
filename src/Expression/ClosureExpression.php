@@ -8,8 +8,8 @@ use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\RenderableInterface;
 use webignition\BasilCompilableSource\RenderFromTemplateTrait;
-use webignition\BasilCompilableSource\RenderSource;
-use webignition\BasilCompilableSource\RenderSourceInterface;
+use webignition\Stubble\Resolvable;
+use webignition\Stubble\ResolvableInterface;
 
 class ClosureExpression extends AbstractExpression implements RenderableInterface
 {
@@ -35,9 +35,9 @@ EOD;
         return $this->body->getMetadata();
     }
 
-    public function getRenderSource(): RenderSourceInterface
+    public function getResolvable(): ResolvableInterface
     {
-        return new RenderSource(
+        return new Resolvable(
             self::RENDER_TEMPLATE,
             [
                 'body' => $this->indent($this->body->render()),

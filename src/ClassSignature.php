@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource;
 
+use webignition\Stubble\Resolvable;
+use webignition\Stubble\ResolvableInterface;
+
 class ClassSignature implements RenderableInterface
 {
     use RenderFromTemplateTrait;
@@ -30,9 +33,9 @@ class ClassSignature implements RenderableInterface
         return $this->baseClass;
     }
 
-    public function getRenderSource(): RenderSourceInterface
+    public function getResolvable(): ResolvableInterface
     {
-        return new RenderSource(
+        return new Resolvable(
             $this->baseClass instanceof ClassName ? self::RENDER_TEMPLATE : self::RENDER_TEMPLATE_WITHOUT_BASE_CLASS,
             [
                 'name' => $this->getName(),

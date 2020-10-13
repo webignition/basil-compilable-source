@@ -6,8 +6,8 @@ namespace webignition\BasilCompilableSource\Annotation;
 
 use webignition\BasilCompilableSource\RenderableInterface;
 use webignition\BasilCompilableSource\RenderFromTemplateTrait;
-use webignition\BasilCompilableSource\RenderSource;
-use webignition\BasilCompilableSource\RenderSourceInterface;
+use webignition\Stubble\Resolvable;
+use webignition\Stubble\ResolvableInterface;
 
 abstract class AbstractAnnotation implements AnnotationInterface, RenderableInterface
 {
@@ -32,9 +32,9 @@ abstract class AbstractAnnotation implements AnnotationInterface, RenderableInte
         $this->arguments = $arguments;
     }
 
-    public function getRenderSource(): RenderSourceInterface
+    public function getResolvable(): ResolvableInterface
     {
-        return new RenderSource(
+        return new Resolvable(
             self::RENDER_TEMPLATE,
             [
                 'name' => $this->name,

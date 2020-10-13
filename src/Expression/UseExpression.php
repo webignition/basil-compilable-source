@@ -7,8 +7,8 @@ namespace webignition\BasilCompilableSource\Expression;
 use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\RenderableInterface;
 use webignition\BasilCompilableSource\RenderFromTemplateTrait;
-use webignition\BasilCompilableSource\RenderSource;
-use webignition\BasilCompilableSource\RenderSourceInterface;
+use webignition\Stubble\Resolvable;
+use webignition\Stubble\ResolvableInterface;
 
 class UseExpression extends AbstractExpression implements RenderableInterface
 {
@@ -25,9 +25,9 @@ class UseExpression extends AbstractExpression implements RenderableInterface
         $this->className = $className;
     }
 
-    public function getRenderSource(): RenderSourceInterface
+    public function getResolvable(): ResolvableInterface
     {
-        return new RenderSource(
+        return new Resolvable(
             self::RENDER_TEMPLATE,
             [
                 'class_name' => $this->renderClassName(),

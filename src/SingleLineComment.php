@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource;
 
 use webignition\BasilCompilableSource\Body\BodyContentInterface;
+use webignition\Stubble\Resolvable;
+use webignition\Stubble\ResolvableInterface;
 
 class SingleLineComment implements BodyContentInterface, RenderableInterface
 {
@@ -19,9 +21,9 @@ class SingleLineComment implements BodyContentInterface, RenderableInterface
         $this->content = $content;
     }
 
-    public function getRenderSource(): RenderSourceInterface
+    public function getResolvable(): ResolvableInterface
     {
-        return new RenderSource(
+        return new Resolvable(
             self::RENDER_TEMPLATE,
             [
                 'content' => $this->content,

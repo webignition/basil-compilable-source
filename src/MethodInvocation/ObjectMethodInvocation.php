@@ -7,8 +7,8 @@ namespace webignition\BasilCompilableSource\MethodInvocation;
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\MethodArguments\MethodArgumentsInterface;
-use webignition\BasilCompilableSource\RenderSource;
-use webignition\BasilCompilableSource\RenderSourceInterface;
+use webignition\Stubble\Resolvable;
+use webignition\Stubble\ResolvableInterface;
 
 class ObjectMethodInvocation extends AbstractMethodInvocationEncapsulator implements MethodInvocationInterface
 {
@@ -25,9 +25,9 @@ class ObjectMethodInvocation extends AbstractMethodInvocationEncapsulator implem
         $this->object = $object;
     }
 
-    public function getRenderSource(): RenderSourceInterface
+    public function getResolvable(): ResolvableInterface
     {
-        return new RenderSource(
+        return new Resolvable(
             self::RENDER_TEMPLATE,
             [
                 'object' => $this->object->render(),

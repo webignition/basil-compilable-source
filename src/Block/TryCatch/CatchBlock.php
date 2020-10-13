@@ -7,8 +7,8 @@ namespace webignition\BasilCompilableSource\Block\TryCatch;
 use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\Expression\CatchExpression;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\RenderSource;
-use webignition\BasilCompilableSource\RenderSourceInterface;
+use webignition\Stubble\Resolvable;
+use webignition\Stubble\ResolvableInterface;
 
 class CatchBlock extends AbstractBlock
 {
@@ -27,9 +27,9 @@ EOD;
         $this->catchExpression = $catchExpression;
     }
 
-    public function getRenderSource(): RenderSourceInterface
+    public function getResolvable(): ResolvableInterface
     {
-        return new RenderSource(
+        return new Resolvable(
             self::RENDER_TEMPLATE,
             [
                 'catch_expression' => $this->catchExpression->render(),
