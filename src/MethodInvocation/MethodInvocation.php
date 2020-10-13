@@ -7,10 +7,13 @@ namespace webignition\BasilCompilableSource\MethodInvocation;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSource\MethodArguments\MethodArgumentsInterface;
+use webignition\BasilCompilableSource\RenderFromTemplateTrait;
 
 class MethodInvocation implements MethodInvocationInterface
 {
-    private const RENDER_PATTERN = '%s(%s)';
+    use RenderFromTemplateTrait;
+
+    private const RENDER_PATTERN = '{{ call }}({{ arguments }})';
 
     private string $methodName;
     private MethodArgumentsInterface $arguments;
@@ -40,12 +43,19 @@ class MethodInvocation implements MethodInvocationInterface
         return $this->arguments->getMetadata();
     }
 
-    public function render(): string
+    protected function getRenderTemplate(): string
     {
-        return sprintf(
-            self::RENDER_PATTERN,
-            $this->getCall(),
-            $this->arguments->render()
-        );
+        return self::RENDER_PATTERN;
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    protected function getRenderContext(): array
+    {
+        return [
+            'call' => $this->getCall(),
+            'arguments' => $this->arguments->render(),
+        ];
     }
 }

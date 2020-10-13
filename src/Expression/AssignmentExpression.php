@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Expression;
 
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\BasilCompilableSource\RenderFromTemplateTrait;
 
 class AssignmentExpression implements AssignmentExpressionInterface
 {
-    private const RENDER_PATTERN = '%s %s %s';
+    use RenderFromTemplateTrait;
+
+    private const RENDER_TEMPLATE = '{{ variable }} {{ operator }} {{ value }}';
 
     public const OPERATOR_ASSIGMENT_EQUALS = '=';
 
@@ -47,13 +50,20 @@ class AssignmentExpression implements AssignmentExpressionInterface
         return $metadata->merge($this->value->getMetadata());
     }
 
-    public function render(): string
+    protected function getRenderTemplate(): string
     {
-        return sprintf(
-            self::RENDER_PATTERN,
-            $this->variable->render(),
-            $this->operator,
-            $this->value->render()
-        );
+        return self::RENDER_TEMPLATE;
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    protected function getRenderContext(): array
+    {
+        return [
+            'variable' => $this->variable->render(),
+            'operator' => $this->operator,
+            'value' => $this->value->render(),
+        ];
     }
 }

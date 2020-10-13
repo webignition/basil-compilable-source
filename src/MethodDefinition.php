@@ -11,10 +11,13 @@ use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 
 class MethodDefinition implements MethodDefinitionInterface
 {
+    use RenderFromTemplateTrait;
+
     private const RENDER_TEMPLATE = <<<'EOD'
-%s
+{{ docblock }}
+{{ signature }}
 {
-%s
+{{ body }}
 }
 EOD;
 
@@ -111,22 +114,11 @@ EOD;
         return $this->docblock;
     }
 
-    public function render(): string
+    private function renderBody(): string
     {
-        $signature = $this->createSignature();
-
         $lines = $this->body->render();
         $lines = $this->indent($lines);
-        $lines = rtrim($lines, "\n");
-
-        $content = sprintf(self::RENDER_TEMPLATE, $signature, $lines);
-
-        $docBlock = $this->getDocBlock();
-        if (null !== $docBlock) {
-            $content = $docBlock->render() . "\n" . $content;
-        }
-
-        return $content;
+        return rtrim($lines, "\n");
     }
 
     public function withDocBlock(DocBlock $docBlock): self
@@ -135,6 +127,34 @@ EOD;
         $new->docblock = $docBlock;
 
         return $new;
+    }
+
+    protected function getRenderTemplate(): string
+    {
+        $template = self::RENDER_TEMPLATE;
+
+        if (null === $this->docblock) {
+            $template = ltrim(str_replace('{{ docblock }}', '', $template));
+        }
+
+        return $template;
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    protected function getRenderContext(): array
+    {
+        $context = [
+            'signature' => $this->createSignature(),
+            'body' => $this->renderBody(),
+        ];
+
+        if ($this->docblock instanceof DocBlock) {
+            $context['docblock'] = $this->docblock->render();
+        }
+
+        return $context;
     }
 
     private function createSignature(): string

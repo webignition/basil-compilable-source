@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Expression;
 
 use webignition\BasilCompilableSource\Metadata\Metadata;
+use webignition\BasilCompilableSource\RenderFromTemplateTrait;
 
 class ComparisonExpression extends AbstractExpression
 {
-    private const RENDER_TEMPLATE = '%s %s %s';
+    use RenderFromTemplateTrait;
+
+    private const RENDER_TEMPLATE = '{{ left_hand_side }} {{ comparison}} {{ right_hand_side }}';
 
     private ExpressionInterface $leftHandSide;
     private ExpressionInterface $rightHandSide;
@@ -50,13 +53,21 @@ class ComparisonExpression extends AbstractExpression
         return $this->comparison;
     }
 
-    public function render(): string
+
+    protected function getRenderTemplate(): string
     {
-        return sprintf(
-            self::RENDER_TEMPLATE,
-            $this->leftHandSide->render(),
-            $this->comparison,
-            $this->rightHandSide->render()
-        );
+        return self::RENDER_TEMPLATE;
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    protected function getRenderContext(): array
+    {
+        return [
+            'left_hand_side' => $this->leftHandSide->render(),
+            'comparison' => $this->comparison,
+            'right_hand_side' => $this->rightHandSide->render(),
+        ];
     }
 }

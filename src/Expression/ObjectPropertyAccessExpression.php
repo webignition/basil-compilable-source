@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Expression;
 
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\BasilCompilableSource\RenderFromTemplateTrait;
 use webignition\BasilCompilableSource\VariableDependencyInterface;
 use webignition\BasilCompilableSource\VariablePlaceholderInterface;
 
 class ObjectPropertyAccessExpression extends AbstractExpression
 {
-    private const RENDER_PATTERN = '%s->%s';
+    use RenderFromTemplateTrait;
+
+    private const RENDER_TEMPLATE = '{{ object }}->{{ property }}';
 
     private VariablePlaceholderInterface $objectPlaceholder;
     private string $property;
@@ -44,12 +47,19 @@ class ObjectPropertyAccessExpression extends AbstractExpression
         return $metadata;
     }
 
-    public function render(): string
+    protected function getRenderTemplate(): string
     {
-        return sprintf(
-            self::RENDER_PATTERN,
-            $this->objectPlaceholder->render(),
-            $this->property
-        );
+        return self::RENDER_TEMPLATE;
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    protected function getRenderContext(): array
+    {
+        return [
+            'object' => $this->objectPlaceholder->render(),
+            'property' => $this->property,
+        ];
     }
 }

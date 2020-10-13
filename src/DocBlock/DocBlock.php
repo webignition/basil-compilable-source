@@ -5,11 +5,23 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\DocBlock;
 
 use webignition\BasilCompilableSource\Annotation\AnnotationInterface;
+use webignition\BasilCompilableSource\RenderFromTemplateTrait;
 use webignition\BasilCompilableSource\SourceInterface;
 
 class DocBlock implements SourceInterface
 {
-    private const RENDER_TEMPLATE = '/**' . "\n" . '%s */';
+    use RenderFromTemplateTrait;
+
+    private const RENDER_TEMPLATE_EMPTY = <<<'EOD'
+/**
+ */
+EOD;
+
+    private const RENDER_TEMPLATE = <<<'EOD'
+/**
+{{ content }}
+ */
+EOD;
 
     /**
      * @var array<int, string|AnnotationInterface>
@@ -34,7 +46,31 @@ class DocBlock implements SourceInterface
         return $this->merge($addition, $this);
     }
 
-    public function render(): string
+    private function merge(DocBlock $source, DocBlock $addition): self
+    {
+        return new DocBlock(array_merge($source->lines, $addition->lines));
+    }
+
+    protected function getRenderTemplate(): string
+    {
+        if (0 === count($this->lines)) {
+            return self::RENDER_TEMPLATE_EMPTY;
+        }
+
+        return self::RENDER_TEMPLATE;
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    protected function getRenderContext(): array
+    {
+        return [
+            'content' => $this->renderContent(),
+        ];
+    }
+
+    private function renderContent(): string
     {
         $renderedLines = [];
         foreach ($this->lines as $line) {
@@ -49,17 +85,12 @@ class DocBlock implements SourceInterface
 
         array_walk($renderedLines, function (string &$renderedLine) {
             if ("\n" === $renderedLine) {
-                $renderedLine = ' *' . "\n";
+                $renderedLine = ' *';
             } else {
-                $renderedLine = ' * ' . $renderedLine . "\n";
+                $renderedLine = ' * ' . $renderedLine;
             }
         });
 
-        return sprintf(self::RENDER_TEMPLATE, implode('', $renderedLines));
-    }
-
-    private function merge(DocBlock $source, DocBlock $addition): self
-    {
-        return new DocBlock(array_merge($source->lines, $addition->lines));
+        return implode("\n", $renderedLines);
     }
 }

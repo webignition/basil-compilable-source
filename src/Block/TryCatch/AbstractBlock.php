@@ -7,9 +7,12 @@ namespace webignition\BasilCompilableSource\Block\TryCatch;
 use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\HasMetadataInterface;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\BasilCompilableSource\RenderFromTemplateTrait;
 
 abstract class AbstractBlock implements HasMetadataInterface
 {
+    use RenderFromTemplateTrait;
+
     private BodyInterface $body;
 
     public function __construct(BodyInterface $body)
@@ -17,29 +20,17 @@ abstract class AbstractBlock implements HasMetadataInterface
         $this->body = $body;
     }
 
-    abstract protected function getRenderTemplate(): string;
-
-    /**
-     * @return string[]
-     */
-    abstract protected function getAdditionalRenderComponents(): array;
-
     public function getMetadata(): MetadataInterface
     {
         return $this->body->getMetadata();
     }
 
-    public function render(): string
+    protected function renderBody(): string
     {
         $renderedBody = $this->body->render();
 
         $renderedBody = $this->indent($renderedBody);
-        $renderedBody = rtrim($renderedBody, "\n");
-
-        return sprintf(
-            $this->getRenderTemplate(),
-            ...array_merge($this->getAdditionalRenderComponents(), [$renderedBody])
-        );
+        return rtrim($renderedBody, "\n");
     }
 
     private function indent(string $content): string

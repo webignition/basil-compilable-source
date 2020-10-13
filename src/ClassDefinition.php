@@ -9,11 +9,13 @@ use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 
 class ClassDefinition implements ClassDefinitionInterface
 {
-    private const RENDER_TEMPLATE = <<<'EOD'
-%s
+    use RenderFromTemplateTrait;
 
-%s
-{%s}
+    private const RENDER_TEMPLATE = <<<'EOD'
+{{ dependencies }}
+
+{{ signature }}
+{{{body}}}
 EOD;
 
     private ClassSignature $signature;
@@ -40,7 +42,31 @@ EOD;
         return $this->body->getMetadata();
     }
 
-    public function render(): string
+    protected function getRenderTemplate(): string
+    {
+        $template = self::RENDER_TEMPLATE;
+
+        if ('' === $this->getClassDependencies()->render()) {
+            $template = str_replace('{{ dependencies }}', '', $template);
+            $template = ltrim($template);
+        }
+
+        return $template;
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    protected function getRenderContext(): array
+    {
+        return [
+            'dependencies' => $this->getClassDependencies()->render(),
+            'signature' => $this->signature->render(),
+            'body' => $this->renderBody(),
+        ];
+    }
+
+    private function getClassDependencies(): ClassDependencyCollection
     {
         $classDependencies = $this->getMetadata()->getClassDependencies();
         $baseClass = $this->signature->getBaseClass();
@@ -51,22 +77,18 @@ EOD;
             ]));
         }
 
-        return trim(sprintf(
-            self::RENDER_TEMPLATE,
-            $classDependencies->render(),
-            $this->signature->render(),
-            $this->createClassBody()
-        ));
+        return $classDependencies;
     }
 
-    private function createClassBody(): string
+    private function renderBody(): string
     {
-        $renderedBody = $this->body->render();
-        if ('' === $renderedBody) {
-            return '';
+        $body = $this->body->render();
+
+        if ('' !== $body) {
+            $body = "\n" . $this->indent($body) . "\n";
         }
 
-        return "\n" . $this->indent($this->body->render()) . "\n";
+        return $body;
     }
 
     private function indent(string $content): string

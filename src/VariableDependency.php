@@ -10,7 +10,9 @@ use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 
 class VariableDependency implements ExpressionInterface, VariableDependencyInterface
 {
-    private const RENDER_PATTERN = '{{ %s }}';
+    use RenderFromTemplateTrait;
+
+    private const RENDER_TEMPLATE = '{{ {{ name }} }}';
 
     private string $name;
 
@@ -34,8 +36,18 @@ class VariableDependency implements ExpressionInterface, VariableDependencyInter
         ]);
     }
 
-    public function render(): string
+    protected function getRenderTemplate(): string
     {
-        return sprintf(self::RENDER_PATTERN, $this->name);
+        return self::RENDER_TEMPLATE;
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    protected function getRenderContext(): array
+    {
+        return [
+            'name' => $this->name,
+        ];
     }
 }

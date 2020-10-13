@@ -8,7 +8,7 @@ class TryBlock extends AbstractBlock
 {
     private const RENDER_TEMPLATE = <<<'EOD'
 try {
-%s
+{{ body }}
 }
 EOD;
 
@@ -17,8 +17,13 @@ EOD;
         return self::RENDER_TEMPLATE;
     }
 
-    protected function getAdditionalRenderComponents(): array
+    /**
+     * @return array<string, string>
+     */
+    protected function getRenderContext(): array
     {
-        return [];
+        return [
+            'body' => $this->renderBody(),
+        ];
     }
 }

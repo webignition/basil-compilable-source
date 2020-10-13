@@ -8,9 +8,8 @@ use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\HasMetadataTrait;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\SourceInterface;
 
-class MethodArguments implements MethodArgumentsInterface, SourceInterface
+class MethodArguments implements MethodArgumentsInterface
 {
     use HasMetadataTrait;
 
