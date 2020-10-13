@@ -33,21 +33,6 @@ class VariableName implements ExpressionInterface, RenderableInterface, Variable
         return $this->metadata;
     }
 
-    protected function getRenderTemplate(): string
-    {
-        return self::RENDER_TEMPLATE;
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    protected function getRenderContext(): array
-    {
-        return [
-            'name' => $this->name,
-        ];
-    }
-
     public function getRenderSource(): RenderSourceInterface
     {
         return new RenderSource(
