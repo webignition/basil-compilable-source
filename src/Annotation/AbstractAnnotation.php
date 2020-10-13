@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Annotation;
 
+use webignition\BasilCompilableSource\RenderableInterface;
 use webignition\BasilCompilableSource\RenderFromTemplateTrait;
+use webignition\BasilCompilableSource\RenderSource;
+use webignition\BasilCompilableSource\RenderSourceInterface;
 
-abstract class AbstractAnnotation implements AnnotationInterface
+abstract class AbstractAnnotation implements AnnotationInterface, RenderableInterface
 {
     use RenderFromTemplateTrait;
 
@@ -29,19 +32,14 @@ abstract class AbstractAnnotation implements AnnotationInterface
         $this->arguments = $arguments;
     }
 
-    protected function getRenderTemplate(): string
+    public function getRenderSource(): RenderSourceInterface
     {
-        return self::RENDER_TEMPLATE;
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    protected function getRenderContext(): array
-    {
-        return [
-            'name' => $this->name,
-            'arguments' => implode(' ', $this->arguments)
-        ];
+        return new RenderSource(
+            self::RENDER_TEMPLATE,
+            [
+                'name' => $this->name,
+                'arguments' => implode(' ', $this->arguments)
+            ]
+        );
     }
 }

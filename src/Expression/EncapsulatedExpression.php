@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Expression;
 
+use webignition\BasilCompilableSource\RenderableInterface;
 use webignition\BasilCompilableSource\RenderFromTemplateTrait;
+use webignition\BasilCompilableSource\RenderSource;
+use webignition\BasilCompilableSource\RenderSourceInterface;
 
-class EncapsulatedExpression extends AbstractExpression
+class EncapsulatedExpression extends AbstractExpression implements RenderableInterface
 {
     use RenderFromTemplateTrait;
 
@@ -21,18 +24,13 @@ class EncapsulatedExpression extends AbstractExpression
         parent::__construct($expression->getMetadata());
     }
 
-    protected function getRenderTemplate(): string
+    public function getRenderSource(): RenderSourceInterface
     {
-        return self::RENDER_TEMPLATE;
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    protected function getRenderContext(): array
-    {
-        return [
-            'expression' => $this->expression->render(),
-        ];
+        return new RenderSource(
+            self::RENDER_TEMPLATE,
+            [
+                'expression' => $this->expression->render(),
+            ]
+        );
     }
 }

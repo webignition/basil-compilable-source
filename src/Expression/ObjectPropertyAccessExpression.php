@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Expression;
 
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\BasilCompilableSource\RenderableInterface;
 use webignition\BasilCompilableSource\RenderFromTemplateTrait;
+use webignition\BasilCompilableSource\RenderSource;
+use webignition\BasilCompilableSource\RenderSourceInterface;
 use webignition\BasilCompilableSource\VariableDependencyInterface;
 use webignition\BasilCompilableSource\VariablePlaceholderInterface;
 
-class ObjectPropertyAccessExpression extends AbstractExpression
+class ObjectPropertyAccessExpression extends AbstractExpression implements RenderableInterface
 {
     use RenderFromTemplateTrait;
 
@@ -47,19 +50,14 @@ class ObjectPropertyAccessExpression extends AbstractExpression
         return $metadata;
     }
 
-    protected function getRenderTemplate(): string
+    public function getRenderSource(): RenderSourceInterface
     {
-        return self::RENDER_TEMPLATE;
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    protected function getRenderContext(): array
-    {
-        return [
-            'object' => $this->objectPlaceholder->render(),
-            'property' => $this->property,
-        ];
+        return new RenderSource(
+            self::RENDER_TEMPLATE,
+            [
+                'object' => $this->objectPlaceholder->render(),
+                'property' => $this->property,
+            ]
+        );
     }
 }

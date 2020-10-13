@@ -6,11 +6,14 @@ namespace webignition\BasilCompilableSource\Expression;
 
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\BasilCompilableSource\RenderableInterface;
 use webignition\BasilCompilableSource\RenderFromTemplateTrait;
+use webignition\BasilCompilableSource\RenderSource;
+use webignition\BasilCompilableSource\RenderSourceInterface;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclarationCollection;
 use webignition\BasilCompilableSource\VariableName;
 
-class CatchExpression implements ExpressionInterface
+class CatchExpression implements ExpressionInterface, RenderableInterface
 {
     use RenderFromTemplateTrait;
 
@@ -29,19 +32,14 @@ class CatchExpression implements ExpressionInterface
         return $metadata->merge($this->classes->getMetadata());
     }
 
-    protected function getRenderTemplate(): string
+    public function getRenderSource(): RenderSourceInterface
     {
-        return self::RENDER_TEMPLATE;
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    protected function getRenderContext(): array
-    {
-        return [
-            'class_list' => $this->classes->render(),
-            'variable' => (new VariableName('exception'))->render(),
-        ];
+        return new RenderSource(
+            self::RENDER_TEMPLATE,
+            [
+                'class_list' => $this->classes->render(),
+                'variable' => (new VariableName('exception'))->render(),
+            ]
+        );
     }
 }

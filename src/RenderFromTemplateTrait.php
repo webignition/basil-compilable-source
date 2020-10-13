@@ -11,17 +11,14 @@ trait RenderFromTemplateTrait
     public function render(): string
     {
         if ($this instanceof RenderableInterface) {
-            $renderSource = $this->getRenderSource();
+            $source = $this->getRenderSource();
 
             return VariableResolver::resolveTemplateAndIgnoreUnresolvedVariables(
-                $renderSource->getTemplate(),
-                $renderSource->getContext()
+                $source->getTemplate(),
+                $source->getContext()
             );
         }
 
-        return VariableResolver::resolveTemplateAndIgnoreUnresolvedVariables(
-            $this->getRenderTemplate(),
-            $this->getRenderContext()
-        );
+        return '';
     }
 }

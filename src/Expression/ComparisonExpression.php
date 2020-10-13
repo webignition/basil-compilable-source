@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Expression;
 
 use webignition\BasilCompilableSource\Metadata\Metadata;
+use webignition\BasilCompilableSource\RenderableInterface;
 use webignition\BasilCompilableSource\RenderFromTemplateTrait;
+use webignition\BasilCompilableSource\RenderSource;
+use webignition\BasilCompilableSource\RenderSourceInterface;
 
-class ComparisonExpression extends AbstractExpression
+class ComparisonExpression extends AbstractExpression implements RenderableInterface
 {
     use RenderFromTemplateTrait;
 
@@ -53,21 +56,15 @@ class ComparisonExpression extends AbstractExpression
         return $this->comparison;
     }
 
-
-    protected function getRenderTemplate(): string
+    public function getRenderSource(): RenderSourceInterface
     {
-        return self::RENDER_TEMPLATE;
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    protected function getRenderContext(): array
-    {
-        return [
-            'left_hand_side' => $this->leftHandSide->render(),
-            'comparison' => $this->comparison,
-            'right_hand_side' => $this->rightHandSide->render(),
-        ];
+        return new RenderSource(
+            self::RENDER_TEMPLATE,
+            [
+                'left_hand_side' => $this->leftHandSide->render(),
+                'comparison' => $this->comparison,
+                'right_hand_side' => $this->rightHandSide->render(),
+            ]
+        );
     }
 }

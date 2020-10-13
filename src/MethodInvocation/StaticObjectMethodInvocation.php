@@ -6,6 +6,8 @@ namespace webignition\BasilCompilableSource\MethodInvocation;
 
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\MethodArguments\MethodArgumentsInterface;
+use webignition\BasilCompilableSource\RenderSource;
+use webignition\BasilCompilableSource\RenderSourceInterface;
 use webignition\BasilCompilableSource\StaticObject;
 
 class StaticObjectMethodInvocation extends AbstractMethodInvocationEncapsulator implements
@@ -25,6 +27,17 @@ class StaticObjectMethodInvocation extends AbstractMethodInvocationEncapsulator 
         $this->staticObject = $staticObject;
     }
 
+    public function getRenderSource(): RenderSourceInterface
+    {
+        return new RenderSource(
+            self::RENDER_TEMPLATE,
+            [
+                'object' => $this->staticObject->render(),
+                'method_invocation' => $this->invocation->render(),
+            ]
+        );
+    }
+
     protected function getAdditionalMetadata(): MetadataInterface
     {
         return $this->staticObject->getMetadata();
@@ -33,18 +46,5 @@ class StaticObjectMethodInvocation extends AbstractMethodInvocationEncapsulator 
     public function getStaticObject(): StaticObject
     {
         return $this->staticObject;
-    }
-
-    protected function getRenderTemplate(): string
-    {
-        return self::RENDER_TEMPLATE;
-    }
-
-    protected function getRenderContext(): array
-    {
-        return [
-            'object' => $this->staticObject->render(),
-            'method_invocation' => $this->invocation->render(),
-        ];
     }
 }

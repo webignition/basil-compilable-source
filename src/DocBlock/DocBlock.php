@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\DocBlock;
 
 use webignition\BasilCompilableSource\Annotation\AnnotationInterface;
+use webignition\BasilCompilableSource\RenderableInterface;
 use webignition\BasilCompilableSource\RenderFromTemplateTrait;
+use webignition\BasilCompilableSource\RenderSource;
+use webignition\BasilCompilableSource\RenderSourceInterface;
 use webignition\BasilCompilableSource\SourceInterface;
 
-class DocBlock implements SourceInterface
+class DocBlock implements RenderableInterface, SourceInterface
 {
     use RenderFromTemplateTrait;
 
@@ -46,28 +49,28 @@ EOD;
         return $this->merge($addition, $this);
     }
 
+    public function getRenderSource(): RenderSourceInterface
+    {
+        return new RenderSource(
+            $this->getRenderTemplate(),
+            [
+                'content' => $this->renderContent(),
+            ]
+        );
+    }
+
     private function merge(DocBlock $source, DocBlock $addition): self
     {
         return new DocBlock(array_merge($source->lines, $addition->lines));
     }
 
-    protected function getRenderTemplate(): string
+    private function getRenderTemplate(): string
     {
         if (0 === count($this->lines)) {
             return self::RENDER_TEMPLATE_EMPTY;
         }
 
         return self::RENDER_TEMPLATE;
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    protected function getRenderContext(): array
-    {
-        return [
-            'content' => $this->renderContent(),
-        ];
     }
 
     private function renderContent(): string

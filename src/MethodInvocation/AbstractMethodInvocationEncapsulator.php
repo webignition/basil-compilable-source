@@ -6,9 +6,10 @@ namespace webignition\BasilCompilableSource\MethodInvocation;
 
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\MethodArguments\MethodArgumentsInterface;
+use webignition\BasilCompilableSource\RenderableInterface;
 use webignition\BasilCompilableSource\RenderFromTemplateTrait;
 
-abstract class AbstractMethodInvocationEncapsulator implements InvocableInterface
+abstract class AbstractMethodInvocationEncapsulator implements InvocableInterface, RenderableInterface
 {
     use RenderFromTemplateTrait;
 

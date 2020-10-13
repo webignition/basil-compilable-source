@@ -5,13 +5,16 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Expression;
 
 use webignition\BasilCompilableSource\ClassName;
+use webignition\BasilCompilableSource\RenderableInterface;
 use webignition\BasilCompilableSource\RenderFromTemplateTrait;
+use webignition\BasilCompilableSource\RenderSource;
+use webignition\BasilCompilableSource\RenderSourceInterface;
 
-class UseExpression extends AbstractExpression
+class UseExpression extends AbstractExpression implements RenderableInterface
 {
     use RenderFromTemplateTrait;
 
-    private const RENDER_PATTERN = 'use {{ class_name }}';
+    private const RENDER_TEMPLATE = 'use {{ class_name }}';
 
     private ClassName $className;
 
@@ -22,19 +25,14 @@ class UseExpression extends AbstractExpression
         $this->className = $className;
     }
 
-    protected function getRenderTemplate(): string
+    public function getRenderSource(): RenderSourceInterface
     {
-        return self::RENDER_PATTERN;
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    protected function getRenderContext(): array
-    {
-        return [
-            'class_name' => $this->renderClassName(),
-        ];
+        return new RenderSource(
+            self::RENDER_TEMPLATE,
+            [
+                'class_name' => $this->renderClassName(),
+            ]
+        );
     }
 
     private function renderClassName(): string

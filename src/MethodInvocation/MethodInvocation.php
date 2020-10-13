@@ -7,13 +7,16 @@ namespace webignition\BasilCompilableSource\MethodInvocation;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSource\MethodArguments\MethodArgumentsInterface;
+use webignition\BasilCompilableSource\RenderableInterface;
 use webignition\BasilCompilableSource\RenderFromTemplateTrait;
+use webignition\BasilCompilableSource\RenderSource;
+use webignition\BasilCompilableSource\RenderSourceInterface;
 
-class MethodInvocation implements MethodInvocationInterface
+class MethodInvocation implements MethodInvocationInterface, RenderableInterface
 {
     use RenderFromTemplateTrait;
 
-    private const RENDER_PATTERN = '{{ call }}({{ arguments }})';
+    private const RENDER_TEMPLATE = '{{ call }}({{ arguments }})';
 
     private string $methodName;
     private MethodArgumentsInterface $arguments;
@@ -43,19 +46,14 @@ class MethodInvocation implements MethodInvocationInterface
         return $this->arguments->getMetadata();
     }
 
-    protected function getRenderTemplate(): string
+    public function getRenderSource(): RenderSourceInterface
     {
-        return self::RENDER_PATTERN;
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    protected function getRenderContext(): array
-    {
-        return [
-            'call' => $this->getCall(),
-            'arguments' => $this->arguments->render(),
-        ];
+        return new RenderSource(
+            self::RENDER_TEMPLATE,
+            [
+                'call' => $this->getCall(),
+                'arguments' => $this->arguments->render(),
+            ]
+        );
     }
 }

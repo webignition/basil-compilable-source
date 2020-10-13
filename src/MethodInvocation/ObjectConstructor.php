@@ -9,6 +9,8 @@ use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\MethodArguments\MethodArgumentsInterface;
+use webignition\BasilCompilableSource\RenderSource;
+use webignition\BasilCompilableSource\RenderSourceInterface;
 
 class ObjectConstructor extends AbstractMethodInvocationEncapsulator
 {
@@ -31,15 +33,13 @@ class ObjectConstructor extends AbstractMethodInvocationEncapsulator
         ]);
     }
 
-    protected function getRenderTemplate(): string
+    public function getRenderSource(): RenderSourceInterface
     {
-        return self::RENDER_TEMPLATE;
-    }
-
-    protected function getRenderContext(): array
-    {
-        return [
-            'method_invocation' => $this->invocation->render(),
-        ];
+        return new RenderSource(
+            self::RENDER_TEMPLATE,
+            [
+                'method_invocation' => $this->invocation->render(),
+            ]
+        );
     }
 }
