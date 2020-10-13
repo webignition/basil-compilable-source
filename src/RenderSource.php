@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource;
 
-class Renderable implements RenderableInterface
+class RenderSource implements RenderSourceInterface
 {
     private string $template;
     private array $context;

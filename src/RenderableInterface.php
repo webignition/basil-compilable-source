@@ -6,10 +6,5 @@ namespace webignition\BasilCompilableSource;
 
 interface RenderableInterface
 {
-    public function getTemplate(): string;
-
-    /**
-     * @return array<string, string>
-     */
-    public function getContext(): array;
+    public function getRenderSource(): RenderSourceInterface;
 }
