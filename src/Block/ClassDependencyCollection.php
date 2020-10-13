@@ -10,7 +10,7 @@ use webignition\BasilCompilableSource\SourceInterface;
 use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\BasilCompilableSource\Statement\StatementInterface;
 
-class ClassDependencyCollection implements SourceInterface
+class ClassDependencyCollection implements \Countable, SourceInterface
 {
     /**
      * @var ClassName[]
@@ -76,5 +76,15 @@ class ClassDependencyCollection implements SourceInterface
                 $className
             )
         );
+    }
+
+    public function count(): int
+    {
+        return count($this->classNames);
+    }
+
+    public function isEmpty(): bool
+    {
+        return 0 === $this->count();
     }
 }
