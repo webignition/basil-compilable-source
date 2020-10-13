@@ -8,18 +8,17 @@ use webignition\Stubble\VariableResolver;
 
 trait RenderFromTemplateTrait
 {
-    abstract protected function getRenderTemplate(): string;
-
-    /**
-     * @return array<string, string>
-     */
-    abstract protected function getRenderContext(): array;
-
     public function render(): string
     {
-        return VariableResolver::resolveTemplateAndIgnoreUnresolvedVariables(
-            $this->getRenderTemplate(),
-            $this->getRenderContext()
-        );
+        if ($this instanceof RenderableInterface) {
+            $source = $this->getRenderSource();
+
+            return VariableResolver::resolveTemplateAndIgnoreUnresolvedVariables(
+                $source->getTemplate(),
+                $source->getContext()
+            );
+        }
+
+        return '';
     }
 }

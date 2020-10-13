@@ -4,11 +4,16 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Expression;
 
+use webignition\BasilCompilableSource\RenderableInterface;
 use webignition\BasilCompilableSource\RenderFromTemplateTrait;
+use webignition\BasilCompilableSource\RenderSource;
+use webignition\BasilCompilableSource\RenderSourceInterface;
 
-class CastExpression extends AbstractExpression
+class CastExpression extends AbstractExpression implements RenderableInterface
 {
     use RenderFromTemplateTrait;
+
+    private const RENDER_TEMPLATE = '({{ cast_type }}) {{ expression }}';
 
     private ExpressionInterface $expression;
     private string $castTo;
@@ -21,19 +26,14 @@ class CastExpression extends AbstractExpression
         parent::__construct($expression->getMetadata());
     }
 
-    protected function getRenderTemplate(): string
+    public function getRenderSource(): RenderSourceInterface
     {
-        return '({{ cast_type }}) {{ expression }}';
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    protected function getRenderContext(): array
-    {
-        return [
-            'cast_type' => $this->castTo,
-            'expression' => $this->expression->render(),
-        ];
+        return new RenderSource(
+            self::RENDER_TEMPLATE,
+            [
+                'cast_type' => $this->castTo,
+                'expression' => $this->expression->render(),
+            ]
+        );
     }
 }

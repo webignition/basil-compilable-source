@@ -6,7 +6,7 @@ namespace webignition\BasilCompilableSource;
 
 use webignition\BasilCompilableSource\Body\BodyContentInterface;
 
-class SingleLineComment implements BodyContentInterface
+class SingleLineComment implements BodyContentInterface, RenderableInterface
 {
     use RenderFromTemplateTrait;
 
@@ -19,18 +19,13 @@ class SingleLineComment implements BodyContentInterface
         $this->content = $content;
     }
 
-    protected function getRenderTemplate(): string
+    public function getRenderSource(): RenderSourceInterface
     {
-        return self::RENDER_TEMPLATE;
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    protected function getRenderContext(): array
-    {
-        return [
-            'content' => $this->content,
-        ];
+        return new RenderSource(
+            self::RENDER_TEMPLATE,
+            [
+                'content' => $this->content,
+            ]
+        );
     }
 }

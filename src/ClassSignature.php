@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource;
 
-class ClassSignature
+class ClassSignature implements RenderableInterface
 {
     use RenderFromTemplateTrait;
 
@@ -30,28 +30,14 @@ class ClassSignature
         return $this->baseClass;
     }
 
-    protected function getRenderTemplate(): string
+    public function getRenderSource(): RenderSourceInterface
     {
-        if (null === $this->baseClass) {
-            return self::RENDER_TEMPLATE_WITHOUT_BASE_CLASS;
-        }
-
-        return self::RENDER_TEMPLATE;
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    protected function getRenderContext(): array
-    {
-        $context = [
-            'name' => $this->getName(),
-        ];
-
-        if ($this->baseClass instanceof ClassName) {
-            $context['base_class'] = $this->baseClass->renderClassName();
-        }
-
-        return $context;
+        return new RenderSource(
+            $this->baseClass instanceof ClassName ? self::RENDER_TEMPLATE : self::RENDER_TEMPLATE_WITHOUT_BASE_CLASS,
+            [
+                'name' => $this->getName(),
+                'base_class' => $this->baseClass instanceof ClassName ? $this->baseClass->renderClassName() : '',
+            ]
+        );
     }
 }

@@ -7,9 +7,10 @@ namespace webignition\BasilCompilableSource\Block\TryCatch;
 use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\HasMetadataInterface;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\BasilCompilableSource\RenderableInterface;
 use webignition\BasilCompilableSource\RenderFromTemplateTrait;
 
-abstract class AbstractBlock implements HasMetadataInterface
+abstract class AbstractBlock implements HasMetadataInterface, RenderableInterface
 {
     use RenderFromTemplateTrait;
 

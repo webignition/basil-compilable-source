@@ -7,7 +7,7 @@ namespace webignition\BasilCompilableSource;
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 
-class ClassDefinition implements ClassDefinitionInterface
+class ClassDefinition implements ClassDefinitionInterface, RenderableInterface
 {
     use RenderFromTemplateTrait;
 
@@ -42,28 +42,24 @@ EOD;
         return $this->body->getMetadata();
     }
 
-    protected function getRenderTemplate(): string
+    public function getRenderSource(): RenderSourceInterface
     {
-        $template = self::RENDER_TEMPLATE;
+        $renderedDependencies = $this->getClassDependencies()->render();
 
-        if ('' === $this->getClassDependencies()->render()) {
+        $template = self::RENDER_TEMPLATE;
+        if ('' === $renderedDependencies) {
             $template = str_replace('{{ dependencies }}', '', $template);
             $template = ltrim($template);
         }
 
-        return $template;
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    protected function getRenderContext(): array
-    {
-        return [
-            'dependencies' => $this->getClassDependencies()->render(),
-            'signature' => $this->signature->render(),
-            'body' => $this->renderBody(),
-        ];
+        return new RenderSource(
+            $template,
+            [
+                'dependencies' => $renderedDependencies,
+                'signature' => $this->signature->render(),
+                'body' => $this->renderBody(),
+            ]
+        );
     }
 
     private function getClassDependencies(): ClassDependencyCollection

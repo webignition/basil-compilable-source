@@ -9,7 +9,7 @@ use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\DocBlock\DocBlock;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 
-class MethodDefinition implements MethodDefinitionInterface
+class MethodDefinition implements MethodDefinitionInterface, RenderableInterface
 {
     use RenderFromTemplateTrait;
 
@@ -129,32 +129,21 @@ EOD;
         return $new;
     }
 
-    protected function getRenderTemplate(): string
+    public function getRenderSource(): RenderSourceInterface
     {
         $template = self::RENDER_TEMPLATE;
-
         if (null === $this->docblock) {
             $template = ltrim(str_replace('{{ docblock }}', '', $template));
         }
 
-        return $template;
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    protected function getRenderContext(): array
-    {
-        $context = [
-            'signature' => $this->createSignature(),
-            'body' => $this->renderBody(),
-        ];
-
-        if ($this->docblock instanceof DocBlock) {
-            $context['docblock'] = $this->docblock->render();
-        }
-
-        return $context;
+        return new RenderSource(
+            $template,
+            [
+                'docblock' => $this->docblock instanceof DocBlock ? $this->docblock->render() : '',
+                'signature' => $this->createSignature(),
+                'body' => $this->renderBody(),
+            ]
+        );
     }
 
     private function createSignature(): string

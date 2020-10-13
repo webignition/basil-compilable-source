@@ -6,9 +6,12 @@ namespace webignition\BasilCompilableSource\Expression;
 
 use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\BasilCompilableSource\RenderableInterface;
 use webignition\BasilCompilableSource\RenderFromTemplateTrait;
+use webignition\BasilCompilableSource\RenderSource;
+use webignition\BasilCompilableSource\RenderSourceInterface;
 
-class ClosureExpression extends AbstractExpression
+class ClosureExpression extends AbstractExpression implements RenderableInterface
 {
     use RenderFromTemplateTrait;
 
@@ -32,19 +35,14 @@ EOD;
         return $this->body->getMetadata();
     }
 
-    protected function getRenderTemplate(): string
+    public function getRenderSource(): RenderSourceInterface
     {
-        return self::RENDER_TEMPLATE;
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    protected function getRenderContext(): array
-    {
-        return [
-            'body' => $this->indent($this->body->render()),
-        ];
+        return new RenderSource(
+            self::RENDER_TEMPLATE,
+            [
+                'body' => $this->indent($this->body->render()),
+            ]
+        );
     }
 
     private function indent(string $content): string

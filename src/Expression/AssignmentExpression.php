@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Expression;
 
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\BasilCompilableSource\RenderableInterface;
 use webignition\BasilCompilableSource\RenderFromTemplateTrait;
+use webignition\BasilCompilableSource\RenderSource;
+use webignition\BasilCompilableSource\RenderSourceInterface;
 
-class AssignmentExpression implements AssignmentExpressionInterface
+class AssignmentExpression implements AssignmentExpressionInterface, RenderableInterface
 {
     use RenderFromTemplateTrait;
 
@@ -50,20 +53,15 @@ class AssignmentExpression implements AssignmentExpressionInterface
         return $metadata->merge($this->value->getMetadata());
     }
 
-    protected function getRenderTemplate(): string
+    public function getRenderSource(): RenderSourceInterface
     {
-        return self::RENDER_TEMPLATE;
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    protected function getRenderContext(): array
-    {
-        return [
-            'variable' => $this->variable->render(),
-            'operator' => $this->operator,
-            'value' => $this->value->render(),
-        ];
+        return new RenderSource(
+            self::RENDER_TEMPLATE,
+            [
+                'variable' => $this->variable->render(),
+                'operator' => $this->operator,
+                'value' => $this->value->render(),
+            ]
+        );
     }
 }

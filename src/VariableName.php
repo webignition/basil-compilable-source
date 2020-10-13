@@ -8,7 +8,7 @@ use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 
-class VariableName implements ExpressionInterface, VariablePlaceholderInterface
+class VariableName implements ExpressionInterface, RenderableInterface, VariablePlaceholderInterface
 {
     use RenderFromTemplateTrait;
 
@@ -33,18 +33,13 @@ class VariableName implements ExpressionInterface, VariablePlaceholderInterface
         return $this->metadata;
     }
 
-    protected function getRenderTemplate(): string
+    public function getRenderSource(): RenderSourceInterface
     {
-        return self::RENDER_TEMPLATE;
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    protected function getRenderContext(): array
-    {
-        return [
-            'name' => $this->name,
-        ];
+        return new RenderSource(
+            self::RENDER_TEMPLATE,
+            [
+                'name' => $this->name,
+            ]
+        );
     }
 }
