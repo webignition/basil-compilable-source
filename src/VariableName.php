@@ -8,7 +8,7 @@ use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 
-class VariableName implements ExpressionInterface, VariablePlaceholderInterface
+class VariableName implements ExpressionInterface, RenderableInterface, VariablePlaceholderInterface
 {
     use RenderFromTemplateTrait;
 
@@ -46,5 +46,15 @@ class VariableName implements ExpressionInterface, VariablePlaceholderInterface
         return [
             'name' => $this->name,
         ];
+    }
+
+    public function getRenderSource(): RenderSourceInterface
+    {
+        return new RenderSource(
+            self::RENDER_TEMPLATE,
+            [
+                'name' => $this->name,
+            ]
+        );
     }
 }
