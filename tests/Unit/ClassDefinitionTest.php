@@ -5,78 +5,36 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use webignition\BasilCompilableSource\Annotation\DataProviderAnnotation;
 use webignition\BasilCompilableSource\Body\Body;
+use webignition\BasilCompilableSource\ClassBody;
 use webignition\BasilCompilableSource\ClassDefinition;
 use webignition\BasilCompilableSource\ClassDefinitionInterface;
 use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\ClassSignature;
-use webignition\BasilCompilableSource\DataProviderMethodDefinition;
-use webignition\BasilCompilableSource\DocBlock\DocBlock;
 use webignition\BasilCompilableSource\EmptyLine;
 use webignition\BasilCompilableSource\Expression\AssignmentExpression;
-use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSource\MethodDefinition;
-use webignition\BasilCompilableSource\MethodDefinitionInterface;
 use webignition\BasilCompilableSource\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
-use webignition\BasilCompilableSource\MethodInvocation\StaticObjectMethodInvocation;
 use webignition\BasilCompilableSource\SingleLineComment;
 use webignition\BasilCompilableSource\Statement\Statement;
-use webignition\BasilCompilableSource\StaticObject;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSource\VariableDependencyCollection;
 use webignition\BasilCompilableSource\VariableName;
 
 class ClassDefinitionTest extends TestCase
 {
-    /**
-     * @dataProvider createDataProvider
-     *
-     * @param ClassSignature $signature
-     * @param array<mixed> $methods
-     * @param MethodDefinitionInterface[] $expectedMethods
-     */
-    public function testCreate(ClassSignature $signature, array $methods, array $expectedMethods)
+    public function testCreate()
     {
-        $classDefinition = new ClassDefinition($signature, $methods);
+        $signature = new ClassSignature('ClassName');
+        $body = new ClassBody([]);
+
+        $classDefinition = new ClassDefinition($signature, $body);
 
         self::assertSame($signature, $classDefinition->getSignature());
-        self::assertEquals($expectedMethods, $classDefinition->getMethods());
-    }
-
-    public function createDataProvider(): array
-    {
-        return [
-            'no methods' => [
-                'name' => new ClassSignature('noMethods'),
-                'methods' => [],
-                'expectedMethods' => [],
-            ],
-            'invalid methods' => [
-                'name' => new ClassSignature('invalidMethods'),
-                'methods' => [
-                    1,
-                    true,
-                    'string',
-                ],
-                'expectedMethods' => [],
-            ],
-            'valid methods' => [
-                'name' => new ClassSignature('validMethods'),
-                'methods' => [
-                    new MethodDefinition('methodOne', new Body([])),
-                    new MethodDefinition('methodTwo', new Body([])),
-                ],
-                'expectedMethods' => [
-                    'methodOne' => new MethodDefinition('methodOne', new Body([])),
-                    'methodTwo' => new MethodDefinition('methodTwo', new Body([])),
-                ],
-            ],
-        ];
+        self::assertSame($body, $classDefinition->getBody());
     }
 
     /**
@@ -93,28 +51,26 @@ class ClassDefinitionTest extends TestCase
             'empty' => [
                 'classDefinition' => new ClassDefinition(
                     new ClassSignature('className'),
-                    [
-                        new MethodDefinition('methodName', new Body([])),
-                    ]
+                    new ClassBody([])
                 ),
                 'expectedMetadata' => new Metadata(),
             ],
             'methods without metadata' => [
                 'classDefinition' => new ClassDefinition(
                     new ClassSignature('className'),
-                    [
+                    new ClassBody([
                         new MethodDefinition('name', new Body([
                             new EmptyLine(),
                             new SingleLineComment('single line comment'),
                         ])),
-                    ]
+                    ])
                 ),
                 'expectedMetadata' => new Metadata(),
             ],
             'methods with metadata' => [
                 'classDefinition' => new ClassDefinition(
                     new ClassSignature('className'),
-                    [
+                    new ClassBody([
                         new MethodDefinition('name', new Body([
                             new Statement(
                                 new ObjectMethodInvocation(
@@ -129,7 +85,7 @@ class ClassDefinitionTest extends TestCase
                                 )
                             )
                         ])),
-                    ]
+                    ])
                 ),
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
@@ -154,7 +110,7 @@ class ClassDefinitionTest extends TestCase
             'no methods, no base class' => [
                 'classDefinition' => new ClassDefinition(
                     new ClassSignature('NameOfClass'),
-                    []
+                    new ClassBody([])
                 ),
                 'expectedString' =>
                     'class NameOfClass' . "\n" .
@@ -166,7 +122,7 @@ class ClassDefinitionTest extends TestCase
                         'NameOfClass',
                         new ClassName('TestCase')
                     ),
-                    []
+                    new ClassBody([])
                 ),
                 'expectedString' =>
                     'class NameOfClass extends \TestCase' . "\n" .
@@ -178,7 +134,7 @@ class ClassDefinitionTest extends TestCase
                         'NameOfClass',
                         new ClassName(TestCase::class)
                     ),
-                    []
+                    new ClassBody([])
                 ),
                 'expectedString' =>
                     'use PHPUnit\Framework\TestCase;' . "\n" .
@@ -186,213 +142,21 @@ class ClassDefinitionTest extends TestCase
                     'class NameOfClass extends TestCase' . "\n" .
                     '{}'
             ],
-            'single empty method' => [
+            'has method' => [
                 'classDefinition' => new ClassDefinition(
                     new ClassSignature(
                         'NameOfClass',
                         new ClassName('TestCase')
                     ),
-                    [
+                    new ClassBody([
                         new MethodDefinition('methodName', new Body([])),
-                    ]
+                    ])
                 ),
                 'expectedString' =>
                     'class NameOfClass extends \TestCase' . "\n" .
                     '{' . "\n" .
                     '    public function methodName()' . "\n" .
                     '    {' . "\n\n" .
-                    '    }' . "\n" .
-                    '}'
-            ],
-            'many methods' => [
-                'classDefinition' => new ClassDefinition(
-                    new ClassSignature(
-                        'NameOfClass',
-                        new ClassName('TestCase')
-                    ),
-                    [
-                        new MethodDefinition('stepOne', new Body([
-                            new SingleLineComment('click $"a"'),
-                            new Statement(
-                                new AssignmentExpression(
-                                    new VariableName('statement'),
-                                    new StaticObjectMethodInvocation(
-                                        new StaticObject('Acme\\Statement'),
-                                        'createAction',
-                                        new MethodArguments([
-                                            new LiteralExpression('\'$"a" exists\''),
-                                        ])
-                                    )
-                                )
-                            ),
-                            new Statement(
-                                new AssignmentExpression(
-                                    new VariableName('currentStatement'),
-                                    new VariableName('statement')
-                                )
-                            ),
-                        ])),
-                        new MethodDefinition('stepTwo', new Body([
-                            new SingleLineComment('click $"b"'),
-                            new Statement(
-                                new AssignmentExpression(
-                                    new VariableName('statement'),
-                                    new StaticObjectMethodInvocation(
-                                        new StaticObject('Acme\\Statement'),
-                                        'createAction',
-                                        new MethodArguments([
-                                            new LiteralExpression('\'$"b" exists\''),
-                                        ])
-                                    )
-                                )
-                            ),
-                            new Statement(
-                                new AssignmentExpression(
-                                    new VariableName('currentStatement'),
-                                    new VariableName('statement')
-                                )
-                            ),
-                        ])),
-                    ]
-                ),
-                'expectedString' =>
-                    'use Acme\Statement;' . "\n" .
-                    "\n" .
-                    'class NameOfClass extends \TestCase' . "\n" .
-                    '{' . "\n" .
-                    '    public function stepOne()' . "\n" .
-                    '    {' . "\n" .
-                    '        // click $"a"' . "\n" .
-                    '        $statement = Statement::createAction(\'$"a" exists\');' . "\n" .
-                    '        $currentStatement = $statement;' . "\n" .
-                    '    }' . "\n" .
-                    "\n" .
-                    '    public function stepTwo()' . "\n" .
-                    '    {' . "\n" .
-                    '        // click $"b"' . "\n" .
-                    '        $statement = Statement::createAction(\'$"b" exists\');' . "\n" .
-                    '        $currentStatement = $statement;' . "\n" .
-                    '    }' . "\n" .
-                    '}'
-            ],
-            'many methods, with data provider' => [
-                'classDefinition' => new ClassDefinition(
-                    new ClassSignature(
-                        'NameOfClass',
-                        new ClassName('TestCase')
-                    ),
-                    [
-                        (function () {
-                            $methodDefinition = new MethodDefinition(
-                                'stepOne',
-                                new Body([
-                                    new SingleLineComment('click $"a"'),
-                                    new Statement(
-                                        new AssignmentExpression(
-                                            new VariableName('statement'),
-                                            new StaticObjectMethodInvocation(
-                                                new StaticObject('Acme\\Statement'),
-                                                'createAction',
-                                                new MethodArguments([
-                                                    new LiteralExpression('\'$"a" exists\''),
-                                                ])
-                                            )
-                                        )
-                                    ),
-                                    new Statement(
-                                        new AssignmentExpression(
-                                            new VariableName('currentStatement'),
-                                            new VariableName('statement')
-                                        )
-                                    ),
-                                ]),
-                                [
-                                    'x', 'y',
-                                ]
-                            );
-
-                            $docblock = $methodDefinition->getDocBlock();
-                            if ($docblock instanceof DocBlock) {
-                                $docblock = $docblock->prepend(new DocBlock([
-                                    new DataProviderAnnotation('stepOneDataProvider'),
-                                    "\n",
-                                ]));
-
-                                $methodDefinition = $methodDefinition->withDocBlock($docblock);
-                            }
-
-                            return $methodDefinition;
-                        })(),
-                        new DataProviderMethodDefinition('stepOneDataProvider', [
-                            0 => [
-                                'x' => '1',
-                                'y' => '2',
-                            ],
-                            1 => [
-                                'x' => '3',
-                                'y' => '4',
-                            ],
-                        ]),
-                        new MethodDefinition('stepTwo', new Body([
-                            new SingleLineComment('click $"b"'),
-                            new Statement(
-                                new AssignmentExpression(
-                                    new VariableName('statement'),
-                                    new StaticObjectMethodInvocation(
-                                        new StaticObject('Acme\\Statement'),
-                                        'createAction',
-                                        new MethodArguments([
-                                            new LiteralExpression('\'$"b" exists\''),
-                                        ])
-                                    )
-                                )
-                            ),
-                            new Statement(
-                                new AssignmentExpression(
-                                    new VariableName('currentStatement'),
-                                    new VariableName('statement')
-                                )
-                            ),
-                        ])),
-                    ]
-                ),
-                'expectedString' =>
-                    'use Acme\Statement;' . "\n" .
-                    "\n" .
-                    'class NameOfClass extends \TestCase' . "\n" .
-                    '{' . "\n" .
-                    '    /**' . "\n" .
-                    '     * @dataProvider stepOneDataProvider' . "\n" .
-                    '     *' . "\n" .
-                    '     * @param string $x' . "\n" .
-                    '     * @param string $y' . "\n" .
-                    '     */' . "\n" .
-                    '    public function stepOne($x, $y)' . "\n" .
-                    '    {' . "\n" .
-                    '        // click $"a"' . "\n" .
-                    '        $statement = Statement::createAction(\'$"a" exists\');' . "\n" .
-                    '        $currentStatement = $statement;' . "\n" .
-                    '    }' . "\n" .
-                    "\n" .
-                    '    public function stepOneDataProvider(): array' . "\n" .
-                    '    {' . "\n" .
-                    '        return [' . "\n" .
-                    '            \'0\' => [' . "\n" .
-                    '                \'x\' => \'1\',' . "\n" .
-                    '                \'y\' => \'2\',' . "\n" .
-                    '            ],' . "\n" .
-                    '            \'1\' => [' . "\n" .
-                    '                \'x\' => \'3\',' . "\n" .
-                    '                \'y\' => \'4\',' . "\n" .
-                    '            ],' . "\n" .
-                    '        ];' . "\n" .
-                    '    }' . "\n" .
-                    "\n" .
-                    '    public function stepTwo()' . "\n" .
-                    '    {' . "\n" .
-                    '        // click $"b"' . "\n" .
-                    '        $statement = Statement::createAction(\'$"b" exists\');' . "\n" .
-                    '        $currentStatement = $statement;' . "\n" .
                     '    }' . "\n" .
                     '}'
             ],
