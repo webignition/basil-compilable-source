@@ -6,7 +6,10 @@ namespace webignition\BasilCompilableSource;
 
 class ClassSignature
 {
-    private const RENDER_TEMPLATE = 'class %s %s';
+    use RenderFromTemplateTrait;
+
+    private const RENDER_TEMPLATE_WITHOUT_BASE_CLASS = 'class {{ name }}';
+    private const RENDER_TEMPLATE = self::RENDER_TEMPLATE_WITHOUT_BASE_CLASS . ' extends {{ base_class }}';
 
     private string $name;
     private ?ClassName $baseClass;
@@ -27,14 +30,25 @@ class ClassSignature
         return $this->baseClass;
     }
 
-    public function render(): string
+    protected function getRenderTemplate(): string
     {
-        $extendsSegment = '';
-
-        if ($this->baseClass instanceof ClassName) {
-            $extendsSegment = 'extends ' . $this->baseClass->renderClassName();
+        if (null === $this->baseClass) {
+            return self::RENDER_TEMPLATE_WITHOUT_BASE_CLASS;
         }
 
-        return trim(sprintf(self::RENDER_TEMPLATE, $this->name, $extendsSegment));
+        return self::RENDER_TEMPLATE;
+    }
+
+    protected function getRenderContext(): array
+    {
+        $context = [
+            'name' => $this->getName(),
+        ];
+
+        if ($this->baseClass instanceof ClassName) {
+            $context['base_class'] = $this->baseClass->renderClassName();
+        }
+
+        return $context;
     }
 }
