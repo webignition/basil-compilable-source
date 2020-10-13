@@ -118,9 +118,7 @@ EOD;
     {
         $lines = $this->body->render();
         $lines = $this->indent($lines);
-        $lines = rtrim($lines, "\n");
-
-        return $lines;
+        return rtrim($lines, "\n");
     }
 
     public function withDocBlock(DocBlock $docBlock): self
