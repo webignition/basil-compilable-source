@@ -17,6 +17,9 @@ EOD;
         return self::RENDER_TEMPLATE;
     }
 
+    /**
+     * @return array<string, string>
+     */
     protected function getRenderContext(): array
     {
         return [

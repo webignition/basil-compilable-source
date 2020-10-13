@@ -54,6 +54,9 @@ EOD;
         return $template;
     }
 
+    /**
+     * @return array<string, string>
+     */
     protected function getRenderContext(): array
     {
         return [

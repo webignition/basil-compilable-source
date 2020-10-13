@@ -27,6 +27,9 @@ class UseExpression extends AbstractExpression
         return self::RENDER_PATTERN;
     }
 
+    /**
+     * @return array<string, string>
+     */
     protected function getRenderContext(): array
     {
         return [

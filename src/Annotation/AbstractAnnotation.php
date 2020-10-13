@@ -34,6 +34,9 @@ abstract class AbstractAnnotation implements AnnotationInterface
         return self::RENDER_TEMPLATE;
     }
 
+    /**
+     * @return array<string, string>
+     */
     protected function getRenderContext(): array
     {
         return [

@@ -48,6 +48,9 @@ class MethodInvocation implements MethodInvocationInterface
         return self::RENDER_PATTERN;
     }
 
+    /**
+     * @return array<string, string>
+     */
     protected function getRenderContext(): array
     {
         return [

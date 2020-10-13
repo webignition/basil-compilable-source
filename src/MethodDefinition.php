@@ -129,6 +129,34 @@ EOD;
         return $new;
     }
 
+    protected function getRenderTemplate(): string
+    {
+        $template = self::RENDER_TEMPLATE;
+
+        if (null === $this->docblock) {
+            $template = ltrim(str_replace('{{ docblock }}', '', $template));
+        }
+
+        return $template;
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    protected function getRenderContext(): array
+    {
+        $context = [
+            'signature' => $this->createSignature(),
+            'body' => $this->renderBody(),
+        ];
+
+        if ($this->docblock instanceof DocBlock) {
+            $context['docblock'] = $this->docblock->render();
+        }
+
+        return $context;
+    }
+
     private function createSignature(): string
     {
         $signature = $this->getVisibility() . ' ';
@@ -199,30 +227,5 @@ EOD;
         }
 
         return new DocBlock($lines);
-    }
-
-    protected function getRenderTemplate(): string
-    {
-        $template = self::RENDER_TEMPLATE;
-
-        if (null === $this->docblock) {
-            $template = ltrim(str_replace('{{ docblock }}', '', $template));
-        }
-
-        return $template;
-    }
-
-    protected function getRenderContext(): array
-    {
-        $context = [
-            'signature' => $this->createSignature(),
-            'body' => $this->renderBody(),
-        ];
-
-        if ($this->docblock instanceof DocBlock) {
-            $context['docblock'] = $this->docblock->render();
-        }
-
-        return $context;
     }
 }

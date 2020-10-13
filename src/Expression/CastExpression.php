@@ -26,6 +26,9 @@ class CastExpression extends AbstractExpression
         return '({{ cast_type }}) {{ expression }}';
     }
 
+    /**
+     * @return array<string, string>
+     */
     protected function getRenderContext(): array
     {
         return [

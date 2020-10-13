@@ -24,6 +24,9 @@ class SingleLineComment implements BodyContentInterface
         return self::RENDER_TEMPLATE;
     }
 
+    /**
+     * @return array<string, string>
+     */
     protected function getRenderContext(): array
     {
         return [
