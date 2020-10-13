@@ -115,4 +115,75 @@ class ClassDependencyCollectionTest extends \PHPUnit\Framework\TestCase
             ],
         ];
     }
+
+    /**
+     * @dataProvider countDataProvider
+     */
+    public function testCount(ClassDependencyCollection $collection, int $expectedCount)
+    {
+        self::assertSame($expectedCount, count($collection));
+    }
+
+    /**
+     * @dataProvider countDataProvider
+     */
+    public function testCountable(ClassDependencyCollection $collection, int $expectedCount)
+    {
+        self::assertCount($expectedCount, $collection);
+    }
+
+    public function countDataProvider(): array
+    {
+        return [
+            'empty' => [
+                'collection' => new ClassDependencyCollection(),
+                'expectedCount' => 0,
+            ],
+            'one' => [
+                'collection' => new ClassDependencyCollection([
+                    new ClassName('Acme\A'),
+                ]),
+                'expectedCount' => 1,
+            ],
+            'two' => [
+                'collection' => new ClassDependencyCollection([
+                    new ClassName('Acme\A'),
+                    new ClassName('Acme\B'),
+                ]),
+                'expectedCount' => 2,
+            ],
+            'three' => [
+                'collection' => new ClassDependencyCollection([
+                    new ClassName('Acme\A'),
+                    new ClassName('Acme\B'),
+                    new ClassName('Acme\C'),
+                ]),
+                'expectedCount' => 3,
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider isEmptyDataProvider
+     */
+    public function testIsEmpty(ClassDependencyCollection $collection, bool $expectedIsEmpty)
+    {
+        self::assertSame($expectedIsEmpty, $collection->isEmpty());
+    }
+
+    public function isEmptyDataProvider(): array
+    {
+        return [
+            'empty' => [
+                'collection' => new ClassDependencyCollection(),
+                'expectedIsEmpty' => true,
+            ],
+            'not empty' => [
+                'collection' => new ClassDependencyCollection([
+                    new ClassName('Acme\A'),
+                ]),
+                'expectedIsEmpty' => false,
+            ],
+        ];
+    }
 }
