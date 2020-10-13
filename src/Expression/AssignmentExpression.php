@@ -7,8 +7,8 @@ namespace webignition\BasilCompilableSource\Expression;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\RenderableInterface;
 use webignition\BasilCompilableSource\RenderFromTemplateTrait;
-use webignition\BasilCompilableSource\RenderSource;
-use webignition\BasilCompilableSource\RenderSourceInterface;
+use webignition\Stubble\Resolvable;
+use webignition\Stubble\ResolvableInterface;
 
 class AssignmentExpression implements AssignmentExpressionInterface, RenderableInterface
 {
@@ -53,9 +53,9 @@ class AssignmentExpression implements AssignmentExpressionInterface, RenderableI
         return $metadata->merge($this->value->getMetadata());
     }
 
-    public function getRenderSource(): RenderSourceInterface
+    public function getResolvable(): ResolvableInterface
     {
-        return new RenderSource(
+        return new Resolvable(
             self::RENDER_TEMPLATE,
             [
                 'variable' => $this->variable->render(),

@@ -7,10 +7,10 @@ namespace webignition\BasilCompilableSource\Expression;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\RenderableInterface;
 use webignition\BasilCompilableSource\RenderFromTemplateTrait;
-use webignition\BasilCompilableSource\RenderSource;
-use webignition\BasilCompilableSource\RenderSourceInterface;
 use webignition\BasilCompilableSource\VariableDependencyInterface;
 use webignition\BasilCompilableSource\VariablePlaceholderInterface;
+use webignition\Stubble\Resolvable;
+use webignition\Stubble\ResolvableInterface;
 
 class ObjectPropertyAccessExpression extends AbstractExpression implements RenderableInterface
 {
@@ -50,9 +50,9 @@ class ObjectPropertyAccessExpression extends AbstractExpression implements Rende
         return $metadata;
     }
 
-    public function getRenderSource(): RenderSourceInterface
+    public function getResolvable(): ResolvableInterface
     {
-        return new RenderSource(
+        return new Resolvable(
             self::RENDER_TEMPLATE,
             [
                 'object' => $this->objectPlaceholder->render(),

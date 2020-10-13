@@ -7,8 +7,8 @@ namespace webignition\BasilCompilableSource\Expression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\RenderableInterface;
 use webignition\BasilCompilableSource\RenderFromTemplateTrait;
-use webignition\BasilCompilableSource\RenderSource;
-use webignition\BasilCompilableSource\RenderSourceInterface;
+use webignition\Stubble\Resolvable;
+use webignition\Stubble\ResolvableInterface;
 
 class ComparisonExpression extends AbstractExpression implements RenderableInterface
 {
@@ -56,9 +56,9 @@ class ComparisonExpression extends AbstractExpression implements RenderableInter
         return $this->comparison;
     }
 
-    public function getRenderSource(): RenderSourceInterface
+    public function getResolvable(): ResolvableInterface
     {
-        return new RenderSource(
+        return new Resolvable(
             self::RENDER_TEMPLATE,
             [
                 'left_hand_side' => $this->leftHandSide->render(),

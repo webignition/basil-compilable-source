@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource;
 
+use webignition\Stubble\ResolvableInterface;
+
 interface RenderableInterface
 {
-    public function getRenderSource(): RenderSourceInterface;
+    public function getResolvable(): ResolvableInterface;
 }

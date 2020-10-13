@@ -6,6 +6,8 @@ namespace webignition\BasilCompilableSource;
 
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\Stubble\Resolvable;
+use webignition\Stubble\ResolvableInterface;
 
 class ClassDefinition implements ClassDefinitionInterface, RenderableInterface
 {
@@ -42,7 +44,7 @@ EOD;
         return $this->body->getMetadata();
     }
 
-    public function getRenderSource(): RenderSourceInterface
+    public function getResolvable(): ResolvableInterface
     {
         $renderedDependencies = $this->getClassDependencies()->render();
 
@@ -52,7 +54,7 @@ EOD;
             $template = ltrim($template);
         }
 
-        return new RenderSource(
+        return new Resolvable(
             $template,
             [
                 'dependencies' => $renderedDependencies,

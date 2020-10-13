@@ -7,9 +7,9 @@ namespace webignition\BasilCompilableSource\DocBlock;
 use webignition\BasilCompilableSource\Annotation\AnnotationInterface;
 use webignition\BasilCompilableSource\RenderableInterface;
 use webignition\BasilCompilableSource\RenderFromTemplateTrait;
-use webignition\BasilCompilableSource\RenderSource;
-use webignition\BasilCompilableSource\RenderSourceInterface;
 use webignition\BasilCompilableSource\SourceInterface;
+use webignition\Stubble\Resolvable;
+use webignition\Stubble\ResolvableInterface;
 
 class DocBlock implements RenderableInterface, SourceInterface
 {
@@ -49,9 +49,9 @@ EOD;
         return $this->merge($addition, $this);
     }
 
-    public function getRenderSource(): RenderSourceInterface
+    public function getResolvable(): ResolvableInterface
     {
-        return new RenderSource(
+        return new Resolvable(
             $this->getRenderTemplate(),
             [
                 'content' => $this->renderContent(),

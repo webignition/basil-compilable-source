@@ -6,8 +6,8 @@ namespace webignition\BasilCompilableSource\Expression;
 
 use webignition\BasilCompilableSource\RenderableInterface;
 use webignition\BasilCompilableSource\RenderFromTemplateTrait;
-use webignition\BasilCompilableSource\RenderSource;
-use webignition\BasilCompilableSource\RenderSourceInterface;
+use webignition\Stubble\Resolvable;
+use webignition\Stubble\ResolvableInterface;
 
 class EncapsulatedExpression extends AbstractExpression implements RenderableInterface
 {
@@ -24,9 +24,9 @@ class EncapsulatedExpression extends AbstractExpression implements RenderableInt
         parent::__construct($expression->getMetadata());
     }
 
-    public function getRenderSource(): RenderSourceInterface
+    public function getResolvable(): ResolvableInterface
     {
-        return new RenderSource(
+        return new Resolvable(
             self::RENDER_TEMPLATE,
             [
                 'expression' => $this->expression->render(),

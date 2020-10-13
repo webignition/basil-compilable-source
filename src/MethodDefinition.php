@@ -8,6 +8,8 @@ use webignition\BasilCompilableSource\Annotation\ParameterAnnotation;
 use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\DocBlock\DocBlock;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\Stubble\Resolvable;
+use webignition\Stubble\ResolvableInterface;
 
 class MethodDefinition implements MethodDefinitionInterface, RenderableInterface
 {
@@ -129,14 +131,14 @@ EOD;
         return $new;
     }
 
-    public function getRenderSource(): RenderSourceInterface
+    public function getResolvable(): ResolvableInterface
     {
         $template = self::RENDER_TEMPLATE;
         if (null === $this->docblock) {
             $template = ltrim(str_replace('{{ docblock }}', '', $template));
         }
 
-        return new RenderSource(
+        return new Resolvable(
             $template,
             [
                 'docblock' => $this->docblock instanceof DocBlock ? $this->docblock->render() : '',

@@ -7,6 +7,8 @@ namespace webignition\BasilCompilableSource;
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\Stubble\Resolvable;
+use webignition\Stubble\ResolvableInterface;
 
 class VariableDependency implements ExpressionInterface, RenderableInterface, VariableDependencyInterface
 {
@@ -36,9 +38,9 @@ class VariableDependency implements ExpressionInterface, RenderableInterface, Va
         ]);
     }
 
-    public function getRenderSource(): RenderSourceInterface
+    public function getResolvable(): ResolvableInterface
     {
-        return new RenderSource(
+        return new Resolvable(
             self::RENDER_TEMPLATE,
             [
                 'name' => $this->name,
