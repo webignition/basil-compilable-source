@@ -10,6 +10,7 @@ use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\ClassDefinition;
 use webignition\BasilCompilableSource\ClassDefinitionInterface;
 use webignition\BasilCompilableSource\ClassName;
+use webignition\BasilCompilableSource\ClassSignature;
 use webignition\BasilCompilableSource\DataProviderMethodDefinition;
 use webignition\BasilCompilableSource\DocBlock\DocBlock;
 use webignition\BasilCompilableSource\EmptyLine;
@@ -35,28 +36,28 @@ class ClassDefinitionTest extends TestCase
     /**
      * @dataProvider createDataProvider
      *
-     * @param string $name
+     * @param ClassSignature $signature
      * @param array<mixed> $methods
      * @param MethodDefinitionInterface[] $expectedMethods
      */
-    public function testCreate(string $name, array $methods, array $expectedMethods)
+    public function testCreate(ClassSignature $signature, array $methods, array $expectedMethods)
     {
-        $classDefinition = new ClassDefinition($name, $methods);
+        $classDefinition = new ClassDefinition($signature, $methods);
 
-        $this->assertSame($name, $classDefinition->getName());
-        $this->assertEquals($expectedMethods, $classDefinition->getMethods());
+        self::assertSame($signature, $classDefinition->getSignature());
+        self::assertEquals($expectedMethods, $classDefinition->getMethods());
     }
 
     public function createDataProvider(): array
     {
         return [
             'no methods' => [
-                'name' => 'noMethods',
+                'name' => new ClassSignature('noMethods'),
                 'methods' => [],
                 'expectedMethods' => [],
             ],
             'invalid methods' => [
-                'name' => 'noMethods',
+                'name' => new ClassSignature('invalidMethods'),
                 'methods' => [
                     1,
                     true,
@@ -65,7 +66,7 @@ class ClassDefinitionTest extends TestCase
                 'expectedMethods' => [],
             ],
             'valid methods' => [
-                'name' => 'noMethods',
+                'name' => new ClassSignature('validMethods'),
                 'methods' => [
                     new MethodDefinition('methodOne', new Body([])),
                     new MethodDefinition('methodTwo', new Body([])),
@@ -76,17 +77,6 @@ class ClassDefinitionTest extends TestCase
                 ],
             ],
         ];
-    }
-
-    public function testGetBaseClass()
-    {
-        $classDefinition = new ClassDefinition('className', []);
-        $this->assertNull($classDefinition->getBaseClass());
-
-        $baseClass = new ClassName('BaseClass');
-
-        $classDefinition->setBaseClass($baseClass);
-        $this->assertEquals($baseClass, $classDefinition->getBaseClass());
     }
 
     /**
@@ -102,7 +92,7 @@ class ClassDefinitionTest extends TestCase
         return [
             'empty' => [
                 'classDefinition' => new ClassDefinition(
-                    'className',
+                    new ClassSignature('className'),
                     [
                         new MethodDefinition('methodName', new Body([])),
                     ]
@@ -111,7 +101,7 @@ class ClassDefinitionTest extends TestCase
             ],
             'methods without metadata' => [
                 'classDefinition' => new ClassDefinition(
-                    'className',
+                    new ClassSignature('className'),
                     [
                         new MethodDefinition('name', new Body([
                             new EmptyLine(),
@@ -123,7 +113,7 @@ class ClassDefinitionTest extends TestCase
             ],
             'methods with metadata' => [
                 'classDefinition' => new ClassDefinition(
-                    'className',
+                    new ClassSignature('className'),
                     [
                         new MethodDefinition('name', new Body([
                             new Statement(
@@ -162,24 +152,33 @@ class ClassDefinitionTest extends TestCase
     {
         return [
             'no methods, no base class' => [
-                'classDefinition' => new ClassDefinition('NameOfClass', []),
+                'classDefinition' => new ClassDefinition(
+                    new ClassSignature('NameOfClass'),
+                    []
+                ),
                 'expectedString' =>
                     'class NameOfClass' . "\n" .
                     '{}'
             ],
             'no methods, base class in root namespace' => [
-                'classDefinition' => $this->createClassDefinitionWithBaseClass(
-                    new ClassDefinition('NameOfClass', []),
-                    new ClassName('TestCase')
+                'classDefinition' => new ClassDefinition(
+                    new ClassSignature(
+                        'NameOfClass',
+                        new ClassName('TestCase')
+                    ),
+                    []
                 ),
                 'expectedString' =>
                     'class NameOfClass extends \TestCase' . "\n" .
                     '{}'
             ],
             'no methods, base class in non-root namespace' => [
-                'classDefinition' => $this->createClassDefinitionWithBaseClass(
-                    new ClassDefinition('NameOfClass', []),
-                    new ClassName(TestCase::class)
+                'classDefinition' => new ClassDefinition(
+                    new ClassSignature(
+                        'NameOfClass',
+                        new ClassName(TestCase::class)
+                    ),
+                    []
                 ),
                 'expectedString' =>
                     'use PHPUnit\Framework\TestCase;' . "\n" .
@@ -188,11 +187,14 @@ class ClassDefinitionTest extends TestCase
                     '{}'
             ],
             'single empty method' => [
-                'classDefinition' => $this->createClassDefinitionWithBaseClass(
-                    new ClassDefinition('NameOfClass', [
-                        new MethodDefinition('methodName', new Body([]))
-                    ]),
-                    new ClassName('TestCase')
+                'classDefinition' => new ClassDefinition(
+                    new ClassSignature(
+                        'NameOfClass',
+                        new ClassName('TestCase')
+                    ),
+                    [
+                        new MethodDefinition('methodName', new Body([])),
+                    ]
                 ),
                 'expectedString' =>
                     'class NameOfClass extends \TestCase' . "\n" .
@@ -203,8 +205,12 @@ class ClassDefinitionTest extends TestCase
                     '}'
             ],
             'many methods' => [
-                'classDefinition' => $this->createClassDefinitionWithBaseClass(
-                    new ClassDefinition('NameOfClass', [
+                'classDefinition' => new ClassDefinition(
+                    new ClassSignature(
+                        'NameOfClass',
+                        new ClassName('TestCase')
+                    ),
+                    [
                         new MethodDefinition('stepOne', new Body([
                             new SingleLineComment('click $"a"'),
                             new Statement(
@@ -247,8 +253,7 @@ class ClassDefinitionTest extends TestCase
                                 )
                             ),
                         ])),
-                    ]),
-                    new ClassName('TestCase')
+                    ]
                 ),
                 'expectedString' =>
                     'use Acme\Statement;' . "\n" .
@@ -271,8 +276,12 @@ class ClassDefinitionTest extends TestCase
                     '}'
             ],
             'many methods, with data provider' => [
-                'classDefinition' => $this->createClassDefinitionWithBaseClass(
-                    new ClassDefinition('NameOfClass', [
+                'classDefinition' => new ClassDefinition(
+                    new ClassSignature(
+                        'NameOfClass',
+                        new ClassName('TestCase')
+                    ),
+                    [
                         (function () {
                             $methodDefinition = new MethodDefinition(
                                 'stepOne',
@@ -345,8 +354,7 @@ class ClassDefinitionTest extends TestCase
                                 )
                             ),
                         ])),
-                    ]),
-                    new ClassName('TestCase')
+                    ]
                 ),
                 'expectedString' =>
                     'use Acme\Statement;' . "\n" .
@@ -389,14 +397,5 @@ class ClassDefinitionTest extends TestCase
                     '}'
             ],
         ];
-    }
-
-    private function createClassDefinitionWithBaseClass(
-        ClassDefinition $classDefinition,
-        ClassName $baseClass
-    ): ClassDefinitionInterface {
-        $classDefinition->setBaseClass($baseClass);
-
-        return $classDefinition;
     }
 }
