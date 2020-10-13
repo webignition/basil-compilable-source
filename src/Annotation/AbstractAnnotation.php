@@ -4,8 +4,14 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Annotation;
 
+use webignition\BasilCompilableSource\RenderFromTemplateTrait;
+
 abstract class AbstractAnnotation implements AnnotationInterface
 {
+    use RenderFromTemplateTrait;
+
+    private const RENDER_TEMPLATE = '@{{ name }} {{ arguments }}';
+
     private string $name;
 
     /**
@@ -23,12 +29,16 @@ abstract class AbstractAnnotation implements AnnotationInterface
         $this->arguments = $arguments;
     }
 
-    public function render(): string
+    protected function getRenderTemplate(): string
     {
-        return sprintf(
-            '@%s %s',
-            $this->name,
-            implode(' ', $this->arguments)
-        );
+        return self::RENDER_TEMPLATE;
+    }
+
+    protected function getRenderContext(): array
+    {
+        return [
+            'name' => $this->name,
+            'arguments' => implode(' ', $this->arguments)
+        ];
     }
 }
