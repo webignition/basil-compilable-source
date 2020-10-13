@@ -6,8 +6,7 @@ namespace webignition\BasilCompilableSource;
 
 interface ClassDefinitionInterface extends HasMetadataInterface, SourceInterface
 {
-    public function getName(): string;
-    public function getBaseClass(): ?ClassName;
+    public function getSignature(): ClassSignature;
 
     /**
      * @return MethodDefinitionInterface[]

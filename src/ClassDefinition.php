@@ -17,9 +17,7 @@ class ClassDefinition implements ClassDefinitionInterface
 {%s}
 EOD;
 
-    private const CLASS_SIGNATURE_TEMPLATE = 'class %s %s';
-    private string $name;
-    private ?ClassName $baseClass;
+    private ClassSignature $signature;
 
     /**
      * @var MethodDefinitionInterface[]
@@ -27,13 +25,12 @@ EOD;
     private array $methods = [];
 
     /**
-     * @param string $name
+     * @param ClassSignature $signature
      * @param MethodDefinitionInterface[] $methods
      */
-    public function __construct(string $name, array $methods)
+    public function __construct(ClassSignature $signature, array $methods)
     {
-        $this->name = $name;
-        $this->baseClass = null;
+        $this->signature = $signature;
 
         foreach ($methods as $method) {
             if ($method instanceof MethodDefinitionInterface) {
@@ -42,19 +39,9 @@ EOD;
         }
     }
 
-    public function getName(): string
+    public function getSignature(): ClassSignature
     {
-        return $this->name;
-    }
-
-    public function getBaseClass(): ?ClassName
-    {
-        return $this->baseClass;
-    }
-
-    public function setBaseClass(ClassName $baseClass): void
-    {
-        $this->baseClass = $baseClass;
+        return $this->signature;
     }
 
     /**
@@ -81,30 +68,20 @@ EOD;
     public function render(): string
     {
         $classDependencies = $this->getMetadata()->getClassDependencies();
+        $baseClass = $this->signature->getBaseClass();
 
-        if ($this->baseClass instanceof ClassName) {
+        if ($baseClass instanceof ClassName) {
             $classDependencies = $classDependencies->merge(new ClassDependencyCollection([
-                $this->baseClass,
+                $baseClass,
             ]));
         }
 
         return trim(sprintf(
             self::RENDER_TEMPLATE,
             $classDependencies->render(),
-            $this->createClassSignatureLine(),
+            $this->signature->render(),
             $this->createClassBody()
         ));
-    }
-
-    private function createClassSignatureLine(): string
-    {
-        $extendsSegment = '';
-
-        if ($this->baseClass instanceof ClassName) {
-            $extendsSegment = 'extends ' . $this->baseClass->renderClassName();
-        }
-
-        return trim(sprintf(self::CLASS_SIGNATURE_TEMPLATE, $this->getName(), $extendsSegment));
     }
 
     private function createClassBody(): string
