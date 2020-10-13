@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource;
 
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
-use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 
 class ClassDefinition implements ClassDefinitionInterface
@@ -18,25 +17,12 @@ class ClassDefinition implements ClassDefinitionInterface
 EOD;
 
     private ClassSignature $signature;
+    private ClassBody $body;
 
-    /**
-     * @var MethodDefinitionInterface[]
-     */
-    private array $methods = [];
-
-    /**
-     * @param ClassSignature $signature
-     * @param MethodDefinitionInterface[] $methods
-     */
-    public function __construct(ClassSignature $signature, array $methods)
+    public function __construct(ClassSignature $signature, ClassBody $body)
     {
         $this->signature = $signature;
-
-        foreach ($methods as $method) {
-            if ($method instanceof MethodDefinitionInterface) {
-                $this->methods[$method->getName()] = $method;
-            }
-        }
+        $this->body = $body;
     }
 
     public function getSignature(): ClassSignature
@@ -44,25 +30,14 @@ EOD;
         return $this->signature;
     }
 
-    /**
-     * @return MethodDefinitionInterface[]
-     */
-    public function getMethods(): array
+    public function getBody(): ClassBody
     {
-        return $this->methods;
+        return $this->body;
     }
 
     public function getMetadata(): MetadataInterface
     {
-        $metadata = new Metadata();
-
-        foreach ($this->methods as $method) {
-            if ($method instanceof MethodDefinitionInterface) {
-                $metadata = $metadata->merge($method->getMetadata());
-            }
-        }
-
-        return $metadata;
+        return $this->body->getMetadata();
     }
 
     public function render(): string
@@ -86,20 +61,12 @@ EOD;
 
     private function createClassBody(): string
     {
-        if (0 === count($this->methods)) {
+        $renderedBody = $this->body->render();
+        if ('' === $renderedBody) {
             return '';
         }
 
-        $renderedMethods = [];
-
-        foreach ($this->methods as $method) {
-            $renderedMethod = $method->render();
-            $renderedMethod = $this->indent($renderedMethod);
-
-            $renderedMethods[] = $renderedMethod;
-        }
-
-        return "\n" . implode("\n\n", $renderedMethods) . "\n";
+        return "\n" . $this->indent($this->body->render()) . "\n";
     }
 
     private function indent(string $content): string
