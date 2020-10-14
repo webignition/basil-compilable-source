@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Block\TryCatch;
 
+use webignition\BasilCompilableSource\Block\AbstractBlock;
 use webignition\Stubble\Resolvable;
 use webignition\Stubble\ResolvableInterface;
 
