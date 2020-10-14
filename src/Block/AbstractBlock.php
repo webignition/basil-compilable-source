@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilCompilableSource\Block\TryCatch;
+namespace webignition\BasilCompilableSource\Block;
 
 use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\HasMetadataInterface;

@@ -2,30 +2,36 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilCompilableSource\Block\TryCatch;
+namespace webignition\BasilCompilableSource\Block\IfBlock;
 
 use webignition\BasilCompilableSource\Block\AbstractBlock;
 use webignition\BasilCompilableSource\Body\BodyInterface;
-use webignition\BasilCompilableSource\Expression\CatchExpression;
+use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\Stubble\Resolvable;
 use webignition\Stubble\ResolvableInterface;
 
-class CatchBlock extends AbstractBlock
+class IfBlock extends AbstractBlock
 {
     private const RENDER_TEMPLATE = <<<'EOD'
-catch ({{ catch_expression }}) {
+if ({{ expression }}) {
 {{ body }}
 }
 EOD;
 
-    private CatchExpression $catchExpression;
+    private ExpressionInterface $expression;
 
-    public function __construct(CatchExpression $catchExpression, BodyInterface $body)
+    public function __construct(ExpressionInterface $expression, BodyInterface $body)
     {
         parent::__construct($body);
 
-        $this->catchExpression = $catchExpression;
+        $this->expression = $expression;
+    }
+
+    public function getMetadata(): MetadataInterface
+    {
+        $metadata = $this->expression->getMetadata();
+        return $metadata->merge(parent::getMetadata());
     }
 
     public function getResolvable(): ResolvableInterface
@@ -33,15 +39,9 @@ EOD;
         return new Resolvable(
             self::RENDER_TEMPLATE,
             [
-                'catch_expression' => $this->catchExpression->render(),
+                'expression' => $this->expression->render(),
                 'body' => $this->renderBody(),
             ]
         );
-    }
-
-    public function getMetadata(): MetadataInterface
-    {
-        $metadata = parent::getMetadata();
-        return $metadata->merge($this->catchExpression->getMetadata());
     }
 }
