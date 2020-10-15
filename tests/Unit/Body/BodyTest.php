@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Tests\Unit\Body;
 
+use webignition\BasilCompilableSource\Block\IfBlock\IfBlock;
 use webignition\BasilCompilableSource\Block\TryCatch\CatchBlock;
 use webignition\BasilCompilableSource\Block\TryCatch\TryBlock;
 use webignition\BasilCompilableSource\Block\TryCatch\TryCatchBlock;
@@ -85,6 +86,14 @@ class BodyTest extends \PHPUnit\Framework\TestCase
                         )
                     ),
                     new Body([]),
+                    new IfBlock(
+                        new LiteralExpression('true'),
+                        new Body([
+                            new Statement(
+                                new ReturnExpression()
+                            )
+                        ])
+                    )
                 ],
                 'expectedContent' => [
                     new SingleLineComment('singe line comment'),
@@ -116,6 +125,14 @@ class BodyTest extends \PHPUnit\Framework\TestCase
                             ])
                         )
                     ),
+                    new IfBlock(
+                        new LiteralExpression('true'),
+                        new Body([
+                            new Statement(
+                                new ReturnExpression()
+                            )
+                        ])
+                    )
                 ],
             ],
         ];
@@ -167,6 +184,14 @@ class BodyTest extends \PHPUnit\Framework\TestCase
                             ])
                         )
                     ),
+                    new IfBlock(
+                        new LiteralExpression('true'),
+                        new Body([
+                            new Statement(
+                                new ReturnExpression()
+                            )
+                        ])
+                    ),
                 ]),
                 'expectedString' =>
                     '// single line comment' . "\n" .
@@ -177,6 +202,9 @@ class BodyTest extends \PHPUnit\Framework\TestCase
                     '    // TryBlock comment' . "\n" .
                     '} catch (\LogicException $exception) {' . "\n" .
                     '    // CatchBlock comment' . "\n" .
+                    '}' . "\n" .
+                    'if (true) {' . "\n" .
+                    '    return;' . "\n" .
                     '}',
             ],
             'empty return only' => [
