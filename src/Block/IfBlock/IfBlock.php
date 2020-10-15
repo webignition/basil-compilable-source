@@ -11,7 +11,7 @@ use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\Stubble\Resolvable;
 use webignition\Stubble\ResolvableInterface;
 
-class IfBlock extends AbstractBlock
+class IfBlock extends AbstractBlock implements BodyInterface
 {
     private const RENDER_TEMPLATE = <<<'EOD'
 if ({{ expression }}) {
