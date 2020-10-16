@@ -9,8 +9,8 @@ use webignition\BasilCompilableSource\RenderableInterface;
 use webignition\BasilCompilableSource\RenderFromTemplateTrait;
 use webignition\BasilCompilableSource\VariableDependencyInterface;
 use webignition\BasilCompilableSource\VariablePlaceholderInterface;
-use webignition\Stubble\Resolvable;
-use webignition\Stubble\ResolvableInterface;
+use webignition\StubbleResolvable\Resolvable;
+use webignition\StubbleResolvable\ResolvableInterface;
 
 class ObjectPropertyAccessExpression extends AbstractExpression implements RenderableInterface
 {

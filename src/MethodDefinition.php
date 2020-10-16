@@ -8,8 +8,8 @@ use webignition\BasilCompilableSource\Annotation\ParameterAnnotation;
 use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\DocBlock\DocBlock;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\Stubble\Resolvable;
-use webignition\Stubble\ResolvableInterface;
+use webignition\StubbleResolvable\Resolvable;
+use webignition\StubbleResolvable\ResolvableInterface;
 
 class MethodDefinition implements MethodDefinitionInterface, RenderableInterface
 {

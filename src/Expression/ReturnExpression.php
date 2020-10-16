@@ -9,8 +9,8 @@ use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\RenderableInterface;
 use webignition\BasilCompilableSource\RenderFromTemplateTrait;
-use webignition\Stubble\Resolvable;
-use webignition\Stubble\ResolvableInterface;
+use webignition\StubbleResolvable\Resolvable;
+use webignition\StubbleResolvable\ResolvableInterface;
 
 class ReturnExpression implements ExpressionInterface, RenderableInterface
 {

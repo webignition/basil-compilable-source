@@ -14,6 +14,7 @@ trait RenderFromTemplateTrait
     {
         if ($this instanceof RenderableInterface) {
             $resolvable = $this->getResolvable();
+
             $resolver = new VariableResolver(
                 new UnresolvedVariableFinder([
                     DeciderFactory::createAllowAllDecider()

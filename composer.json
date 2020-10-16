@@ -23,11 +23,11 @@
     },
     "scripts": {
         "cs": [
-            "./vendor/bin/ecs check src tests --ansi --config ecs.yaml",
+            "./vendor/bin/ecs check src tests --ansi --config ecs.php",
             "./vendor/bin/phpcs"
         ],
         "cs-fix": [
-            "./vendor/bin/ecs check src tests --ansi --config ecs.yaml --fix"
+            "./vendor/bin/ecs check src tests --ansi --config ecs.php --fix"
         ],
         "static-analysis": "./vendor/bin/phpstan analyse src tests --level=7",
         "test": "./vendor/bin/phpunit --colors=always",
@@ -39,7 +39,8 @@
     },
     "require": {
         "php": ">=7.4",
-        "webignition/stubble": ">=0.7,<1"
+        "webignition/stubble-resolvable": ">=0.1,<1",
+        "webignition/stubble": ">=0.8,<1"
     },
     "require-dev": {
         "phpunit/phpunit": "~9",

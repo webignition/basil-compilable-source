@@ -8,8 +8,8 @@ use webignition\BasilCompilableSource\Block\AbstractBlock;
 use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\Expression\CatchExpression;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\Stubble\Resolvable;
-use webignition\Stubble\ResolvableInterface;
+use webignition\StubbleResolvable\Resolvable;
+use webignition\StubbleResolvable\ResolvableInterface;
 
 class CatchBlock extends AbstractBlock
 {

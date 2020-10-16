@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource;
 
-use webignition\Stubble\ResolvableInterface;
+use webignition\StubbleResolvable\ResolvableInterface;
 
 interface RenderableInterface
 {

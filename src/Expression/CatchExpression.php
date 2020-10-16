@@ -10,8 +10,8 @@ use webignition\BasilCompilableSource\RenderableInterface;
 use webignition\BasilCompilableSource\RenderFromTemplateTrait;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclarationCollection;
 use webignition\BasilCompilableSource\VariableName;
-use webignition\Stubble\Resolvable;
-use webignition\Stubble\ResolvableInterface;
+use webignition\StubbleResolvable\Resolvable;
+use webignition\StubbleResolvable\ResolvableInterface;
 
 class CatchExpression implements ExpressionInterface, RenderableInterface
 {
