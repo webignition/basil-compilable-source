@@ -7,8 +7,8 @@ namespace webignition\BasilCompilableSource;
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\Stubble\Resolvable;
-use webignition\Stubble\ResolvableInterface;
+use webignition\StubbleResolvable\Resolvable;
+use webignition\StubbleResolvable\ResolvableInterface;
 
 class VariableDependency implements ExpressionInterface, RenderableInterface, VariableDependencyInterface
 {

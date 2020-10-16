@@ -6,8 +6,8 @@ namespace webignition\BasilCompilableSource\Expression;
 
 use webignition\BasilCompilableSource\RenderableInterface;
 use webignition\BasilCompilableSource\RenderFromTemplateTrait;
-use webignition\Stubble\Resolvable;
-use webignition\Stubble\ResolvableInterface;
+use webignition\StubbleResolvable\Resolvable;
+use webignition\StubbleResolvable\ResolvableInterface;
 
 class EncapsulatedExpression extends AbstractExpression implements RenderableInterface
 {

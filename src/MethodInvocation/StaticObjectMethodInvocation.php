@@ -7,8 +7,8 @@ namespace webignition\BasilCompilableSource\MethodInvocation;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSource\StaticObject;
-use webignition\Stubble\Resolvable;
-use webignition\Stubble\ResolvableInterface;
+use webignition\StubbleResolvable\Resolvable;
+use webignition\StubbleResolvable\ResolvableInterface;
 
 class StaticObjectMethodInvocation extends AbstractMethodInvocationEncapsulator implements
     StaticObjectMethodInvocationInterface

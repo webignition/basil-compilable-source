@@ -6,8 +6,8 @@ namespace webignition\BasilCompilableSource;
 
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\Stubble\Resolvable;
-use webignition\Stubble\ResolvableInterface;
+use webignition\StubbleResolvable\Resolvable;
+use webignition\StubbleResolvable\ResolvableInterface;
 
 class ClassDefinition implements ClassDefinitionInterface, RenderableInterface
 {

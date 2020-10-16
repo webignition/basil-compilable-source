@@ -9,8 +9,8 @@ use webignition\BasilCompilableSource\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSource\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSource\RenderableInterface;
 use webignition\BasilCompilableSource\RenderFromTemplateTrait;
-use webignition\Stubble\Resolvable;
-use webignition\Stubble\ResolvableInterface;
+use webignition\StubbleResolvable\Resolvable;
+use webignition\StubbleResolvable\ResolvableInterface;
 
 class MethodInvocation implements MethodInvocationInterface, RenderableInterface
 {
