@@ -6,7 +6,7 @@ namespace webignition\BasilCompilableSource;
 
 use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\DocBlock\DocBlock;
-use webignition\BasilCompilableSource\Expression\ArrayExpression;
+use webignition\BasilCompilableSource\Expression\ArrayFoo;
 use webignition\BasilCompilableSource\Expression\ReturnExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Statement\Statement;
@@ -31,7 +31,10 @@ class DataProviderMethodDefinition extends MethodDefinition implements DataProvi
         parent::__construct($name, new Body([
             new Statement(
                 new ReturnExpression(
-                    new ArrayExpression($data)
+                    ArrayFoo::fromDataSets(
+                        $name . '-data-provider-identifier',
+                        $data
+                    )
                 )
             ),
         ]));
