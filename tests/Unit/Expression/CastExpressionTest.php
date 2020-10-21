@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Tests\Unit\Expression;
 
 use webignition\BasilCompilableSource\Body\Body;
-use webignition\BasilCompilableSource\Expression\ArrayExpression;
+use webignition\BasilCompilableSource\Expression\ArrayFoo;
 use webignition\BasilCompilableSource\Expression\CastExpression;
 use webignition\BasilCompilableSource\Expression\ClosureExpression;
 use webignition\BasilCompilableSource\Expression\ComparisonExpression;
@@ -54,7 +54,7 @@ class CastExpressionTest extends \PHPUnit\Framework\TestCase
                 'expectedString' => '(string) (100)',
             ],
             'empty array expression as object' => [
-                'expression' => new CastExpression(new ArrayExpression([]), 'object'),
+                'expression' => new CastExpression(new ArrayFoo('identifier', []), 'object'),
                 'expectedString' => '(object) ([])',
             ],
             'empty closure expression as string' => [
