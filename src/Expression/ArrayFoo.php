@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Expression;
 
+use webignition\BasilCompilableSource\Metadata\Metadata;
+use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\RenderableInterface;
 use webignition\BasilCompilableSource\RenderFromTemplateTrait;
 use webignition\StubbleResolvable\Resolvable;
 use webignition\StubbleResolvable\ResolvableCollection;
 use webignition\StubbleResolvable\ResolvableInterface;
 
-class ArrayFoo implements RenderableInterface
+class ArrayFoo implements ExpressionInterface, RenderableInterface
 {
     use RenderFromTemplateTrait;
 
@@ -36,32 +38,6 @@ class ArrayFoo implements RenderableInterface
         $this->collection = new ResolvableCollection($identifier, $pairs);
     }
 
-//    private const RENDER_TEMPLATE = '{{ key }} => {{ value }},';
-//
-//    private ArrayKey $key;
-//
-//    /**
-//     * @var mixed
-//     */
-//    private $value;
-//
-//    public function __construct(ArrayKey $key, ExpressionInterface $value)
-//    {
-//        $this->key = $key;
-//        $this->value = $value;
-//    }
-//
-//    public function getResolvable(): ResolvableInterface
-//    {
-//        return new Resolvable(
-//            self::RENDER_TEMPLATE,
-//            [
-//                'key' => $this->key->render(),
-//                'value' => $this->value->render(),
-//            ]
-//        );
-//    }
-
     public function getResolvable(): ResolvableInterface
     {
         $resolvable = new Resolvable(
@@ -74,6 +50,19 @@ class ArrayFoo implements RenderableInterface
         });
 
         return $resolvable;
+    }
+
+    public function getMetadata(): MetadataInterface
+    {
+        $metadata = new Metadata();
+
+        foreach ($this->collection as $pair) {
+            if ($pair instanceof ArrayPair) {
+                $metadata = $metadata->merge($pair->getMetadata());
+            }
+        }
+
+        return $metadata;
     }
 
     private function resolvedTemplateMutator(string $resolved): string

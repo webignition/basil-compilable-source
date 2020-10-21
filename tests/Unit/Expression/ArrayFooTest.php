@@ -10,12 +10,66 @@ use webignition\BasilCompilableSource\Expression\ArrayKey;
 use webignition\BasilCompilableSource\Expression\ArrayPair;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
+use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\VariableDependency;
+use webignition\BasilCompilableSource\VariableDependencyCollection;
 use webignition\BasilCompilableSource\VariableName;
 
 class ArrayFooTest extends \PHPUnit\Framework\TestCase
 {
+    /**
+     * @dataProvider getMetadataDataProvider
+     */
+    public function testGetMetadata(ArrayFoo $foo, MetadataInterface $expectedMetadata)
+    {
+        self::assertEquals($expectedMetadata, $foo->getMetadata());
+    }
+
+    public function getMetadataDataProvider(): array
+    {
+        return [
+            'empty' => [
+                'foo' => new ArrayFoo(
+                    'identifier1',
+                    []
+                ),
+                'expectedMetadata' => new Metadata(),
+            ],
+            'no metadata' => [
+                'foo' => new ArrayFoo(
+                    'identifier1-',
+                    [
+                        new ArrayPair(
+                            new ArrayKey('key1'),
+                            new LiteralExpression('\'value1\'')
+                        ),
+                    ]
+                ),
+                'expectedMetadata' => new Metadata(),
+            ],
+            'has metadata' => [
+                'foo' => new ArrayFoo(
+                    'identifier1-',
+                    [
+                        new ArrayPair(
+                            new ArrayKey('key3'),
+                            new ObjectMethodInvocation(
+                                new VariableDependency('OBJECT'),
+                                'methodName'
+                            )
+                        ),
+                    ]
+                ),
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                        'OBJECT',
+                    ])
+                ]),
+            ],
+        ];
+    }
+
     /**
      * @dataProvider renderDataProvider
      */
