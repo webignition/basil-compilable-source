@@ -74,7 +74,7 @@ class ArrayFooTest extends \PHPUnit\Framework\TestCase
      */
     public function testRender(ArrayFoo $foo, string $expectedString)
     {
-        $this->assertSame($expectedString, $foo->render());
+        self::assertSame($expectedString, $foo->render());
     }
 
     public function renderDataProvider(): array
@@ -313,6 +313,225 @@ class ArrayFooTest extends \PHPUnit\Framework\TestCase
                     "        'key1' => {{ OBJECT }}->methodName(),\n" .
                     "    ],\n" .
                     "]",
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider fromDataSetsDataProvider
+     */
+    public function testFromDataSets(ArrayFoo $foo, ArrayFoo $expectedFoo)
+    {
+        self::assertEquals($expectedFoo, $foo);
+    }
+
+    public function fromDataSetsDataProvider(): array
+    {
+        return [
+            'empty' => [
+                'foo' => ArrayFoo::fromDataSets('identifier', []),
+                'expectedFoo' => new ArrayFoo(
+                    'identifier',
+                    []
+                ),
+            ],
+            'single data set with single key:value numerical name' => [
+                'foo' => ArrayFoo::fromDataSets(
+                    'identifier',
+                    [
+                        0 => [
+                            'key1' => 'value1',
+                        ],
+                    ]
+                ),
+                'expectedFoo' => new ArrayFoo(
+                    'identifier',
+                    [
+                        new ArrayPair(
+                            new ArrayKey('0'),
+                            new ArrayFoo(
+                                'identifier-0-',
+                                [
+                                    new ArrayPair(
+                                        new ArrayKey('key1'),
+                                        new LiteralExpression('\'value1\'')
+                                    ),
+                                ]
+                            )
+                        ),
+                    ]
+                ),
+            ],
+            'single data set with single key:value string name' => [
+                'foo' => ArrayFoo::fromDataSets(
+                    'identifier',
+                    [
+                        'data-set-one' => [
+                            'key1' => 'value1',
+                        ],
+                    ]
+                ),
+                'expectedFoo' => new ArrayFoo(
+                    'identifier',
+                    [
+                        new ArrayPair(
+                            new ArrayKey('data-set-one'),
+                            new ArrayFoo(
+                                'identifier-data-set-one-',
+                                [
+                                    new ArrayPair(
+                                        new ArrayKey('key1'),
+                                        new LiteralExpression('\'value1\'')
+                                    ),
+                                ]
+                            )
+                        ),
+                    ]
+                ),
+            ],
+            'single data set with multiple key:value numerical name' => [
+                'foo' => ArrayFoo::fromDataSets(
+                    'identifier',
+                    [
+                        0 => [
+                            'key1' => 'value1',
+                            'key2' => 'value2',
+                        ],
+                    ]
+                ),
+                'expectedFoo' => new ArrayFoo(
+                    'identifier',
+                    [
+                        new ArrayPair(
+                            new ArrayKey('0'),
+                            new ArrayFoo(
+                                'identifier-0-',
+                                [
+                                    new ArrayPair(
+                                        new ArrayKey('key1'),
+                                        new LiteralExpression('\'value1\'')
+                                    ),
+                                    new ArrayPair(
+                                        new ArrayKey('key2'),
+                                        new LiteralExpression('\'value2\'')
+                                    ),
+                                ]
+                            )
+                        ),
+                    ]
+                ),
+            ],
+            'multiple data sets with multiple key:value numerical name' => [
+                'foo' => ArrayFoo::fromDataSets(
+                    'identifier',
+                    [
+                        0 => [
+                            'key1' => 'value1',
+                            'key2' => 'value2',
+                        ],
+                        1 => [
+                            'key1' => 'value3',
+                            'key2' => 'value4',
+                        ],
+                    ]
+                ),
+                'expectedFoo' => new ArrayFoo(
+                    'identifier',
+                    [
+                        new ArrayPair(
+                            new ArrayKey('0'),
+                            new ArrayFoo(
+                                'identifier-0-',
+                                [
+                                    new ArrayPair(
+                                        new ArrayKey('key1'),
+                                        new LiteralExpression('\'value1\'')
+                                    ),
+                                    new ArrayPair(
+                                        new ArrayKey('key2'),
+                                        new LiteralExpression('\'value2\'')
+                                    ),
+                                ]
+                            )
+                        ),
+                        new ArrayPair(
+                            new ArrayKey('1'),
+                            new ArrayFoo(
+                                'identifier-1-',
+                                [
+                                    new ArrayPair(
+                                        new ArrayKey('key1'),
+                                        new LiteralExpression('\'value3\'')
+                                    ),
+                                    new ArrayPair(
+                                        new ArrayKey('key2'),
+                                        new LiteralExpression('\'value4\'')
+                                    ),
+                                ]
+                            )
+                        ),
+                    ]
+                ),
+            ],
+            'single data set with VariableName value' => [
+                'foo' => ArrayFoo::fromDataSets(
+                    'identifier',
+                    [
+                        'data-set-one' => [
+                            'key1' => new VariableName('variableName'),
+                        ],
+                    ]
+                ),
+                'expectedFoo' => new ArrayFoo(
+                    'identifier',
+                    [
+                        new ArrayPair(
+                            new ArrayKey('data-set-one'),
+                            new ArrayFoo(
+                                'identifier-data-set-one-',
+                                [
+                                    new ArrayPair(
+                                        new ArrayKey('key1'),
+                                        new VariableName('variableName')
+                                    ),
+                                ]
+                            )
+                        ),
+                    ]
+                ),
+            ],
+            'single data set with ObjectMethodInvocation value' => [
+                'foo' => ArrayFoo::fromDataSets(
+                    'identifier',
+                    [
+                        'data-set-one' => [
+                            'key1' => new ObjectMethodInvocation(
+                                new VariableDependency('OBJECT'),
+                                'methodName'
+                            ),
+                        ],
+                    ]
+                ),
+                'expectedFoo' => new ArrayFoo(
+                    'identifier',
+                    [
+                        new ArrayPair(
+                            new ArrayKey('data-set-one'),
+                            new ArrayFoo(
+                                'identifier-data-set-one-',
+                                [
+                                    new ArrayPair(
+                                        new ArrayKey('key1'),
+                                        new ObjectMethodInvocation(
+                                            new VariableDependency('OBJECT'),
+                                            'methodName'
+                                        )
+                                    ),
+                                ]
+                            )
+                        ),
+                    ]
+                ),
             ],
         ];
     }

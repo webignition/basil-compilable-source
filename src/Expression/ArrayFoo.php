@@ -38,6 +38,40 @@ class ArrayFoo implements ExpressionInterface, RenderableInterface
         $this->collection = new ResolvableCollection($identifier, $pairs);
     }
 
+    public static function fromDataSets(string $identifier, array $dataSets): self
+    {
+        $expressionArrayPairs = [];
+
+        foreach ($dataSets as $dataSetName => $dataSet) {
+            $dataSetArrayPairs = [];
+
+            foreach ($dataSet as $key => $value) {
+                $valueExpression = $value instanceof ExpressionInterface
+                    ? $value
+                    : new LiteralExpression('\'' . $value . '\'');
+
+                $dataSetArrayPairs[] = new ArrayPair(
+                    new ArrayKey($key),
+                    $valueExpression
+                );
+            }
+
+            $dataSetArrayFoo = new ArrayFoo(
+                $identifier . '-' . $dataSetName . '-',
+                $dataSetArrayPairs
+            );
+
+            $dataSetArrayPair = new ArrayPair(
+                new ArrayKey((string) $dataSetName),
+                $dataSetArrayFoo
+            );
+
+            $expressionArrayPairs[] = $dataSetArrayPair;
+        }
+
+        return new ArrayFoo($identifier, $expressionArrayPairs);
+    }
+
     public function getResolvable(): ResolvableInterface
     {
         $resolvable = new Resolvable(
