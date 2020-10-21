@@ -79,11 +79,9 @@ class ArrayExpression implements ExpressionInterface, RenderableInterface
             $this->collection->getContext()
         );
 
-        $resolvable = $resolvable->withResolvedTemplateMutator(function (string $resolved) {
+        return $resolvable->withResolvedTemplateMutator(function (string $resolved) {
             return $this->resolvedTemplateMutator($resolved);
         });
-
-        return $resolvable;
     }
 
     public function getMetadata(): MetadataInterface
@@ -123,6 +121,6 @@ class ArrayExpression implements ExpressionInterface, RenderableInterface
 
         $resolved = implode("\n", $lines);
 
-        return self::INDENT .  $resolved . "\n";
+        return self::INDENT . $resolved . "\n";
     }
 }

@@ -22,11 +22,6 @@ class ArrayPair implements RenderableInterface, ResolvableInterface, HasMetadata
     private ArrayKey $key;
 
     /**
-     * @var callable|null
-     */
-    private $resolvedTemplateMutator;
-
-    /**
      * @var mixed
      */
     private $value;
