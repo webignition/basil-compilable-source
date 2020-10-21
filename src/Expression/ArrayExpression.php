@@ -7,14 +7,14 @@ namespace webignition\BasilCompilableSource\Expression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\RenderableInterface;
-use webignition\BasilCompilableSource\RenderFromTemplateTrait;
+use webignition\BasilCompilableSource\RenderTrait;
 use webignition\StubbleResolvable\Resolvable;
 use webignition\StubbleResolvable\ResolvableCollection;
 use webignition\StubbleResolvable\ResolvableInterface;
 
 class ArrayExpression implements ExpressionInterface, RenderableInterface
 {
-    use RenderFromTemplateTrait;
+    use RenderTrait;
 
     private const INDENT = '    ';
     private const IDENTIFIER_PREFIX = 'array-expression-';

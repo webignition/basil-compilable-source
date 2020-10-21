@@ -10,7 +10,7 @@ use webignition\StubbleResolvable\ResolvableInterface;
 
 class SingleLineComment implements BodyContentInterface, RenderableInterface
 {
-    use RenderFromTemplateTrait;
+    use RenderTrait;
 
     private const RENDER_TEMPLATE = '// {{ content }}';
 

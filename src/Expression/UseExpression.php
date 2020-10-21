@@ -6,13 +6,13 @@ namespace webignition\BasilCompilableSource\Expression;
 
 use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\RenderableInterface;
-use webignition\BasilCompilableSource\RenderFromTemplateTrait;
+use webignition\BasilCompilableSource\RenderTrait;
 use webignition\StubbleResolvable\Resolvable;
 use webignition\StubbleResolvable\ResolvableInterface;
 
 class UseExpression extends AbstractExpression implements RenderableInterface
 {
-    use RenderFromTemplateTrait;
+    use RenderTrait;
 
     private const RENDER_TEMPLATE = 'use {{ class_name }}';
 

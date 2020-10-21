@@ -8,11 +8,11 @@ use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\HasMetadataInterface;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\RenderableInterface;
-use webignition\BasilCompilableSource\RenderFromTemplateTrait;
+use webignition\BasilCompilableSource\RenderTrait;
 
 abstract class AbstractBlock implements HasMetadataInterface, RenderableInterface
 {
-    use RenderFromTemplateTrait;
+    use RenderTrait;
 
     private BodyInterface $body;
 

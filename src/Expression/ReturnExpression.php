@@ -8,13 +8,13 @@ use webignition\BasilCompilableSource\Construct\ReturnConstruct;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\RenderableInterface;
-use webignition\BasilCompilableSource\RenderFromTemplateTrait;
+use webignition\BasilCompilableSource\RenderTrait;
 use webignition\StubbleResolvable\Resolvable;
 use webignition\StubbleResolvable\ResolvableInterface;
 
 class ReturnExpression implements ExpressionInterface, RenderableInterface
 {
-    use RenderFromTemplateTrait;
+    use RenderTrait;
 
     private const RENDER_TEMPLATE = '{{ return_construct }}{{ expression_content }}';
 
@@ -37,7 +37,7 @@ class ReturnExpression implements ExpressionInterface, RenderableInterface
         return new Resolvable(
             self::RENDER_TEMPLATE,
             [
-                'return_construct' => (string) new ReturnConstruct(),
+                'return_construct' => new ReturnConstruct(),
                 'expression_content' => $this->expression instanceof ExpressionInterface
                     ? ' ' . $this->expression->render()
                     : ''

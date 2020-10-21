@@ -13,7 +13,7 @@ use webignition\StubbleResolvable\ResolvableInterface;
 
 class MethodDefinition implements MethodDefinitionInterface, RenderableInterface
 {
-    use RenderFromTemplateTrait;
+    use RenderTrait;
 
     private const RENDER_TEMPLATE = <<<'EOD'
 {{ docblock }}

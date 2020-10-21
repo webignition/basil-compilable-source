@@ -12,7 +12,7 @@ use webignition\StubbleResolvable\ResolvableInterface;
 
 class VariableDependency implements ExpressionInterface, RenderableInterface, VariableDependencyInterface
 {
-    use RenderFromTemplateTrait;
+    use RenderTrait;
 
     private const RENDER_TEMPLATE = '{{ {{ name }} }}';
 

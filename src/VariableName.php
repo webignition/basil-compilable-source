@@ -7,12 +7,10 @@ namespace webignition\BasilCompilableSource;
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\StubbleResolvable\Resolvable;
-use webignition\StubbleResolvable\ResolvableInterface;
 
 class VariableName implements ExpressionInterface, VariablePlaceholderInterface
 {
-    private const RENDER_TEMPLATE = '${{ name }}';
+    use RenderTrait;
 
     private string $name;
     private MetadataInterface $metadata;
@@ -33,23 +31,8 @@ class VariableName implements ExpressionInterface, VariablePlaceholderInterface
         return $this->metadata;
     }
 
-    public function getResolvable(): ResolvableInterface
-    {
-        return new Resolvable(
-            self::RENDER_TEMPLATE,
-            [
-                'name' => $this->name,
-            ]
-        );
-    }
-
     public function __toString(): string
     {
         return '$' . $this->name;
-    }
-
-    public function render(): string
-    {
-        return (string) $this;
     }
 }

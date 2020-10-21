@@ -11,7 +11,7 @@ use webignition\StubbleResolvable\ResolvableInterface;
 
 class ClassDefinition implements ClassDefinitionInterface, RenderableInterface
 {
-    use RenderFromTemplateTrait;
+    use RenderTrait;
 
     private const RENDER_TEMPLATE = <<<'EOD'
 {{ dependencies }}

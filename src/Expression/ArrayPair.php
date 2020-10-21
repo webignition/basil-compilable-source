@@ -7,14 +7,14 @@ namespace webignition\BasilCompilableSource\Expression;
 use webignition\BasilCompilableSource\HasMetadataInterface;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\RenderableInterface;
-use webignition\BasilCompilableSource\RenderFromTemplateTrait;
+use webignition\BasilCompilableSource\RenderTrait;
 use webignition\StubbleResolvable\Resolvable;
 use webignition\StubbleResolvable\ResolvableInterface;
 use webignition\StubbleResolvable\ResolvedTemplateMutatorTrait;
 
 class ArrayPair implements RenderableInterface, ResolvableInterface, HasMetadataInterface
 {
-    use RenderFromTemplateTrait;
+    use RenderTrait;
     use ResolvedTemplateMutatorTrait;
 
     private const RENDER_TEMPLATE = '{{ key }} => {{ value }},';
@@ -37,7 +37,7 @@ class ArrayPair implements RenderableInterface, ResolvableInterface, HasMetadata
         return new Resolvable(
             self::RENDER_TEMPLATE,
             [
-                'key' => (string) $this->key,
+                'key' => $this->key,
                 'value' => $this->value->render(),
             ]
         );
