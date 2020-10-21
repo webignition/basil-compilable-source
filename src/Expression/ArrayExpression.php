@@ -38,6 +38,12 @@ class ArrayExpression implements ExpressionInterface, RenderableInterface
         $this->collection = new ResolvableCollection($identifier, $pairs);
     }
 
+    /**
+     * @param string $identifier
+     * @param array<string|int, array<string, string|int|ExpressionInterface>> $dataSets
+     *
+     * @return self
+     */
     public static function fromDataSets(string $identifier, array $dataSets): self
     {
         $expressionArrayPairs = [];
