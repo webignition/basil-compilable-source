@@ -4,17 +4,52 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Tests\Unit\Expression;
 
-use webignition\BasilCompilableSource\Expression\ArrayExpression;
 use webignition\BasilCompilableSource\Expression\ArrayKey;
 use webignition\BasilCompilableSource\Expression\ArrayPair;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
+use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\VariableDependency;
-use webignition\BasilCompilableSource\VariableName;
+use webignition\BasilCompilableSource\VariableDependencyCollection;
 
 class ArrayPairTest extends \PHPUnit\Framework\TestCase
 {
+    /**
+     * @dataProvider getMetadataDataProvider
+     */
+    public function testGetMetadata(ArrayPair $pair, MetadataInterface $expectedMetadata)
+    {
+        self::assertEquals($expectedMetadata, $pair->getMetadata());
+    }
+
+    public function getMetadataDataProvider(): array
+    {
+        return [
+            'no metadata' => [
+                'pair' => new ArrayPair(
+                    new ArrayKey(''),
+                    new LiteralExpression('\'\'')
+                ),
+                'expectedMetadata' => new Metadata(),
+            ],
+            'has metadata' => [
+                'pair' => new ArrayPair(
+                    new ArrayKey(''),
+                    new ObjectMethodInvocation(
+                        new VariableDependency('OBJECT'),
+                        'methodName'
+                    )
+                ),
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                        'OBJECT',
+                    ]),
+                ]),
+            ],
+        ];
+    }
+
     /**
      * @dataProvider renderDataProvider
      */
@@ -54,113 +89,6 @@ class ArrayPairTest extends \PHPUnit\Framework\TestCase
                 ),
                 'expectedString' => "'key' => 'value',",
             ],
-
-//            'single data set with single key:value numerical name' => [
-//                'pair' => new ArrayExpression([
-//                    0 => [
-//                        'key1' => 'value1',
-//                    ]
-//                ]),
-//                'expectedString' =>
-//                    "[\n" .
-//                    "    '0' => [\n" .
-//                    "        'key1' => 'value1',\n" .
-//                    "    ],\n" .
-//                    "]",
-//            ],
-//            'single data set with single key:value string name' => [
-//                'pair' => new ArrayExpression([
-//                    'data-set-one' => [
-//                        'key1' => 'value1',
-//                    ],
-//                ]),
-//                'expectedString' =>
-//                    "[\n" .
-//                    "    'data-set-one' => [\n" .
-//                    "        'key1' => 'value1',\n" .
-//                    "    ],\n" .
-//                    "]",
-//            ],
-//            'single data set with single key:value string name containing single quotes' => [
-//                'pair' => new ArrayExpression([
-//                    "\'data-set-one\'" => [
-//                        "\'key1\'" => "\'value1\'",
-//                    ],
-//                ]),
-//                'expectedString' =>
-//                    "[\n" .
-//                    "    '\'data-set-one\'' => [\n" .
-//                    "        '\'key1\'' => '\'value1\'',\n" .
-//                    "    ],\n" .
-//                    "]",
-//            ],
-//            'single data set with multiple key:value numerical name' => [
-//                'pair' => new ArrayExpression([
-//                    '0' => [
-//                        'key1' => 'value1',
-//                        'key2' => 'value2',
-//                    ],
-//                ]),
-//                'expectedString' =>
-//                    "[\n" .
-//                    "    '0' => [\n" .
-//                    "        'key1' => 'value1',\n" .
-//                    "        'key2' => 'value2',\n" .
-//                    "    ],\n" .
-//                    "]",
-//            ],
-//            'multiple data sets with multiple key:value numerical name' => [
-//                'pair' => new ArrayExpression([
-//                    '0' => [
-//                        'key1' => 'value1',
-//                        'key2' => 'value2',
-//                    ],
-//                    '1' => [
-//                        'key1' => 'value3',
-//                        'key2' => 'value4',
-//                    ],
-//                ]),
-//                'expectedString' =>
-//                    "[\n" .
-//                    "    '0' => [\n" .
-//                    "        'key1' => 'value1',\n" .
-//                    "        'key2' => 'value2',\n" .
-//                    "    ],\n" .
-//                    "    '1' => [\n" .
-//                    "        'key1' => 'value3',\n" .
-//                    "        'key2' => 'value4',\n" .
-//                    "    ],\n" .
-//                    "]",
-//            ],
-//            'single data set with VariableName value' => [
-//                'pair' => new ArrayExpression([
-//                    'data-set-one' => [
-//                        'key1' => new VariableName('variableName'),
-//                    ],
-//                ]),
-//                'expectedString' =>
-//                    "[\n" .
-//                    "    'data-set-one' => [\n" .
-//                    "        'key1' => \$variableName,\n" .
-//                    "    ],\n" .
-//                    "]",
-//            ],
-//            'single data set with ObjectMethodInvocation value' => [
-//                'pair' => new ArrayExpression([
-//                    'data-set-one' => [
-//                        'key1' => new ObjectMethodInvocation(
-//                            new VariableDependency('OBJECT'),
-//                            'methodName'
-//                        ),
-//                    ],
-//                ]),
-//                'expectedString' =>
-//                    "[\n" .
-//                    "    'data-set-one' => [\n" .
-//                    "        'key1' => {{ OBJECT }}->methodName(),\n" .
-//                    "    ],\n" .
-//                    "]",
-//            ],
         ];
     }
 }
