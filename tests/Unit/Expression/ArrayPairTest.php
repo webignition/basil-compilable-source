@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Tests\Unit\Expression;
 
+use webignition\BasilCompilableSource\Expression\ArrayFoo;
 use webignition\BasilCompilableSource\Expression\ArrayKey;
 use webignition\BasilCompilableSource\Expression\ArrayPair;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
@@ -88,6 +89,38 @@ class ArrayPairTest extends \PHPUnit\Framework\TestCase
                     new LiteralExpression('\'value\'')
                 ),
                 'expectedString' => "'key' => 'value',",
+            ],
+            'array value, empty' => [
+                'pair' => new ArrayPair(
+                    new ArrayKey('key'),
+                    new ArrayFoo('array-', []),
+                ),
+                'expectedString' => "'key' => [],",
+            ],
+            'array value, non-empty' => [
+                'pair' => new ArrayPair(
+                    new ArrayKey('key'),
+                    new ArrayFoo('array-', [
+                        new ArrayPair(
+                            new ArrayKey('sub-key-1'),
+                            new LiteralExpression('\'sub value 1\'')
+                        ),
+                        new ArrayPair(
+                            new ArrayKey('sub-key-2'),
+                            new LiteralExpression('\'sub value 2\'')
+                        ),
+                        new ArrayPair(
+                            new ArrayKey('sub-key-3'),
+                            new LiteralExpression('\'sub value 3\'')
+                        ),
+                    ]),
+                ),
+                'expectedString' =>
+                    "'key' => [\n" .
+                    "    'sub-key-1' => 'sub value 1',\n" .
+                    "    'sub-key-2' => 'sub value 2',\n" .
+                    "    'sub-key-3' => 'sub value 3',\n" .
+                    "],",
             ],
         ];
     }
