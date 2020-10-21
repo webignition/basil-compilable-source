@@ -39,7 +39,7 @@
     },
     "require": {
         "php": ">=7.4",
-        "webignition/stubble-resolvable": ">=0.6,<1",
+        "webignition/stubble-resolvable": ">=0.7,<1",
         "webignition/stubble": ">=0.10,<1"
     },
     "require-dev": {
