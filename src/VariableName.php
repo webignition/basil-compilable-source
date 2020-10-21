@@ -12,6 +12,8 @@ use webignition\StubbleResolvable\ResolvableInterface;
 
 class VariableName implements ExpressionInterface, VariablePlaceholderInterface
 {
+    use RenderFromTemplateTrait;
+
     private const RENDER_TEMPLATE = '${{ name }}';
 
     private string $name;
@@ -46,10 +48,5 @@ class VariableName implements ExpressionInterface, VariablePlaceholderInterface
     public function __toString(): string
     {
         return '$' . $this->name;
-    }
-
-    public function render(): string
-    {
-        return (string) $this;
     }
 }

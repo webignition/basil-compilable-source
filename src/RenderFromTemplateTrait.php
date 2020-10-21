@@ -24,6 +24,6 @@ trait RenderFromTemplateTrait
             return $resolver->resolveAndIgnoreUnresolvedVariables($resolvable);
         }
 
-        return '';
+        return (string) $this;
     }
 }
