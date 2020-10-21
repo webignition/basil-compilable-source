@@ -79,6 +79,16 @@ class ArrayFoo implements ExpressionInterface, RenderableInterface
 
     private function arrayPairResolvedTemplateMutator(string $resolved): string
     {
+        $lines = explode("\n", $resolved);
+
+        foreach ($lines as $lineIndex => $line) {
+            if ($lineIndex > 0) {
+                $lines[$lineIndex] = self::INDENT . $line;
+            }
+        }
+
+        $resolved = implode("\n", $lines);
+
         return self::INDENT .  $resolved . "\n";
     }
 }

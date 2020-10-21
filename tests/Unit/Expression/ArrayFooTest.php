@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Tests\Unit\Expression;
 
-use webignition\BasilCompilableSource\Expression\ArrayExpression;
 use webignition\BasilCompilableSource\Expression\ArrayFoo;
 use webignition\BasilCompilableSource\Expression\ArrayKey;
 use webignition\BasilCompilableSource\Expression\ArrayPair;
@@ -105,7 +104,7 @@ class ArrayFooTest extends \PHPUnit\Framework\TestCase
             ],
             'multiple pairs' => [
                 'foo' => new ArrayFoo(
-                    'identifier1-',
+                    'identifier-',
                     [
                         new ArrayPair(
                             new ArrayKey('key1'),
@@ -131,112 +130,190 @@ class ArrayFooTest extends \PHPUnit\Framework\TestCase
                     "    'key3' => {{ OBJECT }}->methodName(),\n" .
                     "]",
             ],
-//            'single data set with single key:value numerical name' => [
-//                'foo' => new ArrayExpression([
-//                    0 => [
-//                        'key1' => 'value1',
-//                    ]
-//                ]),
-//                'expectedString' =>
-//                    "[\n" .
-//                    "    '0' => [\n" .
-//                    "        'key1' => 'value1',\n" .
-//                    "    ],\n" .
-//                    "]",
-//            ],
-//            'single data set with single key:value string name' => [
-//                'foo' => new ArrayExpression([
-//                    'data-set-one' => [
-//                        'key1' => 'value1',
-//                    ],
-//                ]),
-//                'expectedString' =>
-//                    "[\n" .
-//                    "    'data-set-one' => [\n" .
-//                    "        'key1' => 'value1',\n" .
-//                    "    ],\n" .
-//                    "]",
-//            ],
-//            'single data set with single key:value string name containing single quotes' => [
-//                'foo' => new ArrayExpression([
-//                    "\'data-set-one\'" => [
-//                        "\'key1\'" => "\'value1\'",
-//                    ],
-//                ]),
-//                'expectedString' =>
-//                    "[\n" .
-//                    "    '\'data-set-one\'' => [\n" .
-//                    "        '\'key1\'' => '\'value1\'',\n" .
-//                    "    ],\n" .
-//                    "]",
-//            ],
-//            'single data set with multiple key:value numerical name' => [
-//                'foo' => new ArrayExpression([
-//                    '0' => [
-//                        'key1' => 'value1',
-//                        'key2' => 'value2',
-//                    ],
-//                ]),
-//                'expectedString' =>
-//                    "[\n" .
-//                    "    '0' => [\n" .
-//                    "        'key1' => 'value1',\n" .
-//                    "        'key2' => 'value2',\n" .
-//                    "    ],\n" .
-//                    "]",
-//            ],
-//            'multiple data sets with multiple key:value numerical name' => [
-//                'foo' => new ArrayExpression([
-//                    '0' => [
-//                        'key1' => 'value1',
-//                        'key2' => 'value2',
-//                    ],
-//                    '1' => [
-//                        'key1' => 'value3',
-//                        'key2' => 'value4',
-//                    ],
-//                ]),
-//                'expectedString' =>
-//                    "[\n" .
-//                    "    '0' => [\n" .
-//                    "        'key1' => 'value1',\n" .
-//                    "        'key2' => 'value2',\n" .
-//                    "    ],\n" .
-//                    "    '1' => [\n" .
-//                    "        'key1' => 'value3',\n" .
-//                    "        'key2' => 'value4',\n" .
-//                    "    ],\n" .
-//                    "]",
-//            ],
-//            'single data set with VariableName value' => [
-//                'foo' => new ArrayExpression([
-//                    'data-set-one' => [
-//                        'key1' => new VariableName('variableName'),
-//                    ],
-//                ]),
-//                'expectedString' =>
-//                    "[\n" .
-//                    "    'data-set-one' => [\n" .
-//                    "        'key1' => \$variableName,\n" .
-//                    "    ],\n" .
-//                    "]",
-//            ],
-//            'single data set with ObjectMethodInvocation value' => [
-//                'foo' => new ArrayExpression([
-//                    'data-set-one' => [
-//                        'key1' => new ObjectMethodInvocation(
-//                            new VariableDependency('OBJECT'),
-//                            'methodName'
-//                        ),
-//                    ],
-//                ]),
-//                'expectedString' =>
-//                    "[\n" .
-//                    "    'data-set-one' => [\n" .
-//                    "        'key1' => {{ OBJECT }}->methodName(),\n" .
-//                    "    ],\n" .
-//                    "]",
-//            ],
+            'single data set with single key:value numerical name' => [
+                'foo' => new ArrayFoo(
+                    'identifier',
+                    [
+                        new ArrayPair(
+                            new ArrayKey('0'),
+                            new ArrayFoo(
+                                'sub-identifier',
+                                [
+                                    new ArrayPair(
+                                        new ArrayKey('key1'),
+                                        new LiteralExpression('\'value1\'')
+                                    ),
+                                ]
+                            )
+                        ),
+                    ]
+                ),
+                'expectedString' =>
+                    "[\n" .
+                    "    '0' => [\n" .
+                    "        'key1' => 'value1',\n" .
+                    "    ],\n" .
+                    "]",
+            ],
+            'single data set with single key:value string name' => [
+                'foo' => new ArrayFoo(
+                    'identifier',
+                    [
+                        new ArrayPair(
+                            new ArrayKey('data-set-one'),
+                            new ArrayFoo(
+                                'sub-identifier',
+                                [
+                                    new ArrayPair(
+                                        new ArrayKey('key1'),
+                                        new LiteralExpression('\'value1\'')
+                                    ),
+                                ]
+                            )
+                        ),
+                    ]
+                ),
+                'expectedString' =>
+                    "[\n" .
+                    "    'data-set-one' => [\n" .
+                    "        'key1' => 'value1',\n" .
+                    "    ],\n" .
+                    "]",
+            ],
+            'single data set with multiple key:value numerical name' => [
+                'foo' => new ArrayFoo(
+                    'identifier',
+                    [
+                        new ArrayPair(
+                            new ArrayKey('0'),
+                            new ArrayFoo(
+                                'sub-identifier',
+                                [
+                                    new ArrayPair(
+                                        new ArrayKey('key1'),
+                                        new LiteralExpression('\'value1\'')
+                                    ),
+                                    new ArrayPair(
+                                        new ArrayKey('key2'),
+                                        new LiteralExpression('\'value2\'')
+                                    ),
+                                ]
+                            )
+                        ),
+                    ]
+                ),
+                'expectedString' =>
+                    "[\n" .
+                    "    '0' => [\n" .
+                    "        'key1' => 'value1',\n" .
+                    "        'key2' => 'value2',\n" .
+                    "    ],\n" .
+                    "]",
+            ],
+            'multiple data sets with multiple key:value numerical name' => [
+                'foo' => new ArrayFoo(
+                    'identifier',
+                    [
+                        new ArrayPair(
+                            new ArrayKey('0'),
+                            new ArrayFoo(
+                                'sub-identifier',
+                                [
+                                    new ArrayPair(
+                                        new ArrayKey('key1'),
+                                        new LiteralExpression('\'value1\'')
+                                    ),
+                                    new ArrayPair(
+                                        new ArrayKey('key2'),
+                                        new LiteralExpression('\'value2\'')
+                                    ),
+                                ]
+                            )
+                        ),
+                        new ArrayPair(
+                            new ArrayKey('1'),
+                            new ArrayFoo(
+                                'sub-identifier',
+                                [
+                                    new ArrayPair(
+                                        new ArrayKey('key1'),
+                                        new LiteralExpression('\'value3\'')
+                                    ),
+                                    new ArrayPair(
+                                        new ArrayKey('key2'),
+                                        new LiteralExpression('\'value4\'')
+                                    ),
+                                ]
+                            )
+                        ),
+                    ]
+                ),
+                'expectedString' =>
+                    "[\n" .
+                    "    '0' => [\n" .
+                    "        'key1' => 'value1',\n" .
+                    "        'key2' => 'value2',\n" .
+                    "    ],\n" .
+                    "    '1' => [\n" .
+                    "        'key1' => 'value3',\n" .
+                    "        'key2' => 'value4',\n" .
+                    "    ],\n" .
+                    "]",
+            ],
+
+            'single data set with VariableName value' => [
+                'foo' => new ArrayFoo(
+                    'identifier1-',
+                    [
+                        new ArrayPair(
+                            new ArrayKey('data-set-one'),
+                            new ArrayFoo(
+                                'sub-identifier-',
+                                [
+                                    new ArrayPair(
+                                        new ArrayKey('key1'),
+                                        new VariableName('variableName')
+                                    ),
+                                ]
+                            )
+                        ),
+                    ]
+                ),
+                'expectedString' =>
+                    "[\n" .
+                    "    'data-set-one' => [\n" .
+                    "        'key1' => \$variableName,\n" .
+                    "    ],\n" .
+                    "]",
+            ],
+            'single data set with ObjectMethodInvocation value' => [
+                'foo' => new ArrayFoo(
+                    'identifier1-',
+                    [
+                        new ArrayPair(
+                            new ArrayKey('data-set-one'),
+                            new ArrayFoo(
+                                'sub-identifier-',
+                                [
+                                    new ArrayPair(
+                                        new ArrayKey('key1'),
+                                        new ObjectMethodInvocation(
+                                            new VariableDependency('OBJECT'),
+                                            'methodName'
+                                        )
+                                    ),
+                                ]
+                            )
+                        ),
+                    ]
+                ),
+                'expectedString' =>
+                    "[\n" .
+                    "    'data-set-one' => [\n" .
+                    "        'key1' => {{ OBJECT }}->methodName(),\n" .
+                    "    ],\n" .
+                    "]",
+            ],
         ];
     }
 }
