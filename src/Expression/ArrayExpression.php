@@ -17,6 +17,8 @@ class ArrayExpression implements ExpressionInterface, RenderableInterface
     use RenderFromTemplateTrait;
 
     private const INDENT = '    ';
+    private const IDENTIFIER_PREFIX = 'array-expression-';
+
     private ResolvableCollection $collection;
 
     /**
@@ -35,7 +37,7 @@ class ArrayExpression implements ExpressionInterface, RenderableInterface
             });
         });
 
-        $this->collection = new ResolvableCollection($identifier, $pairs);
+        $this->collection = new ResolvableCollection(self::IDENTIFIER_PREFIX . $identifier, $pairs);
     }
 
     /**
@@ -62,14 +64,14 @@ class ArrayExpression implements ExpressionInterface, RenderableInterface
                 );
             }
 
-            $dataSetArrayFoo = new ArrayExpression(
+            $dataSetArrayExpression = new ArrayExpression(
                 $identifier . '-' . $dataSetName . '-',
                 $dataSetArrayPairs
             );
 
             $dataSetArrayPair = new ArrayPair(
                 new ArrayKey((string) $dataSetName),
-                $dataSetArrayFoo
+                $dataSetArrayExpression
             );
 
             $expressionArrayPairs[] = $dataSetArrayPair;
