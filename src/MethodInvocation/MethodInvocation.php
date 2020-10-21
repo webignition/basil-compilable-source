@@ -8,13 +8,13 @@ use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSource\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSource\RenderableInterface;
-use webignition\BasilCompilableSource\RenderFromTemplateTrait;
+use webignition\BasilCompilableSource\RenderTrait;
 use webignition\StubbleResolvable\Resolvable;
 use webignition\StubbleResolvable\ResolvableInterface;
 
 class MethodInvocation implements MethodInvocationInterface, RenderableInterface
 {
-    use RenderFromTemplateTrait;
+    use RenderTrait;
 
     private const RENDER_TEMPLATE = '{{ call }}({{ arguments }})';
 

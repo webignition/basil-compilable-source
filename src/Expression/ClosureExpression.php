@@ -7,13 +7,13 @@ namespace webignition\BasilCompilableSource\Expression;
 use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\RenderableInterface;
-use webignition\BasilCompilableSource\RenderFromTemplateTrait;
+use webignition\BasilCompilableSource\RenderTrait;
 use webignition\StubbleResolvable\Resolvable;
 use webignition\StubbleResolvable\ResolvableInterface;
 
 class ClosureExpression extends AbstractExpression implements RenderableInterface
 {
-    use RenderFromTemplateTrait;
+    use RenderTrait;
 
     private const RENDER_TEMPLATE = <<<'EOD'
 (function () {

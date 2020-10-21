@@ -8,7 +8,7 @@ use webignition\Stubble\DeciderFactory;
 use webignition\Stubble\UnresolvedVariableFinder;
 use webignition\Stubble\VariableResolver;
 
-trait RenderFromTemplateTrait
+trait RenderTrait
 {
     public function render(): string
     {

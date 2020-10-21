@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Expression;
 
 use webignition\BasilCompilableSource\RenderableInterface;
-use webignition\BasilCompilableSource\RenderFromTemplateTrait;
+use webignition\BasilCompilableSource\RenderTrait;
 use webignition\StubbleResolvable\Resolvable;
 use webignition\StubbleResolvable\ResolvableInterface;
 
 class EncapsulatedExpression extends AbstractExpression implements RenderableInterface
 {
-    use RenderFromTemplateTrait;
+    use RenderTrait;
 
     private const RENDER_TEMPLATE = '({{ expression }})';
 

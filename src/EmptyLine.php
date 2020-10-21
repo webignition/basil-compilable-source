@@ -8,7 +8,7 @@ use webignition\BasilCompilableSource\Body\BodyContentInterface;
 
 class EmptyLine implements BodyContentInterface
 {
-    use RenderFromTemplateTrait;
+    use RenderTrait;
 
     public function __toString(): string
     {

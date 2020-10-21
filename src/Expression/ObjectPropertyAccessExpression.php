@@ -6,7 +6,7 @@ namespace webignition\BasilCompilableSource\Expression;
 
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\RenderableInterface;
-use webignition\BasilCompilableSource\RenderFromTemplateTrait;
+use webignition\BasilCompilableSource\RenderTrait;
 use webignition\BasilCompilableSource\VariableDependencyInterface;
 use webignition\BasilCompilableSource\VariablePlaceholderInterface;
 use webignition\StubbleResolvable\Resolvable;
@@ -14,7 +14,7 @@ use webignition\StubbleResolvable\ResolvableInterface;
 
 class ObjectPropertyAccessExpression extends AbstractExpression implements RenderableInterface
 {
-    use RenderFromTemplateTrait;
+    use RenderTrait;
 
     private const RENDER_TEMPLATE = '{{ object }}->{{ property }}';
 

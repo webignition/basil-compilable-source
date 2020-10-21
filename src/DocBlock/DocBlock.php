@@ -6,14 +6,14 @@ namespace webignition\BasilCompilableSource\DocBlock;
 
 use webignition\BasilCompilableSource\Annotation\AnnotationInterface;
 use webignition\BasilCompilableSource\RenderableInterface;
-use webignition\BasilCompilableSource\RenderFromTemplateTrait;
+use webignition\BasilCompilableSource\RenderTrait;
 use webignition\BasilCompilableSource\SourceInterface;
 use webignition\StubbleResolvable\Resolvable;
 use webignition\StubbleResolvable\ResolvableInterface;
 
 class DocBlock implements RenderableInterface, SourceInterface
 {
-    use RenderFromTemplateTrait;
+    use RenderTrait;
 
     private const RENDER_TEMPLATE_EMPTY = <<<'EOD'
 /**

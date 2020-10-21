@@ -7,7 +7,7 @@ namespace webignition\BasilCompilableSource\Expression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\RenderableInterface;
-use webignition\BasilCompilableSource\RenderFromTemplateTrait;
+use webignition\BasilCompilableSource\RenderTrait;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclarationCollection;
 use webignition\BasilCompilableSource\VariableName;
 use webignition\StubbleResolvable\Resolvable;
@@ -15,7 +15,7 @@ use webignition\StubbleResolvable\ResolvableInterface;
 
 class CatchExpression implements ExpressionInterface, RenderableInterface
 {
-    use RenderFromTemplateTrait;
+    use RenderTrait;
 
     private const RENDER_TEMPLATE = '{{ class_list }} {{ variable }}';
 

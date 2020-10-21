@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Expression;
 
-use webignition\BasilCompilableSource\RenderFromTemplateTrait;
+use webignition\BasilCompilableSource\RenderTrait;
 
 class LiteralExpression extends AbstractExpression
 {
-    use RenderFromTemplateTrait;
+    use RenderTrait;
 
     private string $content;
 
