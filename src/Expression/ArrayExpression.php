@@ -4,84 +4,129 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Expression;
 
-use webignition\BasilCompilableSource\SourceInterface;
+use webignition\BasilCompilableSource\Metadata\Metadata;
+use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\BasilCompilableSource\RenderableInterface;
+use webignition\BasilCompilableSource\RenderFromTemplateTrait;
+use webignition\StubbleResolvable\Resolvable;
+use webignition\StubbleResolvable\ResolvableCollection;
+use webignition\StubbleResolvable\ResolvableInterface;
 
-class ArrayExpression extends AbstractExpression
+class ArrayExpression implements ExpressionInterface, RenderableInterface
 {
-    /**
-     * @var array<mixed>
-     */
-    private array $data = [];
+    use RenderFromTemplateTrait;
 
-    private const INDENT_SPACE_COUNT = 4;
-    private const DEFAULT_INDENT_COUNT = 1;
+    private const INDENT = '    ';
+    private ResolvableCollection $collection;
 
     /**
-     * @param array<mixed> $data
+     * @param string $identifier
+     * @param ArrayPair[] $pairs
      */
-    public function __construct(array $data)
+    public function __construct(string $identifier, array $pairs)
     {
-        parent::__construct();
+        $pairs = array_filter($pairs, function ($item) {
+            return $item instanceof ArrayPair;
+        });
 
-        $this->data = $data;
+        array_walk($pairs, function (ArrayPair &$pair) {
+            $pair = $pair->withResolvedTemplateMutator(function (string $resolved) {
+                return $this->arrayPairResolvedTemplateMutator($resolved);
+            });
+        });
+
+        $this->collection = new ResolvableCollection($identifier, $pairs);
     }
 
     /**
-     * @return array<mixed>
-     */
-    public function getData(): array
-    {
-        return $this->data;
-    }
-
-    public function render(): string
-    {
-        return rtrim($this->convertArrayToString($this->data, self::DEFAULT_INDENT_COUNT), ',');
-    }
-
-    /**
-     * @param array<mixed> $array
-     * @param int $indentCount
+     * @param string $identifier
+     * @param array<string|int, array<string, string|int|ExpressionInterface>> $dataSets
      *
-     * @return string
+     * @return self
      */
-    private function convertArrayToString(array $array, int $indentCount = self::DEFAULT_INDENT_COUNT): string
+    public static function fromDataSets(string $identifier, array $dataSets): self
     {
-        if (empty($array)) {
-            return '[]';
-        }
+        $expressionArrayPairs = [];
 
-        $containerIndentCount = min($indentCount, $indentCount - 1);
-        $containerIndent = str_repeat(' ', $containerIndentCount * self::INDENT_SPACE_COUNT);
+        foreach ($dataSets as $dataSetName => $dataSet) {
+            $dataSetArrayPairs = [];
 
-        $bodyIndent = str_repeat(' ', $indentCount * self::INDENT_SPACE_COUNT);
+            foreach ($dataSet as $key => $value) {
+                $valueExpression = $value instanceof ExpressionInterface
+                    ? $value
+                    : new LiteralExpression('\'' . $value . '\'');
 
-        $containerTemplate =
-            '[' . "\n"
-            . '%s' . "\n"
-            . $containerIndent . '],';
-
-        $keyValueTemplate = $bodyIndent . "'%s' => %s";
-        $keyValueStrings = [];
-
-        foreach ($array as $key => $value) {
-            $keyAsString = (string) $key;
-
-            if (is_array($value)) {
-                ksort($value);
-
-                $valueAsString = $this->convertArrayToString($value, $indentCount + 1);
-            } else {
-                if ($value instanceof SourceInterface) {
-                    $valueAsString = $value->render() . ',';
-                } else {
-                    $valueAsString = "'" . ((string) $value) . "',";
-                }
+                $dataSetArrayPairs[] = new ArrayPair(
+                    new ArrayKey($key),
+                    $valueExpression
+                );
             }
 
-            $keyValueStrings[] = sprintf($keyValueTemplate, $keyAsString, $valueAsString);
+            $dataSetArrayFoo = new ArrayExpression(
+                $identifier . '-' . $dataSetName . '-',
+                $dataSetArrayPairs
+            );
+
+            $dataSetArrayPair = new ArrayPair(
+                new ArrayKey((string) $dataSetName),
+                $dataSetArrayFoo
+            );
+
+            $expressionArrayPairs[] = $dataSetArrayPair;
         }
 
-        return sprintf($containerTemplate, implode("\n", $keyValueStrings));
+        return new ArrayExpression($identifier, $expressionArrayPairs);
+    }
+
+    public function getResolvable(): ResolvableInterface
+    {
+        $resolvable = new Resolvable(
+            $this->collection->getTemplate(),
+            $this->collection->getContext()
+        );
+
+        return $resolvable->withResolvedTemplateMutator(function (string $resolved) {
+            return $this->resolvedTemplateMutator($resolved);
+        });
+    }
+
+    public function getMetadata(): MetadataInterface
+    {
+        $metadata = new Metadata();
+
+        foreach ($this->collection as $pair) {
+            if ($pair instanceof ArrayPair) {
+                $metadata = $metadata->merge($pair->getMetadata());
+            }
+        }
+
+        return $metadata;
+    }
+
+    private function resolvedTemplateMutator(string $resolved): string
+    {
+        $prefix = '[';
+        $suffix = ']';
+
+        if ('' !== $resolved) {
+            $prefix .= "\n";
+        }
+
+        return $prefix . $resolved . $suffix;
+    }
+
+    private function arrayPairResolvedTemplateMutator(string $resolved): string
+    {
+        $lines = explode("\n", $resolved);
+
+        foreach ($lines as $lineIndex => $line) {
+            if ($lineIndex > 0) {
+                $lines[$lineIndex] = self::INDENT . $line;
+            }
+        }
+
+        $resolved = implode("\n", $lines);
+
+        return self::INDENT . $resolved . "\n";
     }
 }
