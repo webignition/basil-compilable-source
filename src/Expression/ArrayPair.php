@@ -37,7 +37,7 @@ class ArrayPair implements RenderableInterface, ResolvableInterface, HasMetadata
         return new Resolvable(
             self::RENDER_TEMPLATE,
             [
-                'key' => $this->key->render(),
+                'key' => (string) $this->key,
                 'value' => $this->value->render(),
             ]
         );
