@@ -37,7 +37,7 @@ class ReturnExpression implements ExpressionInterface, RenderableInterface
         return new Resolvable(
             self::RENDER_TEMPLATE,
             [
-                'return_construct' => (string) new ReturnConstruct(),
+                'return_construct' => new ReturnConstruct(),
                 'expression_content' => $this->expression instanceof ExpressionInterface
                     ? ' ' . $this->expression->render()
                     : ''
