@@ -4,19 +4,10 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Construct;
 
-use webignition\BasilCompilableSource\Metadata\Metadata;
-use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\SourceInterface;
-
-class ReturnConstruct implements SourceInterface
+class ReturnConstruct
 {
-    public function render(): string
+    public function __toString(): string
     {
         return 'return';
-    }
-
-    public function getMetadata(): MetadataInterface
-    {
-        return new Metadata();
     }
 }

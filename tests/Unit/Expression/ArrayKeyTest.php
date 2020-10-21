@@ -9,14 +9,14 @@ use webignition\BasilCompilableSource\Expression\ArrayKey;
 class ArrayKeyTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @dataProvider renderDataProvider
+     * @dataProvider toStringDataProvider
      */
-    public function testRender(ArrayKey $key, string $expectedString)
+    public function testToString(ArrayKey $key, string $expectedString)
     {
-        $this->assertSame($expectedString, $key->render());
+        $this->assertSame($expectedString, (string) $key);
     }
 
-    public function renderDataProvider(): array
+    public function toStringDataProvider(): array
     {
         return [
             'empty' => [

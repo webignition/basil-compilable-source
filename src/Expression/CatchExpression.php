@@ -38,7 +38,7 @@ class CatchExpression implements ExpressionInterface, RenderableInterface
             self::RENDER_TEMPLATE,
             [
                 'class_list' => $this->classes->render(),
-                'variable' => (new VariableName('exception'))->render(),
+                'variable' => (string) new VariableName('exception'),
             ]
         );
     }

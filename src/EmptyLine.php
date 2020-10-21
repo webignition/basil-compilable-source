@@ -10,6 +10,11 @@ class EmptyLine implements BodyContentInterface
 {
     public function render(): string
     {
+        return (string) $this;
+    }
+
+    public function __toString(): string
+    {
         return '';
     }
 }
