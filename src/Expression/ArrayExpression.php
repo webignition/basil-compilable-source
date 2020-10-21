@@ -12,7 +12,7 @@ use webignition\StubbleResolvable\Resolvable;
 use webignition\StubbleResolvable\ResolvableCollection;
 use webignition\StubbleResolvable\ResolvableInterface;
 
-class ArrayFoo implements ExpressionInterface, RenderableInterface
+class ArrayExpression implements ExpressionInterface, RenderableInterface
 {
     use RenderFromTemplateTrait;
 
@@ -56,7 +56,7 @@ class ArrayFoo implements ExpressionInterface, RenderableInterface
                 );
             }
 
-            $dataSetArrayFoo = new ArrayFoo(
+            $dataSetArrayFoo = new ArrayExpression(
                 $identifier . '-' . $dataSetName . '-',
                 $dataSetArrayPairs
             );
@@ -69,7 +69,7 @@ class ArrayFoo implements ExpressionInterface, RenderableInterface
             $expressionArrayPairs[] = $dataSetArrayPair;
         }
 
-        return new ArrayFoo($identifier, $expressionArrayPairs);
+        return new ArrayExpression($identifier, $expressionArrayPairs);
     }
 
     public function getResolvable(): ResolvableInterface

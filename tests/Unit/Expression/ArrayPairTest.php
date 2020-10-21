@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Tests\Unit\Expression;
 
-use webignition\BasilCompilableSource\Expression\ArrayFoo;
+use webignition\BasilCompilableSource\Expression\ArrayExpression;
 use webignition\BasilCompilableSource\Expression\ArrayKey;
 use webignition\BasilCompilableSource\Expression\ArrayPair;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
@@ -93,14 +93,14 @@ class ArrayPairTest extends \PHPUnit\Framework\TestCase
             'array value, empty' => [
                 'pair' => new ArrayPair(
                     new ArrayKey('key'),
-                    new ArrayFoo('array-', []),
+                    new ArrayExpression('array-', []),
                 ),
                 'expectedString' => "'key' => [],",
             ],
             'array value, non-empty' => [
                 'pair' => new ArrayPair(
                     new ArrayKey('key'),
-                    new ArrayFoo('array-', [
+                    new ArrayExpression('array-', [
                         new ArrayPair(
                             new ArrayKey('sub-key-1'),
                             new LiteralExpression('\'sub value 1\'')

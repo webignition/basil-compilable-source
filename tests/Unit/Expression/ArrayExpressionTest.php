@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Tests\Unit\Expression;
 
-use webignition\BasilCompilableSource\Expression\ArrayFoo;
+use webignition\BasilCompilableSource\Expression\ArrayExpression;
 use webignition\BasilCompilableSource\Expression\ArrayKey;
 use webignition\BasilCompilableSource\Expression\ArrayPair;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
@@ -15,12 +15,12 @@ use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSource\VariableDependencyCollection;
 use webignition\BasilCompilableSource\VariableName;
 
-class ArrayFooTest extends \PHPUnit\Framework\TestCase
+class ArrayExpressionTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider getMetadataDataProvider
      */
-    public function testGetMetadata(ArrayFoo $foo, MetadataInterface $expectedMetadata)
+    public function testGetMetadata(ArrayExpression $foo, MetadataInterface $expectedMetadata)
     {
         self::assertEquals($expectedMetadata, $foo->getMetadata());
     }
@@ -29,14 +29,14 @@ class ArrayFooTest extends \PHPUnit\Framework\TestCase
     {
         return [
             'empty' => [
-                'foo' => new ArrayFoo(
+                'foo' => new ArrayExpression(
                     'identifier1',
                     []
                 ),
                 'expectedMetadata' => new Metadata(),
             ],
             'no metadata' => [
-                'foo' => new ArrayFoo(
+                'foo' => new ArrayExpression(
                     'identifier1-',
                     [
                         new ArrayPair(
@@ -48,7 +48,7 @@ class ArrayFooTest extends \PHPUnit\Framework\TestCase
                 'expectedMetadata' => new Metadata(),
             ],
             'has metadata' => [
-                'foo' => new ArrayFoo(
+                'foo' => new ArrayExpression(
                     'identifier1-',
                     [
                         new ArrayPair(
@@ -72,7 +72,7 @@ class ArrayFooTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider renderDataProvider
      */
-    public function testRender(ArrayFoo $foo, string $expectedString)
+    public function testRender(ArrayExpression $foo, string $expectedString)
     {
         self::assertSame($expectedString, $foo->render());
     }
@@ -81,14 +81,14 @@ class ArrayFooTest extends \PHPUnit\Framework\TestCase
     {
         return [
             'empty' => [
-                'foo' => new ArrayFoo(
+                'foo' => new ArrayExpression(
                     'identifier1',
                     []
                 ),
                 'expectedString' => '[]',
             ],
             'single pair' => [
-                'foo' => new ArrayFoo(
+                'foo' => new ArrayExpression(
                     'identifier1-',
                     [
                         new ArrayPair(
@@ -103,7 +103,7 @@ class ArrayFooTest extends \PHPUnit\Framework\TestCase
                     "]",
             ],
             'multiple pairs' => [
-                'foo' => new ArrayFoo(
+                'foo' => new ArrayExpression(
                     'identifier-',
                     [
                         new ArrayPair(
@@ -131,12 +131,12 @@ class ArrayFooTest extends \PHPUnit\Framework\TestCase
                     "]",
             ],
             'single data set with single key:value numerical name' => [
-                'foo' => new ArrayFoo(
+                'foo' => new ArrayExpression(
                     'identifier',
                     [
                         new ArrayPair(
                             new ArrayKey('0'),
-                            new ArrayFoo(
+                            new ArrayExpression(
                                 'sub-identifier',
                                 [
                                     new ArrayPair(
@@ -156,12 +156,12 @@ class ArrayFooTest extends \PHPUnit\Framework\TestCase
                     "]",
             ],
             'single data set with single key:value string name' => [
-                'foo' => new ArrayFoo(
+                'foo' => new ArrayExpression(
                     'identifier',
                     [
                         new ArrayPair(
                             new ArrayKey('data-set-one'),
-                            new ArrayFoo(
+                            new ArrayExpression(
                                 'sub-identifier',
                                 [
                                     new ArrayPair(
@@ -181,12 +181,12 @@ class ArrayFooTest extends \PHPUnit\Framework\TestCase
                     "]",
             ],
             'single data set with multiple key:value numerical name' => [
-                'foo' => new ArrayFoo(
+                'foo' => new ArrayExpression(
                     'identifier',
                     [
                         new ArrayPair(
                             new ArrayKey('0'),
-                            new ArrayFoo(
+                            new ArrayExpression(
                                 'sub-identifier',
                                 [
                                     new ArrayPair(
@@ -211,12 +211,12 @@ class ArrayFooTest extends \PHPUnit\Framework\TestCase
                     "]",
             ],
             'multiple data sets with multiple key:value numerical name' => [
-                'foo' => new ArrayFoo(
+                'foo' => new ArrayExpression(
                     'identifier',
                     [
                         new ArrayPair(
                             new ArrayKey('0'),
-                            new ArrayFoo(
+                            new ArrayExpression(
                                 'sub-identifier',
                                 [
                                     new ArrayPair(
@@ -232,7 +232,7 @@ class ArrayFooTest extends \PHPUnit\Framework\TestCase
                         ),
                         new ArrayPair(
                             new ArrayKey('1'),
-                            new ArrayFoo(
+                            new ArrayExpression(
                                 'sub-identifier',
                                 [
                                     new ArrayPair(
@@ -262,12 +262,12 @@ class ArrayFooTest extends \PHPUnit\Framework\TestCase
             ],
 
             'single data set with VariableName value' => [
-                'foo' => new ArrayFoo(
+                'foo' => new ArrayExpression(
                     'identifier1-',
                     [
                         new ArrayPair(
                             new ArrayKey('data-set-one'),
-                            new ArrayFoo(
+                            new ArrayExpression(
                                 'sub-identifier-',
                                 [
                                     new ArrayPair(
@@ -287,12 +287,12 @@ class ArrayFooTest extends \PHPUnit\Framework\TestCase
                     "]",
             ],
             'single data set with ObjectMethodInvocation value' => [
-                'foo' => new ArrayFoo(
+                'foo' => new ArrayExpression(
                     'identifier1-',
                     [
                         new ArrayPair(
                             new ArrayKey('data-set-one'),
-                            new ArrayFoo(
+                            new ArrayExpression(
                                 'sub-identifier-',
                                 [
                                     new ArrayPair(
@@ -320,7 +320,7 @@ class ArrayFooTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider fromDataSetsDataProvider
      */
-    public function testFromDataSets(ArrayFoo $foo, ArrayFoo $expectedFoo)
+    public function testFromDataSets(ArrayExpression $foo, ArrayExpression $expectedFoo)
     {
         self::assertEquals($expectedFoo, $foo);
     }
@@ -329,14 +329,14 @@ class ArrayFooTest extends \PHPUnit\Framework\TestCase
     {
         return [
             'empty' => [
-                'foo' => ArrayFoo::fromDataSets('identifier', []),
-                'expectedFoo' => new ArrayFoo(
+                'foo' => ArrayExpression::fromDataSets('identifier', []),
+                'expectedFoo' => new ArrayExpression(
                     'identifier',
                     []
                 ),
             ],
             'single data set with single key:value numerical name' => [
-                'foo' => ArrayFoo::fromDataSets(
+                'foo' => ArrayExpression::fromDataSets(
                     'identifier',
                     [
                         0 => [
@@ -344,12 +344,12 @@ class ArrayFooTest extends \PHPUnit\Framework\TestCase
                         ],
                     ]
                 ),
-                'expectedFoo' => new ArrayFoo(
+                'expectedFoo' => new ArrayExpression(
                     'identifier',
                     [
                         new ArrayPair(
                             new ArrayKey('0'),
-                            new ArrayFoo(
+                            new ArrayExpression(
                                 'identifier-0-',
                                 [
                                     new ArrayPair(
@@ -363,7 +363,7 @@ class ArrayFooTest extends \PHPUnit\Framework\TestCase
                 ),
             ],
             'single data set with single key:value string name' => [
-                'foo' => ArrayFoo::fromDataSets(
+                'foo' => ArrayExpression::fromDataSets(
                     'identifier',
                     [
                         'data-set-one' => [
@@ -371,12 +371,12 @@ class ArrayFooTest extends \PHPUnit\Framework\TestCase
                         ],
                     ]
                 ),
-                'expectedFoo' => new ArrayFoo(
+                'expectedFoo' => new ArrayExpression(
                     'identifier',
                     [
                         new ArrayPair(
                             new ArrayKey('data-set-one'),
-                            new ArrayFoo(
+                            new ArrayExpression(
                                 'identifier-data-set-one-',
                                 [
                                     new ArrayPair(
@@ -390,7 +390,7 @@ class ArrayFooTest extends \PHPUnit\Framework\TestCase
                 ),
             ],
             'single data set with multiple key:value numerical name' => [
-                'foo' => ArrayFoo::fromDataSets(
+                'foo' => ArrayExpression::fromDataSets(
                     'identifier',
                     [
                         0 => [
@@ -399,12 +399,12 @@ class ArrayFooTest extends \PHPUnit\Framework\TestCase
                         ],
                     ]
                 ),
-                'expectedFoo' => new ArrayFoo(
+                'expectedFoo' => new ArrayExpression(
                     'identifier',
                     [
                         new ArrayPair(
                             new ArrayKey('0'),
-                            new ArrayFoo(
+                            new ArrayExpression(
                                 'identifier-0-',
                                 [
                                     new ArrayPair(
@@ -422,7 +422,7 @@ class ArrayFooTest extends \PHPUnit\Framework\TestCase
                 ),
             ],
             'multiple data sets with multiple key:value numerical name' => [
-                'foo' => ArrayFoo::fromDataSets(
+                'foo' => ArrayExpression::fromDataSets(
                     'identifier',
                     [
                         0 => [
@@ -435,12 +435,12 @@ class ArrayFooTest extends \PHPUnit\Framework\TestCase
                         ],
                     ]
                 ),
-                'expectedFoo' => new ArrayFoo(
+                'expectedFoo' => new ArrayExpression(
                     'identifier',
                     [
                         new ArrayPair(
                             new ArrayKey('0'),
-                            new ArrayFoo(
+                            new ArrayExpression(
                                 'identifier-0-',
                                 [
                                     new ArrayPair(
@@ -456,7 +456,7 @@ class ArrayFooTest extends \PHPUnit\Framework\TestCase
                         ),
                         new ArrayPair(
                             new ArrayKey('1'),
-                            new ArrayFoo(
+                            new ArrayExpression(
                                 'identifier-1-',
                                 [
                                     new ArrayPair(
@@ -474,7 +474,7 @@ class ArrayFooTest extends \PHPUnit\Framework\TestCase
                 ),
             ],
             'single data set with VariableName value' => [
-                'foo' => ArrayFoo::fromDataSets(
+                'foo' => ArrayExpression::fromDataSets(
                     'identifier',
                     [
                         'data-set-one' => [
@@ -482,12 +482,12 @@ class ArrayFooTest extends \PHPUnit\Framework\TestCase
                         ],
                     ]
                 ),
-                'expectedFoo' => new ArrayFoo(
+                'expectedFoo' => new ArrayExpression(
                     'identifier',
                     [
                         new ArrayPair(
                             new ArrayKey('data-set-one'),
-                            new ArrayFoo(
+                            new ArrayExpression(
                                 'identifier-data-set-one-',
                                 [
                                     new ArrayPair(
@@ -501,7 +501,7 @@ class ArrayFooTest extends \PHPUnit\Framework\TestCase
                 ),
             ],
             'single data set with ObjectMethodInvocation value' => [
-                'foo' => ArrayFoo::fromDataSets(
+                'foo' => ArrayExpression::fromDataSets(
                     'identifier',
                     [
                         'data-set-one' => [
@@ -512,12 +512,12 @@ class ArrayFooTest extends \PHPUnit\Framework\TestCase
                         ],
                     ]
                 ),
-                'expectedFoo' => new ArrayFoo(
+                'expectedFoo' => new ArrayExpression(
                     'identifier',
                     [
                         new ArrayPair(
                             new ArrayKey('data-set-one'),
-                            new ArrayFoo(
+                            new ArrayExpression(
                                 'identifier-data-set-one-',
                                 [
                                     new ArrayPair(
