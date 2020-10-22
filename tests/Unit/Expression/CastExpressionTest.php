@@ -54,7 +54,7 @@ class CastExpressionTest extends \PHPUnit\Framework\TestCase
                 'expectedString' => '(string) (100)',
             ],
             'empty array expression as object' => [
-                'expression' => new CastExpression(new ArrayExpression('identifier', []), 'object'),
+                'expression' => new CastExpression(new ArrayExpression([]), 'object'),
                 'expectedString' => '(object) ([])',
             ],
             'empty closure expression as string' => [
