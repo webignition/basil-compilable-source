@@ -15,7 +15,7 @@ use webignition\BasilCompilableSource\Expression\AssignmentExpression;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\MethodArguments\MethodArguments;
+use webignition\BasilCompilableSource\MethodArguments\FooMethodArguments;
 use webignition\BasilCompilableSource\MethodDefinition;
 use webignition\BasilCompilableSource\MethodDefinitionInterface;
 use webignition\BasilCompilableSource\MethodInvocation\MethodInvocation;
@@ -157,7 +157,7 @@ class ClassBodyTest extends TestCase
                                 new StaticObjectMethodInvocation(
                                     new StaticObject('Acme\\Statement'),
                                     'createAction',
-                                    new MethodArguments([
+                                    new FooMethodArguments([
                                         new LiteralExpression('\'$"a" exists\''),
                                     ])
                                 )
@@ -178,7 +178,7 @@ class ClassBodyTest extends TestCase
                                 new StaticObjectMethodInvocation(
                                     new StaticObject('Acme\\Statement'),
                                     'createAction',
-                                    new MethodArguments([
+                                    new FooMethodArguments([
                                         new LiteralExpression('\'$"b" exists\''),
                                     ])
                                 )
@@ -220,7 +220,7 @@ class ClassBodyTest extends TestCase
                                         new StaticObjectMethodInvocation(
                                             new StaticObject('Acme\\Statement'),
                                             'createAction',
-                                            new MethodArguments([
+                                            new FooMethodArguments([
                                                 new LiteralExpression('\'$"a" exists\''),
                                             ])
                                         )
@@ -268,7 +268,7 @@ class ClassBodyTest extends TestCase
                                 new StaticObjectMethodInvocation(
                                     new StaticObject('Acme\\Statement'),
                                     'createAction',
-                                    new MethodArguments([
+                                    new FooMethodArguments([
                                         new LiteralExpression('\'$"b" exists\''),
                                     ])
                                 )

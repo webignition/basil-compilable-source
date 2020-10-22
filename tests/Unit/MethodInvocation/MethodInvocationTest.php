@@ -7,7 +7,7 @@ namespace webignition\BasilCompilableSource\Tests\Unit\MethodInvocation;
 use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
-use webignition\BasilCompilableSource\MethodArguments\MethodArguments;
+use webignition\BasilCompilableSource\MethodArguments\FooMethodArguments;
 use webignition\BasilCompilableSource\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSource\MethodInvocation\MethodInvocationInterface;
 use webignition\BasilCompilableSource\MethodInvocation\StaticObjectMethodInvocation;
@@ -20,15 +20,18 @@ class MethodInvocationTest extends \PHPUnit\Framework\TestCase
         $methodName = 'methodName';
 
         $invocation = new MethodInvocation($methodName);
-        $this->assertSame($methodName, $invocation->getCall());
-        $this->assertEquals(new MethodArguments([]), $invocation->getArguments());
-        $this->assertEquals(new Metadata(), $invocation->getMetadata());
+        self::assertSame($methodName, $invocation->getCall());
+        self::assertEquals(new Metadata(), $invocation->getMetadata());
+        self::assertSame(
+            (new FooMethodArguments([]))->render(),
+            $invocation->getArguments()->render()
+        );
     }
 
     public function testCreateWithArgumentsWithMetadata()
     {
         $methodName = 'methodName';
-        $arguments = new MethodArguments([
+        $arguments = new FooMethodArguments([
             new StaticObjectMethodInvocation(
                 new StaticObject(ClassName::class),
                 'staticMethodName'
@@ -36,9 +39,9 @@ class MethodInvocationTest extends \PHPUnit\Framework\TestCase
         ]);
 
         $invocation = new MethodInvocation($methodName, $arguments);
-        $this->assertSame($methodName, $invocation->getCall());
-        $this->assertEquals($arguments, $invocation->getArguments());
-        $this->assertEquals($arguments->getMetadata(), $invocation->getMetadata());
+        self::assertSame($methodName, $invocation->getCall());
+        self::assertSame($arguments, $invocation->getArguments());
+        self::assertEquals($arguments->getMetadata(), $invocation->getMetadata());
     }
 
     /**
@@ -46,7 +49,7 @@ class MethodInvocationTest extends \PHPUnit\Framework\TestCase
      */
     public function testRender(MethodInvocationInterface $invocation, string $expectedString)
     {
-        $this->assertSame($expectedString, $invocation->render());
+        self::assertSame($expectedString, $invocation->render());
     }
 
     public function renderDataProvider(): array
@@ -59,7 +62,7 @@ class MethodInvocationTest extends \PHPUnit\Framework\TestCase
             'has arguments, inline' => [
                 'invocation' => new MethodInvocation(
                     'methodName',
-                    new MethodArguments([
+                    new FooMethodArguments([
                         new LiteralExpression('1'),
                         new LiteralExpression("\'single-quoted value\'"),
                     ])
@@ -69,12 +72,12 @@ class MethodInvocationTest extends \PHPUnit\Framework\TestCase
             'has arguments, stacked' => [
                 'invocation' => new MethodInvocation(
                     'methodName',
-                    new MethodArguments(
+                    new FooMethodArguments(
                         [
                             new LiteralExpression('1'),
                             new LiteralExpression("\'single-quoted value\'"),
                         ],
-                        MethodArguments::FORMAT_STACKED
+                        FooMethodArguments::FORMAT_STACKED
                     )
                 ),
                 'expectedString' => "methodName(\n" .

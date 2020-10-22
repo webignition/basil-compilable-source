@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\MethodInvocation;
 
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\MethodArguments\MethodArguments;
+use webignition\BasilCompilableSource\MethodArguments\FooMethodArguments;
 use webignition\BasilCompilableSource\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSource\RenderTrait;
 use webignition\StubbleResolvable\Resolvable;
@@ -28,7 +28,7 @@ class MethodInvocation implements MethodInvocationInterface, ResolvableProviderI
     public function __construct(string $methodName, ?MethodArgumentsInterface $arguments = null)
     {
         $this->methodName = $methodName;
-        $this->arguments = $arguments ?? new MethodArguments([]);
+        $this->arguments = $arguments ?? new FooMethodArguments([]);
     }
 
     public function getCall(): string

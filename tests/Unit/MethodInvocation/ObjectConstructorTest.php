@@ -9,7 +9,7 @@ use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\MethodArguments\MethodArguments;
+use webignition\BasilCompilableSource\MethodArguments\FooMethodArguments;
 use webignition\BasilCompilableSource\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectConstructor;
 
@@ -35,7 +35,7 @@ class ObjectConstructorTest extends \PHPUnit\Framework\TestCase
         return [
             'no arguments' => [
                 'class' => new ClassName(ObjectConstructor::class),
-                'arguments' => new MethodArguments(),
+                'arguments' => new FooMethodArguments(),
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassName(ObjectConstructor::class)
@@ -44,7 +44,7 @@ class ObjectConstructorTest extends \PHPUnit\Framework\TestCase
             ],
             'single argument' => [
                 'class' => new ClassName(ObjectConstructor::class),
-                'arguments' => new MethodArguments([
+                'arguments' => new FooMethodArguments([
                     new LiteralExpression('1'),
                 ]),
                 'expectedMetadata' => new Metadata([
@@ -82,7 +82,7 @@ class ObjectConstructorTest extends \PHPUnit\Framework\TestCase
             'has arguments, inline' => [
                 'constructor' => new ObjectConstructor(
                     $classDependency,
-                    new MethodArguments([
+                    new FooMethodArguments([
                         new LiteralExpression('1'),
                         new LiteralExpression("\'single-quoted value\'"),
                     ])
@@ -92,12 +92,12 @@ class ObjectConstructorTest extends \PHPUnit\Framework\TestCase
             'has arguments, stacked' => [
                 'constructor' => new ObjectConstructor(
                     $classDependency,
-                    new MethodArguments(
+                    new FooMethodArguments(
                         [
                             new LiteralExpression('1'),
                             new LiteralExpression("\'single-quoted value\'"),
                         ],
-                        MethodArguments::FORMAT_STACKED
+                        FooMethodArguments::FORMAT_STACKED
                     )
                 ),
                 'expectedString' => "new Model(\n" .
