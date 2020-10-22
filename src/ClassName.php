@@ -59,7 +59,7 @@ class ClassName
 
     public function render(): string
     {
-        return $this->alias ?? $this->getClass();
+        return (string) $this;
     }
 
     public function renderClassName(): string
@@ -74,5 +74,10 @@ class ClassName
         }
 
         return $rendered;
+    }
+
+    public function __toString(): string
+    {
+        return $this->alias ?? $this->getClass();
     }
 }
