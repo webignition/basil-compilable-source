@@ -93,14 +93,14 @@ class ArrayPairTest extends \PHPUnit\Framework\TestCase
             'array value, empty' => [
                 'pair' => new ArrayPair(
                     new ArrayKey('key'),
-                    new ArrayExpression('array-', []),
+                    new ArrayExpression([]),
                 ),
                 'expectedString' => "'key' => [],",
             ],
             'array value, non-empty' => [
                 'pair' => new ArrayPair(
                     new ArrayKey('key'),
-                    new ArrayExpression('array-', [
+                    new ArrayExpression([
                         new ArrayPair(
                             new ArrayKey('sub-key-1'),
                             new LiteralExpression('\'sub value 1\'')

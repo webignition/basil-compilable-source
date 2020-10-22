@@ -31,10 +31,7 @@ class DataProviderMethodDefinition extends MethodDefinition implements DataProvi
         parent::__construct($name, new Body([
             new Statement(
                 new ReturnExpression(
-                    ArrayExpression::fromDataSets(
-                        $name . '-data-provider-identifier',
-                        $data
-                    )
+                    ArrayExpression::fromDataSets($data)
                 )
             ),
         ]));

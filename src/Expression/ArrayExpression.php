@@ -17,15 +17,13 @@ class ArrayExpression implements ExpressionInterface, ResolvableProviderInterfac
     use RenderTrait;
 
     private const INDENT = '    ';
-    private const IDENTIFIER_PREFIX = 'array-expression-';
 
     private ResolvableCollection $collection;
 
     /**
-     * @param string $identifier
      * @param ArrayPair[] $pairs
      */
-    public function __construct(string $identifier, array $pairs)
+    public function __construct(array $pairs)
     {
         $pairs = array_filter($pairs, function ($item) {
             return $item instanceof ArrayPair;
@@ -40,16 +38,15 @@ class ArrayExpression implements ExpressionInterface, ResolvableProviderInterfac
             );
         });
 
-        $this->collection = new ResolvableCollection(self::IDENTIFIER_PREFIX . $identifier, $pairs);
+        $this->collection = ResolvableCollection::create($pairs);
     }
 
     /**
-     * @param string $identifier
      * @param array<string|int, array<string, string|int|ExpressionInterface>> $dataSets
      *
      * @return self
      */
-    public static function fromDataSets(string $identifier, array $dataSets): self
+    public static function fromDataSets(array $dataSets): self
     {
         $expressionArrayPairs = [];
 
@@ -67,10 +64,7 @@ class ArrayExpression implements ExpressionInterface, ResolvableProviderInterfac
                 );
             }
 
-            $dataSetArrayExpression = new ArrayExpression(
-                $identifier . '-' . $dataSetName . '-',
-                $dataSetArrayPairs
-            );
+            $dataSetArrayExpression = new ArrayExpression($dataSetArrayPairs);
 
             $dataSetArrayPair = new ArrayPair(
                 new ArrayKey((string) $dataSetName),
@@ -80,7 +74,7 @@ class ArrayExpression implements ExpressionInterface, ResolvableProviderInterfac
             $expressionArrayPairs[] = $dataSetArrayPair;
         }
 
-        return new ArrayExpression($identifier, $expressionArrayPairs);
+        return new ArrayExpression($expressionArrayPairs);
     }
 
     public function getResolvable(): ResolvableInterface
