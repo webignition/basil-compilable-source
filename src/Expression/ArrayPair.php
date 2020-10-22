@@ -10,12 +10,10 @@ use webignition\BasilCompilableSource\RenderableInterface;
 use webignition\BasilCompilableSource\RenderTrait;
 use webignition\StubbleResolvable\Resolvable;
 use webignition\StubbleResolvable\ResolvableInterface;
-use webignition\StubbleResolvable\ResolvedTemplateMutatorTrait;
 
 class ArrayPair implements RenderableInterface, ResolvableInterface, HasMetadataInterface
 {
     use RenderTrait;
-    use ResolvedTemplateMutatorTrait;
 
     private const RENDER_TEMPLATE = '{{ key }} => {{ value }},';
 

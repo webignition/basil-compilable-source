@@ -8,9 +8,10 @@ use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\RenderableInterface;
 use webignition\BasilCompilableSource\RenderTrait;
-use webignition\StubbleResolvable\Resolvable;
 use webignition\StubbleResolvable\ResolvableCollection;
 use webignition\StubbleResolvable\ResolvableInterface;
+use webignition\StubbleResolvable\ResolvableProviderInterface;
+use webignition\StubbleResolvable\ResolvedTemplateMutatorResolvable;
 
 class ArrayExpression implements ExpressionInterface, RenderableInterface
 {
@@ -32,9 +33,12 @@ class ArrayExpression implements ExpressionInterface, RenderableInterface
         });
 
         array_walk($pairs, function (ArrayPair &$pair) {
-            $pair = $pair->withResolvedTemplateMutator(function (string $resolved) {
-                return $this->arrayPairResolvedTemplateMutator($resolved);
-            });
+            $pair = new ResolvedTemplateMutatorResolvable(
+                $pair,
+                function (string $resolvedTemplate) {
+                    return $this->arrayPairResolvedTemplateMutator($resolvedTemplate);
+                }
+            );
         });
 
         $this->collection = new ResolvableCollection(self::IDENTIFIER_PREFIX . $identifier, $pairs);
@@ -82,14 +86,12 @@ class ArrayExpression implements ExpressionInterface, RenderableInterface
 
     public function getResolvable(): ResolvableInterface
     {
-        $resolvable = new Resolvable(
-            $this->collection->getTemplate(),
-            $this->collection->getContext()
+        return new ResolvedTemplateMutatorResolvable(
+            $this->collection,
+            function (string $resolved) {
+                return $this->resolvedTemplateMutator($resolved);
+            }
         );
-
-        return $resolvable->withResolvedTemplateMutator(function (string $resolved) {
-            return $this->resolvedTemplateMutator($resolved);
-        });
     }
 
     public function getMetadata(): MetadataInterface
@@ -97,6 +99,10 @@ class ArrayExpression implements ExpressionInterface, RenderableInterface
         $metadata = new Metadata();
 
         foreach ($this->collection as $pair) {
+            if ($pair instanceof ResolvableProviderInterface) {
+                $pair = $pair->getResolvable();
+            }
+
             if ($pair instanceof ArrayPair) {
                 $metadata = $metadata->merge($pair->getMetadata());
             }
