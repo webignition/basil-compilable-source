@@ -7,7 +7,7 @@ namespace webignition\BasilCompilableSource\Tests\Unit\MethodInvocation;
 use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
-use webignition\BasilCompilableSource\MethodArguments\FooMethodArguments;
+use webignition\BasilCompilableSource\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSource\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSource\MethodInvocation\MethodInvocationInterface;
 use webignition\BasilCompilableSource\MethodInvocation\StaticObjectMethodInvocation;
@@ -23,7 +23,7 @@ class MethodInvocationTest extends \PHPUnit\Framework\TestCase
         self::assertSame($methodName, $invocation->getCall());
         self::assertEquals(new Metadata(), $invocation->getMetadata());
         self::assertSame(
-            (new FooMethodArguments([]))->render(),
+            (new MethodArguments([]))->render(),
             $invocation->getArguments()->render()
         );
     }
@@ -31,7 +31,7 @@ class MethodInvocationTest extends \PHPUnit\Framework\TestCase
     public function testCreateWithArgumentsWithMetadata()
     {
         $methodName = 'methodName';
-        $arguments = new FooMethodArguments([
+        $arguments = new MethodArguments([
             new StaticObjectMethodInvocation(
                 new StaticObject(ClassName::class),
                 'staticMethodName'
@@ -62,7 +62,7 @@ class MethodInvocationTest extends \PHPUnit\Framework\TestCase
             'has arguments, inline' => [
                 'invocation' => new MethodInvocation(
                     'methodName',
-                    new FooMethodArguments([
+                    new MethodArguments([
                         new LiteralExpression('1'),
                         new LiteralExpression("\'single-quoted value\'"),
                     ])
@@ -72,12 +72,12 @@ class MethodInvocationTest extends \PHPUnit\Framework\TestCase
             'has arguments, stacked' => [
                 'invocation' => new MethodInvocation(
                     'methodName',
-                    new FooMethodArguments(
+                    new MethodArguments(
                         [
                             new LiteralExpression('1'),
                             new LiteralExpression("\'single-quoted value\'"),
                         ],
-                        FooMethodArguments::FORMAT_STACKED
+                        MethodArguments::FORMAT_STACKED
                     )
                 ),
                 'expectedString' => "methodName(\n" .

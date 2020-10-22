@@ -14,7 +14,7 @@ use webignition\BasilCompilableSource\Expression\AssignmentExpression;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\MethodArguments\FooMethodArguments;
+use webignition\BasilCompilableSource\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSource\MethodDefinition;
 use webignition\BasilCompilableSource\MethodDefinitionInterface;
 use webignition\BasilCompilableSource\MethodInvocation\MethodInvocation;
@@ -235,7 +235,7 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
                                 new ObjectMethodInvocation(
                                     new VariableDependency('OBJECT'),
                                     'methodName',
-                                    new FooMethodArguments([
+                                    new MethodArguments([
                                         new LiteralExpression('$x'),
                                         new LiteralExpression('$y'),
                                     ])

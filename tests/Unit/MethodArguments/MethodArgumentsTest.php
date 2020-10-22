@@ -15,7 +15,7 @@ use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\Expression\ReturnExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\MethodArguments\FooMethodArguments;
+use webignition\BasilCompilableSource\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\MethodInvocation\StaticObjectMethodInvocation;
 use webignition\BasilCompilableSource\Statement\Statement;
@@ -23,7 +23,7 @@ use webignition\BasilCompilableSource\StaticObject;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSource\VariableName;
 
-class FooMethodArgumentsTest extends \PHPUnit\Framework\TestCase
+class MethodArgumentsTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider createDataProvider
@@ -36,7 +36,7 @@ class FooMethodArgumentsTest extends \PHPUnit\Framework\TestCase
         string $format,
         MetadataInterface $expectedMetadata
     ) {
-        $methodArguments = new FooMethodArguments($arguments, $format);
+        $methodArguments = new MethodArguments($arguments, $format);
 
         $this->assertSame($arguments, $methodArguments->getArguments());
         $this->assertSame($format, $methodArguments->getFormat());
@@ -48,19 +48,19 @@ class FooMethodArgumentsTest extends \PHPUnit\Framework\TestCase
         return [
             'empty, inline' => [
                 'arguments' => [],
-                'format' => FooMethodArguments::FORMAT_INLINE,
+                'format' => MethodArguments::FORMAT_INLINE,
                 'expectedMetadata' => new Metadata(),
             ],
             'empty, stacked' => [
                 'arguments' => [],
-                'format' => FooMethodArguments::FORMAT_STACKED,
+                'format' => MethodArguments::FORMAT_STACKED,
                 'expectedMetadata' => new Metadata(),
             ],
             'single argument' => [
                 'arguments' => [
                     new LiteralExpression('1'),
                 ],
-                'format' => FooMethodArguments::FORMAT_INLINE,
+                'format' => MethodArguments::FORMAT_INLINE,
                 'expectedMetadata' => new Metadata(),
             ],
             'multiple arguments' => [
@@ -69,7 +69,7 @@ class FooMethodArgumentsTest extends \PHPUnit\Framework\TestCase
                     new LiteralExpression("\'single-quoted value\'"),
                     new LiteralExpression('"double-quoted value"'),
                 ],
-                'format' => FooMethodArguments::FORMAT_INLINE,
+                'format' => MethodArguments::FORMAT_INLINE,
                 'expectedMetadata' => new Metadata(),
             ],
             'has metadata' => [
@@ -79,7 +79,7 @@ class FooMethodArgumentsTest extends \PHPUnit\Framework\TestCase
                         'staticMethodName'
                     )
                 ],
-                'format' => FooMethodArguments::FORMAT_INLINE,
+                'format' => MethodArguments::FORMAT_INLINE,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassName(ClassName::class),
@@ -92,7 +92,7 @@ class FooMethodArgumentsTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider renderDataProvider
      */
-    public function testRender(FooMethodArguments $arguments, string $expectedString)
+    public function testRender(MethodArguments $arguments, string $expectedString)
     {
         $this->assertSame($expectedString, $arguments->render());
     }
@@ -101,43 +101,43 @@ class FooMethodArgumentsTest extends \PHPUnit\Framework\TestCase
     {
         return [
             'empty, inline' => [
-                'arguments' => new FooMethodArguments([]),
+                'arguments' => new MethodArguments([]),
                 'expectedString' => '',
             ],
             'empty, stacked' => [
-                'arguments' => new FooMethodArguments([], FooMethodArguments::FORMAT_STACKED),
+                'arguments' => new MethodArguments([], MethodArguments::FORMAT_STACKED),
                 'expectedString' => '',
             ],
             'has arguments, inline' => [
-                'arguments' => new FooMethodArguments([
+                'arguments' => new MethodArguments([
                     new LiteralExpression('1'),
                     new LiteralExpression("\'single-quoted value\'"),
                 ]),
                 'expectedString' => "1, \'single-quoted value\'",
             ],
             'has arguments, stacked' => [
-                'arguments' => new FooMethodArguments(
+                'arguments' => new MethodArguments(
                     [
                         new LiteralExpression('1'),
                         new LiteralExpression("\'single-quoted value\'"),
                     ],
-                    FooMethodArguments::FORMAT_STACKED
+                    MethodArguments::FORMAT_STACKED
                 ),
                 'expectedString' => "\n" .
                     "    1,\n" .
                     "    \'single-quoted value\'\n",
             ],
             'indent stacked multi-line arguments' => [
-                'arguments' => new FooMethodArguments(
+                'arguments' => new MethodArguments(
                     [
                         new ObjectMethodInvocation(
                             new VariableDependency('NAVIGATOR'),
                             'find',
-                            new FooMethodArguments([
+                            new MethodArguments([
                                 new StaticObjectMethodInvocation(
                                     new StaticObject(ObjectMethodInvocation::class),
                                     'fromJson',
-                                    new FooMethodArguments([
+                                    new MethodArguments([
                                         new LiteralExpression(
                                             '{' . "\n" . '    "locator": ".selector"' . "\n" . '}'
                                         ),
@@ -162,7 +162,7 @@ class FooMethodArgumentsTest extends \PHPUnit\Framework\TestCase
                             ])
                         ),
                     ],
-                    FooMethodArguments::FORMAT_STACKED
+                    MethodArguments::FORMAT_STACKED
                 ),
                 'expectedString' =>
                     "\n" .

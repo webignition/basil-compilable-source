@@ -10,7 +10,7 @@ use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\MethodArguments\FooMethodArguments;
+use webignition\BasilCompilableSource\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSource\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSource\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
@@ -44,7 +44,7 @@ class ObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
             'no arguments' => [
                 'object' => new VariableDependency('OBJECT'),
                 'methodName' => 'method',
-                'arguments' => new FooMethodArguments(),
+                'arguments' => new MethodArguments(),
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         'OBJECT',
@@ -54,7 +54,7 @@ class ObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
             'has arguments' => [
                 'object' => new VariableDependency('OBJECT'),
                 'methodName' => 'method',
-                'arguments' => new FooMethodArguments([
+                'arguments' => new MethodArguments([
                     new LiteralExpression('1'),
                 ]),
                 'expectedMetadata' => new Metadata([
@@ -66,7 +66,7 @@ class ObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
             'argument expressions contain additional metadata' => [
                 'object' => new VariableDependency('OBJECT'),
                 'methodName' => 'method',
-                'arguments' => new FooMethodArguments([
+                'arguments' => new MethodArguments([
                     new StaticObjectMethodInvocation(
                         new StaticObject(ClassName::class),
                         'staticMethodName'
@@ -84,7 +84,7 @@ class ObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
             'no arguments, resolving placeholder' => [
                 'object' => new VariableName('object'),
                 'methodName' => 'method',
-                'arguments' => new FooMethodArguments(),
+                'arguments' => new MethodArguments(),
                 'expectedMetadata' => new Metadata(),
             ],
         ];
@@ -112,7 +112,7 @@ class ObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
                 'invocation' => new ObjectMethodInvocation(
                     new VariableDependency('OBJECT'),
                     'methodName',
-                    new FooMethodArguments([
+                    new MethodArguments([
                         new LiteralExpression('1'),
                         new LiteralExpression("\'single-quoted value\'"),
                     ])
@@ -123,12 +123,12 @@ class ObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
                 'invocation' => new ObjectMethodInvocation(
                     new VariableDependency('OBJECT'),
                     'methodName',
-                    new FooMethodArguments(
+                    new MethodArguments(
                         [
                             new LiteralExpression('1'),
                             new LiteralExpression("\'single-quoted value\'"),
                         ],
-                        FooMethodArguments::FORMAT_STACKED
+                        MethodArguments::FORMAT_STACKED
                     )
                 ),
                 'expectedString' => "{{ OBJECT }}->methodName(\n" .

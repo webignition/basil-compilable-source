@@ -15,7 +15,7 @@ use webignition\StubbleResolvable\ResolvableProviderInterface;
 use webignition\StubbleResolvable\ResolvableWithoutContext;
 use webignition\StubbleResolvable\ResolvedTemplateMutatorResolvable;
 
-class FooMethodArguments implements MethodArgumentsInterface, ResolvableProviderInterface
+class MethodArguments implements MethodArgumentsInterface, ResolvableProviderInterface
 {
     use HasMetadataTrait;
     use RenderTrait;
