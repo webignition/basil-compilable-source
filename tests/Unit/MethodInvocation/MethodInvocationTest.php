@@ -20,9 +20,12 @@ class MethodInvocationTest extends \PHPUnit\Framework\TestCase
         $methodName = 'methodName';
 
         $invocation = new MethodInvocation($methodName);
-        $this->assertSame($methodName, $invocation->getCall());
-        $this->assertEquals(new MethodArguments([]), $invocation->getArguments());
-        $this->assertEquals(new Metadata(), $invocation->getMetadata());
+        self::assertSame($methodName, $invocation->getCall());
+        self::assertEquals(new Metadata(), $invocation->getMetadata());
+        self::assertSame(
+            (new MethodArguments([]))->render(),
+            $invocation->getArguments()->render()
+        );
     }
 
     public function testCreateWithArgumentsWithMetadata()
@@ -36,9 +39,9 @@ class MethodInvocationTest extends \PHPUnit\Framework\TestCase
         ]);
 
         $invocation = new MethodInvocation($methodName, $arguments);
-        $this->assertSame($methodName, $invocation->getCall());
-        $this->assertEquals($arguments, $invocation->getArguments());
-        $this->assertEquals($arguments->getMetadata(), $invocation->getMetadata());
+        self::assertSame($methodName, $invocation->getCall());
+        self::assertSame($arguments, $invocation->getArguments());
+        self::assertEquals($arguments->getMetadata(), $invocation->getMetadata());
     }
 
     /**
@@ -46,7 +49,7 @@ class MethodInvocationTest extends \PHPUnit\Framework\TestCase
      */
     public function testRender(MethodInvocationInterface $invocation, string $expectedString)
     {
-        $this->assertSame($expectedString, $invocation->render());
+        self::assertSame($expectedString, $invocation->render());
     }
 
     public function renderDataProvider(): array

@@ -8,24 +8,30 @@ use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\HasMetadataTrait;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\BasilCompilableSource\RenderTrait;
+use webignition\StubbleResolvable\ResolvableCollection;
+use webignition\StubbleResolvable\ResolvableInterface;
+use webignition\StubbleResolvable\ResolvableProviderInterface;
+use webignition\StubbleResolvable\ResolvableWithoutContext;
+use webignition\StubbleResolvable\ResolvedTemplateMutatorResolvable;
 
-class MethodArguments implements MethodArgumentsInterface
+class MethodArguments implements MethodArgumentsInterface, ResolvableProviderInterface
 {
     use HasMetadataTrait;
+    use RenderTrait;
 
     public const FORMAT_INLINE = 'inline';
     public const FORMAT_STACKED = 'stacked';
+
+    private const INDENT = '    ';
+
+    private ResolvableCollection $resolvableCollection;
+    private string $format;
 
     /**
      * @var ExpressionInterface[]
      */
     private array $arguments;
-    private string $format;
-
-    /**
-     * @var MetadataInterface
-     */
-    private MetadataInterface $metadata;
 
     /**
      * @param ExpressionInterface[] $arguments
@@ -33,15 +39,40 @@ class MethodArguments implements MethodArgumentsInterface
      */
     public function __construct(array $arguments = [], string $format = self::FORMAT_INLINE)
     {
-        $this->arguments = array_filter($arguments, function ($argument) {
-            return $argument instanceof ExpressionInterface;
+        $arguments = array_filter($arguments, function ($item) {
+            return $item instanceof ExpressionInterface;
         });
-        $this->format = $format;
 
         $this->metadata = new Metadata();
-        foreach ($this->arguments as $expression) {
+        foreach ($arguments as $expression) {
             $this->metadata = $this->metadata->merge($expression->getMetadata());
         }
+
+        $this->arguments = $arguments;
+
+        array_walk($arguments, function (&$argument) {
+            if ((is_object($argument) && method_exists($argument, '__toString'))) {
+                $argument = new ResolvableWithoutContext((string) $argument);
+            }
+
+            if ($argument instanceof ResolvableProviderInterface) {
+                $argument = $argument->getResolvable();
+            }
+
+            if ($argument instanceof ResolvableInterface) {
+                $argument = new ResolvedTemplateMutatorResolvable($argument, function (string $resolvedTemplate) {
+                    return $this->argumentResolvedTemplateMutator($resolvedTemplate);
+                });
+            }
+        });
+
+        $this->resolvableCollection = ResolvableCollection::create($arguments);
+        $this->format = $format;
+    }
+
+    public function getMetadata(): MetadataInterface
+    {
+        return $this->metadata;
     }
 
     public function getArguments(): array
@@ -54,53 +85,49 @@ class MethodArguments implements MethodArgumentsInterface
         return $this->format;
     }
 
-    public function render(): string
+    public function getResolvable(): ResolvableInterface
     {
-        $arguments = $this->getArguments();
-        if ([] === $arguments) {
-            return '';
-        }
-
-        $renderedArguments = array_map(
-            function (ExpressionInterface $expression) {
-                return $expression->render();
-            },
-            $arguments
+        return new ResolvedTemplateMutatorResolvable(
+            $this->resolvableCollection,
+            function (string $resolvedTemplate) {
+                return $this->resolvedTemplateMutator($resolvedTemplate);
+            }
         );
-
-        $argumentPrefix = '';
-        $join = ', ';
-        $stringSuffix = '';
-
-        if (self::FORMAT_STACKED === $this->getFormat()) {
-            array_walk($renderedArguments, function (&$argument) {
-                $argumentLines = explode("\n", $argument);
-                array_walk($argumentLines, function (&$line) {
-                    $line = $this->indentLine($line);
-                });
-
-                $argument = trim(implode("\n", $argumentLines));
-                $argument = $this->indentLine($argument);
-            });
-
-            $argumentPrefix = "\n";
-            $join = ',';
-            $stringSuffix = "\n";
-        }
-
-        array_walk($renderedArguments, function (&$argument) use ($argumentPrefix) {
-            $argument = $argumentPrefix . $argument;
-        });
-
-        return implode($join, $renderedArguments) . $stringSuffix;
     }
 
-    private function indentLine(string $content): string
+    private function resolvedTemplateMutator(string $resolvedTemplate): string
     {
-        if ('' !== $content) {
-            $content = '    ' . $content;
+        if ('' === $resolvedTemplate) {
+            return $resolvedTemplate;
         }
 
-        return $content;
+        return self::FORMAT_STACKED === $this->format
+            ? $this->stackedResolvedTemplateMutator($resolvedTemplate)
+            : rtrim($resolvedTemplate, ', ');
+    }
+
+    private function stackedResolvedTemplateMutator(string $resolvedTemplate): string
+    {
+        $resolvedTemplate = rtrim($resolvedTemplate, ",\n");
+
+        $lines = explode("\n", $resolvedTemplate);
+        array_walk($lines, function (string &$line) {
+            if ('' !== $line) {
+                $line = self::INDENT . $line;
+            }
+        });
+
+        return "\n" . implode("\n", $lines) . "\n";
+    }
+
+    private function argumentResolvedTemplateMutator(string $resolvedTemplate): string
+    {
+        if ('' === $resolvedTemplate) {
+            return $resolvedTemplate;
+        }
+
+        return self::FORMAT_STACKED === $this->format
+            ? $resolvedTemplate . ',' . "\n"
+            : $resolvedTemplate . ', ';
     }
 }

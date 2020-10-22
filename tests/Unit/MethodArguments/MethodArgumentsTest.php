@@ -17,6 +17,7 @@ use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSource\MethodInvocation\StaticObjectMethodInvocation;
 use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\BasilCompilableSource\StaticObject;
 use webignition\BasilCompilableSource\VariableDependency;
@@ -73,7 +74,7 @@ class MethodArgumentsTest extends \PHPUnit\Framework\TestCase
             ],
             'has metadata' => [
                 'arguments' => [
-                    new \webignition\BasilCompilableSource\MethodInvocation\StaticObjectMethodInvocation(
+                    new StaticObjectMethodInvocation(
                         new StaticObject(ClassName::class),
                         'staticMethodName'
                     )
@@ -104,16 +105,14 @@ class MethodArgumentsTest extends \PHPUnit\Framework\TestCase
                 'expectedString' => '',
             ],
             'empty, stacked' => [
-                'arguments' => new MethodArguments([]),
+                'arguments' => new MethodArguments([], MethodArguments::FORMAT_STACKED),
                 'expectedString' => '',
             ],
             'has arguments, inline' => [
-                'arguments' => new MethodArguments(
-                    [
-                        new LiteralExpression('1'),
-                        new LiteralExpression("\'single-quoted value\'"),
-                    ]
-                ),
+                'arguments' => new MethodArguments([
+                    new LiteralExpression('1'),
+                    new LiteralExpression("\'single-quoted value\'"),
+                ]),
                 'expectedString' => "1, \'single-quoted value\'",
             ],
             'has arguments, stacked' => [
@@ -135,11 +134,13 @@ class MethodArgumentsTest extends \PHPUnit\Framework\TestCase
                             new VariableDependency('NAVIGATOR'),
                             'find',
                             new MethodArguments([
-                                new \webignition\BasilCompilableSource\MethodInvocation\StaticObjectMethodInvocation(
+                                new StaticObjectMethodInvocation(
                                     new StaticObject(ObjectMethodInvocation::class),
                                     'fromJson',
                                     new MethodArguments([
-                                        new LiteralExpression('{' . "\n" . '    "locator": ".selector"' . "\n" . '}'),
+                                        new LiteralExpression(
+                                            '{' . "\n" . '    "locator": ".selector"' . "\n" . '}'
+                                        ),
                                     ])
                                 )
                             ])
