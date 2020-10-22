@@ -10,7 +10,6 @@ use webignition\BasilCompilableSource\RenderTrait;
 use webignition\StubbleResolvable\Resolvable;
 use webignition\StubbleResolvable\ResolvableInterface;
 use webignition\StubbleResolvable\ResolvableProviderInterface;
-use webignition\StubbleResolvable\ResolvedTemplateMutatorTrait;
 
 class ArrayPair implements ResolvableProviderInterface, ResolvableInterface, HasMetadataInterface
 {
