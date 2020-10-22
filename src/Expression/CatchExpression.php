@@ -6,14 +6,14 @@ namespace webignition\BasilCompilableSource\Expression;
 
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\RenderableInterface;
 use webignition\BasilCompilableSource\RenderTrait;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclarationCollection;
 use webignition\BasilCompilableSource\VariableName;
 use webignition\StubbleResolvable\Resolvable;
 use webignition\StubbleResolvable\ResolvableInterface;
+use webignition\StubbleResolvable\ResolvableProviderInterface;
 
-class CatchExpression implements ExpressionInterface, RenderableInterface
+class CatchExpression implements ExpressionInterface, ResolvableProviderInterface
 {
     use RenderTrait;
 

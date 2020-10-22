@@ -8,8 +8,9 @@ use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\StubbleResolvable\Resolvable;
 use webignition\StubbleResolvable\ResolvableInterface;
+use webignition\StubbleResolvable\ResolvableProviderInterface;
 
-class ClassDefinition implements ClassDefinitionInterface, RenderableInterface
+class ClassDefinition implements ClassDefinitionInterface, ResolvableProviderInterface
 {
     use RenderTrait;
 

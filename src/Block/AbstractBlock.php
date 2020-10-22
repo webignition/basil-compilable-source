@@ -7,10 +7,10 @@ namespace webignition\BasilCompilableSource\Block;
 use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\HasMetadataInterface;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\RenderableInterface;
 use webignition\BasilCompilableSource\RenderTrait;
+use webignition\StubbleResolvable\ResolvableProviderInterface;
 
-abstract class AbstractBlock implements HasMetadataInterface, RenderableInterface
+abstract class AbstractBlock implements HasMetadataInterface, ResolvableProviderInterface
 {
     use RenderTrait;
 

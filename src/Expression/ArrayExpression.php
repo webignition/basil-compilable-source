@@ -6,14 +6,13 @@ namespace webignition\BasilCompilableSource\Expression;
 
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\RenderableInterface;
 use webignition\BasilCompilableSource\RenderTrait;
 use webignition\StubbleResolvable\ResolvableCollection;
 use webignition\StubbleResolvable\ResolvableInterface;
 use webignition\StubbleResolvable\ResolvableProviderInterface;
 use webignition\StubbleResolvable\ResolvedTemplateMutatorResolvable;
 
-class ArrayExpression implements ExpressionInterface, RenderableInterface
+class ArrayExpression implements ExpressionInterface, ResolvableProviderInterface
 {
     use RenderTrait;
 

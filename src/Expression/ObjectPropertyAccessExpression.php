@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Expression;
 
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\RenderableInterface;
 use webignition\BasilCompilableSource\RenderTrait;
 use webignition\BasilCompilableSource\VariableDependencyInterface;
 use webignition\BasilCompilableSource\VariablePlaceholderInterface;
 use webignition\StubbleResolvable\Resolvable;
 use webignition\StubbleResolvable\ResolvableInterface;
+use webignition\StubbleResolvable\ResolvableProviderInterface;
 
-class ObjectPropertyAccessExpression extends AbstractExpression implements RenderableInterface
+class ObjectPropertyAccessExpression extends AbstractExpression implements ResolvableProviderInterface
 {
     use RenderTrait;
 

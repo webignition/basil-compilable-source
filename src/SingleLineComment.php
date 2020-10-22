@@ -7,8 +7,9 @@ namespace webignition\BasilCompilableSource;
 use webignition\BasilCompilableSource\Body\BodyContentInterface;
 use webignition\StubbleResolvable\Resolvable;
 use webignition\StubbleResolvable\ResolvableInterface;
+use webignition\StubbleResolvable\ResolvableProviderInterface;
 
-class SingleLineComment implements BodyContentInterface, RenderableInterface
+class SingleLineComment implements BodyContentInterface, ResolvableProviderInterface
 {
     use RenderTrait;
 

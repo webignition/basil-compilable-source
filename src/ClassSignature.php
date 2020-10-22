@@ -6,8 +6,9 @@ namespace webignition\BasilCompilableSource;
 
 use webignition\StubbleResolvable\Resolvable;
 use webignition\StubbleResolvable\ResolvableInterface;
+use webignition\StubbleResolvable\ResolvableProviderInterface;
 
-class ClassSignature implements RenderableInterface
+class ClassSignature implements ResolvableProviderInterface
 {
     use RenderTrait;
 

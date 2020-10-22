@@ -10,8 +10,9 @@ use webignition\BasilCompilableSource\DocBlock\DocBlock;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\StubbleResolvable\Resolvable;
 use webignition\StubbleResolvable\ResolvableInterface;
+use webignition\StubbleResolvable\ResolvableProviderInterface;
 
-class MethodDefinition implements MethodDefinitionInterface, RenderableInterface
+class MethodDefinition implements MethodDefinitionInterface, ResolvableProviderInterface
 {
     use RenderTrait;
 

@@ -6,12 +6,12 @@ namespace webignition\BasilCompilableSource\Expression;
 
 use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\RenderableInterface;
 use webignition\BasilCompilableSource\RenderTrait;
 use webignition\StubbleResolvable\Resolvable;
 use webignition\StubbleResolvable\ResolvableInterface;
+use webignition\StubbleResolvable\ResolvableProviderInterface;
 
-class ClosureExpression extends AbstractExpression implements RenderableInterface
+class ClosureExpression extends AbstractExpression implements ResolvableProviderInterface
 {
     use RenderTrait;
 

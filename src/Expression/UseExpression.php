@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Expression;
 
 use webignition\BasilCompilableSource\ClassName;
-use webignition\BasilCompilableSource\RenderableInterface;
 use webignition\BasilCompilableSource\RenderTrait;
 use webignition\StubbleResolvable\Resolvable;
 use webignition\StubbleResolvable\ResolvableInterface;
+use webignition\StubbleResolvable\ResolvableProviderInterface;
 
-class UseExpression extends AbstractExpression implements RenderableInterface
+class UseExpression extends AbstractExpression implements ResolvableProviderInterface
 {
     use RenderTrait;
 
