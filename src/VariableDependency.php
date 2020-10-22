@@ -9,8 +9,9 @@ use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\StubbleResolvable\Resolvable;
 use webignition\StubbleResolvable\ResolvableInterface;
+use webignition\StubbleResolvable\ResolvableProviderInterface;
 
-class VariableDependency implements ExpressionInterface, RenderableInterface, VariableDependencyInterface
+class VariableDependency implements ExpressionInterface, ResolvableProviderInterface, VariableDependencyInterface
 {
     use RenderTrait;
 

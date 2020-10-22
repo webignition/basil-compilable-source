@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\DocBlock;
 
 use webignition\BasilCompilableSource\Annotation\AnnotationInterface;
-use webignition\BasilCompilableSource\RenderableInterface;
 use webignition\BasilCompilableSource\RenderTrait;
 use webignition\BasilCompilableSource\SourceInterface;
 use webignition\StubbleResolvable\Resolvable;
 use webignition\StubbleResolvable\ResolvableInterface;
+use webignition\StubbleResolvable\ResolvableProviderInterface;
 
-class DocBlock implements RenderableInterface, SourceInterface
+class DocBlock implements ResolvableProviderInterface, SourceInterface
 {
     use RenderTrait;
 

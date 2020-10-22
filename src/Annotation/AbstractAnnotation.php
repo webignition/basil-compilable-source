@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Annotation;
 
-use webignition\BasilCompilableSource\RenderableInterface;
 use webignition\BasilCompilableSource\RenderTrait;
 use webignition\StubbleResolvable\Resolvable;
 use webignition\StubbleResolvable\ResolvableInterface;
+use webignition\StubbleResolvable\ResolvableProviderInterface;
 
-abstract class AbstractAnnotation implements AnnotationInterface, RenderableInterface
+abstract class AbstractAnnotation implements AnnotationInterface, ResolvableProviderInterface
 {
     use RenderTrait;
 

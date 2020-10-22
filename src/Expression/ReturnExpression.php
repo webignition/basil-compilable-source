@@ -7,12 +7,12 @@ namespace webignition\BasilCompilableSource\Expression;
 use webignition\BasilCompilableSource\Construct\ReturnConstruct;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\RenderableInterface;
 use webignition\BasilCompilableSource\RenderTrait;
 use webignition\StubbleResolvable\Resolvable;
 use webignition\StubbleResolvable\ResolvableInterface;
+use webignition\StubbleResolvable\ResolvableProviderInterface;
 
-class ReturnExpression implements ExpressionInterface, RenderableInterface
+class ReturnExpression implements ExpressionInterface, ResolvableProviderInterface
 {
     use RenderTrait;
 
