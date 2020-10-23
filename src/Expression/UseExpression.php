@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Expression;
 
 use webignition\BasilCompilableSource\ClassName;
+use webignition\BasilCompilableSource\Metadata\Metadata;
+use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\RenderTrait;
 use webignition\StubbleResolvable\Resolvable;
 use webignition\StubbleResolvable\ResolvableInterface;
 use webignition\StubbleResolvable\ResolvableProviderInterface;
 
-class UseExpression extends AbstractExpression implements ResolvableProviderInterface
+class UseExpression implements ExpressionInterface, ResolvableProviderInterface
 {
     use RenderTrait;
 
@@ -20,8 +22,6 @@ class UseExpression extends AbstractExpression implements ResolvableProviderInte
 
     public function __construct(ClassName $className)
     {
-        parent::__construct(null);
-
         $this->className = $className;
     }
 
@@ -33,6 +33,11 @@ class UseExpression extends AbstractExpression implements ResolvableProviderInte
                 'class_name' => $this->renderClassName(),
             ]
         );
+    }
+
+    public function getMetadata(): MetadataInterface
+    {
+        return new Metadata();
     }
 
     private function renderClassName(): string
