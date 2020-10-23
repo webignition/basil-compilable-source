@@ -5,9 +5,16 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Expression;
 
 use webignition\BasilCompilableSource\Metadata\Metadata;
+use webignition\BasilCompilableSource\RenderTrait;
+use webignition\StubbleResolvable\ResolvableCollection;
+use webignition\StubbleResolvable\ResolvableInterface;
+use webignition\StubbleResolvable\ResolvableProviderInterface;
+use webignition\StubbleResolvable\ResolvableWithoutContext;
 
-class CompositeExpression extends AbstractExpression
+class CompositeExpression extends AbstractExpression implements ResolvableProviderInterface
 {
+    use RenderTrait;
+
     /**
      * @var ExpressionInterface[]
      */
@@ -30,13 +37,34 @@ class CompositeExpression extends AbstractExpression
         parent::__construct($metadata);
     }
 
-    public function render(): string
+    public function getResolvable(): ResolvableInterface
     {
-        return (string) array_reduce(
-            $this->expressions,
-            function (?string $content, ExpressionInterface $expression) {
-                return $content . $expression->render();
+        $resolvables = [];
+        foreach ($this->expressions as $expression) {
+            $expressionResolvable = $this->getExpressionResolvable($expression);
+
+            if ($expressionResolvable instanceof ResolvableInterface) {
+                $resolvables[] = $expressionResolvable;
             }
-        );
+        }
+
+        return ResolvableCollection::create($resolvables);
+    }
+
+    private function getExpressionResolvable(ExpressionInterface $expression): ?ResolvableInterface
+    {
+        if ($expression instanceof ResolvableInterface) {
+            return $expression;
+        }
+
+        if ((is_object($expression) && method_exists($expression, '__toString'))) {
+            return new ResolvableWithoutContext((string) $expression);
+        }
+
+        if ($expression instanceof ResolvableProviderInterface) {
+            return $expression->getResolvable();
+        }
+
+        return null;
     }
 }
