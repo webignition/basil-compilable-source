@@ -41,12 +41,12 @@ class TryCatchBlock implements BodyInterface, ResolvableProviderInterface
     public function getResolvable(): ResolvableInterface
     {
         $resolvableItems = [
-            $this->tryBlock->getResolvable(),
+            $this->tryBlock,
         ];
 
         foreach ($this->catchBlocks as $catchBlock) {
             $resolvableItems[] = new ResolvedTemplateMutatorResolvable(
-                $catchBlock->getResolvable(),
+                $catchBlock,
                 function (string $resolvedTemplate) {
                     return $this->catchBlockResolvedTemplateMutator($resolvedTemplate);
                 }
