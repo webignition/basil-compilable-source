@@ -6,12 +6,19 @@ namespace webignition\BasilCompilableSource\Block;
 
 use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\Expression\UseExpression;
+use webignition\BasilCompilableSource\RenderTrait;
 use webignition\BasilCompilableSource\SourceInterface;
 use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\BasilCompilableSource\Statement\StatementInterface;
+use webignition\StubbleResolvable\ResolvableCollection;
+use webignition\StubbleResolvable\ResolvableInterface;
+use webignition\StubbleResolvable\ResolvableProviderInterface;
+use webignition\StubbleResolvable\ResolvedTemplateMutatorResolvable;
 
-class ClassDependencyCollection implements \Countable, SourceInterface
+class ClassDependencyCollection implements \Countable, SourceInterface, ResolvableProviderInterface
 {
+    use RenderTrait;
+
     /**
      * @var ClassName[]
      */
@@ -29,26 +36,6 @@ class ClassDependencyCollection implements \Countable, SourceInterface
                 }
             }
         }
-    }
-
-    public function render(): string
-    {
-        $classNamesToRender = array_filter($this->classNames, function (ClassName $className) {
-            if (false === $className->isInRootNamespace()) {
-                return true;
-            }
-
-            return is_string($className->getAlias());
-        });
-
-        $renderedUseStatements = [];
-        foreach ($classNamesToRender as $className) {
-            $renderedUseStatements[] = $this->createUseStatement($className)->render();
-        }
-
-        sort($renderedUseStatements);
-
-        return trim(implode("\n", $renderedUseStatements));
     }
 
     public function merge(ClassDependencyCollection $collection): ClassDependencyCollection
@@ -86,5 +73,51 @@ class ClassDependencyCollection implements \Countable, SourceInterface
     public function isEmpty(): bool
     {
         return 0 === $this->count();
+    }
+
+    public function getResolvable(): ResolvableInterface
+    {
+        $classNamesToRender = array_filter($this->classNames, function (ClassName $className) {
+            if (false === $className->isInRootNamespace()) {
+                return true;
+            }
+
+            return is_string($className->getAlias());
+        });
+
+        $useStatementResolvables = [];
+        foreach ($classNamesToRender as $className) {
+            $useStatement = $this->createUseStatement($className);
+            if ($useStatement instanceof ResolvableProviderInterface) {
+                $templateMutatorResolvable = new ResolvedTemplateMutatorResolvable(
+                    $useStatement->getResolvable(),
+                    function (string $resolvedTemplate) {
+                        return $this->useStatementResolvedTemplateMutator($resolvedTemplate);
+                    }
+                );
+
+                $useStatementResolvables[] = $templateMutatorResolvable;
+            }
+        }
+
+        return new ResolvedTemplateMutatorResolvable(
+            ResolvableCollection::create($useStatementResolvables),
+            function (string $resolvedTemplate) {
+                return $this->resolvedTemplateMutator($resolvedTemplate);
+            }
+        );
+    }
+
+    private function resolvedTemplateMutator(string $resolvedTemplate): string
+    {
+        $lines = explode("\n", $resolvedTemplate);
+        sort($lines);
+
+        return implode("\n", array_filter($lines));
+    }
+
+    private function useStatementResolvedTemplateMutator(string $resolvedTemplate): string
+    {
+        return $resolvedTemplate . "\n";
     }
 }
