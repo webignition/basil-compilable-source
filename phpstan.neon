@@ -5,3 +5,7 @@ parameters:
     - '#DataProvider\(\) return type has no value type specified in iterable type array#'
     # Test methods with intentionally no return type
     - '#::test.+\(\) has no return typehint specified#'
+
+    -
+      message: '#Instanceof between \*NEVER\*#'
+      path: src/RenderTrait.php
