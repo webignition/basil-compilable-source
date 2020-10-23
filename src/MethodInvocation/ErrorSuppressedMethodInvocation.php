@@ -35,4 +35,14 @@ class ErrorSuppressedMethodInvocation implements MethodInvocationInterface
     {
         return '@' . $this->invocation->render();
     }
+
+    public function getTemplate(): string
+    {
+        return '@' . $this->invocation->getTemplate();
+    }
+
+    public function getContext(): array
+    {
+        return $this->invocation->getContext();
+    }
 }

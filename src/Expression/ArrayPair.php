@@ -7,22 +7,16 @@ namespace webignition\BasilCompilableSource\Expression;
 use webignition\BasilCompilableSource\HasMetadataInterface;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\RenderTrait;
-use webignition\StubbleResolvable\Resolvable;
 use webignition\StubbleResolvable\ResolvableInterface;
-use webignition\StubbleResolvable\ResolvableProviderInterface;
 
-class ArrayPair implements ResolvableProviderInterface, ResolvableInterface, HasMetadataInterface
+class ArrayPair implements ResolvableInterface, HasMetadataInterface
 {
     use RenderTrait;
 
     private const RENDER_TEMPLATE = '{{ key }} => {{ value }},';
 
     private ArrayKey $key;
-
-    /**
-     * @var mixed
-     */
-    private $value;
+    private ExpressionInterface $value;
 
     public function __construct(ArrayKey $key, ExpressionInterface $value)
     {
@@ -30,25 +24,17 @@ class ArrayPair implements ResolvableProviderInterface, ResolvableInterface, Has
         $this->value = $value;
     }
 
-    public function getResolvable(): ResolvableInterface
-    {
-        return new Resolvable(
-            self::RENDER_TEMPLATE,
-            [
-                'key' => $this->key,
-                'value' => $this->value->render(),
-            ]
-        );
-    }
-
     public function getTemplate(): string
     {
-        return $this->getResolvable()->getTemplate();
+        return self::RENDER_TEMPLATE;
     }
 
     public function getContext(): array
     {
-        return $this->getResolvable()->getContext();
+        return [
+            'key' => (string) $this->key,
+            'value' => $this->value,
+        ];
     }
 
     public function getMetadata(): MetadataInterface

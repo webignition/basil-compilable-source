@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Tests\Unit\Expression;
 
+use webignition\BasilCompilableSource\Expression\CastExpression;
 use webignition\BasilCompilableSource\Expression\CompositeExpression;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
@@ -69,21 +70,50 @@ class CompositeExpressionTest extends \PHPUnit\Framework\TestCase
     {
         return [
             'empty' => [
-                'expressions' => new CompositeExpression([]),
+                'expression' => new CompositeExpression([]),
                 'expectedString' => '',
             ],
+            'single literal' => [
+                'expression' => new CompositeExpression([
+                    new LiteralExpression('literal1'),
+                ]),
+                'expectedString' => 'literal1',
+            ],
+            'multiple literals' => [
+                'expression' => new CompositeExpression([
+                    new LiteralExpression('literal1'),
+                    new LiteralExpression('literal2'),
+                    new LiteralExpression('literal3'),
+                ]),
+                'expectedString' => 'literal1literal2literal3',
+            ],
             'variable dependency' => [
-                'expressions' => new CompositeExpression([
+                'expression' => new CompositeExpression([
                     new VariableDependency('DEPENDENCY'),
                 ]),
                 'expectedString' => '{{ DEPENDENCY }}',
             ],
             'variable dependency and array access' => [
-                'expressions' => new CompositeExpression([
+                'expression' => new CompositeExpression([
                     new VariableDependency('ENV'),
                     new LiteralExpression('[\'KEY\']')
                 ]),
                 'expectedString' => '{{ ENV }}[\'KEY\']',
+            ],
+            'resolvable expression, stringable expression, resolvable expression' => [
+                'expression' => new CompositeExpression([
+                    new CastExpression(
+                        new LiteralExpression('1'),
+                        'string'
+                    ),
+                    new LiteralExpression(' . \'x\' . '),
+                    new CastExpression(
+                        new LiteralExpression('2'),
+                        'string'
+                    ),
+                ]),
+                'expectedString' =>
+                    '(string) (1) . \'x\' . (string) (2)',
             ],
         ];
     }

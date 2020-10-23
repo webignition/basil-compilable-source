@@ -7,11 +7,8 @@ namespace webignition\BasilCompilableSource\Expression;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\RenderTrait;
 use webignition\BasilCompilableSource\VariablePlaceholderInterface;
-use webignition\StubbleResolvable\Resolvable;
-use webignition\StubbleResolvable\ResolvableInterface;
-use webignition\StubbleResolvable\ResolvableProviderInterface;
 
-class ObjectPropertyAccessExpression implements ExpressionInterface, ResolvableProviderInterface
+class ObjectPropertyAccessExpression implements ExpressionInterface
 {
     use RenderTrait;
 
@@ -41,14 +38,16 @@ class ObjectPropertyAccessExpression implements ExpressionInterface, ResolvableP
         return $this->objectPlaceholder->getMetadata();
     }
 
-    public function getResolvable(): ResolvableInterface
+    public function getTemplate(): string
     {
-        return new Resolvable(
-            self::RENDER_TEMPLATE,
-            [
-                'object' => $this->objectPlaceholder->render(),
-                'property' => $this->property,
-            ]
-        );
+        return self::RENDER_TEMPLATE;
+    }
+
+    public function getContext(): array
+    {
+        return [
+            'object' => $this->objectPlaceholder->render(),
+            'property' => $this->property,
+        ];
     }
 }

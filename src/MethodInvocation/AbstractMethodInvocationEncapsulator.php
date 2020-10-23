@@ -7,9 +7,8 @@ namespace webignition\BasilCompilableSource\MethodInvocation;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSource\RenderTrait;
-use webignition\StubbleResolvable\ResolvableProviderInterface;
 
-abstract class AbstractMethodInvocationEncapsulator implements InvocableInterface, ResolvableProviderInterface
+abstract class AbstractMethodInvocationEncapsulator implements InvocableInterface
 {
     use RenderTrait;
 

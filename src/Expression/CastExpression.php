@@ -6,11 +6,8 @@ namespace webignition\BasilCompilableSource\Expression;
 
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\RenderTrait;
-use webignition\StubbleResolvable\Resolvable;
-use webignition\StubbleResolvable\ResolvableInterface;
-use webignition\StubbleResolvable\ResolvableProviderInterface;
 
-class CastExpression implements ExpressionInterface, ResolvableProviderInterface
+class CastExpression implements ExpressionInterface
 {
     use RenderTrait;
 
@@ -25,15 +22,17 @@ class CastExpression implements ExpressionInterface, ResolvableProviderInterface
         $this->castTo = $castTo;
     }
 
-    public function getResolvable(): ResolvableInterface
+    public function getTemplate(): string
     {
-        return new Resolvable(
-            self::RENDER_TEMPLATE,
-            [
-                'cast_type' => $this->castTo,
-                'expression' => $this->expression->render(),
-            ]
-        );
+        return self::RENDER_TEMPLATE;
+    }
+
+    public function getContext(): array
+    {
+        return [
+            'cast_type' => $this->castTo,
+            'expression' => $this->expression,
+        ];
     }
 
     public function getMetadata(): MetadataInterface

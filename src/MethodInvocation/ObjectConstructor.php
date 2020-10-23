@@ -9,8 +9,6 @@ use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\MethodArguments\MethodArgumentsInterface;
-use webignition\StubbleResolvable\Resolvable;
-use webignition\StubbleResolvable\ResolvableInterface;
 
 class ObjectConstructor extends AbstractMethodInvocationEncapsulator
 {
@@ -24,6 +22,18 @@ class ObjectConstructor extends AbstractMethodInvocationEncapsulator
         $this->class = $class;
     }
 
+    public function getTemplate(): string
+    {
+        return self::RENDER_TEMPLATE;
+    }
+
+    public function getContext(): array
+    {
+        return [
+            'method_invocation' => $this->invocation,
+        ];
+    }
+
     protected function getAdditionalMetadata(): MetadataInterface
     {
         return new Metadata([
@@ -31,15 +41,5 @@ class ObjectConstructor extends AbstractMethodInvocationEncapsulator
                 $this->class,
             ]),
         ]);
-    }
-
-    public function getResolvable(): ResolvableInterface
-    {
-        return new Resolvable(
-            self::RENDER_TEMPLATE,
-            [
-                'method_invocation' => $this->invocation->render(),
-            ]
-        );
     }
 }

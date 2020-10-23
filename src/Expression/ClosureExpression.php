@@ -7,11 +7,8 @@ namespace webignition\BasilCompilableSource\Expression;
 use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\RenderTrait;
-use webignition\StubbleResolvable\Resolvable;
-use webignition\StubbleResolvable\ResolvableInterface;
-use webignition\StubbleResolvable\ResolvableProviderInterface;
 
-class ClosureExpression implements ExpressionInterface, ResolvableProviderInterface
+class ClosureExpression implements ExpressionInterface
 {
     use RenderTrait;
 
@@ -33,14 +30,16 @@ EOD;
         return $this->body->getMetadata();
     }
 
-    public function getResolvable(): ResolvableInterface
+    public function getTemplate(): string
     {
-        return new Resolvable(
-            self::RENDER_TEMPLATE,
-            [
-                'body' => $this->indent($this->body->render()),
-            ]
-        );
+        return self::RENDER_TEMPLATE;
+    }
+
+    public function getContext(): array
+    {
+        return [
+            'body' => $this->indent($this->body->render()),
+        ];
     }
 
     private function indent(string $content): string

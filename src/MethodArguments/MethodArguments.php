@@ -11,11 +11,9 @@ use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\RenderTrait;
 use webignition\StubbleResolvable\ResolvableCollection;
 use webignition\StubbleResolvable\ResolvableInterface;
-use webignition\StubbleResolvable\ResolvableProviderInterface;
-use webignition\StubbleResolvable\ResolvableWithoutContext;
 use webignition\StubbleResolvable\ResolvedTemplateMutatorResolvable;
 
-class MethodArguments implements MethodArgumentsInterface, ResolvableProviderInterface
+class MethodArguments implements MethodArgumentsInterface
 {
     use HasMetadataTrait;
     use RenderTrait;
@@ -71,11 +69,12 @@ class MethodArguments implements MethodArgumentsInterface, ResolvableProviderInt
         $resolvableArguments = [];
 
         foreach ($this->arguments as $argument) {
-            $resolvableArgument = $this->createResolvableArgument($argument);
-
-            if ($resolvableArgument instanceof ResolvableInterface) {
-                $resolvableArguments[] = $resolvableArgument;
-            }
+            $resolvableArguments[] = new ResolvedTemplateMutatorResolvable(
+                $argument,
+                function (string $resolvedTemplate) {
+                    return $this->argumentResolvedTemplateMutator($resolvedTemplate);
+                }
+            );
         }
 
         return new ResolvedTemplateMutatorResolvable(
@@ -84,30 +83,6 @@ class MethodArguments implements MethodArgumentsInterface, ResolvableProviderInt
                 return $this->resolvedTemplateMutator($resolvedTemplate);
             }
         );
-    }
-
-    private function createResolvableArgument(ExpressionInterface $argument): ?ResolvableInterface
-    {
-        $resolvableArgument = null;
-
-        if ((is_object($argument) && method_exists($argument, '__toString'))) {
-            $resolvableArgument = new ResolvableWithoutContext((string) $argument);
-        }
-
-        if ($argument instanceof ResolvableProviderInterface) {
-            $resolvableArgument = $argument->getResolvable();
-        }
-
-        if ($resolvableArgument instanceof ResolvableInterface) {
-            return new ResolvedTemplateMutatorResolvable(
-                $resolvableArgument,
-                function (string $resolvedTemplate) {
-                    return $this->argumentResolvedTemplateMutator($resolvedTemplate);
-                }
-            );
-        }
-
-        return null;
     }
 
     private function resolvedTemplateMutator(string $resolvedTemplate): string
