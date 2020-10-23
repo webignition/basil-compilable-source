@@ -40,7 +40,7 @@ EOD;
     public function getContext(): array
     {
         return [
-            'expression' => $this->expression->render(),
+            'expression' => $this->expression,
             'body' => $this->renderBody(),
         ];
     }

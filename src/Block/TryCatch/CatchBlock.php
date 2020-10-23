@@ -34,7 +34,7 @@ EOD;
     public function getContext(): array
     {
         return [
-            'catch_expression' => $this->catchExpression->render(),
+            'catch_expression' => $this->catchExpression,
             'body' => $this->renderBody(),
         ];
     }
