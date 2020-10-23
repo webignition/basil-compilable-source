@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Block\TryCatch;
 
 use webignition\BasilCompilableSource\Block\AbstractBlock;
-use webignition\StubbleResolvable\Resolvable;
-use webignition\StubbleResolvable\ResolvableInterface;
 
 class TryBlock extends AbstractBlock
 {
@@ -16,13 +14,15 @@ try {
 }
 EOD;
 
-    public function getResolvable(): ResolvableInterface
+    public function getTemplate(): string
     {
-        return new Resolvable(
-            self::RENDER_TEMPLATE,
-            [
-                'body' => $this->renderBody(),
-            ]
-        );
+        return self::RENDER_TEMPLATE;
+    }
+
+    public function getContext(): array
+    {
+        return [
+            'body' => $this->renderBody(),
+        ];
     }
 }

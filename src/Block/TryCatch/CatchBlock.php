@@ -8,8 +8,6 @@ use webignition\BasilCompilableSource\Block\AbstractBlock;
 use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\Expression\CatchExpression;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\StubbleResolvable\Resolvable;
-use webignition\StubbleResolvable\ResolvableInterface;
 
 class CatchBlock extends AbstractBlock
 {
@@ -28,15 +26,17 @@ EOD;
         $this->catchExpression = $catchExpression;
     }
 
-    public function getResolvable(): ResolvableInterface
+    public function getTemplate(): string
     {
-        return new Resolvable(
-            self::RENDER_TEMPLATE,
-            [
-                'catch_expression' => $this->catchExpression->render(),
-                'body' => $this->renderBody(),
-            ]
-        );
+        return self::RENDER_TEMPLATE;
+    }
+
+    public function getContext(): array
+    {
+        return [
+            'catch_expression' => $this->catchExpression,
+            'body' => $this->renderBody(),
+        ];
     }
 
     public function getMetadata(): MetadataInterface

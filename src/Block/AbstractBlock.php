@@ -8,9 +8,9 @@ use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\HasMetadataInterface;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\RenderTrait;
-use webignition\StubbleResolvable\ResolvableProviderInterface;
+use webignition\StubbleResolvable\ResolvableInterface;
 
-abstract class AbstractBlock implements HasMetadataInterface, ResolvableProviderInterface
+abstract class AbstractBlock implements HasMetadataInterface, ResolvableInterface
 {
     use RenderTrait;
 

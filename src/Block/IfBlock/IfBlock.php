@@ -8,8 +8,6 @@ use webignition\BasilCompilableSource\Block\AbstractBlock;
 use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\StubbleResolvable\Resolvable;
-use webignition\StubbleResolvable\ResolvableInterface;
 
 class IfBlock extends AbstractBlock implements BodyInterface
 {
@@ -34,14 +32,16 @@ EOD;
         return $metadata->merge(parent::getMetadata());
     }
 
-    public function getResolvable(): ResolvableInterface
+    public function getTemplate(): string
     {
-        return new Resolvable(
-            self::RENDER_TEMPLATE,
-            [
-                'expression' => $this->expression->render(),
-                'body' => $this->renderBody(),
-            ]
-        );
+        return self::RENDER_TEMPLATE;
+    }
+
+    public function getContext(): array
+    {
+        return [
+            'expression' => $this->expression,
+            'body' => $this->renderBody(),
+        ];
     }
 }
