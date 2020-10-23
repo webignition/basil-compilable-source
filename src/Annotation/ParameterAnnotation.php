@@ -10,6 +10,6 @@ class ParameterAnnotation extends AbstractAnnotation implements AnnotationInterf
 {
     public function __construct(string $type, VariableName $name)
     {
-        parent::__construct('param', [$type, $name->render()]);
+        parent::__construct('param', [$type, (string) $name]);
     }
 }
