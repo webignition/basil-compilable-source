@@ -9,10 +9,10 @@ use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\RenderTrait;
 use webignition\StubbleResolvable\ResolvableCollection;
 use webignition\StubbleResolvable\ResolvableInterface;
-use webignition\StubbleResolvable\ResolvableProviderInterface;
+use webignition\StubbleResolvable\ResolvedTemplateMutationInterface;
 use webignition\StubbleResolvable\ResolvedTemplateMutatorResolvable;
 
-class ArrayExpression implements ExpressionInterface, ResolvableProviderInterface
+class ArrayExpression implements ExpressionInterface, ResolvedTemplateMutationInterface
 {
     use RenderTrait;
 
@@ -22,6 +22,8 @@ class ArrayExpression implements ExpressionInterface, ResolvableProviderInterfac
      * @var ArrayPair[]
      */
     private array $pairs;
+
+    private ?ResolvableInterface $resolvable = null;
 
     /**
      * @param ArrayPair[] $pairs
@@ -71,25 +73,14 @@ class ArrayExpression implements ExpressionInterface, ResolvableProviderInterfac
         return new ArrayExpression($expressionArrayPairs);
     }
 
-    public function getResolvable(): ResolvableInterface
+    public function getTemplate(): string
     {
-        $resolvablePairs = [];
+        return $this->getResolvable()->getTemplate();
+    }
 
-        foreach ($this->pairs as $pair) {
-            $resolvablePairs[] = new ResolvedTemplateMutatorResolvable(
-                $pair,
-                function (string $resolvedTemplate) {
-                    return $this->arrayPairResolvedTemplateMutator($resolvedTemplate);
-                }
-            );
-        }
-
-        return new ResolvedTemplateMutatorResolvable(
-            ResolvableCollection::create($resolvablePairs),
-            function (string $resolved) {
-                return $this->resolvedTemplateMutator($resolved);
-            }
-        );
+    public function getContext(): array
+    {
+        return $this->getResolvable()->getContext();
     }
 
     public function getMetadata(): MetadataInterface
@@ -102,16 +93,18 @@ class ArrayExpression implements ExpressionInterface, ResolvableProviderInterfac
         return $metadata;
     }
 
-    private function resolvedTemplateMutator(string $resolved): string
+    public function getResolvedTemplateMutator(): callable
     {
-        $prefix = '[';
-        $suffix = ']';
+        return function (string $resolvedTemplate) {
+            $prefix = '[';
+            $suffix = ']';
 
-        if ('' !== $resolved) {
-            $prefix .= "\n";
-        }
+            if ('' !== $resolvedTemplate) {
+                $prefix .= "\n";
+            }
 
-        return $prefix . $resolved . $suffix;
+            return $prefix . $resolvedTemplate . $suffix;
+        };
     }
 
     private function arrayPairResolvedTemplateMutator(string $resolved): string
@@ -127,5 +120,30 @@ class ArrayExpression implements ExpressionInterface, ResolvableProviderInterfac
         $resolved = implode("\n", $lines);
 
         return self::INDENT . $resolved . "\n";
+    }
+
+    private function createResolvable(): ResolvableInterface
+    {
+        $resolvablePairs = [];
+
+        foreach ($this->pairs as $pair) {
+            $resolvablePairs[] = new ResolvedTemplateMutatorResolvable(
+                $pair,
+                function (string $resolvedTemplate) {
+                    return $this->arrayPairResolvedTemplateMutator($resolvedTemplate);
+                }
+            );
+        }
+
+        return ResolvableCollection::create($resolvablePairs);
+    }
+
+    private function getResolvable(): ResolvableInterface
+    {
+        if (null === $this->resolvable) {
+            $this->resolvable = $this->createResolvable();
+        }
+
+        return $this->resolvable;
     }
 }

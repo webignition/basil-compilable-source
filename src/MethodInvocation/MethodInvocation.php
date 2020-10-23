@@ -8,11 +8,8 @@ use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSource\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSource\RenderTrait;
-use webignition\StubbleResolvable\Resolvable;
-use webignition\StubbleResolvable\ResolvableInterface;
-use webignition\StubbleResolvable\ResolvableProviderInterface;
 
-class MethodInvocation implements MethodInvocationInterface, ResolvableProviderInterface
+class MethodInvocation implements MethodInvocationInterface
 {
     use RenderTrait;
 
@@ -46,14 +43,16 @@ class MethodInvocation implements MethodInvocationInterface, ResolvableProviderI
         return $this->arguments->getMetadata();
     }
 
-    public function getResolvable(): ResolvableInterface
+    public function getTemplate(): string
     {
-        return new Resolvable(
-            self::RENDER_TEMPLATE,
-            [
-                'call' => $this->getCall(),
-                'arguments' => $this->arguments->render(),
-            ]
-        );
+        return self::RENDER_TEMPLATE;
+    }
+
+    public function getContext(): array
+    {
+        return [
+            'call' => $this->getCall(),
+            'arguments' => $this->arguments->getResolvable(),
+        ];
     }
 }

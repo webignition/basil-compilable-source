@@ -7,11 +7,8 @@ namespace webignition\BasilCompilableSource;
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\StubbleResolvable\Resolvable;
-use webignition\StubbleResolvable\ResolvableInterface;
-use webignition\StubbleResolvable\ResolvableProviderInterface;
 
-class VariableDependency implements ExpressionInterface, ResolvableProviderInterface, VariableDependencyInterface
+class VariableDependency implements ExpressionInterface, VariableDependencyInterface
 {
     use RenderTrait;
 
@@ -39,13 +36,15 @@ class VariableDependency implements ExpressionInterface, ResolvableProviderInter
         ]);
     }
 
-    public function getResolvable(): ResolvableInterface
+    public function getTemplate(): string
     {
-        return new Resolvable(
-            self::RENDER_TEMPLATE,
-            [
-                'name' => $this->name,
-            ]
-        );
+        return self::RENDER_TEMPLATE;
+    }
+
+    public function getContext(): array
+    {
+        return             [
+            'name' => $this->name,
+        ];
     }
 }

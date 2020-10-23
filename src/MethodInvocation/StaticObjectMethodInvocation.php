@@ -7,8 +7,6 @@ namespace webignition\BasilCompilableSource\MethodInvocation;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSource\StaticObject;
-use webignition\StubbleResolvable\Resolvable;
-use webignition\StubbleResolvable\ResolvableInterface;
 
 class StaticObjectMethodInvocation extends AbstractMethodInvocationEncapsulator implements
     StaticObjectMethodInvocationInterface
@@ -27,15 +25,17 @@ class StaticObjectMethodInvocation extends AbstractMethodInvocationEncapsulator 
         $this->staticObject = $staticObject;
     }
 
-    public function getResolvable(): ResolvableInterface
+    public function getTemplate(): string
     {
-        return new Resolvable(
-            self::RENDER_TEMPLATE,
-            [
-                'object' => $this->staticObject->render(),
-                'method_invocation' => $this->invocation->render(),
-            ]
-        );
+        return self::RENDER_TEMPLATE;
+    }
+
+    public function getContext(): array
+    {
+        return [
+            'object' => $this->staticObject,
+            'method_invocation' => $this->invocation,
+        ];
     }
 
     protected function getAdditionalMetadata(): MetadataInterface

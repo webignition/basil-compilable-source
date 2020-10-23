@@ -9,11 +9,8 @@ use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\RenderTrait;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclarationCollection;
 use webignition\BasilCompilableSource\VariableName;
-use webignition\StubbleResolvable\Resolvable;
-use webignition\StubbleResolvable\ResolvableInterface;
-use webignition\StubbleResolvable\ResolvableProviderInterface;
 
-class CatchExpression implements ExpressionInterface, ResolvableProviderInterface
+class CatchExpression implements ExpressionInterface
 {
     use RenderTrait;
 
@@ -32,14 +29,16 @@ class CatchExpression implements ExpressionInterface, ResolvableProviderInterfac
         return $metadata->merge($this->classes->getMetadata());
     }
 
-    public function getResolvable(): ResolvableInterface
+    public function getTemplate(): string
     {
-        return new Resolvable(
-            self::RENDER_TEMPLATE,
-            [
-                'class_list' => $this->classes->render(),
-                'variable' => new VariableName('exception'),
-            ]
-        );
+        return self::RENDER_TEMPLATE;
+    }
+
+    public function getContext(): array
+    {
+        return [
+            'class_list' => $this->classes,
+            'variable' => new VariableName('exception'),
+        ];
     }
 }

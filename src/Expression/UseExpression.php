@@ -8,11 +8,8 @@ use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\RenderTrait;
-use webignition\StubbleResolvable\Resolvable;
-use webignition\StubbleResolvable\ResolvableInterface;
-use webignition\StubbleResolvable\ResolvableProviderInterface;
 
-class UseExpression implements ExpressionInterface, ResolvableProviderInterface
+class UseExpression implements ExpressionInterface
 {
     use RenderTrait;
 
@@ -25,14 +22,16 @@ class UseExpression implements ExpressionInterface, ResolvableProviderInterface
         $this->className = $className;
     }
 
-    public function getResolvable(): ResolvableInterface
+    public function getTemplate(): string
     {
-        return new Resolvable(
-            self::RENDER_TEMPLATE,
-            [
-                'class_name' => $this->renderClassName(),
-            ]
-        );
+        return self::RENDER_TEMPLATE;
+    }
+
+    public function getContext(): array
+    {
+        return [
+            'class_name' => $this->renderClassName(),
+        ];
     }
 
     public function getMetadata(): MetadataInterface

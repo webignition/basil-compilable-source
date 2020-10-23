@@ -31,6 +31,16 @@ class VariableName implements ExpressionInterface, VariablePlaceholderInterface
         return $this->metadata;
     }
 
+    public function getTemplate(): string
+    {
+        return (string) $this;
+    }
+
+    public function getContext(): array
+    {
+        return [];
+    }
+
     public function __toString(): string
     {
         return '$' . $this->name;

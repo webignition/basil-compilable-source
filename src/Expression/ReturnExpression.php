@@ -8,15 +8,13 @@ use webignition\BasilCompilableSource\Construct\ReturnConstruct;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\RenderTrait;
-use webignition\StubbleResolvable\Resolvable;
-use webignition\StubbleResolvable\ResolvableInterface;
-use webignition\StubbleResolvable\ResolvableProviderInterface;
 
-class ReturnExpression implements ExpressionInterface, ResolvableProviderInterface
+class ReturnExpression implements ExpressionInterface
 {
     use RenderTrait;
 
-    private const RENDER_TEMPLATE = '{{ return_construct }}{{ expression_content }}';
+    private const RENDER_TEMPLATE_NO_EXPRESSION = '{{ return_construct }}';
+    private const RENDER_TEMPLATE = '{{ return_construct }} {{ expression_content }}';
 
     private ?ExpressionInterface $expression;
 
@@ -32,16 +30,20 @@ class ReturnExpression implements ExpressionInterface, ResolvableProviderInterfa
             : new Metadata();
     }
 
-    public function getResolvable(): ResolvableInterface
+    public function getTemplate(): string
     {
-        return new Resolvable(
-            self::RENDER_TEMPLATE,
-            [
-                'return_construct' => new ReturnConstruct(),
-                'expression_content' => $this->expression instanceof ExpressionInterface
-                    ? ' ' . $this->expression->render()
-                    : ''
-            ]
-        );
+        return $this->expression instanceof ExpressionInterface
+            ? self::RENDER_TEMPLATE
+            : self::RENDER_TEMPLATE_NO_EXPRESSION;
+    }
+
+    public function getContext(): array
+    {
+        return [
+            'return_construct' => (string) (new ReturnConstruct()),
+            'expression_content' => $this->expression instanceof ExpressionInterface
+                ? $this->expression
+                : ''
+        ];
     }
 }

@@ -28,4 +28,14 @@ class LiteralExpression implements ExpressionInterface
     {
         return new Metadata();
     }
+
+    public function getTemplate(): string
+    {
+        return (string) $this;
+    }
+
+    public function getContext(): array
+    {
+        return [];
+    }
 }

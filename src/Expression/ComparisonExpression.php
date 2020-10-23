@@ -7,11 +7,8 @@ namespace webignition\BasilCompilableSource\Expression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\RenderTrait;
-use webignition\StubbleResolvable\Resolvable;
-use webignition\StubbleResolvable\ResolvableInterface;
-use webignition\StubbleResolvable\ResolvableProviderInterface;
 
-class ComparisonExpression implements ExpressionInterface, ResolvableProviderInterface
+class ComparisonExpression implements ExpressionInterface
 {
     use RenderTrait;
 
@@ -51,16 +48,18 @@ class ComparisonExpression implements ExpressionInterface, ResolvableProviderInt
         return $this->comparison;
     }
 
-    public function getResolvable(): ResolvableInterface
+    public function getTemplate(): string
     {
-        return new Resolvable(
-            self::RENDER_TEMPLATE,
-            [
-                'left_hand_side' => $this->leftHandSide->render(),
-                'comparison' => $this->comparison,
-                'right_hand_side' => $this->rightHandSide->render(),
-            ]
-        );
+        return self::RENDER_TEMPLATE;
+    }
+
+    public function getContext(): array
+    {
+        return [
+            'left_hand_side' => $this->leftHandSide,
+            'comparison' => $this->comparison,
+            'right_hand_side' => $this->rightHandSide,
+        ];
     }
 
     public function getMetadata(): MetadataInterface
