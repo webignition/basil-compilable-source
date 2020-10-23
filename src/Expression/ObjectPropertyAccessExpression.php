@@ -46,7 +46,7 @@ class ObjectPropertyAccessExpression implements ExpressionInterface
     public function getContext(): array
     {
         return [
-            'object' => $this->objectPlaceholder->render(),
+            'object' => $this->objectPlaceholder,
             'property' => $this->property,
         ];
     }
