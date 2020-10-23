@@ -7,9 +7,16 @@ namespace webignition\BasilCompilableSource\Block\TryCatch;
 use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\BasilCompilableSource\RenderTrait;
+use webignition\StubbleResolvable\ResolvableCollection;
+use webignition\StubbleResolvable\ResolvableInterface;
+use webignition\StubbleResolvable\ResolvableProviderInterface;
+use webignition\StubbleResolvable\ResolvedTemplateMutatorResolvable;
 
-class TryCatchBlock implements BodyInterface
+class TryCatchBlock implements BodyInterface, ResolvableProviderInterface
 {
+    use RenderTrait;
+
     private TryBlock $tryBlock;
 
     /**
@@ -31,19 +38,22 @@ class TryCatchBlock implements BodyInterface
         return $this->metadata;
     }
 
-    public function render(): string
+    public function getResolvable(): ResolvableInterface
     {
-        $renderedCatchBlocks = [];
+        $resolvableItems = [
+            $this->tryBlock->getResolvable(),
+        ];
 
         foreach ($this->catchBlocks as $catchBlock) {
-            $renderedCatchBlocks[] = $catchBlock->render();
+            $resolvableItems[] = new ResolvedTemplateMutatorResolvable(
+                $catchBlock->getResolvable(),
+                function (string $resolvedTemplate) {
+                    return $this->catchBlockResolvedTemplateMutator($resolvedTemplate);
+                }
+            );
         }
 
-        return trim(sprintf(
-            '%s %s',
-            $this->tryBlock->render(),
-            implode(' ', $renderedCatchBlocks)
-        ));
+        return ResolvableCollection::create($resolvableItems);
     }
 
     private function buildMetadata(): MetadataInterface
@@ -56,5 +66,10 @@ class TryCatchBlock implements BodyInterface
         }
 
         return $metadata;
+    }
+
+    private function catchBlockResolvedTemplateMutator(string $resolvedTemplate): string
+    {
+        return ' ' . $resolvedTemplate;
     }
 }
