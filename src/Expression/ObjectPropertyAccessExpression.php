@@ -6,13 +6,12 @@ namespace webignition\BasilCompilableSource\Expression;
 
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\RenderTrait;
-use webignition\BasilCompilableSource\VariableDependencyInterface;
 use webignition\BasilCompilableSource\VariablePlaceholderInterface;
 use webignition\StubbleResolvable\Resolvable;
 use webignition\StubbleResolvable\ResolvableInterface;
 use webignition\StubbleResolvable\ResolvableProviderInterface;
 
-class ObjectPropertyAccessExpression extends AbstractExpression implements ResolvableProviderInterface
+class ObjectPropertyAccessExpression implements ExpressionInterface, ResolvableProviderInterface
 {
     use RenderTrait;
 
@@ -23,8 +22,6 @@ class ObjectPropertyAccessExpression extends AbstractExpression implements Resol
 
     public function __construct(VariablePlaceholderInterface $objectPlaceholder, string $property)
     {
-        parent::__construct();
-
         $this->objectPlaceholder = $objectPlaceholder;
         $this->property = $property;
     }
@@ -41,13 +38,7 @@ class ObjectPropertyAccessExpression extends AbstractExpression implements Resol
 
     public function getMetadata(): MetadataInterface
     {
-        $metadata = parent::getMetadata();
-
-        if ($this->objectPlaceholder instanceof VariableDependencyInterface) {
-            $metadata = $metadata->merge($this->objectPlaceholder->getMetadata());
-        }
-
-        return $metadata;
+        return $this->objectPlaceholder->getMetadata();
     }
 
     public function getResolvable(): ResolvableInterface
