@@ -7,22 +7,27 @@ namespace webignition\BasilCompilableSource;
 use webignition\Stubble\DeciderFactory;
 use webignition\Stubble\UnresolvedVariableFinder;
 use webignition\Stubble\VariableResolver;
+use webignition\StubbleResolvable\ResolvableInterface;
 use webignition\StubbleResolvable\ResolvableProviderInterface;
 
 trait RenderTrait
 {
     public function render(): string
     {
-        if ($this instanceof ResolvableProviderInterface) {
-            $resolvable = $this->getResolvable();
-
+        if ($this instanceof ResolvableInterface || $this instanceof ResolvableProviderInterface) {
             $resolver = new VariableResolver(
                 new UnresolvedVariableFinder([
                     DeciderFactory::createAllowAllDecider()
                 ])
             );
 
-            return $resolver->resolveAndIgnoreUnresolvedVariables($resolvable);
+            if ($this instanceof ResolvableInterface) {
+                return $resolver->resolveAndIgnoreUnresolvedVariables($this);
+            }
+
+            if ($this instanceof ResolvableProviderInterface) {
+                return $resolver->resolveAndIgnoreUnresolvedVariables($this->getResolvable());
+            }
         }
 
         return (string) $this;
