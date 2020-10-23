@@ -25,7 +25,6 @@ class MethodArguments implements MethodArgumentsInterface, ResolvableProviderInt
 
     private const INDENT = '    ';
 
-    private ResolvableCollection $resolvableCollection;
     private string $format;
 
     /**
@@ -49,24 +48,6 @@ class MethodArguments implements MethodArgumentsInterface, ResolvableProviderInt
         }
 
         $this->arguments = $arguments;
-
-        array_walk($arguments, function (&$argument) {
-            if ((is_object($argument) && method_exists($argument, '__toString'))) {
-                $argument = new ResolvableWithoutContext((string) $argument);
-            }
-
-            if ($argument instanceof ResolvableProviderInterface) {
-                $argument = $argument->getResolvable();
-            }
-
-            if ($argument instanceof ResolvableInterface) {
-                $argument = new ResolvedTemplateMutatorResolvable($argument, function (string $resolvedTemplate) {
-                    return $this->argumentResolvedTemplateMutator($resolvedTemplate);
-                });
-            }
-        });
-
-        $this->resolvableCollection = ResolvableCollection::create($arguments);
         $this->format = $format;
     }
 
@@ -87,12 +68,46 @@ class MethodArguments implements MethodArgumentsInterface, ResolvableProviderInt
 
     public function getResolvable(): ResolvableInterface
     {
+        $resolvableArguments = [];
+
+        foreach ($this->arguments as $argument) {
+            $resolvableArgument = $this->createResolvableArgument($argument);
+
+            if ($resolvableArgument instanceof ResolvableInterface) {
+                $resolvableArguments[] = $resolvableArgument;
+            }
+        }
+
         return new ResolvedTemplateMutatorResolvable(
-            $this->resolvableCollection,
+            ResolvableCollection::create($resolvableArguments),
             function (string $resolvedTemplate) {
                 return $this->resolvedTemplateMutator($resolvedTemplate);
             }
         );
+    }
+
+    private function createResolvableArgument(ExpressionInterface $argument): ?ResolvableInterface
+    {
+        $resolvableArgument = null;
+
+        if ((is_object($argument) && method_exists($argument, '__toString'))) {
+            $resolvableArgument = new ResolvableWithoutContext((string) $argument);
+        }
+
+        if ($argument instanceof ResolvableProviderInterface) {
+            $resolvableArgument = $argument->getResolvable();
+        }
+
+        if ($resolvableArgument instanceof ResolvableInterface) {
+            return new ResolvedTemplateMutatorResolvable(
+                $resolvableArgument,
+                function (string $resolvedTemplate) {
+                    return $this->argumentResolvedTemplateMutator($resolvedTemplate);
+                }
+            );
+        }
+
+        return null;
     }
 
     private function resolvedTemplateMutator(string $resolvedTemplate): string
