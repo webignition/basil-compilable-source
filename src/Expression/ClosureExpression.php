@@ -11,7 +11,7 @@ use webignition\StubbleResolvable\Resolvable;
 use webignition\StubbleResolvable\ResolvableInterface;
 use webignition\StubbleResolvable\ResolvableProviderInterface;
 
-class ClosureExpression extends AbstractExpression implements ResolvableProviderInterface
+class ClosureExpression implements ExpressionInterface, ResolvableProviderInterface
 {
     use RenderTrait;
 
@@ -25,8 +25,6 @@ EOD;
 
     public function __construct(BodyInterface $body)
     {
-        parent::__construct();
-
         $this->body = $body;
     }
 
