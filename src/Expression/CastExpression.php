@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Expression;
 
+use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\RenderTrait;
 use webignition\StubbleResolvable\Resolvable;
 use webignition\StubbleResolvable\ResolvableInterface;
 use webignition\StubbleResolvable\ResolvableProviderInterface;
 
-class CastExpression extends AbstractExpression implements ResolvableProviderInterface
+class CastExpression implements ExpressionInterface, ResolvableProviderInterface
 {
     use RenderTrait;
 
@@ -22,8 +23,6 @@ class CastExpression extends AbstractExpression implements ResolvableProviderInt
     {
         $this->expression = new EncapsulatedExpression($expression);
         $this->castTo = $castTo;
-
-        parent::__construct($expression->getMetadata());
     }
 
     public function getResolvable(): ResolvableInterface
@@ -35,5 +34,10 @@ class CastExpression extends AbstractExpression implements ResolvableProviderInt
                 'expression' => $this->expression->render(),
             ]
         );
+    }
+
+    public function getMetadata(): MetadataInterface
+    {
+        return $this->expression->getMetadata();
     }
 }
