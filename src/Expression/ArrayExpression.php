@@ -18,7 +18,10 @@ class ArrayExpression implements ExpressionInterface, ResolvableProviderInterfac
 
     private const INDENT = '    ';
 
-    private ResolvableCollection $collection;
+    /**
+     * @var ArrayPair[]
+     */
+    private array $pairs;
 
     /**
      * @param ArrayPair[] $pairs
@@ -29,16 +32,7 @@ class ArrayExpression implements ExpressionInterface, ResolvableProviderInterfac
             return $item instanceof ArrayPair;
         });
 
-        array_walk($pairs, function (ArrayPair &$pair) {
-            $pair = new ResolvedTemplateMutatorResolvable(
-                $pair,
-                function (string $resolvedTemplate) {
-                    return $this->arrayPairResolvedTemplateMutator($resolvedTemplate);
-                }
-            );
-        });
-
-        $this->collection = ResolvableCollection::create($pairs);
+        $this->pairs = $pairs;
     }
 
     /**
@@ -79,8 +73,19 @@ class ArrayExpression implements ExpressionInterface, ResolvableProviderInterfac
 
     public function getResolvable(): ResolvableInterface
     {
+        $resolvablePairs = [];
+
+        foreach ($this->pairs as $pair) {
+            $resolvablePairs[] = new ResolvedTemplateMutatorResolvable(
+                $pair,
+                function (string $resolvedTemplate) {
+                    return $this->arrayPairResolvedTemplateMutator($resolvedTemplate);
+                }
+            );
+        }
+
         return new ResolvedTemplateMutatorResolvable(
-            $this->collection,
+            ResolvableCollection::create($resolvablePairs),
             function (string $resolved) {
                 return $this->resolvedTemplateMutator($resolved);
             }
@@ -90,16 +95,9 @@ class ArrayExpression implements ExpressionInterface, ResolvableProviderInterfac
     public function getMetadata(): MetadataInterface
     {
         $metadata = new Metadata();
-
-        foreach ($this->collection as $pair) {
-            if ($pair instanceof ResolvableProviderInterface) {
-                $pair = $pair->getResolvable();
-            }
-
-            if ($pair instanceof ArrayPair) {
-                $metadata = $metadata->merge($pair->getMetadata());
-            }
-        }
+        array_walk($this->pairs, function (ArrayPair $pair) use (&$metadata) {
+            $metadata = $metadata->merge($pair->getMetadata());
+        });
 
         return $metadata;
     }
