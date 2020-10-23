@@ -9,7 +9,6 @@ use webignition\BasilCompilableSource\Expression\UseExpression;
 use webignition\BasilCompilableSource\RenderTrait;
 use webignition\BasilCompilableSource\SourceInterface;
 use webignition\BasilCompilableSource\Statement\Statement;
-use webignition\BasilCompilableSource\Statement\StatementInterface;
 use webignition\StubbleResolvable\ResolvableCollection;
 use webignition\StubbleResolvable\ResolvableInterface;
 use webignition\StubbleResolvable\ResolvableProviderInterface;
@@ -56,15 +55,6 @@ class ClassDependencyCollection implements \Countable, SourceInterface, Resolvab
         return false;
     }
 
-    private function createUseStatement(ClassName $className): StatementInterface
-    {
-        return new Statement(
-            new UseExpression(
-                $className
-            )
-        );
-    }
-
     public function count(): int
     {
         return count($this->classNames);
@@ -87,17 +77,14 @@ class ClassDependencyCollection implements \Countable, SourceInterface, Resolvab
 
         $useStatementResolvables = [];
         foreach ($classNamesToRender as $className) {
-            $useStatement = $this->createUseStatement($className);
-            if ($useStatement instanceof ResolvableProviderInterface) {
-                $templateMutatorResolvable = new ResolvedTemplateMutatorResolvable(
-                    $useStatement->getResolvable(),
-                    function (string $resolvedTemplate) {
-                        return $this->useStatementResolvedTemplateMutator($resolvedTemplate);
-                    }
-                );
+            $useStatement = new Statement(new UseExpression($className));
 
-                $useStatementResolvables[] = $templateMutatorResolvable;
-            }
+            $useStatementResolvables[] = new ResolvedTemplateMutatorResolvable(
+                $useStatement->getResolvable(),
+                function (string $resolvedTemplate) {
+                    return $this->useStatementResolvedTemplateMutator($resolvedTemplate);
+                }
+            );
         }
 
         return new ResolvedTemplateMutatorResolvable(
