@@ -5,31 +5,30 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource;
 
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
-use webignition\BasilCompilableSource\Expression\AbstractExpression;
+use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\Metadata\Metadata;
+use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 
-class StaticObject extends AbstractExpression
+class StaticObject implements ExpressionInterface
 {
     private string $object;
 
     public function __construct(string $object)
     {
-        $metadata = null;
+        $this->object = $object;
+    }
 
-        if (ClassName::isFullyQualifiedClassName($object)) {
-            $className = new ClassName($object);
-            $object = $className->renderClassName();
-
-            $metadata = new Metadata([
+    public function getMetadata(): MetadataInterface
+    {
+        if (ClassName::isFullyQualifiedClassName($this->object)) {
+            return new Metadata([
                 Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                    $className,
+                    new ClassName($this->object),
                 ]),
             ]);
         }
 
-        parent::__construct($metadata);
-
-        $this->object = $object;
+        return new Metadata();
     }
 
     public function render(): string
@@ -39,6 +38,11 @@ class StaticObject extends AbstractExpression
 
     public function __toString(): string
     {
+        if (ClassName::isFullyQualifiedClassName($this->object)) {
+            $className = new ClassName($this->object);
+            return $className->renderClassName();
+        }
+
         return $this->object;
     }
 }
