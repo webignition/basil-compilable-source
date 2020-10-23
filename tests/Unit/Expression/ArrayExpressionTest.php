@@ -265,7 +265,7 @@ class ArrayExpressionTest extends \PHPUnit\Framework\TestCase
      */
     public function testFromDataSets(ArrayExpression $expression, ArrayExpression $expectedExpression)
     {
-        self::assertEquals($expectedExpression->render(), $expression->render());
+        self::assertEquals($expectedExpression, $expression);
     }
 
     public function fromDataSetsDataProvider(): array
