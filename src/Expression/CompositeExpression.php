@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Expression;
 
 use webignition\BasilCompilableSource\Metadata\Metadata;
+use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\RenderTrait;
 use webignition\StubbleResolvable\ResolvableCollection;
 use webignition\StubbleResolvable\ResolvableInterface;
 use webignition\StubbleResolvable\ResolvableProviderInterface;
 use webignition\StubbleResolvable\ResolvableWithoutContext;
 
-class CompositeExpression extends AbstractExpression implements ResolvableProviderInterface
+class CompositeExpression implements ExpressionInterface, ResolvableProviderInterface
 {
     use RenderTrait;
 
@@ -33,8 +34,6 @@ class CompositeExpression extends AbstractExpression implements ResolvableProvid
         foreach ($this->expressions as $expression) {
             $metadata = $metadata->merge($expression->getMetadata());
         }
-
-        parent::__construct($metadata);
     }
 
     public function getResolvable(): ResolvableInterface
@@ -49,6 +48,16 @@ class CompositeExpression extends AbstractExpression implements ResolvableProvid
         }
 
         return ResolvableCollection::create($resolvables);
+    }
+
+    public function getMetadata(): MetadataInterface
+    {
+        $metadata = new Metadata();
+        foreach ($this->expressions as $expression) {
+            $metadata = $metadata->merge($expression->getMetadata());
+        }
+
+        return $metadata;
     }
 
     private function getExpressionResolvable(ExpressionInterface $expression): ?ResolvableInterface

@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Expression;
 
+use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\RenderTrait;
 use webignition\StubbleResolvable\Resolvable;
 use webignition\StubbleResolvable\ResolvableInterface;
 use webignition\StubbleResolvable\ResolvableProviderInterface;
 
-class EncapsulatedExpression extends AbstractExpression implements ResolvableProviderInterface
+class EncapsulatedExpression implements ExpressionInterface, ResolvableProviderInterface
 {
     use RenderTrait;
 
@@ -20,8 +21,6 @@ class EncapsulatedExpression extends AbstractExpression implements ResolvablePro
     public function __construct(ExpressionInterface $expression)
     {
         $this->expression = $expression;
-
-        parent::__construct($expression->getMetadata());
     }
 
     public function getResolvable(): ResolvableInterface
@@ -32,5 +31,10 @@ class EncapsulatedExpression extends AbstractExpression implements ResolvablePro
                 'expression' => $this->expression->render(),
             ]
         );
+    }
+
+    public function getMetadata(): MetadataInterface
+    {
+        return $this->expression->getMetadata();
     }
 }

@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Expression;
 
 use webignition\BasilCompilableSource\Metadata\Metadata;
+use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\RenderTrait;
 use webignition\StubbleResolvable\Resolvable;
 use webignition\StubbleResolvable\ResolvableInterface;
 use webignition\StubbleResolvable\ResolvableProviderInterface;
 
-class ComparisonExpression extends AbstractExpression implements ResolvableProviderInterface
+class ComparisonExpression implements ExpressionInterface, ResolvableProviderInterface
 {
     use RenderTrait;
 
@@ -33,12 +34,6 @@ class ComparisonExpression extends AbstractExpression implements ResolvableProvi
         $this->leftHandSide = $leftHandSide;
         $this->rightHandSide = $rightHandSide;
         $this->comparison = $comparison;
-
-        $metadata = new Metadata();
-        $metadata = $metadata->merge($this->leftHandSide->getMetadata());
-        $metadata = $metadata->merge($this->rightHandSide->getMetadata());
-
-        parent::__construct($metadata);
     }
 
     public function getLeftHandSide(): ExpressionInterface
@@ -66,5 +61,13 @@ class ComparisonExpression extends AbstractExpression implements ResolvableProvi
                 'right_hand_side' => $this->rightHandSide->render(),
             ]
         );
+    }
+
+    public function getMetadata(): MetadataInterface
+    {
+        $metadata = new Metadata();
+        $metadata = $metadata->merge($this->leftHandSide->getMetadata());
+
+        return  $metadata->merge($this->rightHandSide->getMetadata());
     }
 }
