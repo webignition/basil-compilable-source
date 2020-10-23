@@ -6,9 +6,17 @@ namespace webignition\BasilCompilableSource\TypeDeclaration;
 
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\BasilCompilableSource\RenderTrait;
+use webignition\StubbleResolvable\ResolvableCollection;
+use webignition\StubbleResolvable\ResolvableInterface;
+use webignition\StubbleResolvable\ResolvableProviderInterface;
+use webignition\StubbleResolvable\ResolvableWithoutContext;
+use webignition\StubbleResolvable\ResolvedTemplateMutatorResolvable;
 
-class ObjectTypeDeclarationCollection implements TypeDeclarationCollectionInterface
+class ObjectTypeDeclarationCollection implements TypeDeclarationCollectionInterface, ResolvableProviderInterface
 {
+    use RenderTrait;
+
     /**
      * @var ObjectTypeDeclaration[]
      */
@@ -37,16 +45,33 @@ class ObjectTypeDeclarationCollection implements TypeDeclarationCollectionInterf
         return $metadata;
     }
 
-    public function render(): string
+    public function getResolvable(): ResolvableInterface
     {
-        $renderedDeclarations = [];
+        $resolvableDeclarations = [];
         foreach ($this->declarations as $declaration) {
-            $renderedDeclarations[] = $declaration->render();
+            $resolvableDeclarations[] = new ResolvedTemplateMutatorResolvable(
+                new ResolvableWithoutContext((string) $declaration),
+                function (string $resolvedTemplate) {
+                    return $this->declarationResolvedTemplateMutator($resolvedTemplate);
+                }
+            );
         }
 
-        $namespaceSeparator = '\\';
+        return new ResolvedTemplateMutatorResolvable(
+            ResolvableCollection::create($resolvableDeclarations),
+            function (string $resolvedTemplate) {
+                return $this->resolvedTemplateMutator($resolvedTemplate);
+            }
+        );
+    }
 
-        usort($renderedDeclarations, function (string $a, string $b) use ($namespaceSeparator) {
+    private function resolvedTemplateMutator(string $resolvedTemplate): string
+    {
+        $parts = explode(' | ', $resolvedTemplate);
+        $parts = array_filter($parts);
+
+        $namespaceSeparator = '\\';
+        usort($parts, function (string $a, string $b) use ($namespaceSeparator) {
             $a = ltrim($a, $namespaceSeparator);
             $b = ltrim($b, $namespaceSeparator);
 
@@ -57,6 +82,13 @@ class ObjectTypeDeclarationCollection implements TypeDeclarationCollectionInterf
             return $a < $b ? -1 : 1;
         });
 
-        return implode(' | ', $renderedDeclarations);
+        $resolvedTemplate = implode(' | ', $parts);
+
+        return trim($resolvedTemplate, '| ');
+    }
+
+    private function declarationResolvedTemplateMutator(string $resolvedTemplate): string
+    {
+        return $resolvedTemplate . ' | ';
     }
 }
