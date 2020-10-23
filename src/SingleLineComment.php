@@ -5,15 +5,10 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource;
 
 use webignition\BasilCompilableSource\Body\BodyContentInterface;
-use webignition\StubbleResolvable\Resolvable;
-use webignition\StubbleResolvable\ResolvableInterface;
-use webignition\StubbleResolvable\ResolvableProviderInterface;
 
-class SingleLineComment implements BodyContentInterface, ResolvableProviderInterface
+class SingleLineComment implements BodyContentInterface
 {
     use RenderTrait;
-
-    private const RENDER_TEMPLATE = '// {{ content }}';
 
     private string $content;
 
@@ -22,13 +17,8 @@ class SingleLineComment implements BodyContentInterface, ResolvableProviderInter
         $this->content = $content;
     }
 
-    public function getResolvable(): ResolvableInterface
+    public function __toString(): string
     {
-        return new Resolvable(
-            self::RENDER_TEMPLATE,
-            [
-                'content' => $this->content,
-            ]
-        );
+        return '// ' . $this->content;
     }
 }
