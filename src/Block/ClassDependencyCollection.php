@@ -80,7 +80,7 @@ class ClassDependencyCollection implements \Countable, SourceInterface, Resolvab
             $useStatement = new Statement(new UseExpression($className));
 
             $useStatementResolvables[] = new ResolvedTemplateMutatorResolvable(
-                $useStatement->getResolvable(),
+                $useStatement,
                 function (string $resolvedTemplate) {
                     return $this->useStatementResolvedTemplateMutator($resolvedTemplate);
                 }

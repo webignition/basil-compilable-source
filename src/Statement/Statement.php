@@ -7,11 +7,9 @@ namespace webignition\BasilCompilableSource\Statement;
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\RenderTrait;
-use webignition\StubbleResolvable\Resolvable;
 use webignition\StubbleResolvable\ResolvableInterface;
-use webignition\StubbleResolvable\ResolvableProviderInterface;
 
-class Statement implements ResolvableProviderInterface, StatementInterface
+class Statement implements ResolvableInterface, StatementInterface
 {
     use RenderTrait;
 
@@ -34,18 +32,15 @@ class Statement implements ResolvableProviderInterface, StatementInterface
         return $this->expression->getMetadata();
     }
 
-    public function getResolvable(): ResolvableInterface
-    {
-        return new Resolvable(
-            self::RENDER_TEMPLATE,
-            [
-                'expression' => $this->expression,
-            ]
-        );
-    }
-
-    protected function getRenderTemplate(): string
+    public function getTemplate(): string
     {
         return self::RENDER_TEMPLATE;
+    }
+
+    public function getContext(): array
+    {
+        return [
+            'expression' => $this->expression,
+        ];
     }
 }
