@@ -52,7 +52,7 @@ class MethodInvocation implements MethodInvocationInterface
     {
         return [
             'call' => $this->getCall(),
-            'arguments' => $this->arguments->getResolvable(),
+            'arguments' => $this->arguments,
         ];
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\MethodArguments;
 
+use webignition\BasilCompilableSource\DeferredResolvableCreationTrait;
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\HasMetadataTrait;
 use webignition\BasilCompilableSource\Metadata\Metadata;
@@ -11,10 +12,12 @@ use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\RenderTrait;
 use webignition\StubbleResolvable\ResolvableCollection;
 use webignition\StubbleResolvable\ResolvableInterface;
+use webignition\StubbleResolvable\ResolvedTemplateMutationInterface;
 use webignition\StubbleResolvable\ResolvedTemplateMutatorResolvable;
 
-class MethodArguments implements MethodArgumentsInterface
+class MethodArguments implements MethodArgumentsInterface, ResolvedTemplateMutationInterface
 {
+    use DeferredResolvableCreationTrait;
     use HasMetadataTrait;
     use RenderTrait;
 
@@ -64,7 +67,14 @@ class MethodArguments implements MethodArgumentsInterface
         return $this->format;
     }
 
-    public function getResolvable(): ResolvableInterface
+    public function getResolvedTemplateMutator(): callable
+    {
+        return function (string $resolvedTemplate): string {
+            return $this->resolvedTemplateMutator($resolvedTemplate);
+        };
+    }
+
+    protected function createResolvable(): ResolvableInterface
     {
         $resolvableArguments = [];
 
@@ -77,12 +87,7 @@ class MethodArguments implements MethodArgumentsInterface
             );
         }
 
-        return new ResolvedTemplateMutatorResolvable(
-            ResolvableCollection::create($resolvableArguments),
-            function (string $resolvedTemplate) {
-                return $this->resolvedTemplateMutator($resolvedTemplate);
-            }
-        );
+        return ResolvableCollection::create($resolvableArguments);
     }
 
     private function resolvedTemplateMutator(string $resolvedTemplate): string
