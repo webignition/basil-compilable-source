@@ -9,10 +9,10 @@ use webignition\BasilCompilableSource\Block\RenderableClassDependencyCollection;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\StubbleResolvable\Resolvable;
 use webignition\StubbleResolvable\ResolvableInterface;
-use webignition\StubbleResolvable\ResolvableProviderInterface;
 
-class ClassDefinition implements ClassDefinitionInterface, ResolvableProviderInterface
+class ClassDefinition implements ClassDefinitionInterface, ResolvableInterface
 {
+    use DeferredResolvableCreationTrait;
     use RenderTrait;
 
     private const RENDER_TEMPLATE = <<<'EOD'
@@ -46,7 +46,7 @@ EOD;
         return $this->body->getMetadata();
     }
 
-    public function getResolvable(): ResolvableInterface
+    protected function createResolvable(): ResolvableInterface
     {
         $renderableClassNames = new RenderableClassDependencyCollection($this->getClassDependencies()->getClassNames());
 
@@ -60,7 +60,7 @@ EOD;
             $template,
             [
                 'dependencies' => $renderableClassNames,
-                'signature' => $this->signature->render(),
+                'signature' => $this->signature,
                 'body' => $this->renderBody(),
             ]
         );
