@@ -9,7 +9,7 @@ use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSource\VariableDependencyCollection;
 
-class VariableDependencyTest extends \PHPUnit\Framework\TestCase
+class VariableDependencyTest extends AbstractResolvableTest
 {
     /**
      * @dataProvider constructDataProvider
@@ -57,7 +57,7 @@ class VariableDependencyTest extends \PHPUnit\Framework\TestCase
      */
     public function testRender(VariableDependency $dependency, string $expectedString)
     {
-        $this->assertSame($expectedString, $dependency->render());
+        $this->assertRenderResolvable($expectedString, $dependency);
     }
 
     public function renderDataProvider(): array

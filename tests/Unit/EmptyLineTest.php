@@ -6,10 +6,10 @@ namespace webignition\BasilCompilableSource\Tests\Unit;
 
 use webignition\BasilCompilableSource\EmptyLine;
 
-class EmptyLineTest extends \PHPUnit\Framework\TestCase
+class EmptyLineTest extends AbstractResolvableTest
 {
     public function testRender()
     {
-        $this->assertSame('', (new EmptyLine())->render());
+        $this->assertRenderResolvable('', new EmptyLine());
     }
 }

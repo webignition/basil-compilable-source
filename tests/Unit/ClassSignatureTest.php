@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\ClassSignature;
 
-class ClassSignatureTest extends TestCase
+class ClassSignatureTest extends AbstractResolvableTest
 {
     public function testGetName()
     {
@@ -47,7 +47,7 @@ class ClassSignatureTest extends TestCase
      */
     public function testRender(ClassSignature $classSignature, string $expectedString)
     {
-        $this->assertSame($expectedString, $classSignature->render());
+        $this->assertRenderResolvable($expectedString, $classSignature);
     }
 
     public function renderDataProvider(): array

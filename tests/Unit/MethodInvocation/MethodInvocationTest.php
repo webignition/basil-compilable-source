@@ -12,8 +12,9 @@ use webignition\BasilCompilableSource\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSource\MethodInvocation\MethodInvocationInterface;
 use webignition\BasilCompilableSource\MethodInvocation\StaticObjectMethodInvocation;
 use webignition\BasilCompilableSource\StaticObject;
+use webignition\BasilCompilableSource\Tests\Unit\AbstractResolvableTest;
 
-class MethodInvocationTest extends \PHPUnit\Framework\TestCase
+class MethodInvocationTest extends AbstractResolvableTest
 {
     public function testCreateWithNoArguments()
     {
@@ -22,10 +23,6 @@ class MethodInvocationTest extends \PHPUnit\Framework\TestCase
         $invocation = new MethodInvocation($methodName);
         self::assertSame($methodName, $invocation->getCall());
         self::assertEquals(new Metadata(), $invocation->getMetadata());
-        self::assertSame(
-            (new MethodArguments([]))->render(),
-            $invocation->getArguments()->render()
-        );
     }
 
     public function testCreateWithArgumentsWithMetadata()
@@ -49,7 +46,7 @@ class MethodInvocationTest extends \PHPUnit\Framework\TestCase
      */
     public function testRender(MethodInvocationInterface $invocation, string $expectedString)
     {
-        self::assertSame($expectedString, $invocation->render());
+        self::assertRenderResolvable($expectedString, $invocation);
     }
 
     public function renderDataProvider(): array

@@ -20,12 +20,13 @@ use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\Expression\ReturnExpression;
 use webignition\BasilCompilableSource\SingleLineComment;
 use webignition\BasilCompilableSource\Statement\Statement;
+use webignition\BasilCompilableSource\Tests\Unit\AbstractResolvableTest;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclaration;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclarationCollection;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\ObjectReflector\ObjectReflector;
 
-class BodyTest extends \PHPUnit\Framework\TestCase
+class BodyTest extends AbstractResolvableTest
 {
     /**
      * @dataProvider createDataProvider
@@ -143,7 +144,7 @@ class BodyTest extends \PHPUnit\Framework\TestCase
      */
     public function testRender(Body $body, string $expectedString)
     {
-        $this->assertSame($expectedString, $body->render());
+        $this->assertRenderResolvable($expectedString, $body);
     }
 
     public function renderDataProvider(): array

@@ -7,7 +7,7 @@ namespace webignition\BasilCompilableSource\Tests\Unit;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\VariableName;
 
-class VariableNameTest extends \PHPUnit\Framework\TestCase
+class VariableNameTest extends AbstractResolvableTest
 {
     public function testGetMetadata()
     {
@@ -19,7 +19,7 @@ class VariableNameTest extends \PHPUnit\Framework\TestCase
      */
     public function testRender(VariableName $placeholder, string $expectedString)
     {
-        $this->assertSame($expectedString, $placeholder->render());
+        $this->assertRenderResolvable($expectedString, $placeholder);
     }
 
     public function renderDataProvider(): array

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Tests\Unit;
 
-use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSource\Annotation\DataProviderAnnotation;
 use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\ClassBody;
@@ -28,7 +27,7 @@ use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSource\VariableDependencyCollection;
 use webignition\BasilCompilableSource\VariableName;
 
-class ClassBodyTest extends TestCase
+class ClassBodyTest extends AbstractResolvableTest
 {
     /**
      * @dataProvider createDataProvider
@@ -128,7 +127,7 @@ class ClassBodyTest extends TestCase
      */
     public function testRender(ClassBody $body, string $expectedString)
     {
-        $this->assertSame($expectedString, $body->render());
+        $this->assertRenderResolvable($expectedString, $body);
     }
 
     public function renderDataProvider(): array

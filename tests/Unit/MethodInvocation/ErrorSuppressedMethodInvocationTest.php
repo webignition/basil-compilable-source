@@ -9,16 +9,17 @@ use webignition\BasilCompilableSource\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\MethodInvocation\StaticObjectMethodInvocation;
 use webignition\BasilCompilableSource\StaticObject;
+use webignition\BasilCompilableSource\Tests\Unit\AbstractResolvableTest;
 use webignition\BasilCompilableSource\VariableDependency;
 
-class ErrorSuppressedMethodInvocationTest extends \PHPUnit\Framework\TestCase
+class ErrorSuppressedMethodInvocationTest extends AbstractResolvableTest
 {
     /**
      * @dataProvider renderDataProvider
      */
     public function testRender(ErrorSuppressedMethodInvocation $invocation, string $expectedString)
     {
-        self::assertSame($expectedString, $invocation->render());
+        self::assertRenderResolvable($expectedString, $invocation);
     }
 
     public function renderDataProvider(): array

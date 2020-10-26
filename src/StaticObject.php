@@ -33,11 +33,6 @@ class StaticObject implements ExpressionInterface
         return new Metadata();
     }
 
-    public function render(): string
-    {
-        return (string) $this;
-    }
-
     public function __toString(): string
     {
         if (ClassName::isFullyQualifiedClassName($this->object)) {

@@ -11,11 +11,16 @@ use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSource\Tests\Unit\AbstractResolvableTest;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSource\VariableDependencyCollection;
 use webignition\BasilCompilableSource\VariableName;
+use webignition\Stubble\DeciderFactory;
+use webignition\Stubble\UnresolvedVariableFinder;
+use webignition\Stubble\VariableResolver;
+use webignition\StubbleResolvable\ResolvableInterface;
 
-class ArrayExpressionTest extends \PHPUnit\Framework\TestCase
+class ArrayExpressionTest extends AbstractResolvableTest
 {
     /**
      * @dataProvider getMetadataDataProvider
@@ -65,7 +70,7 @@ class ArrayExpressionTest extends \PHPUnit\Framework\TestCase
      */
     public function testRender(ArrayExpression $expression, string $expectedString)
     {
-        self::assertSame($expectedString, $expression->render());
+        $this->assertRenderResolvable($expectedString, $expression);
     }
 
     public function renderDataProvider(): array

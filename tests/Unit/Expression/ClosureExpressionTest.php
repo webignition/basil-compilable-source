@@ -22,13 +22,14 @@ use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\SingleLineComment;
 use webignition\BasilCompilableSource\Statement\Statement;
+use webignition\BasilCompilableSource\Tests\Unit\AbstractResolvableTest;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclaration;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclarationCollection;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSource\VariableDependencyCollection;
 use webignition\BasilCompilableSource\VariableName;
 
-class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
+class ClosureExpressionTest extends AbstractResolvableTest
 {
     /**
      * @dataProvider createDataProvider
@@ -101,7 +102,7 @@ class ClosureExpressionTest extends \PHPUnit\Framework\TestCase
      */
     public function testRender(ClosureExpression $expression, string $expectedString)
     {
-        $this->assertSame($expectedString, $expression->render());
+        $this->assertRenderResolvable($expectedString, $expression);
     }
 
     public function renderDataProvider(): array

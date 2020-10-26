@@ -8,10 +8,11 @@ use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\Expression\CatchExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
+use webignition\BasilCompilableSource\Tests\Unit\AbstractResolvableTest;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclaration;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclarationCollection;
 
-class CatchExpressionTest extends \PHPUnit\Framework\TestCase
+class CatchExpressionTest extends AbstractResolvableTest
 {
     public function testGetMetadata()
     {
@@ -41,9 +42,6 @@ class CatchExpressionTest extends \PHPUnit\Framework\TestCase
 
         $expression = new CatchExpression($typeDeclarationCollection);
 
-        $this->assertSame(
-            '\LogicException | \RuntimeException $exception',
-            $expression->render()
-        );
+        $this->assertRenderResolvable('\LogicException | \RuntimeException $exception', $expression);
     }
 }

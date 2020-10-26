@@ -6,8 +6,9 @@ namespace webignition\BasilCompilableSource\Tests\Unit\Expression;
 
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
+use webignition\BasilCompilableSource\Tests\Unit\AbstractResolvableTest;
 
-class LiteralExpressionTest extends \PHPUnit\Framework\TestCase
+class LiteralExpressionTest extends AbstractResolvableTest
 {
     /**
      * @dataProvider createDataProvider
@@ -39,7 +40,7 @@ class LiteralExpressionTest extends \PHPUnit\Framework\TestCase
      */
     public function testRender(LiteralExpression $expression, string $expectedString)
     {
-        $this->assertSame($expectedString, $expression->render());
+        $this->assertRenderResolvable($expectedString, $expression);
     }
 
     public function renderDataProvider(): array

@@ -16,11 +16,12 @@ use webignition\BasilCompilableSource\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\MethodInvocation\StaticObjectMethodInvocation;
 use webignition\BasilCompilableSource\StaticObject;
+use webignition\BasilCompilableSource\Tests\Unit\AbstractResolvableTest;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSource\VariableDependencyCollection;
 use webignition\BasilCompilableSource\VariableName;
 
-class ObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
+class ObjectMethodInvocationTest extends AbstractResolvableTest
 {
     /**
      * @dataProvider createDataProvider
@@ -95,7 +96,7 @@ class ObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
      */
     public function testRender(ObjectMethodInvocation $invocation, string $expectedString)
     {
-        $this->assertSame($expectedString, $invocation->render());
+        $this->assertRenderResolvable($expectedString, $invocation);
     }
 
     public function renderDataProvider(): array

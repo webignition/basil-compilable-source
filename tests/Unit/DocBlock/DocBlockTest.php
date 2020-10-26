@@ -6,9 +6,10 @@ namespace webignition\BasilCompilableSource\Tests\Unit\DocBlock;
 
 use webignition\BasilCompilableSource\Annotation\ParameterAnnotation;
 use webignition\BasilCompilableSource\DocBlock\DocBlock;
+use webignition\BasilCompilableSource\Tests\Unit\AbstractResolvableTest;
 use webignition\BasilCompilableSource\VariableName;
 
-class DocBlockTest extends \PHPUnit\Framework\TestCase
+class DocBlockTest extends AbstractResolvableTest
 {
     /**
      * @dataProvider mergeDataProvider
@@ -98,7 +99,7 @@ class DocBlockTest extends \PHPUnit\Framework\TestCase
      */
     public function testRender(DocBlock $docBlock, string $expectedString)
     {
-        $this->assertSame($expectedString, $docBlock->render());
+        $this->assertRenderResolvable($expectedString, $docBlock);
     }
 
     public function renderDataProvider(): array

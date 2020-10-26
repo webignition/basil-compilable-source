@@ -16,9 +16,10 @@ use webignition\BasilCompilableSource\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\MethodInvocation\StaticObjectMethodInvocation;
 use webignition\BasilCompilableSource\StaticObject;
+use webignition\BasilCompilableSource\Tests\Unit\AbstractResolvableTest;
 use webignition\BasilCompilableSource\VariableDependency;
 
-class CastExpressionTest extends \PHPUnit\Framework\TestCase
+class CastExpressionTest extends AbstractResolvableTest
 {
     public function testCreate()
     {
@@ -33,7 +34,7 @@ class CastExpressionTest extends \PHPUnit\Framework\TestCase
      */
     public function testRender(CastExpression $expression, string $expectedString)
     {
-        $this->assertSame($expectedString, $expression->render());
+        $this->assertRenderResolvable($expectedString, $expression);
     }
 
     public function renderDataProvider(): array

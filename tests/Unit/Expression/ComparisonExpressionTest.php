@@ -10,10 +10,11 @@ use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSource\Tests\Unit\AbstractResolvableTest;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSource\VariableDependencyCollection;
 
-class ComparisonExpressionTest extends \PHPUnit\Framework\TestCase
+class ComparisonExpressionTest extends AbstractResolvableTest
 {
     /**
      * @dataProvider createDataProvider
@@ -62,7 +63,7 @@ class ComparisonExpressionTest extends \PHPUnit\Framework\TestCase
      */
     public function testRender(ComparisonExpression $expression, string $expectedString)
     {
-        $this->assertSame($expectedString, $expression->render());
+        $this->assertRenderResolvable($expectedString, $expression);
     }
 
     public function renderDataProvider(): array

@@ -11,10 +11,11 @@ use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSource\Tests\Unit\AbstractResolvableTest;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSource\VariableDependencyCollection;
 
-class ArrayPairTest extends \PHPUnit\Framework\TestCase
+class ArrayPairTest extends AbstractResolvableTest
 {
     /**
      * @dataProvider getMetadataDataProvider
@@ -56,7 +57,7 @@ class ArrayPairTest extends \PHPUnit\Framework\TestCase
      */
     public function testRender(ArrayPair $pair, string $expectedString)
     {
-        $this->assertSame($expectedString, $pair->render());
+        $this->assertRenderResolvable($expectedString, $pair);
     }
 
     public function renderDataProvider(): array

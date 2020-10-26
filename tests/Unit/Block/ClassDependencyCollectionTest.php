@@ -8,10 +8,11 @@ use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\EmptyLine;
 use webignition\BasilCompilableSource\SingleLineComment;
+use webignition\BasilCompilableSource\Tests\Unit\AbstractResolvableTest;
 use webignition\BasilCompilableSource\Tests\Unit\ClassNameTest;
 use webignition\ObjectReflector\ObjectReflector;
 
-class ClassDependencyCollectionTest extends \PHPUnit\Framework\TestCase
+class ClassDependencyCollectionTest extends AbstractResolvableTest
 {
     /**
      * @dataProvider createDataProvider
@@ -61,7 +62,7 @@ class ClassDependencyCollectionTest extends \PHPUnit\Framework\TestCase
      */
     public function testRender(ClassDependencyCollection $collection, string $expectedString)
     {
-        $this->assertSame($expectedString, $collection->render());
+        $this->assertRenderResolvable($expectedString, $collection);
     }
 
     public function renderDataProvider(): array
