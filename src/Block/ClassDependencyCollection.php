@@ -44,10 +44,10 @@ class ClassDependencyCollection implements \Countable, SourceInterface, Resolvab
 
     private function containsClassName(ClassName $className): bool
     {
-        $renderedClassName = $className->render();
+        $renderedClassName = (string) $className;
 
         foreach ($this->classNames as $className) {
-            if ($className->render() === $renderedClassName) {
+            if ((string) $className === $renderedClassName) {
                 return true;
             }
         }

@@ -39,7 +39,7 @@ class Statement implements ResolvableProviderInterface, StatementInterface
         return new Resolvable(
             self::RENDER_TEMPLATE,
             [
-                'expression' => $this->expression->render(),
+                'expression' => $this->expression,
             ]
         );
     }

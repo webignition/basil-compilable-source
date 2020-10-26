@@ -31,7 +31,7 @@ class ObjectMethodInvocation extends AbstractMethodInvocationEncapsulator implem
     public function getContext(): array
     {
         return [
-            'object' => $this->object->render(),
+            'object' => $this->object,
             'method_invocation' => $this->invocation,
         ];
     }

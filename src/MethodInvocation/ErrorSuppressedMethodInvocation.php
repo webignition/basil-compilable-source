@@ -6,9 +6,12 @@ namespace webignition\BasilCompilableSource\MethodInvocation;
 
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\MethodArguments\MethodArgumentsInterface;
+use webignition\BasilCompilableSource\RenderTrait;
 
 class ErrorSuppressedMethodInvocation implements MethodInvocationInterface
 {
+    use RenderTrait;
+
     private MethodInvocationInterface $invocation;
 
     public function __construct(MethodInvocationInterface $invocation)
@@ -29,11 +32,6 @@ class ErrorSuppressedMethodInvocation implements MethodInvocationInterface
     public function getArguments(): MethodArgumentsInterface
     {
         return $this->invocation->getArguments();
-    }
-
-    public function render(): string
-    {
-        return '@' . $this->invocation->render();
     }
 
     public function getTemplate(): string
