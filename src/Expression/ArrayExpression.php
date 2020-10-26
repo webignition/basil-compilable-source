@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Expression;
 
+use webignition\BasilCompilableSource\DeferredResolvableCreationTrait;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\RenderTrait;
@@ -14,6 +15,7 @@ use webignition\StubbleResolvable\ResolvedTemplateMutatorResolvable;
 
 class ArrayExpression implements ExpressionInterface, ResolvedTemplateMutationInterface
 {
+    use DeferredResolvableCreationTrait;
     use RenderTrait;
 
     private const INDENT = '    ';
@@ -22,8 +24,6 @@ class ArrayExpression implements ExpressionInterface, ResolvedTemplateMutationIn
      * @var ArrayPair[]
      */
     private array $pairs;
-
-    private ?ResolvableInterface $resolvable = null;
 
     /**
      * @param ArrayPair[] $pairs
@@ -73,16 +73,6 @@ class ArrayExpression implements ExpressionInterface, ResolvedTemplateMutationIn
         return new ArrayExpression($expressionArrayPairs);
     }
 
-    public function getTemplate(): string
-    {
-        return $this->getResolvable()->getTemplate();
-    }
-
-    public function getContext(): array
-    {
-        return $this->getResolvable()->getContext();
-    }
-
     public function getMetadata(): MetadataInterface
     {
         $metadata = new Metadata();
@@ -107,22 +97,7 @@ class ArrayExpression implements ExpressionInterface, ResolvedTemplateMutationIn
         };
     }
 
-    private function arrayPairResolvedTemplateMutator(string $resolved): string
-    {
-        $lines = explode("\n", $resolved);
-
-        foreach ($lines as $lineIndex => $line) {
-            if ($lineIndex > 0) {
-                $lines[$lineIndex] = self::INDENT . $line;
-            }
-        }
-
-        $resolved = implode("\n", $lines);
-
-        return self::INDENT . $resolved . "\n";
-    }
-
-    private function createResolvable(): ResolvableInterface
+    protected function createResolvable(): ResolvableInterface
     {
         $resolvablePairs = [];
 
@@ -138,12 +113,18 @@ class ArrayExpression implements ExpressionInterface, ResolvedTemplateMutationIn
         return ResolvableCollection::create($resolvablePairs);
     }
 
-    private function getResolvable(): ResolvableInterface
+    private function arrayPairResolvedTemplateMutator(string $resolved): string
     {
-        if (null === $this->resolvable) {
-            $this->resolvable = $this->createResolvable();
+        $lines = explode("\n", $resolved);
+
+        foreach ($lines as $lineIndex => $line) {
+            if ($lineIndex > 0) {
+                $lines[$lineIndex] = self::INDENT . $line;
+            }
         }
 
-        return $this->resolvable;
+        $resolved = implode("\n", $lines);
+
+        return self::INDENT . $resolved . "\n";
     }
 }

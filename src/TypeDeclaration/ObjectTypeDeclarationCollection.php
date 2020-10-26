@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\TypeDeclaration;
 
+use webignition\BasilCompilableSource\DeferredResolvableCreationTrait;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\RenderTrait;
@@ -18,14 +19,13 @@ class ObjectTypeDeclarationCollection implements
     ResolvableInterface,
     ResolvedTemplateMutationInterface
 {
+    use DeferredResolvableCreationTrait;
     use RenderTrait;
 
     /**
      * @var ObjectTypeDeclaration[]
      */
     private array $declarations;
-
-    private ?ResolvableInterface $resolvable = null;
 
     /**
      * @param ObjectTypeDeclaration[] $declarations
@@ -50,21 +50,26 @@ class ObjectTypeDeclarationCollection implements
         return $metadata;
     }
 
-    public function getTemplate(): string
-    {
-        return $this->getResolvable()->getTemplate();
-    }
-
-    public function getContext(): array
-    {
-        return $this->getResolvable()->getContext();
-    }
-
     public function getResolvedTemplateMutator(): callable
     {
         return function (string $resolvedTemplate): string {
             return $this->resolvedTemplateMutator($resolvedTemplate);
         };
+    }
+
+    protected function createResolvable(): ResolvableInterface
+    {
+        $resolvableDeclarations = [];
+        foreach ($this->declarations as $declaration) {
+            $resolvableDeclarations[] = new ResolvedTemplateMutatorResolvable(
+                new ResolvableWithoutContext((string) $declaration),
+                function (string $resolvedTemplate) {
+                    return $this->declarationResolvedTemplateMutator($resolvedTemplate);
+                }
+            );
+        }
+
+        return ResolvableCollection::create($resolvableDeclarations);
     }
 
     private function resolvedTemplateMutator(string $resolvedTemplate): string
@@ -92,24 +97,5 @@ class ObjectTypeDeclarationCollection implements
     private function declarationResolvedTemplateMutator(string $resolvedTemplate): string
     {
         return $resolvedTemplate . ' | ';
-    }
-
-    private function getResolvable(): ResolvableInterface
-    {
-        if (null === $this->resolvable) {
-            $resolvableDeclarations = [];
-            foreach ($this->declarations as $declaration) {
-                $resolvableDeclarations[] = new ResolvedTemplateMutatorResolvable(
-                    new ResolvableWithoutContext((string) $declaration),
-                    function (string $resolvedTemplate) {
-                        return $this->declarationResolvedTemplateMutator($resolvedTemplate);
-                    }
-                );
-            }
-
-            $this->resolvable = ResolvableCollection::create($resolvableDeclarations);
-        }
-
-        return $this->resolvable;
     }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Block;
 
 use webignition\BasilCompilableSource\ClassName;
+use webignition\BasilCompilableSource\DeferredResolvableCreationTrait;
 use webignition\BasilCompilableSource\Expression\UseExpression;
 use webignition\BasilCompilableSource\RenderTrait;
 use webignition\BasilCompilableSource\SourceInterface;
@@ -20,14 +21,13 @@ class ClassDependencyCollection implements
     ResolvableInterface,
     ResolvedTemplateMutationInterface
 {
+    use DeferredResolvableCreationTrait;
     use RenderTrait;
 
     /**
      * @var ClassName[]
      */
     private array $classNames = [];
-
-    private ?ResolvableInterface $resolvable = null;
 
     /**
      * @param ClassName[] $classNames
@@ -56,16 +56,6 @@ class ClassDependencyCollection implements
         return 0 === $this->count();
     }
 
-    public function getTemplate(): string
-    {
-        return $this->getResolvable()->getTemplate();
-    }
-
-    public function getContext(): array
-    {
-        return $this->resolvable->getContext();
-    }
-
     public function getResolvedTemplateMutator(): callable
     {
         return function (string $resolvedTemplate): string {
@@ -84,29 +74,7 @@ class ClassDependencyCollection implements
         return $this->classNames;
     }
 
-    private function containsClassName(ClassName $className): bool
-    {
-        $renderedClassName = (string) $className;
-
-        foreach ($this->classNames as $className) {
-            if ((string) $className === $renderedClassName) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private function getResolvable(): ResolvableInterface
-    {
-        if (null === $this->resolvable) {
-            $this->resolvable = $this->createResolvable();
-        }
-
-        return $this->resolvable;
-    }
-
-    private function createResolvable(): ResolvableInterface
+    protected function createResolvable(): ResolvableInterface
     {
         $useStatementResolvables = [];
         foreach ($this->classNames as $className) {
@@ -121,6 +89,19 @@ class ClassDependencyCollection implements
         }
 
         return ResolvableCollection::create($useStatementResolvables);
+    }
+
+    private function containsClassName(ClassName $className): bool
+    {
+        $renderedClassName = (string) $className;
+
+        foreach ($this->classNames as $className) {
+            if ((string) $className === $renderedClassName) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function useStatementResolvedTemplateMutator(string $resolvedTemplate): string
