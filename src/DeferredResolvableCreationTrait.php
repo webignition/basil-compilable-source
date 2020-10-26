@@ -17,6 +17,9 @@ trait DeferredResolvableCreationTrait
         return $this->getResolvable()->getTemplate();
     }
 
+    /**
+     * @return array<string, string|ResolvableInterface>
+     */
     public function getContext(): array
     {
         return $this->getResolvable()->getContext();

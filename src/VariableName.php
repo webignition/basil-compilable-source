@@ -10,6 +10,7 @@ use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 
 class VariableName implements ExpressionInterface, VariablePlaceholderInterface
 {
+    use ResolvableStringableTrait;
     use RenderTrait;
 
     private string $name;
@@ -29,16 +30,6 @@ class VariableName implements ExpressionInterface, VariablePlaceholderInterface
     public function getMetadata(): MetadataInterface
     {
         return $this->metadata;
-    }
-
-    public function getTemplate(): string
-    {
-        return (string) $this;
-    }
-
-    public function getContext(): array
-    {
-        return [];
     }
 
     public function __toString(): string
