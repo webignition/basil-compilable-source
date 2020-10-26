@@ -35,10 +35,8 @@ class ClassDependencyCollection implements
     public function __construct(array $classNames = [])
     {
         foreach ($classNames as $className) {
-            if ($className instanceof ClassName) {
-                if (!$this->containsClassName($className)) {
-                    $this->classNames[] = $className;
-                }
+            if ($className instanceof ClassName && false === $this->containsClassName($className)) {
+                $this->classNames[] = $className;
             }
         }
     }
@@ -78,6 +76,14 @@ class ClassDependencyCollection implements
         };
     }
 
+    /**
+     * @return ClassName[]
+     */
+    public function getClassNames(): array
+    {
+        return $this->classNames;
+    }
+
     private function containsClassName(ClassName $className): bool
     {
         $renderedClassName = (string) $className;
@@ -102,16 +108,8 @@ class ClassDependencyCollection implements
 
     private function createResolvable(): ResolvableInterface
     {
-        $classNamesToRender = array_filter($this->classNames, function (ClassName $className) {
-            if (false === $className->isInRootNamespace()) {
-                return true;
-            }
-
-            return is_string($className->getAlias());
-        });
-
         $useStatementResolvables = [];
-        foreach ($classNamesToRender as $className) {
+        foreach ($this->classNames as $className) {
             $useStatement = new Statement(new UseExpression($className));
 
             $useStatementResolvables[] = new ResolvedTemplateMutatorResolvable(

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource;
 
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
+use webignition\BasilCompilableSource\Block\RenderableClassDependencyCollection;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\StubbleResolvable\Resolvable;
 use webignition\StubbleResolvable\ResolvableInterface;
@@ -47,10 +48,10 @@ EOD;
 
     public function getResolvable(): ResolvableInterface
     {
-        $renderedDependencies = $this->getClassDependencies()->render();
+        $renderableClassNames = new RenderableClassDependencyCollection($this->getClassDependencies()->getClassNames());
 
         $template = self::RENDER_TEMPLATE;
-        if ('' === $renderedDependencies) {
+        if ($renderableClassNames->isEmpty()) {
             $template = str_replace('{{ dependencies }}', '', $template);
             $template = ltrim($template);
         }
@@ -58,7 +59,7 @@ EOD;
         return new Resolvable(
             $template,
             [
-                'dependencies' => $renderedDependencies,
+                'dependencies' => $renderableClassNames,
                 'signature' => $this->signature->render(),
                 'body' => $this->renderBody(),
             ]
