@@ -5,16 +5,17 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Block\TryCatch;
 
 use webignition\BasilCompilableSource\Body\BodyInterface;
+use webignition\BasilCompilableSource\DeferredResolvableCreationTrait;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\RenderTrait;
 use webignition\StubbleResolvable\ResolvableCollection;
 use webignition\StubbleResolvable\ResolvableInterface;
-use webignition\StubbleResolvable\ResolvableProviderInterface;
 use webignition\StubbleResolvable\ResolvedTemplateMutatorResolvable;
 
-class TryCatchBlock implements BodyInterface, ResolvableProviderInterface
+class TryCatchBlock implements BodyInterface, ResolvableInterface
 {
+    use DeferredResolvableCreationTrait;
     use RenderTrait;
 
     private TryBlock $tryBlock;
@@ -38,7 +39,7 @@ class TryCatchBlock implements BodyInterface, ResolvableProviderInterface
         return $this->metadata;
     }
 
-    public function getResolvable(): ResolvableInterface
+    protected function createResolvable(): ResolvableInterface
     {
         $resolvableItems = [
             $this->tryBlock,
