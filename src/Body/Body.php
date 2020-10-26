@@ -4,16 +4,25 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Body;
 
+use webignition\BasilCompilableSource\DeferredResolvableCreationTrait;
 use webignition\BasilCompilableSource\Expression\AssignmentExpression;
 use webignition\BasilCompilableSource\Expression\ClosureExpression;
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\HasMetadataInterface;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\BasilCompilableSource\RenderTrait;
 use webignition\BasilCompilableSource\Statement\Statement;
+use webignition\StubbleResolvable\ResolvableCollection;
+use webignition\StubbleResolvable\ResolvableInterface;
+use webignition\StubbleResolvable\ResolvedTemplateMutationInterface;
+use webignition\StubbleResolvable\ResolvedTemplateMutatorResolvable;
 
-class Body implements BodyInterface
+class Body implements BodyInterface, ResolvedTemplateMutationInterface
 {
+    use DeferredResolvableCreationTrait;
+    use RenderTrait;
+
     /**
      * @var BodyContentInterface[]
      */
@@ -77,15 +86,32 @@ class Body implements BodyInterface
         return $this->metadata;
     }
 
-    public function render(): string
+    public function getResolvedTemplateMutator(): callable
     {
-        $renderedContent = [];
+        return function (string $resolvedTemplate): string {
+            return rtrim($resolvedTemplate);
+        };
+    }
+
+    protected function createResolvable(): ResolvableInterface
+    {
+        $resolvables = [];
 
         foreach ($this->content as $item) {
-            $renderedContent[] = $item->render();
+            $resolvables[] = new ResolvedTemplateMutatorResolvable(
+                $item,
+                function (string $resolvedTemplate): string {
+                    return $this->resolvedItemTemplateMutator($resolvedTemplate);
+                }
+            );
         }
 
-        return implode("\n", $renderedContent);
+        return ResolvableCollection::create($resolvables);
+    }
+
+    private function resolvedItemTemplateMutator(string $resolvedTemplate): string
+    {
+        return rtrim($resolvedTemplate) . "\n";
     }
 
     /**
