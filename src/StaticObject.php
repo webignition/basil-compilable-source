@@ -11,6 +11,8 @@ use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 
 class StaticObject implements ExpressionInterface
 {
+    use ResolvableStringableTrait;
+
     private string $object;
 
     public function __construct(string $object)
@@ -29,16 +31,6 @@ class StaticObject implements ExpressionInterface
         }
 
         return new Metadata();
-    }
-
-    public function getTemplate(): string
-    {
-        return (string) $this;
-    }
-
-    public function getContext(): array
-    {
-        return [];
     }
 
     public function render(): string

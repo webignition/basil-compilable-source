@@ -8,9 +8,12 @@ use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\BasilCompilableSource\ResolvableStringableTrait;
 
 class ObjectTypeDeclaration implements TypeDeclarationInterface
 {
+    use ResolvableStringableTrait;
+
     private ClassName $type;
     private MetadataInterface $metadata;
 
