@@ -8,6 +8,7 @@ use webignition\BasilCompilableSource\Annotation\ParameterAnnotation;
 use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\DocBlock\DocBlock;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\StubbleResolvable\ResolvedTemplateMutatorResolvable;
 
 class MethodDefinition implements MethodDefinitionInterface
 {
@@ -121,13 +122,6 @@ EOD;
         return $this->docblock;
     }
 
-    private function renderBody(): string
-    {
-        $lines = $this->body->render();
-        $lines = $this->indent($lines);
-        return rtrim($lines, "\n");
-    }
-
     public function withDocBlock(DocBlock $docBlock): self
     {
         $new = clone $this;
@@ -150,7 +144,12 @@ EOD;
         return [
             'docblock' => $this->docblock instanceof DocBlock ? $this->docblock : '',
             'signature' => $this->createSignature(),
-            'body' => $this->renderBody(),
+            'body' => new ResolvedTemplateMutatorResolvable(
+                $this->body,
+                function (string $resolvedTemplate): string {
+                    return rtrim($this->indent($resolvedTemplate));
+                }
+            ),
         ];
     }
 
