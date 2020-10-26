@@ -8,15 +8,13 @@ use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\DeferredResolvableCreationTrait;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\RenderTrait;
 use webignition\StubbleResolvable\ResolvableCollection;
 use webignition\StubbleResolvable\ResolvableInterface;
 use webignition\StubbleResolvable\ResolvedTemplateMutatorResolvable;
 
-class TryCatchBlock implements BodyInterface, ResolvableInterface
+class TryCatchBlock implements BodyInterface
 {
     use DeferredResolvableCreationTrait;
-    use RenderTrait;
 
     private TryBlock $tryBlock;
 

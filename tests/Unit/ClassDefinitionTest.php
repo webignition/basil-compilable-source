@@ -24,7 +24,7 @@ use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSource\VariableDependencyCollection;
 use webignition\BasilCompilableSource\VariableName;
 
-class ClassDefinitionTest extends TestCase
+class ClassDefinitionTest extends AbstractResolvableTest
 {
     public function testCreate()
     {
@@ -101,7 +101,7 @@ class ClassDefinitionTest extends TestCase
      */
     public function testRender(ClassDefinitionInterface $classDefinition, string $expectedString)
     {
-        $this->assertSame($expectedString, $classDefinition->render());
+        $this->assertRenderResolvable($expectedString, $classDefinition);
     }
 
     public function renderDataProvider(): array

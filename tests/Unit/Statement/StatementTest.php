@@ -11,10 +11,11 @@ use webignition\BasilCompilableSource\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\BasilCompilableSource\Statement\StatementInterface;
+use webignition\BasilCompilableSource\Tests\Unit\AbstractResolvableTest;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSource\VariableDependencyCollection;
 
-class StatementTest extends \PHPUnit\Framework\TestCase
+class StatementTest extends AbstractResolvableTest
 {
     /**
      * @dataProvider createDataProvider
@@ -61,7 +62,7 @@ class StatementTest extends \PHPUnit\Framework\TestCase
      */
     public function testRender(StatementInterface $statement, string $expectedString)
     {
-        $this->assertSame($expectedString, $statement->render());
+        $this->assertRenderResolvable($expectedString, $statement);
     }
 
     public function renderDataProvider(): array

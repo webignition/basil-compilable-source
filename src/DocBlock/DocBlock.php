@@ -6,7 +6,6 @@ namespace webignition\BasilCompilableSource\DocBlock;
 
 use webignition\BasilCompilableSource\Annotation\AnnotationInterface;
 use webignition\BasilCompilableSource\DeferredResolvableCreationTrait;
-use webignition\BasilCompilableSource\RenderTrait;
 use webignition\BasilCompilableSource\SourceInterface;
 use webignition\StubbleResolvable\ResolvableCollection;
 use webignition\StubbleResolvable\ResolvableInterface;
@@ -17,7 +16,6 @@ use webignition\StubbleResolvable\ResolvedTemplateMutatorResolvable;
 class DocBlock implements ResolvableInterface, SourceInterface, ResolvedTemplateMutationInterface
 {
     use DeferredResolvableCreationTrait;
-    use RenderTrait;
 
     private const RENDER_TEMPLATE_EMPTY = <<<'EOD'
 /**

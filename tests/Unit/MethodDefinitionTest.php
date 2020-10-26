@@ -25,7 +25,7 @@ use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSource\VariableDependencyCollection;
 use webignition\BasilCompilableSource\VariableName;
 
-class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
+class MethodDefinitionTest extends AbstractResolvableTest
 {
     /**
      * @dataProvider createDataProvider
@@ -161,7 +161,7 @@ class MethodDefinitionTest extends \PHPUnit\Framework\TestCase
      */
     public function testRender(MethodDefinitionInterface $methodDefinition, string $expectedString)
     {
-        $this->assertSame($expectedString, $methodDefinition->render());
+        $this->assertRenderResolvable($expectedString, $methodDefinition);
     }
 
     public function renderDataProvider(): array

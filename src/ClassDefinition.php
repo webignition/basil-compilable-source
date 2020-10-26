@@ -14,7 +14,6 @@ use webignition\StubbleResolvable\ResolvedTemplateMutatorResolvable;
 class ClassDefinition implements ClassDefinitionInterface, ResolvableInterface
 {
     use DeferredResolvableCreationTrait;
-    use RenderTrait;
 
     private const RENDER_TEMPLATE = <<<'EOD'
 {{ dependencies }}

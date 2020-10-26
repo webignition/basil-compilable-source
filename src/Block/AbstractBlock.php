@@ -7,14 +7,11 @@ namespace webignition\BasilCompilableSource\Block;
 use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\HasMetadataInterface;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\RenderTrait;
 use webignition\StubbleResolvable\ResolvableInterface;
 use webignition\StubbleResolvable\ResolvedTemplateMutatorResolvable;
 
 abstract class AbstractBlock implements HasMetadataInterface, ResolvableInterface
 {
-    use RenderTrait;
-
     protected BodyInterface $body;
 
     public function __construct(BodyInterface $body)

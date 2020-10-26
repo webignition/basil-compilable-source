@@ -7,12 +7,9 @@ namespace webignition\BasilCompilableSource\Expression;
 use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\RenderTrait;
 
 class UseExpression implements ExpressionInterface
 {
-    use RenderTrait;
-
     private const RENDER_TEMPLATE = 'use {{ class_name }}';
 
     private ClassName $className;

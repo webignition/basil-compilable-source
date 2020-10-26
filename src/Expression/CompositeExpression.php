@@ -7,14 +7,12 @@ namespace webignition\BasilCompilableSource\Expression;
 use webignition\BasilCompilableSource\DeferredResolvableCreationTrait;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\RenderTrait;
 use webignition\StubbleResolvable\ResolvableCollection;
 use webignition\StubbleResolvable\ResolvableInterface;
 
 class CompositeExpression implements ExpressionInterface
 {
     use DeferredResolvableCreationTrait;
-    use RenderTrait;
 
     /**
      * @var ExpressionInterface[]

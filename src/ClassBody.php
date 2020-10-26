@@ -14,7 +14,6 @@ use webignition\StubbleResolvable\ResolvedTemplateMutatorResolvable;
 class ClassBody implements ResolvableInterface, ResolvedTemplateMutationInterface
 {
     use DeferredResolvableCreationTrait;
-    use RenderTrait;
 
     /**
      * @var MethodDefinitionInterface[]

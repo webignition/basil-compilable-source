@@ -6,14 +6,11 @@ namespace webignition\BasilCompilableSource\Expression;
 
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\RenderTrait;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclarationCollection;
 use webignition\BasilCompilableSource\VariableName;
 
 class CatchExpression implements ExpressionInterface
 {
-    use RenderTrait;
-
     private const RENDER_TEMPLATE = '{{ class_list }} {{ variable }}';
 
     private ObjectTypeDeclarationCollection $classes;

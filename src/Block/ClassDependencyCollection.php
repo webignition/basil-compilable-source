@@ -7,7 +7,6 @@ namespace webignition\BasilCompilableSource\Block;
 use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\DeferredResolvableCreationTrait;
 use webignition\BasilCompilableSource\Expression\UseExpression;
-use webignition\BasilCompilableSource\RenderTrait;
 use webignition\BasilCompilableSource\SourceInterface;
 use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\StubbleResolvable\ResolvableCollection;
@@ -22,7 +21,6 @@ class ClassDependencyCollection implements
     ResolvedTemplateMutationInterface
 {
     use DeferredResolvableCreationTrait;
-    use RenderTrait;
 
     /**
      * @var ClassName[]

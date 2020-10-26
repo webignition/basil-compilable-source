@@ -15,10 +15,6 @@ use webignition\BasilCompilableSource\Tests\Unit\AbstractResolvableTest;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSource\VariableDependencyCollection;
 use webignition\BasilCompilableSource\VariableName;
-use webignition\Stubble\DeciderFactory;
-use webignition\Stubble\UnresolvedVariableFinder;
-use webignition\Stubble\VariableResolver;
-use webignition\StubbleResolvable\ResolvableInterface;
 
 class ArrayExpressionTest extends AbstractResolvableTest
 {

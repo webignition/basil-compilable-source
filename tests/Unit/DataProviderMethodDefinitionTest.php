@@ -8,7 +8,7 @@ use webignition\BasilCompilableSource\DataProviderMethodDefinition;
 use webignition\BasilCompilableSource\DataProviderMethodDefinitionInterface;
 use webignition\BasilCompilableSource\MethodDefinition;
 
-class DataProviderMethodDefinitionTest extends \PHPUnit\Framework\TestCase
+class DataProviderMethodDefinitionTest extends AbstractResolvableTest
 {
     /**
      * @dataProvider createDataProvider
@@ -57,7 +57,7 @@ class DataProviderMethodDefinitionTest extends \PHPUnit\Framework\TestCase
      */
     public function testRender(DataProviderMethodDefinitionInterface $methodDefinition, string $expectedString)
     {
-        $this->assertSame($expectedString, $methodDefinition->render());
+        $this->assertRenderResolvable($expectedString, $methodDefinition);
     }
 
     public function renderDataProvider(): array

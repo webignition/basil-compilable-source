@@ -6,13 +6,11 @@ namespace webignition\BasilCompilableSource\Expression;
 
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\RenderTrait;
 use webignition\BasilCompilableSource\ResolvableStringableTrait;
 
 class LiteralExpression implements ExpressionInterface
 {
     use ResolvableStringableTrait;
-    use RenderTrait;
 
     private string $content;
 

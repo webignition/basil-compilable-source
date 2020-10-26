@@ -14,8 +14,9 @@ use webignition\BasilCompilableSource\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSource\MethodInvocation\StaticObjectMethodInvocation;
 use webignition\BasilCompilableSource\MethodInvocation\StaticObjectMethodInvocationInterface;
 use webignition\BasilCompilableSource\StaticObject;
+use webignition\BasilCompilableSource\Tests\Unit\AbstractResolvableTest;
 
-class StaticObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
+class StaticObjectMethodInvocationTest extends AbstractResolvableTest
 {
     /**
      * @dataProvider createDataProvider
@@ -83,7 +84,7 @@ class StaticObjectMethodInvocationTest extends \PHPUnit\Framework\TestCase
      */
     public function testRender(StaticObjectMethodInvocationInterface $invocation, string $expectedString)
     {
-        $this->assertSame($expectedString, $invocation->render());
+        $this->assertRenderResolvable($expectedString, $invocation);
     }
 
     public function renderDataProvider(): array
