@@ -5,14 +5,18 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\DocBlock;
 
 use webignition\BasilCompilableSource\Annotation\AnnotationInterface;
+use webignition\BasilCompilableSource\DeferredResolvableCreationTrait;
 use webignition\BasilCompilableSource\RenderTrait;
 use webignition\BasilCompilableSource\SourceInterface;
-use webignition\StubbleResolvable\Resolvable;
+use webignition\StubbleResolvable\ResolvableCollection;
 use webignition\StubbleResolvable\ResolvableInterface;
-use webignition\StubbleResolvable\ResolvableProviderInterface;
+use webignition\StubbleResolvable\ResolvableWithoutContext;
+use webignition\StubbleResolvable\ResolvedTemplateMutationInterface;
+use webignition\StubbleResolvable\ResolvedTemplateMutatorResolvable;
 
-class DocBlock implements ResolvableProviderInterface, SourceInterface
+class DocBlock implements ResolvableInterface, SourceInterface, ResolvedTemplateMutationInterface
 {
+    use DeferredResolvableCreationTrait;
     use RenderTrait;
 
     private const RENDER_TEMPLATE_EMPTY = <<<'EOD'
@@ -22,7 +26,7 @@ EOD;
 
     private const RENDER_TEMPLATE = <<<'EOD'
 /**
-{{ content }}
+%s
  */
 EOD;
 
@@ -49,14 +53,15 @@ EOD;
         return $this->merge($addition, $this);
     }
 
-    public function getResolvable(): ResolvableInterface
+    public function getResolvedTemplateMutator(): callable
     {
-        return new Resolvable(
-            $this->getRenderTemplate(),
-            [
-                'content' => $this->renderContent(),
-            ]
-        );
+        return function (string $resolvedTemplate): string {
+            if ('' === $resolvedTemplate) {
+                return self::RENDER_TEMPLATE_EMPTY;
+            }
+
+            return sprintf(self::RENDER_TEMPLATE, rtrim($resolvedTemplate));
+        };
     }
 
     private function merge(DocBlock $source, DocBlock $addition): self
@@ -64,36 +69,38 @@ EOD;
         return new DocBlock(array_merge($source->lines, $addition->lines));
     }
 
-    private function getRenderTemplate(): string
+    protected function createResolvable(): ResolvableInterface
     {
-        if (0 === count($this->lines)) {
-            return self::RENDER_TEMPLATE_EMPTY;
-        }
+        $resolvableItems = [];
 
-        return self::RENDER_TEMPLATE;
-    }
-
-    private function renderContent(): string
-    {
-        $renderedLines = [];
         foreach ($this->lines as $line) {
             if (is_string($line)) {
-                $renderedLines[] = $line;
-            }
-
-            if ($line instanceof AnnotationInterface) {
-                $renderedLines[] = $line->render();
+                $resolvableItems[] = new ResolvableWithoutContext($line);
+            } else {
+                $resolvableItems[] = $line;
             }
         }
 
-        array_walk($renderedLines, function (string &$renderedLine) {
-            if ("\n" === $renderedLine) {
-                $renderedLine = ' *';
-            } else {
-                $renderedLine = ' * ' . $renderedLine;
-            }
+        array_walk($resolvableItems, function (&$resolvable) {
+            $resolvable = new ResolvedTemplateMutatorResolvable(
+                $resolvable,
+                function (string $resolvedLine): string {
+                    return $this->resolvedLineTemplateMutator($resolvedLine);
+                }
+            );
         });
 
-        return implode("\n", $renderedLines);
+        return ResolvableCollection::create($resolvableItems);
+    }
+
+    private function resolvedLineTemplateMutator(string $resolvedLine): string
+    {
+        if ('' === trim($resolvedLine)) {
+            $resolvedLine = ' *';
+        } else {
+            $resolvedLine = ' * ' . $resolvedLine;
+        }
+
+        return $resolvedLine . "\n";
     }
 }
