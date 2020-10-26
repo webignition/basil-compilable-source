@@ -7,6 +7,7 @@ namespace webignition\BasilCompilableSource\Expression;
 use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\RenderTrait;
+use webignition\StubbleResolvable\ResolvedTemplateMutatorResolvable;
 
 class ClosureExpression implements ExpressionInterface
 {
@@ -38,7 +39,12 @@ EOD;
     public function getContext(): array
     {
         return [
-            'body' => $this->indent($this->body->render()),
+            'body' => new ResolvedTemplateMutatorResolvable(
+                $this->body,
+                function (string $resolvedTemplate): string {
+                    return rtrim($this->indent($resolvedTemplate));
+                }
+            ),
         ];
     }
 
