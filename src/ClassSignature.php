@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource;
 
-use webignition\StubbleResolvable\Resolvable;
 use webignition\StubbleResolvable\ResolvableInterface;
-use webignition\StubbleResolvable\ResolvableProviderInterface;
 
-class ClassSignature implements ResolvableProviderInterface
+class ClassSignature implements ResolvableInterface
 {
     use RenderTrait;
 
@@ -34,14 +32,18 @@ class ClassSignature implements ResolvableProviderInterface
         return $this->baseClass;
     }
 
-    public function getResolvable(): ResolvableInterface
+    public function getTemplate(): string
     {
-        return new Resolvable(
-            $this->baseClass instanceof ClassName ? self::RENDER_TEMPLATE : self::RENDER_TEMPLATE_WITHOUT_BASE_CLASS,
-            [
-                'name' => $this->getName(),
-                'base_class' => $this->baseClass instanceof ClassName ? $this->baseClass->renderClassName() : '',
-            ]
-        );
+        return $this->baseClass instanceof ClassName
+            ? self::RENDER_TEMPLATE
+            : self::RENDER_TEMPLATE_WITHOUT_BASE_CLASS;
+    }
+
+    public function getContext(): array
+    {
+        return [
+            'name' => $this->getName(),
+            'base_class' => $this->baseClass instanceof ClassName ? $this->baseClass->renderClassName() : '',
+        ];
     }
 }
