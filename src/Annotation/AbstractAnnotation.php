@@ -7,9 +7,8 @@ namespace webignition\BasilCompilableSource\Annotation;
 use webignition\BasilCompilableSource\RenderTrait;
 use webignition\StubbleResolvable\Resolvable;
 use webignition\StubbleResolvable\ResolvableInterface;
-use webignition\StubbleResolvable\ResolvableProviderInterface;
 
-abstract class AbstractAnnotation implements AnnotationInterface, ResolvableProviderInterface
+abstract class AbstractAnnotation implements AnnotationInterface, ResolvableInterface
 {
     use RenderTrait;
 
@@ -41,5 +40,18 @@ abstract class AbstractAnnotation implements AnnotationInterface, ResolvableProv
                 'arguments' => implode(' ', $this->arguments)
             ]
         );
+    }
+
+    public function getTemplate(): string
+    {
+        return self::RENDER_TEMPLATE;
+    }
+
+    public function getContext(): array
+    {
+        return [
+            'name' => $this->name,
+            'arguments' => implode(' ', $this->arguments)
+        ];
     }
 }
