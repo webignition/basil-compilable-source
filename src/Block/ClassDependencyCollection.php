@@ -104,15 +104,6 @@ class ClassDependencyCollection implements
         return false;
     }
 
-    private function getResolvable(): ResolvableInterface
-    {
-        if (null === $this->resolvable) {
-            $this->resolvable = $this->createResolvable();
-        }
-
-        return $this->resolvable;
-    }
-
     private function useStatementResolvedTemplateMutator(string $resolvedTemplate): string
     {
         return $resolvedTemplate . "\n";
