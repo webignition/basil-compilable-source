@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Expression;
 
+use webignition\BasilCompilableSource\DeferredResolvableCreationTrait;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\RenderTrait;
@@ -12,14 +13,13 @@ use webignition\StubbleResolvable\ResolvableInterface;
 
 class CompositeExpression implements ExpressionInterface
 {
+    use DeferredResolvableCreationTrait;
     use RenderTrait;
 
     /**
      * @var ExpressionInterface[]
      */
     private $expressions;
-
-    private ?ResolvableInterface $resolvable = null;
 
     /**
      * @param array<mixed> $expressions
@@ -36,16 +36,6 @@ class CompositeExpression implements ExpressionInterface
         }
     }
 
-    public function getTemplate(): string
-    {
-        return $this->getResolvable()->getTemplate();
-    }
-
-    public function getContext(): array
-    {
-        return $this->getResolvable()->getContext();
-    }
-
     public function getMetadata(): MetadataInterface
     {
         $metadata = new Metadata();
@@ -56,7 +46,7 @@ class CompositeExpression implements ExpressionInterface
         return $metadata;
     }
 
-    private function getResolvable(): ResolvableInterface
+    protected function createResolvable(): ResolvableInterface
     {
         if (null === $this->resolvable) {
             $this->resolvable = ResolvableCollection::create($this->expressions);
