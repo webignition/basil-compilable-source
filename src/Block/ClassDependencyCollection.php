@@ -7,7 +7,6 @@ namespace webignition\BasilCompilableSource\Block;
 use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\DeferredResolvableCreationTrait;
 use webignition\BasilCompilableSource\Expression\UseExpression;
-use webignition\BasilCompilableSource\SourceInterface;
 use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\StubbleResolvable\ResolvableCollection;
 use webignition\StubbleResolvable\ResolvableInterface;
@@ -16,7 +15,6 @@ use webignition\StubbleResolvable\ResolvedTemplateMutatorResolvable;
 
 class ClassDependencyCollection implements
     \Countable,
-    SourceInterface,
     ResolvableInterface,
     ResolvedTemplateMutationInterface
 {

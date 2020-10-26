@@ -6,10 +6,9 @@ namespace webignition\BasilCompilableSource\MethodArguments;
 
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\HasMetadataInterface;
-use webignition\BasilCompilableSource\SourceInterface;
 use webignition\StubbleResolvable\ResolvableInterface;
 
-interface MethodArgumentsInterface extends HasMetadataInterface, SourceInterface, ResolvableInterface
+interface MethodArgumentsInterface extends HasMetadataInterface, ResolvableInterface
 {
     /**
      * @return ExpressionInterface[]

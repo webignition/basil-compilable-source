@@ -6,14 +6,13 @@ namespace webignition\BasilCompilableSource\DocBlock;
 
 use webignition\BasilCompilableSource\Annotation\AnnotationInterface;
 use webignition\BasilCompilableSource\DeferredResolvableCreationTrait;
-use webignition\BasilCompilableSource\SourceInterface;
 use webignition\StubbleResolvable\ResolvableCollection;
 use webignition\StubbleResolvable\ResolvableInterface;
 use webignition\StubbleResolvable\ResolvableWithoutContext;
 use webignition\StubbleResolvable\ResolvedTemplateMutationInterface;
 use webignition\StubbleResolvable\ResolvedTemplateMutatorResolvable;
 
-class DocBlock implements ResolvableInterface, SourceInterface, ResolvedTemplateMutationInterface
+class DocBlock implements ResolvableInterface, ResolvedTemplateMutationInterface
 {
     use DeferredResolvableCreationTrait;
 
