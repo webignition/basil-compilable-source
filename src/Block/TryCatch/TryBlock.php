@@ -22,7 +22,7 @@ EOD;
     public function getContext(): array
     {
         return [
-            'body' => $this->renderBody(),
+            'body' => $this->createResolvableBody(),
         ];
     }
 }
