@@ -58,14 +58,14 @@ class ClassNameTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @dataProvider renderDataProvider
+     * @dataProvider toStringDataProvider
      */
     public function testToString(ClassName $classDependency, string $expectedString)
     {
         $this->assertSame($expectedString, (string) $classDependency);
     }
 
-    public function renderDataProvider(): array
+    public function toStringDataProvider(): array
     {
         return [
             'no alias' => [
