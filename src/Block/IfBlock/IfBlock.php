@@ -41,7 +41,7 @@ EOD;
     {
         return [
             'expression' => $this->expression,
-            'body' => $this->renderBody(),
+            'body' => $this->createResolvableBody(),
         ];
     }
 }

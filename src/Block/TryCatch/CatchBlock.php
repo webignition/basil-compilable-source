@@ -35,7 +35,7 @@ EOD;
     {
         return [
             'catch_expression' => $this->catchExpression,
-            'body' => $this->renderBody(),
+            'body' => $this->createResolvableBody(),
         ];
     }
 

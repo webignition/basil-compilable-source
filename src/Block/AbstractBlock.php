@@ -9,12 +9,13 @@ use webignition\BasilCompilableSource\HasMetadataInterface;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\RenderTrait;
 use webignition\StubbleResolvable\ResolvableInterface;
+use webignition\StubbleResolvable\ResolvedTemplateMutatorResolvable;
 
 abstract class AbstractBlock implements HasMetadataInterface, ResolvableInterface
 {
     use RenderTrait;
 
-    private BodyInterface $body;
+    protected BodyInterface $body;
 
     public function __construct(BodyInterface $body)
     {
@@ -26,12 +27,14 @@ abstract class AbstractBlock implements HasMetadataInterface, ResolvableInterfac
         return $this->body->getMetadata();
     }
 
-    protected function renderBody(): string
+    protected function createResolvableBody(): ResolvableInterface
     {
-        $renderedBody = $this->body->render();
-
-        $renderedBody = $this->indent($renderedBody);
-        return rtrim($renderedBody, "\n");
+        return new ResolvedTemplateMutatorResolvable(
+            $this->body,
+            function (string $resolvedTemplate): string {
+                return rtrim($this->indent($resolvedTemplate));
+            }
+        );
     }
 
     private function indent(string $content): string
