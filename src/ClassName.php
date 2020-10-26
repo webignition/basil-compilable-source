@@ -57,11 +57,6 @@ class ClassName
         return $this->getClass() === $this->className;
     }
 
-    public function render(): string
-    {
-        return (string) $this;
-    }
-
     public function renderClassName(): string
     {
         if (is_string($this->alias)) {

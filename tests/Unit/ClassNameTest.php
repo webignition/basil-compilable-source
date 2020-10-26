@@ -60,9 +60,9 @@ class ClassNameTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider renderDataProvider
      */
-    public function testRender(ClassName $classDependency, string $expectedString)
+    public function testToString(ClassName $classDependency, string $expectedString)
     {
-        $this->assertSame($expectedString, $classDependency->render());
+        $this->assertSame($expectedString, (string) $classDependency);
     }
 
     public function renderDataProvider(): array
