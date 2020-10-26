@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource;
 
 use webignition\BasilCompilableSource\DocBlock\DocBlock;
+use webignition\StubbleResolvable\ResolvableInterface;
 
-interface MethodDefinitionInterface extends HasMetadataInterface, SourceInterface
+interface MethodDefinitionInterface extends HasMetadataInterface, SourceInterface, ResolvableInterface
 {
     /**
      * @return string[]

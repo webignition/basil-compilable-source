@@ -6,9 +6,16 @@ namespace webignition\BasilCompilableSource;
 
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\StubbleResolvable\ResolvableCollection;
+use webignition\StubbleResolvable\ResolvableInterface;
+use webignition\StubbleResolvable\ResolvedTemplateMutationInterface;
+use webignition\StubbleResolvable\ResolvedTemplateMutatorResolvable;
 
-class ClassBody
+class ClassBody implements ResolvableInterface, ResolvedTemplateMutationInterface
 {
+    use DeferredResolvableCreationTrait;
+    use RenderTrait;
+
     /**
      * @var MethodDefinitionInterface[]
      */
@@ -47,18 +54,31 @@ class ClassBody
         return $metadata;
     }
 
-    public function render(): string
+    public function getResolvedTemplateMutator(): callable
     {
-        if (0 === count($this->methods)) {
-            return '';
-        }
+        return function (string $resolvedTemplate): string {
+            return rtrim($resolvedTemplate);
+        };
+    }
 
-        $renderedMethods = [];
+    protected function createResolvable(): ResolvableInterface
+    {
+        $resolvables = [];
 
         foreach ($this->methods as $method) {
-            $renderedMethods[] = $method->render();
+            $resolvables[] = new ResolvedTemplateMutatorResolvable(
+                $method,
+                function (string $resolvedTemplate): string {
+                    return $this->methodResolvedTemplateMutator($resolvedTemplate);
+                }
+            );
         }
 
-        return implode("\n\n", $renderedMethods);
+        return ResolvableCollection::create($resolvables);
+    }
+
+    private function methodResolvedTemplateMutator(string $resolvedTemplate): string
+    {
+        return rtrim($resolvedTemplate) . "\n\n";
     }
 }
