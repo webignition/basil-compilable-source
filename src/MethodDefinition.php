@@ -8,15 +8,20 @@ use webignition\BasilCompilableSource\Annotation\ParameterAnnotation;
 use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\DocBlock\DocBlock;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\StubbleResolvable\Resolvable;
 use webignition\StubbleResolvable\ResolvableInterface;
-use webignition\StubbleResolvable\ResolvableProviderInterface;
 
-class MethodDefinition implements MethodDefinitionInterface, ResolvableProviderInterface
+class MethodDefinition implements MethodDefinitionInterface, ResolvableInterface
 {
     use RenderTrait;
 
-    private const RENDER_TEMPLATE = <<<'EOD'
+    private const RENDER_TEMPLATE_WITHOUT_DOCBLOCK = <<<'EOD'
+{{ signature }}
+{
+{{ body }}
+}
+EOD;
+
+    private const RENDER_TEMPLATE_WITH_DOCBLOCK = <<<'EOD'
 {{ docblock }}
 {{ signature }}
 {
@@ -132,21 +137,22 @@ EOD;
         return $new;
     }
 
-    public function getResolvable(): ResolvableInterface
+    public function getTemplate(): string
     {
-        $template = self::RENDER_TEMPLATE;
         if (null === $this->docblock) {
-            $template = ltrim(str_replace('{{ docblock }}', '', $template));
+            return self::RENDER_TEMPLATE_WITHOUT_DOCBLOCK;
         }
 
-        return new Resolvable(
-            $template,
-            [
-                'docblock' => $this->docblock instanceof DocBlock ? $this->docblock->render() : '',
-                'signature' => $this->createSignature(),
-                'body' => $this->renderBody(),
-            ]
-        );
+        return self::RENDER_TEMPLATE_WITH_DOCBLOCK;
+    }
+
+    public function getContext(): array
+    {
+        return [
+            'docblock' => $this->docblock instanceof DocBlock ? $this->docblock : '',
+            'signature' => $this->createSignature(),
+            'body' => $this->renderBody(),
+        ];
     }
 
     private function createSignature(): string
