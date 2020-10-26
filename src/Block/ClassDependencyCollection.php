@@ -11,10 +11,14 @@ use webignition\BasilCompilableSource\SourceInterface;
 use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\StubbleResolvable\ResolvableCollection;
 use webignition\StubbleResolvable\ResolvableInterface;
-use webignition\StubbleResolvable\ResolvableProviderInterface;
+use webignition\StubbleResolvable\ResolvedTemplateMutationInterface;
 use webignition\StubbleResolvable\ResolvedTemplateMutatorResolvable;
 
-class ClassDependencyCollection implements \Countable, SourceInterface, ResolvableProviderInterface
+class ClassDependencyCollection implements
+    \Countable,
+    SourceInterface,
+    ResolvableInterface,
+    ResolvedTemplateMutationInterface
 {
     use RenderTrait;
 
@@ -22,6 +26,8 @@ class ClassDependencyCollection implements \Countable, SourceInterface, Resolvab
      * @var ClassName[]
      */
     private array $classNames = [];
+
+    private ?ResolvableInterface $resolvable = null;
 
     /**
      * @param ClassName[] $classNames
@@ -42,6 +48,36 @@ class ClassDependencyCollection implements \Countable, SourceInterface, Resolvab
         return new ClassDependencyCollection(array_merge($this->classNames, $collection->classNames));
     }
 
+    public function count(): int
+    {
+        return count($this->classNames);
+    }
+
+    public function isEmpty(): bool
+    {
+        return 0 === $this->count();
+    }
+
+    public function getTemplate(): string
+    {
+        return $this->getResolvable()->getTemplate();
+    }
+
+    public function getContext(): array
+    {
+        return $this->resolvable->getContext();
+    }
+
+    public function getResolvedTemplateMutator(): callable
+    {
+        return function (string $resolvedTemplate): string {
+            $lines = explode("\n", $resolvedTemplate);
+            sort($lines);
+
+            return implode("\n", array_filter($lines));
+        };
+    }
+
     private function containsClassName(ClassName $className): bool
     {
         $renderedClassName = (string) $className;
@@ -55,17 +91,16 @@ class ClassDependencyCollection implements \Countable, SourceInterface, Resolvab
         return false;
     }
 
-    public function count(): int
+    private function getResolvable(): ResolvableInterface
     {
-        return count($this->classNames);
+        if (null === $this->resolvable) {
+            $this->resolvable = $this->createResolvable();
+        }
+
+        return $this->resolvable;
     }
 
-    public function isEmpty(): bool
-    {
-        return 0 === $this->count();
-    }
-
-    public function getResolvable(): ResolvableInterface
+    private function createResolvable(): ResolvableInterface
     {
         $classNamesToRender = array_filter($this->classNames, function (ClassName $className) {
             if (false === $className->isInRootNamespace()) {
@@ -87,20 +122,7 @@ class ClassDependencyCollection implements \Countable, SourceInterface, Resolvab
             );
         }
 
-        return new ResolvedTemplateMutatorResolvable(
-            ResolvableCollection::create($useStatementResolvables),
-            function (string $resolvedTemplate) {
-                return $this->resolvedTemplateMutator($resolvedTemplate);
-            }
-        );
-    }
-
-    private function resolvedTemplateMutator(string $resolvedTemplate): string
-    {
-        $lines = explode("\n", $resolvedTemplate);
-        sort($lines);
-
-        return implode("\n", array_filter($lines));
+        return ResolvableCollection::create($useStatementResolvables);
     }
 
     private function useStatementResolvedTemplateMutator(string $resolvedTemplate): string
