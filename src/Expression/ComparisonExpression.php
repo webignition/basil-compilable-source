@@ -6,12 +6,9 @@ namespace webignition\BasilCompilableSource\Expression;
 
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\RenderTrait;
 
 class ComparisonExpression implements ExpressionInterface
 {
-    use RenderTrait;
-
     private const RENDER_TEMPLATE = '{{ left_hand_side }} {{ comparison}} {{ right_hand_side }}';
 
     private ExpressionInterface $leftHandSide;

@@ -12,8 +12,6 @@ use webignition\StubbleResolvable\ResolvedTemplateMutatorResolvable;
 
 class MethodDefinition implements MethodDefinitionInterface
 {
-    use RenderTrait;
-
     private const RENDER_TEMPLATE_WITHOUT_DOCBLOCK = <<<'EOD'
 {{ signature }}
 {

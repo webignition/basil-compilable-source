@@ -7,12 +7,9 @@ namespace webignition\BasilCompilableSource\Expression;
 use webignition\BasilCompilableSource\Construct\ReturnConstruct;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\RenderTrait;
 
 class ReturnExpression implements ExpressionInterface
 {
-    use RenderTrait;
-
     private const RENDER_TEMPLATE_NO_EXPRESSION = '{{ return_construct }}';
     private const RENDER_TEMPLATE = '{{ return_construct }} {{ expression_content }}';
 

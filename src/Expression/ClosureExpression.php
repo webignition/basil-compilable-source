@@ -6,13 +6,10 @@ namespace webignition\BasilCompilableSource\Expression;
 
 use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\RenderTrait;
 use webignition\StubbleResolvable\ResolvedTemplateMutatorResolvable;
 
 class ClosureExpression implements ExpressionInterface
 {
-    use RenderTrait;
-
     private const RENDER_TEMPLATE = <<<'EOD'
 (function () {
 {{ body }}

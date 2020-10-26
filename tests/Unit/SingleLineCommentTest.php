@@ -7,7 +7,7 @@ namespace webignition\BasilCompilableSource\Tests\Unit;
 use webignition\BasilCompilableSource\SingleLineComment;
 use webignition\ObjectReflector\ObjectReflector;
 
-class SingleLineCommentTest extends \PHPUnit\Framework\TestCase
+class SingleLineCommentTest extends AbstractResolvableTest
 {
     public function testCreate()
     {
@@ -22,7 +22,7 @@ class SingleLineCommentTest extends \PHPUnit\Framework\TestCase
      */
     public function testRender(SingleLineComment $comment, string $expectedString)
     {
-        $this->assertSame($expectedString, $comment->render());
+        $this->assertRenderResolvable($expectedString, $comment);
     }
 
     public function renderDataProvider(): array

@@ -28,14 +28,14 @@ class ObjectTypeDeclarationTest extends TestCase
     }
 
     /**
-     * @dataProvider renderDataProvider
+     * @dataProvider toStringDataProvider
      */
-    public function testRender(ObjectTypeDeclaration $declaration, string $expectedString)
+    public function testToString(ObjectTypeDeclaration $declaration, string $expectedString)
     {
-        $this->assertSame($expectedString, $declaration->render());
+        $this->assertSame($expectedString, (string) $declaration);
     }
 
-    public function renderDataProvider(): array
+    public function toStringDataProvider(): array
     {
         return [
             'class in root namespace' => [

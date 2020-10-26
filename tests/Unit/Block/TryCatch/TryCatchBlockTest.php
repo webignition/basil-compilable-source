@@ -13,17 +13,18 @@ use webignition\BasilCompilableSource\Expression\CatchExpression;
 use webignition\BasilCompilableSource\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSource\SingleLineComment;
 use webignition\BasilCompilableSource\Statement\Statement;
+use webignition\BasilCompilableSource\Tests\Unit\AbstractResolvableTest;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclaration;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclarationCollection;
 
-class TryCatchBlockTest extends \PHPUnit\Framework\TestCase
+class TryCatchBlockTest extends AbstractResolvableTest
 {
     /**
      * @dataProvider renderDataProvider
      */
     public function testRender(TryCatchBlock $tryCatch, string $expectedString)
     {
-        $this->assertSame($expectedString, $tryCatch->render());
+        $this->assertRenderResolvable($expectedString, $tryCatch);
     }
 
     public function renderDataProvider(): array

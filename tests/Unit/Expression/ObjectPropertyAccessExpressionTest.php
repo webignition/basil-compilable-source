@@ -7,12 +7,13 @@ namespace webignition\BasilCompilableSource\Tests\Unit\Expression;
 use webignition\BasilCompilableSource\Expression\ObjectPropertyAccessExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\BasilCompilableSource\Tests\Unit\AbstractResolvableTest;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSource\VariableDependencyCollection;
 use webignition\BasilCompilableSource\VariableName;
 use webignition\BasilCompilableSource\VariablePlaceholderInterface;
 
-class ObjectPropertyAccessExpressionTest extends \PHPUnit\Framework\TestCase
+class ObjectPropertyAccessExpressionTest extends AbstractResolvableTest
 {
     /**
      * @dataProvider createDataProvider
@@ -54,7 +55,7 @@ class ObjectPropertyAccessExpressionTest extends \PHPUnit\Framework\TestCase
      */
     public function testRender(ObjectPropertyAccessExpression $expression, string $expectedString)
     {
-        $this->assertSame($expectedString, $expression->render());
+        $this->assertRenderResolvable($expectedString, $expression);
     }
 
     public function renderDataProvider(): array

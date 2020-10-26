@@ -49,14 +49,14 @@ class StaticObjectTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @dataProvider renderDataProvider
+     * @dataProvider toStringDataProvider
      */
-    public function testRender(StaticObject $staticObject, string $expectedString)
+    public function testToString(StaticObject $staticObject, string $expectedString)
     {
-        $this->assertSame($expectedString, $staticObject->render());
+        $this->assertSame($expectedString, (string) $staticObject);
     }
 
-    public function renderDataProvider(): array
+    public function toStringDataProvider(): array
     {
         return [
             'string reference' => [

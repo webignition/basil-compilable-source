@@ -17,10 +17,11 @@ use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\MethodInvocation\StaticObjectMethodInvocation;
 use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\BasilCompilableSource\StaticObject;
+use webignition\BasilCompilableSource\Tests\Unit\AbstractResolvableTest;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSource\VariableDependencyCollection;
 
-class IfBlockTest extends \PHPUnit\Framework\TestCase
+class IfBlockTest extends AbstractResolvableTest
 {
     public function testGetMetadata()
     {
@@ -65,7 +66,7 @@ class IfBlockTest extends \PHPUnit\Framework\TestCase
      */
     public function testRender(IfBlock $ifBlock, string $expectedString)
     {
-        $this->assertSame($expectedString, $ifBlock->render());
+        $this->assertRenderResolvable($expectedString, $ifBlock);
     }
 
     public function renderDataProvider(): array

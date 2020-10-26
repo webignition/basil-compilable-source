@@ -17,12 +17,13 @@ use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\MethodInvocation\StaticObjectMethodInvocation;
 use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\BasilCompilableSource\StaticObject;
+use webignition\BasilCompilableSource\Tests\Unit\AbstractResolvableTest;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclaration;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclarationCollection;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSource\VariableDependencyCollection;
 
-class CatchBlockTest extends \PHPUnit\Framework\TestCase
+class CatchBlockTest extends AbstractResolvableTest
 {
     public function testGetMetadata()
     {
@@ -65,7 +66,7 @@ class CatchBlockTest extends \PHPUnit\Framework\TestCase
      */
     public function testRender(CatchBlock $tryBlock, string $expectedString)
     {
-        $this->assertSame($expectedString, $tryBlock->render());
+        $this->assertRenderResolvable($expectedString, $tryBlock);
     }
 
     public function renderDataProvider(): array

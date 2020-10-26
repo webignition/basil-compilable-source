@@ -4,14 +4,11 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Annotation;
 
-use webignition\BasilCompilableSource\RenderTrait;
 use webignition\StubbleResolvable\Resolvable;
 use webignition\StubbleResolvable\ResolvableInterface;
 
 abstract class AbstractAnnotation implements AnnotationInterface, ResolvableInterface
 {
-    use RenderTrait;
-
     private const RENDER_TEMPLATE = '@{{ name }} {{ arguments }}';
 
     private string $name;

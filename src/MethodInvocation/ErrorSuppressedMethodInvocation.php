@@ -6,12 +6,9 @@ namespace webignition\BasilCompilableSource\MethodInvocation;
 
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\MethodArguments\MethodArgumentsInterface;
-use webignition\BasilCompilableSource\RenderTrait;
 
 class ErrorSuppressedMethodInvocation implements MethodInvocationInterface
 {
-    use RenderTrait;
-
     private MethodInvocationInterface $invocation;
 
     public function __construct(MethodInvocationInterface $invocation)

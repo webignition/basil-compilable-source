@@ -9,7 +9,6 @@ use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\HasMetadataTrait;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\RenderTrait;
 use webignition\StubbleResolvable\ResolvableCollection;
 use webignition\StubbleResolvable\ResolvableInterface;
 use webignition\StubbleResolvable\ResolvedTemplateMutationInterface;
@@ -19,7 +18,6 @@ class MethodArguments implements MethodArgumentsInterface, ResolvedTemplateMutat
 {
     use DeferredResolvableCreationTrait;
     use HasMetadataTrait;
-    use RenderTrait;
 
     public const FORMAT_INLINE = 'inline';
     public const FORMAT_STACKED = 'stacked';

@@ -7,8 +7,9 @@ namespace webignition\BasilCompilableSource\Tests\Unit\Expression;
 use webignition\BasilCompilableSource\Expression\ComparisonExpression;
 use webignition\BasilCompilableSource\Expression\EncapsulatedExpression;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
+use webignition\BasilCompilableSource\Tests\Unit\AbstractResolvableTest;
 
-class EncapsulatedExpressionTest extends \PHPUnit\Framework\TestCase
+class EncapsulatedExpressionTest extends AbstractResolvableTest
 {
     public function testCreate()
     {
@@ -23,7 +24,7 @@ class EncapsulatedExpressionTest extends \PHPUnit\Framework\TestCase
      */
     public function testRender(EncapsulatedExpression $expression, string $expectedString)
     {
-        $this->assertSame($expectedString, $expression->render());
+        $this->assertRenderResolvable($expectedString, $expression);
     }
 
     public function renderDataProvider(): array

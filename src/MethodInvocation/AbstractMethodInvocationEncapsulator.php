@@ -6,12 +6,9 @@ namespace webignition\BasilCompilableSource\MethodInvocation;
 
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\MethodArguments\MethodArgumentsInterface;
-use webignition\BasilCompilableSource\RenderTrait;
 
 abstract class AbstractMethodInvocationEncapsulator implements InvocableInterface
 {
-    use RenderTrait;
-
     protected MethodInvocation $invocation;
 
     public function __construct(string $methodName, ?MethodArgumentsInterface $arguments = null)

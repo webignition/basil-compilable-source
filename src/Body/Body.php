@@ -11,7 +11,6 @@ use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\HasMetadataInterface;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\RenderTrait;
 use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\StubbleResolvable\ResolvableCollection;
 use webignition\StubbleResolvable\ResolvableInterface;
@@ -21,7 +20,6 @@ use webignition\StubbleResolvable\ResolvedTemplateMutatorResolvable;
 class Body implements BodyInterface, ResolvedTemplateMutationInterface
 {
     use DeferredResolvableCreationTrait;
-    use RenderTrait;
 
     /**
      * @var BodyContentInterface[]

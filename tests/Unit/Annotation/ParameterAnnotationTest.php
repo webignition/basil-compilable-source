@@ -5,16 +5,17 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Tests\Unit\Annotation;
 
 use webignition\BasilCompilableSource\Annotation\ParameterAnnotation;
+use webignition\BasilCompilableSource\Tests\Unit\AbstractResolvableTest;
 use webignition\BasilCompilableSource\VariableName;
 
-class ParameterAnnotationTest extends \PHPUnit\Framework\TestCase
+class ParameterAnnotationTest extends AbstractResolvableTest
 {
     /**
      * @dataProvider renderDataProvider
      */
     public function testRender(ParameterAnnotation $annotation, string $expectedString)
     {
-        $this->assertSame($expectedString, $annotation->render());
+        $this->assertRenderResolvable($expectedString, $annotation);
     }
 
     public function renderDataProvider(): array

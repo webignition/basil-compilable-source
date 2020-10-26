@@ -9,10 +9,11 @@ use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\BasilCompilableSource\Tests\Unit\AbstractResolvableTest;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclaration;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclarationCollection;
 
-class ObjectTypeDeclarationCollectionTest extends TestCase
+class ObjectTypeDeclarationCollectionTest extends AbstractResolvableTest
 {
     /**
      * @dataProvider getMetadataDataProvider
@@ -49,7 +50,7 @@ class ObjectTypeDeclarationCollectionTest extends TestCase
      */
     public function testRender(ObjectTypeDeclarationCollection $collection, string $expectedString)
     {
-        $this->assertSame($expectedString, $collection->render());
+        $this->assertRenderResolvable($expectedString, $collection);
     }
 
     public function renderDataProvider(): array

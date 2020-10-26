@@ -20,10 +20,11 @@ use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\MethodInvocation\StaticObjectMethodInvocation;
 use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\BasilCompilableSource\StaticObject;
+use webignition\BasilCompilableSource\Tests\Unit\AbstractResolvableTest;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSource\VariableName;
 
-class MethodArgumentsTest extends \PHPUnit\Framework\TestCase
+class MethodArgumentsTest extends AbstractResolvableTest
 {
     /**
      * @dataProvider createDataProvider
@@ -94,7 +95,7 @@ class MethodArgumentsTest extends \PHPUnit\Framework\TestCase
      */
     public function testRender(MethodArguments $arguments, string $expectedString)
     {
-        $this->assertSame($expectedString, $arguments->render());
+        $this->assertRenderResolvable($expectedString, $arguments);
     }
 
     public function renderDataProvider(): array

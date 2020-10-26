@@ -8,8 +8,6 @@ use webignition\StubbleResolvable\ResolvableInterface;
 
 class ClassSignature implements ResolvableInterface
 {
-    use RenderTrait;
-
     private const RENDER_TEMPLATE_WITHOUT_BASE_CLASS = 'class {{ name }}';
     private const RENDER_TEMPLATE = self::RENDER_TEMPLATE_WITHOUT_BASE_CLASS . ' extends {{ base_class }}';
 

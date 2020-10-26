@@ -15,10 +15,11 @@ use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\MethodInvocation\StaticObjectMethodInvocation;
 use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\BasilCompilableSource\StaticObject;
+use webignition\BasilCompilableSource\Tests\Unit\AbstractResolvableTest;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSource\VariableDependencyCollection;
 
-class TryBlockTest extends \PHPUnit\Framework\TestCase
+class TryBlockTest extends AbstractResolvableTest
 {
     public function testGetMetadata()
     {
@@ -53,7 +54,7 @@ class TryBlockTest extends \PHPUnit\Framework\TestCase
      */
     public function testRender(TryBlock $tryBlock, string $expectedString)
     {
-        $this->assertSame($expectedString, $tryBlock->render());
+        $this->assertRenderResolvable($expectedString, $tryBlock);
     }
 
     public function renderDataProvider(): array

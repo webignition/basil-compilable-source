@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Annotation;
 
-use webignition\BasilCompilableSource\SourceInterface;
+use webignition\StubbleResolvable\ResolvableInterface;
 
-interface AnnotationInterface extends SourceInterface
+interface AnnotationInterface extends ResolvableInterface
 {
 }

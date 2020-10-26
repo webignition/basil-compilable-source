@@ -10,8 +10,6 @@ use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 
 class VariableDependency implements ExpressionInterface, VariableDependencyInterface
 {
-    use RenderTrait;
-
     private const RENDER_TEMPLATE = '{{ {{ name }} }}';
 
     private string $name;

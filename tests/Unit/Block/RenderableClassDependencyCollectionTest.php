@@ -7,16 +7,17 @@ namespace webignition\BasilCompilableSource\Tests\Unit\Block;
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSource\Block\RenderableClassDependencyCollection;
 use webignition\BasilCompilableSource\ClassName;
+use webignition\BasilCompilableSource\Tests\Unit\AbstractResolvableTest;
 use webignition\BasilCompilableSource\Tests\Unit\ClassNameTest;
 
-class RenderableClassDependencyCollectionTest extends \PHPUnit\Framework\TestCase
+class RenderableClassDependencyCollectionTest extends AbstractResolvableTest
 {
     /**
      * @dataProvider renderDataProvider
      */
     public function testRender(RenderableClassDependencyCollection $collection, string $expectedString)
     {
-        $this->assertSame($expectedString, $collection->render());
+        $this->assertRenderResolvable($expectedString, $collection);
     }
 
     public function renderDataProvider(): array

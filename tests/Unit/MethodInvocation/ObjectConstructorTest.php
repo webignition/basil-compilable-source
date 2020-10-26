@@ -12,8 +12,9 @@ use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSource\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectConstructor;
+use webignition\BasilCompilableSource\Tests\Unit\AbstractResolvableTest;
 
-class ObjectConstructorTest extends \PHPUnit\Framework\TestCase
+class ObjectConstructorTest extends AbstractResolvableTest
 {
     /**
      * @dataProvider createDataProvider
@@ -61,7 +62,7 @@ class ObjectConstructorTest extends \PHPUnit\Framework\TestCase
      */
     public function testRender(ObjectConstructor $constructor, string $expectedString)
     {
-        $this->assertSame($expectedString, $constructor->render());
+        $this->assertRenderResolvable($expectedString, $constructor);
     }
 
     public function renderDataProvider(): array

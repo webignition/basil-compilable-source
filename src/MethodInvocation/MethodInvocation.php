@@ -7,12 +7,9 @@ namespace webignition\BasilCompilableSource\MethodInvocation;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSource\MethodArguments\MethodArgumentsInterface;
-use webignition\BasilCompilableSource\RenderTrait;
 
 class MethodInvocation implements MethodInvocationInterface
 {
-    use RenderTrait;
-
     private const RENDER_TEMPLATE = '{{ call }}({{ arguments }})';
 
     private string $methodName;

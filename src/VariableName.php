@@ -11,7 +11,6 @@ use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 class VariableName implements ExpressionInterface, VariablePlaceholderInterface
 {
     use ResolvableStringableTrait;
-    use RenderTrait;
 
     private string $name;
     private MetadataInterface $metadata;

@@ -8,8 +8,9 @@ use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\Expression\UseExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
+use webignition\BasilCompilableSource\Tests\Unit\AbstractResolvableTest;
 
-class UseExpressionTest extends \PHPUnit\Framework\TestCase
+class UseExpressionTest extends AbstractResolvableTest
 {
     public function testCreate()
     {
@@ -23,7 +24,7 @@ class UseExpressionTest extends \PHPUnit\Framework\TestCase
      */
     public function testRender(UseExpression $expression, string $expectedString)
     {
-        $this->assertSame($expectedString, $expression->render());
+        $this->assertRenderResolvable($expectedString, $expression);
     }
 
     public function renderDataProvider(): array
