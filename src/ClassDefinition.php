@@ -9,6 +9,7 @@ use webignition\BasilCompilableSource\Block\RenderableClassDependencyCollection;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\StubbleResolvable\Resolvable;
 use webignition\StubbleResolvable\ResolvableInterface;
+use webignition\StubbleResolvable\ResolvedTemplateMutatorResolvable;
 
 class ClassDefinition implements ClassDefinitionInterface, ResolvableInterface
 {
@@ -61,7 +62,18 @@ EOD;
             [
                 'dependencies' => $renderableClassNames,
                 'signature' => $this->signature,
-                'body' => $this->renderBody(),
+                'body' => new ResolvedTemplateMutatorResolvable(
+                    $this->body,
+                    function (string $resolvedTemplate): string {
+                        if ('' === $resolvedTemplate) {
+                            return '';
+                        }
+
+                        $resolvedTemplate = $this->indent($resolvedTemplate);
+
+                        return "\n" . rtrim($resolvedTemplate) . "\n";
+                    }
+                ),
             ]
         );
     }
@@ -78,17 +90,6 @@ EOD;
         }
 
         return $classDependencies;
-    }
-
-    private function renderBody(): string
-    {
-        $body = $this->body->render();
-
-        if ('' !== $body) {
-            $body = "\n" . $this->indent($body) . "\n";
-        }
-
-        return $body;
     }
 
     private function indent(string $content): string
