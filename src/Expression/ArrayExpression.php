@@ -45,27 +45,10 @@ class ArrayExpression implements ExpressionInterface, ResolvedTemplateMutationIn
         $expressionArrayPairs = [];
 
         foreach ($dataSets as $dataSetName => $dataSet) {
-            $dataSetArrayPairs = [];
-
-            foreach ($dataSet as $key => $value) {
-                $valueExpression = $value instanceof ExpressionInterface
-                    ? $value
-                    : new LiteralExpression('\'' . $value . '\'');
-
-                $dataSetArrayPairs[] = new ArrayPair(
-                    new ArrayKey($key),
-                    $valueExpression
-                );
-            }
-
-            $dataSetArrayExpression = new ArrayExpression($dataSetArrayPairs);
-
-            $dataSetArrayPair = new ArrayPair(
+            $expressionArrayPairs[] = new ArrayPair(
                 new ArrayKey((string) $dataSetName),
-                $dataSetArrayExpression
+                self::fromArray($dataSet)
             );
-
-            $expressionArrayPairs[] = $dataSetArrayPair;
         }
 
         return new ArrayExpression($expressionArrayPairs);
@@ -76,17 +59,27 @@ class ArrayExpression implements ExpressionInterface, ResolvedTemplateMutationIn
         $arrayPairs = [];
 
         foreach ($array as $key => $value) {
-            $valueExpression = self::createExpression($value);
-
-            if ($valueExpression instanceof ExpressionInterface) {
-                $arrayPairs[] = new ArrayPair(
-                    new ArrayKey((string) $key),
-                    $valueExpression
-                );
+            $arrayPair = self::createArrayPair((string) $key, $value);
+            if ($arrayPair instanceof ArrayPair) {
+                $arrayPairs[] = $arrayPair;
             }
         }
 
         return new ArrayExpression($arrayPairs);
+    }
+
+    private static function createArrayPair(string $key, $value): ?ArrayPair
+    {
+        $valueExpression = self::createExpression($value);
+
+        if ($valueExpression instanceof ExpressionInterface) {
+            return new ArrayPair(
+                new ArrayKey((string) $key),
+                $valueExpression
+            );
+        }
+
+        return null;
     }
 
     private static function createExpression($value): ?ExpressionInterface
