@@ -71,7 +71,6 @@ class ArrayExpression implements ExpressionInterface, ResolvedTemplateMutationIn
     private static function createArrayPair(string $key, $value): ?ArrayPair
     {
         $valueExpression = self::createExpression($value);
-
         if ($valueExpression instanceof ExpressionInterface) {
             return new ArrayPair(
                 new ArrayKey((string) $key),
@@ -89,7 +88,11 @@ class ArrayExpression implements ExpressionInterface, ResolvedTemplateMutationIn
         }
 
         if (is_scalar($value)) {
-            return self::createLiteralExpressionFromScalar($value);
+            if (is_string($value)) {
+                $value = '\'' . $value . '\'';
+            }
+
+            return new LiteralExpression((string) $value);
         }
 
         if (is_array($value)) {
@@ -97,15 +100,6 @@ class ArrayExpression implements ExpressionInterface, ResolvedTemplateMutationIn
         }
 
         return null;
-    }
-
-    private static function createLiteralExpressionFromScalar($value): ExpressionInterface
-    {
-        if (is_string($value)) {
-            $value = '\'' . $value . '\'';
-        }
-
-        return new LiteralExpression((string) $value);
     }
 
     public function getMetadata(): MetadataInterface
