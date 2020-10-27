@@ -71,6 +71,50 @@ class ArrayExpression implements ExpressionInterface, ResolvedTemplateMutationIn
         return new ArrayExpression($expressionArrayPairs);
     }
 
+    public static function fromArray(array $array): self
+    {
+        $arrayPairs = [];
+
+        foreach ($array as $key => $value) {
+            $valueExpression = self::createExpression($value);
+
+            if ($valueExpression instanceof ExpressionInterface) {
+                $arrayPairs[] = new ArrayPair(
+                    new ArrayKey((string) $key),
+                    $valueExpression
+                );
+            }
+        }
+
+        return new ArrayExpression($arrayPairs);
+    }
+
+    private static function createExpression($value): ?ExpressionInterface
+    {
+        if ($value instanceof ExpressionInterface) {
+            return $value;
+        }
+
+        if (is_scalar($value)) {
+            return self::createLiteralExpressionFromScalar($value);
+        }
+
+        if (is_array($value)) {
+            return self::fromArray($value);
+        }
+
+        return null;
+    }
+
+    private static function createLiteralExpressionFromScalar($value): ExpressionInterface
+    {
+        if (is_string($value)) {
+            $value = '\'' . $value . '\'';
+        }
+
+        return new LiteralExpression((string) $value);
+    }
+
     public function getMetadata(): MetadataInterface
     {
         $metadata = new Metadata();
