@@ -55,14 +55,19 @@ class ClassDependencyCollection implements
         return 0 === $this->count();
     }
 
-    public function getResolvedTemplateMutator(): callable
+    /**
+     * @return callable[]
+     */
+    public function getResolvedTemplateMutators(): array
     {
-        return function (string $resolvedTemplate): string {
-            $lines = explode("\n", $resolvedTemplate);
-            sort($lines);
+        return [
+            function (string $resolvedTemplate): string {
+                $lines = explode("\n", $resolvedTemplate);
+                sort($lines);
 
-            return implode("\n", $lines);
-        };
+                return implode("\n", $lines);
+            },
+        ];
     }
 
     /**

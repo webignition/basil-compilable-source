@@ -52,15 +52,20 @@ EOD;
         return $this->merge($addition, $this);
     }
 
-    public function getResolvedTemplateMutator(): callable
+    /**
+     * @return callable[]
+     */
+    public function getResolvedTemplateMutators(): array
     {
-        return function (string $resolvedTemplate): string {
-            if ('' === $resolvedTemplate) {
-                return self::RENDER_TEMPLATE_EMPTY;
-            }
+        return [
+            function (string $resolvedTemplate): string {
+                if ('' === $resolvedTemplate) {
+                    return self::RENDER_TEMPLATE_EMPTY;
+                }
 
-            return sprintf(self::RENDER_TEMPLATE, $resolvedTemplate);
-        };
+                return sprintf(self::RENDER_TEMPLATE, $resolvedTemplate);
+            },
+        ];
     }
 
     private function merge(DocBlock $source, DocBlock $addition): self
