@@ -36,39 +36,66 @@ class ArrayExpression implements ExpressionInterface, ResolvedTemplateMutationIn
     }
 
     /**
-     * @param array<string|int, array<string, string|int|ExpressionInterface>> $dataSets
+     * @param array<mixed> $array
      *
      * @return self
      */
-    public static function fromDataSets(array $dataSets): self
+    public static function fromArray(array $array): self
     {
-        $expressionArrayPairs = [];
+        $arrayPairs = [];
 
-        foreach ($dataSets as $dataSetName => $dataSet) {
-            $dataSetArrayPairs = [];
-
-            foreach ($dataSet as $key => $value) {
-                $valueExpression = $value instanceof ExpressionInterface
-                    ? $value
-                    : new LiteralExpression('\'' . $value . '\'');
-
-                $dataSetArrayPairs[] = new ArrayPair(
-                    new ArrayKey($key),
-                    $valueExpression
-                );
+        foreach ($array as $key => $value) {
+            $arrayPair = self::createArrayPair((string) $key, $value);
+            if ($arrayPair instanceof ArrayPair) {
+                $arrayPairs[] = $arrayPair;
             }
-
-            $dataSetArrayExpression = new ArrayExpression($dataSetArrayPairs);
-
-            $dataSetArrayPair = new ArrayPair(
-                new ArrayKey((string) $dataSetName),
-                $dataSetArrayExpression
-            );
-
-            $expressionArrayPairs[] = $dataSetArrayPair;
         }
 
-        return new ArrayExpression($expressionArrayPairs);
+        return new ArrayExpression($arrayPairs);
+    }
+
+    /**
+     * @param string $key
+     * @param mixed $value
+     * @return ArrayPair|null
+     */
+    private static function createArrayPair(string $key, $value): ?ArrayPair
+    {
+        $valueExpression = self::createExpression($value);
+        if ($valueExpression instanceof ExpressionInterface) {
+            return new ArrayPair(
+                new ArrayKey((string) $key),
+                $valueExpression
+            );
+        }
+
+        return null;
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @return ExpressionInterface|null
+     */
+    private static function createExpression($value): ?ExpressionInterface
+    {
+        if ($value instanceof ExpressionInterface) {
+            return $value;
+        }
+
+        if (is_scalar($value)) {
+            if (is_string($value)) {
+                $value = '\'' . $value . '\'';
+            }
+
+            return new LiteralExpression((string) $value);
+        }
+
+        if (is_array($value)) {
+            return self::fromArray($value);
+        }
+
+        return null;
     }
 
     public function getMetadata(): MetadataInterface

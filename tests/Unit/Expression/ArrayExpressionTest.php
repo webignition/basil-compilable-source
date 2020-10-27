@@ -262,22 +262,22 @@ class ArrayExpressionTest extends AbstractResolvableTest
     }
 
     /**
-     * @dataProvider fromDataSetsDataProvider
+     * @dataProvider fromArrayDataProvider
      */
-    public function testFromDataSets(ArrayExpression $expression, ArrayExpression $expectedExpression)
+    public function testFromArray(ArrayExpression $expression, ArrayExpression $expectedExpression)
     {
         self::assertEquals($expectedExpression, $expression);
     }
 
-    public function fromDataSetsDataProvider(): array
+    public function fromArrayDataProvider(): array
     {
         return [
             'empty' => [
-                'expression' => ArrayExpression::fromDataSets([]),
+                'expression' => ArrayExpression::fromArray([]),
                 'expectedExpression' => new ArrayExpression([]),
             ],
             'single data set with single key:value numerical name' => [
-                'expression' => ArrayExpression::fromDataSets([
+                'expression' => ArrayExpression::fromArray([
                     0 => [
                         'key1' => 'value1',
                     ],
@@ -295,7 +295,7 @@ class ArrayExpressionTest extends AbstractResolvableTest
                 ]),
             ],
             'single data set with single key:value string name' => [
-                'expression' => ArrayExpression::fromDataSets([
+                'expression' => ArrayExpression::fromArray([
                     'data-set-one' => [
                         'key1' => 'value1',
                     ],
@@ -313,7 +313,7 @@ class ArrayExpressionTest extends AbstractResolvableTest
                 ]),
             ],
             'single data set with multiple key:value numerical name' => [
-                'expression' => ArrayExpression::fromDataSets([
+                'expression' => ArrayExpression::fromArray([
                     0 => [
                         'key1' => 'value1',
                         'key2' => 'value2',
@@ -336,7 +336,7 @@ class ArrayExpressionTest extends AbstractResolvableTest
                 ]),
             ],
             'multiple data sets with multiple key:value numerical name' => [
-                'expression' => ArrayExpression::fromDataSets([
+                'expression' => ArrayExpression::fromArray([
                     0 => [
                         'key1' => 'value1',
                         'key2' => 'value2',
@@ -376,7 +376,7 @@ class ArrayExpressionTest extends AbstractResolvableTest
                 ]),
             ],
             'single data set with VariableName value' => [
-                'expression' => ArrayExpression::fromDataSets([
+                'expression' => ArrayExpression::fromArray([
                     'data-set-one' => [
                         'key1' => new VariableName('variableName'),
                     ],
@@ -394,7 +394,7 @@ class ArrayExpressionTest extends AbstractResolvableTest
                 ]),
             ],
             'single data set with ObjectMethodInvocation value' => [
-                'expression' => ArrayExpression::fromDataSets([
+                'expression' => ArrayExpression::fromArray([
                     'data-set-one' => [
                         'key1' => new ObjectMethodInvocation(
                             new VariableDependency('OBJECT'),
@@ -415,6 +415,51 @@ class ArrayExpressionTest extends AbstractResolvableTest
                             ),
                         ])
                     ),
+                ]),
+            ],
+            'array of scalars' => [
+                'expression' => ArrayExpression::fromArray([
+                    'data' => [
+                        'key1' => 'value1',
+                        'key2' => 'value2',
+                    ],
+                ]),
+                'expectedExpression' => new ArrayExpression([
+                    new ArrayPair(
+                        new ArrayKey('data'),
+                        ArrayExpression::fromArray([
+                            'key1' => 'value1',
+                            'key2' => 'value2',
+                        ])
+                    )
+                ]),
+            ],
+            'array with nested array' => [
+                'expression' => ArrayExpression::fromArray([
+                    'name' => new ObjectMethodInvocation(
+                        new VariableDependency('DEPENDENCY'),
+                        'dataName'
+                    ),
+                    'data' => [
+                        'key1' => 'value1',
+                        'key2' => 'value2',
+                    ],
+                ]),
+                'expectedExpression' => new ArrayExpression([
+                    new ArrayPair(
+                        new ArrayKey('name'),
+                        new ObjectMethodInvocation(
+                            new VariableDependency('DEPENDENCY'),
+                            'dataName'
+                        )
+                    ),
+                    new ArrayPair(
+                        new ArrayKey('data'),
+                        ArrayExpression::fromArray([
+                            'key1' => 'value1',
+                            'key2' => 'value2',
+                        ])
+                    )
                 ]),
             ],
         ];
