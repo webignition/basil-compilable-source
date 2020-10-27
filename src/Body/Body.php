@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Body;
 
-use webignition\BasilCompilableSource\DeferredResolvableCreationTrait;
+use webignition\BasilCompilableSource\DeferredResolvableCollectionTrait;
 use webignition\BasilCompilableSource\Expression\AssignmentExpression;
 use webignition\BasilCompilableSource\Expression\ClosureExpression;
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
@@ -12,14 +12,15 @@ use webignition\BasilCompilableSource\HasMetadataInterface;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\Statement\Statement;
+use webignition\Stubble\CollectionItemContext;
 use webignition\StubbleResolvable\ResolvableCollection;
+use webignition\StubbleResolvable\ResolvableCollectionInterface;
 use webignition\StubbleResolvable\ResolvableInterface;
-use webignition\StubbleResolvable\ResolvedTemplateMutationInterface;
 use webignition\StubbleResolvable\ResolvedTemplateMutatorResolvable;
 
-class Body implements BodyInterface, ResolvedTemplateMutationInterface
+class Body implements BodyInterface, ResolvableCollectionInterface
 {
-    use DeferredResolvableCreationTrait;
+    use DeferredResolvableCollectionTrait;
 
     /**
      * @var BodyContentInterface[]
@@ -84,13 +85,6 @@ class Body implements BodyInterface, ResolvedTemplateMutationInterface
         return $this->metadata;
     }
 
-    public function getResolvedTemplateMutator(): callable
-    {
-        return function (string $resolvedTemplate): string {
-            return rtrim($resolvedTemplate);
-        };
-    }
-
     protected function createResolvable(): ResolvableInterface
     {
         $resolvables = [];
@@ -98,8 +92,8 @@ class Body implements BodyInterface, ResolvedTemplateMutationInterface
         foreach ($this->content as $item) {
             $resolvables[] = new ResolvedTemplateMutatorResolvable(
                 $item,
-                function (string $resolvedTemplate): string {
-                    return $this->resolvedItemTemplateMutator($resolvedTemplate);
+                function (string $resolvedTemplate, ?CollectionItemContext $context): string {
+                    return $this->resolvedItemTemplateMutator($resolvedTemplate, $context);
                 }
             );
         }
@@ -107,9 +101,14 @@ class Body implements BodyInterface, ResolvedTemplateMutationInterface
         return ResolvableCollection::create($resolvables);
     }
 
-    private function resolvedItemTemplateMutator(string $resolvedTemplate): string
+    private function resolvedItemTemplateMutator(string $resolvedTemplate, ?CollectionItemContext $context): string
     {
-        return rtrim($resolvedTemplate) . "\n";
+        $appendNewLine = $context instanceof CollectionItemContext && false === $context->isLast();
+        if ($appendNewLine) {
+            $resolvedTemplate .= "\n";
+        }
+
+        return $resolvedTemplate;
     }
 
     /**

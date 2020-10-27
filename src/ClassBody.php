@@ -6,14 +6,15 @@ namespace webignition\BasilCompilableSource;
 
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\Stubble\CollectionItemContext;
 use webignition\StubbleResolvable\ResolvableCollection;
+use webignition\StubbleResolvable\ResolvableCollectionInterface;
 use webignition\StubbleResolvable\ResolvableInterface;
-use webignition\StubbleResolvable\ResolvedTemplateMutationInterface;
 use webignition\StubbleResolvable\ResolvedTemplateMutatorResolvable;
 
-class ClassBody implements ResolvableInterface, ResolvedTemplateMutationInterface
+class ClassBody implements ResolvableInterface, ResolvableCollectionInterface
 {
-    use DeferredResolvableCreationTrait;
+    use DeferredResolvableCollectionTrait;
 
     /**
      * @var MethodDefinitionInterface[]
@@ -53,13 +54,6 @@ class ClassBody implements ResolvableInterface, ResolvedTemplateMutationInterfac
         return $metadata;
     }
 
-    public function getResolvedTemplateMutator(): callable
-    {
-        return function (string $resolvedTemplate): string {
-            return rtrim($resolvedTemplate);
-        };
-    }
-
     protected function createResolvable(): ResolvableInterface
     {
         $resolvables = [];
@@ -67,8 +61,8 @@ class ClassBody implements ResolvableInterface, ResolvedTemplateMutationInterfac
         foreach ($this->methods as $method) {
             $resolvables[] = new ResolvedTemplateMutatorResolvable(
                 $method,
-                function (string $resolvedTemplate): string {
-                    return $this->methodResolvedTemplateMutator($resolvedTemplate);
+                function (string $resolvedTemplate, ?CollectionItemContext $context): string {
+                    return $this->methodResolvedTemplateMutator($resolvedTemplate, $context);
                 }
             );
         }
@@ -76,8 +70,13 @@ class ClassBody implements ResolvableInterface, ResolvedTemplateMutationInterfac
         return ResolvableCollection::create($resolvables);
     }
 
-    private function methodResolvedTemplateMutator(string $resolvedTemplate): string
+    private function methodResolvedTemplateMutator(string $resolvedTemplate, ?CollectionItemContext $context): string
     {
-        return rtrim($resolvedTemplate) . "\n\n";
+        $appendNewLine = $context instanceof CollectionItemContext && false === $context->isLast();
+        if ($appendNewLine) {
+            $resolvedTemplate .= "\n\n";
+        }
+
+        return $resolvedTemplate;
     }
 }

@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Block;
 
 use webignition\BasilCompilableSource\ClassName;
-use webignition\BasilCompilableSource\DeferredResolvableCreationTrait;
+use webignition\BasilCompilableSource\DeferredResolvableCollectionTrait;
 use webignition\BasilCompilableSource\Expression\UseExpression;
 use webignition\BasilCompilableSource\Statement\Statement;
+use webignition\Stubble\CollectionItemContext;
 use webignition\StubbleResolvable\ResolvableCollection;
+use webignition\StubbleResolvable\ResolvableCollectionInterface;
 use webignition\StubbleResolvable\ResolvableInterface;
 use webignition\StubbleResolvable\ResolvedTemplateMutationInterface;
 use webignition\StubbleResolvable\ResolvedTemplateMutatorResolvable;
@@ -16,9 +18,10 @@ use webignition\StubbleResolvable\ResolvedTemplateMutatorResolvable;
 class ClassDependencyCollection implements
     \Countable,
     ResolvableInterface,
-    ResolvedTemplateMutationInterface
+    ResolvedTemplateMutationInterface,
+    ResolvableCollectionInterface
 {
-    use DeferredResolvableCreationTrait;
+    use DeferredResolvableCollectionTrait;
 
     /**
      * @var ClassName[]
@@ -58,7 +61,7 @@ class ClassDependencyCollection implements
             $lines = explode("\n", $resolvedTemplate);
             sort($lines);
 
-            return implode("\n", array_filter($lines));
+            return implode("\n", $lines);
         };
     }
 
@@ -78,8 +81,8 @@ class ClassDependencyCollection implements
 
             $useStatementResolvables[] = new ResolvedTemplateMutatorResolvable(
                 $useStatement,
-                function (string $resolvedTemplate) {
-                    return $this->useStatementResolvedTemplateMutator($resolvedTemplate);
+                function (string $resolvedTemplate, ?CollectionItemContext $context) {
+                    return $this->useStatementResolvedTemplateMutator($resolvedTemplate, $context);
                 }
             );
         }
@@ -100,8 +103,15 @@ class ClassDependencyCollection implements
         return false;
     }
 
-    private function useStatementResolvedTemplateMutator(string $resolvedTemplate): string
-    {
-        return $resolvedTemplate . "\n";
+    private function useStatementResolvedTemplateMutator(
+        string $resolvedTemplate,
+        ?CollectionItemContext $context
+    ): string {
+        $appendNewLine = $context instanceof CollectionItemContext && false === $context->isLast();
+        if ($appendNewLine) {
+            $resolvedTemplate .= "\n";
+        }
+
+        return $resolvedTemplate;
     }
 }

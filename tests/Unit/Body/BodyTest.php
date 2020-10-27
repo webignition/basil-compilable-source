@@ -229,6 +229,35 @@ class BodyTest extends AbstractResolvableTest
                     '"literal from statement";' . "\n" .
                     'return;',
             ],
+            'explicit trailing empty line' => [
+                'body' => new Body([
+                    new SingleLineComment(
+                        'comment 1',
+                    ),
+                    new EmptyLine(),
+                ]),
+                'expectedString' =>
+                    '// comment 1' . "\n",
+            ],
+            'body containing bodies with explicity trailing empty line' => [
+                'body' => new Body([
+                    new Body([
+                        new SingleLineComment(
+                            'comment 1',
+                        ),
+                        new EmptyLine(),
+                    ]),
+                    new Body([
+                        new SingleLineComment(
+                            'comment 2'
+                        ),
+                    ]),
+                ]),
+                'expectedString' =>
+                    '// comment 1' . "\n" .
+                    "\n" .
+                    '// comment 2',
+            ],
         ];
     }
 
