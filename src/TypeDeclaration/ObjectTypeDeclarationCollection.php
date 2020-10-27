@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\TypeDeclaration;
 
-use webignition\BasilCompilableSource\DeferredResolvableCreationTrait;
+use webignition\BasilCompilableSource\DeferredResolvableCollectionTrait;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\Stubble\CollectionItemContext;
 use webignition\StubbleResolvable\ResolvableCollection;
+use webignition\StubbleResolvable\ResolvableCollectionInterface;
 use webignition\StubbleResolvable\ResolvableInterface;
 use webignition\StubbleResolvable\ResolvableWithoutContext;
 use webignition\StubbleResolvable\ResolvedTemplateMutationInterface;
@@ -15,10 +17,10 @@ use webignition\StubbleResolvable\ResolvedTemplateMutatorResolvable;
 
 class ObjectTypeDeclarationCollection implements
     TypeDeclarationCollectionInterface,
-    ResolvableInterface,
-    ResolvedTemplateMutationInterface
+    ResolvedTemplateMutationInterface,
+    ResolvableCollectionInterface
 {
-    use DeferredResolvableCreationTrait;
+    use DeferredResolvableCollectionTrait;
 
     /**
      * @var ObjectTypeDeclaration[]
@@ -61,8 +63,8 @@ class ObjectTypeDeclarationCollection implements
         foreach ($this->declarations as $declaration) {
             $resolvableDeclarations[] = new ResolvedTemplateMutatorResolvable(
                 new ResolvableWithoutContext((string) $declaration),
-                function (string $resolvedTemplate) {
-                    return $this->declarationResolvedTemplateMutator($resolvedTemplate);
+                function (string $resolvedTemplate, ?CollectionItemContext $context) {
+                    return $this->declarationResolvedTemplateMutator($resolvedTemplate, $context);
                 }
             );
         }
@@ -87,13 +89,23 @@ class ObjectTypeDeclarationCollection implements
             return $a < $b ? -1 : 1;
         });
 
-        $resolvedTemplate = implode(' | ', $parts);
-
-        return trim($resolvedTemplate, '| ');
+        return implode(' | ', $parts);
     }
 
-    private function declarationResolvedTemplateMutator(string $resolvedTemplate): string
-    {
-        return $resolvedTemplate . ' | ';
+    private function declarationResolvedTemplateMutator(
+        string $resolvedTemplate,
+        ?CollectionItemContext $context
+    ): string {
+        $appendLeadingSpace = $context instanceof CollectionItemContext && false === $context->isFirst();
+        if ($appendLeadingSpace) {
+            $resolvedTemplate = ' ' . $resolvedTemplate;
+        }
+
+        $appendSeparator = $context instanceof CollectionItemContext && false === $context->isLast();
+        if ($appendSeparator) {
+            $resolvedTemplate .= ' |';
+        }
+
+        return $resolvedTemplate;
     }
 }
