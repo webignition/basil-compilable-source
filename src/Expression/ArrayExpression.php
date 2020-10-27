@@ -108,18 +108,23 @@ class ArrayExpression implements ExpressionInterface, ResolvedTemplateMutationIn
         return $metadata;
     }
 
-    public function getResolvedTemplateMutator(): callable
+    /**
+     * @return callable[]
+     */
+    public function getResolvedTemplateMutators(): array
     {
-        return function (string $resolvedTemplate) {
-            $prefix = '[';
-            $suffix = ']';
+        return [
+            function (string $resolvedTemplate) {
+                $prefix = '[';
+                $suffix = ']';
 
-            if ('' !== $resolvedTemplate) {
-                $prefix .= "\n";
-            }
+                if ('' !== $resolvedTemplate) {
+                    $prefix .= "\n";
+                }
 
-            return $prefix . $resolvedTemplate . $suffix;
-        };
+                return $prefix . $resolvedTemplate . $suffix;
+            },
+        ];
     }
 
     protected function createResolvable(): ResolvableInterface

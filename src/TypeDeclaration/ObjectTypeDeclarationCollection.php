@@ -50,11 +50,16 @@ class ObjectTypeDeclarationCollection implements
         return $metadata;
     }
 
-    public function getResolvedTemplateMutator(): callable
+    /**
+     * @return callable[]
+     */
+    public function getResolvedTemplateMutators(): array
     {
-        return function (string $resolvedTemplate): string {
-            return $this->resolvedTemplateMutator($resolvedTemplate);
-        };
+        return [
+            function (string $resolvedTemplate): string {
+                return $this->resolvedTemplateMutator($resolvedTemplate);
+            },
+        ];
     }
 
     protected function createResolvable(): ResolvableInterface
