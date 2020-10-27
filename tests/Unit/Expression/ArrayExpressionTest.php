@@ -262,23 +262,22 @@ class ArrayExpressionTest extends AbstractResolvableTest
     }
 
     /**
-     * @!dataProvider fromDataSetsDataProvider
      * @dataProvider fromArrayDataProvider
      */
-    public function testCreateFrom(ArrayExpression $expression, ArrayExpression $expectedExpression)
+    public function testFromArray(ArrayExpression $expression, ArrayExpression $expectedExpression)
     {
         self::assertEquals($expectedExpression, $expression);
     }
 
-    public function fromDataSetsDataProvider(): array
+    public function fromArrayDataProvider(): array
     {
         return [
-            'fromDataSets: empty' => [
-                'expression' => ArrayExpression::fromDataSets([]),
+            'empty' => [
+                'expression' => ArrayExpression::fromArray([]),
                 'expectedExpression' => new ArrayExpression([]),
             ],
-            'fromDataSets: single data set with single key:value numerical name' => [
-                'expression' => ArrayExpression::fromDataSets([
+            'single data set with single key:value numerical name' => [
+                'expression' => ArrayExpression::fromArray([
                     0 => [
                         'key1' => 'value1',
                     ],
@@ -295,8 +294,8 @@ class ArrayExpressionTest extends AbstractResolvableTest
                     ),
                 ]),
             ],
-            'fromDataSets: single data set with single key:value string name' => [
-                'expression' => ArrayExpression::fromDataSets([
+            'single data set with single key:value string name' => [
+                'expression' => ArrayExpression::fromArray([
                     'data-set-one' => [
                         'key1' => 'value1',
                     ],
@@ -313,8 +312,8 @@ class ArrayExpressionTest extends AbstractResolvableTest
                     ),
                 ]),
             ],
-            'fromDataSets: single data set with multiple key:value numerical name' => [
-                'expression' => ArrayExpression::fromDataSets([
+            'single data set with multiple key:value numerical name' => [
+                'expression' => ArrayExpression::fromArray([
                     0 => [
                         'key1' => 'value1',
                         'key2' => 'value2',
@@ -336,8 +335,8 @@ class ArrayExpressionTest extends AbstractResolvableTest
                     ),
                 ]),
             ],
-            'fromDataSets: multiple data sets with multiple key:value numerical name' => [
-                'expression' => ArrayExpression::fromDataSets([
+            'multiple data sets with multiple key:value numerical name' => [
+                'expression' => ArrayExpression::fromArray([
                     0 => [
                         'key1' => 'value1',
                         'key2' => 'value2',
@@ -376,8 +375,8 @@ class ArrayExpressionTest extends AbstractResolvableTest
                     ),
                 ]),
             ],
-            'fromDataSets: single data set with VariableName value' => [
-                'expression' => ArrayExpression::fromDataSets([
+            'single data set with VariableName value' => [
+                'expression' => ArrayExpression::fromArray([
                     'data-set-one' => [
                         'key1' => new VariableName('variableName'),
                     ],
@@ -394,8 +393,8 @@ class ArrayExpressionTest extends AbstractResolvableTest
                     ),
                 ]),
             ],
-            'fromDataSets: single data set with ObjectMethodInvocation value' => [
-                'expression' => ArrayExpression::fromDataSets([
+            'single data set with ObjectMethodInvocation value' => [
+                'expression' => ArrayExpression::fromArray([
                     'data-set-one' => [
                         'key1' => new ObjectMethodInvocation(
                             new VariableDependency('OBJECT'),
@@ -418,17 +417,7 @@ class ArrayExpressionTest extends AbstractResolvableTest
                     ),
                 ]),
             ],
-        ];
-    }
-
-    public function fromArrayDataProvider(): array
-    {
-        return [
-            'fromArray: empty' => [
-                'expression' => ArrayExpression::fromArray([]),
-                'expectedExpression' => new ArrayExpression([]),
-            ],
-            'fromArray: scalars' => [
+            'array of scalars' => [
                 'expression' => ArrayExpression::fromArray([
                     'data' => [
                         'key1' => 'value1',
@@ -445,7 +434,7 @@ class ArrayExpressionTest extends AbstractResolvableTest
                     )
                 ]),
             ],
-            'fromArray: nested array expression' => [
+            'array with nested array' => [
                 'expression' => ArrayExpression::fromArray([
                     'name' => new ObjectMethodInvocation(
                         new VariableDependency('DEPENDENCY'),

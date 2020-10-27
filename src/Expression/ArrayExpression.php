@@ -36,24 +36,10 @@ class ArrayExpression implements ExpressionInterface, ResolvedTemplateMutationIn
     }
 
     /**
-     * @param array<string|int, array<string, string|int|ExpressionInterface>> $dataSets
+     * @param array<string|int, array<string, string|int|ExpressionInterface>> $array
      *
      * @return self
      */
-    public static function fromDataSets(array $dataSets): self
-    {
-        $expressionArrayPairs = [];
-
-        foreach ($dataSets as $dataSetName => $dataSet) {
-            $expressionArrayPairs[] = new ArrayPair(
-                new ArrayKey((string) $dataSetName),
-                self::fromArray($dataSet)
-            );
-        }
-
-        return new ArrayExpression($expressionArrayPairs);
-    }
-
     public static function fromArray(array $array): self
     {
         $arrayPairs = [];
