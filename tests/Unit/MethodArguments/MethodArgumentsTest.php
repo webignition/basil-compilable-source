@@ -8,6 +8,7 @@ use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\EmptyLine;
+use webignition\BasilCompilableSource\Expression\ArrayExpression;
 use webignition\BasilCompilableSource\Expression\AssignmentExpression;
 use webignition\BasilCompilableSource\Expression\ClosureExpression;
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
@@ -175,6 +176,30 @@ class MethodArgumentsTest extends AbstractResolvableTest
                     "\n" .
                     '        return $variable;' . "\n" .
                     '    })()' . "\n",
+            ],
+            'single array expression, pair contains inner array' => [
+                'arguments' => new MethodArguments(
+                    [
+                        ArrayExpression::fromArray([
+                            'name' => new ObjectMethodInvocation(
+                                new VariableDependency('DEPENDENCY'),
+                                'dataName'
+                            ),
+                            'data' => [
+                                'key1' => 'value1',
+                                'key2' => 'value2',
+                            ],
+                        ])
+                    ]
+                ),
+                'expectedString' =>
+                    "[\n" .
+                    "    'name' => {{ DEPENDENCY }}->dataName(),\n" .
+                    "    'data' => [\n" .
+                    "        'key1' => 'value1',\n" .
+                    "        'key2' => 'value2',\n" .
+                    "    ],\n" .
+                    "]",
             ],
         ];
     }
