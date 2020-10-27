@@ -11,7 +11,7 @@ use webignition\StubbleResolvable\Resolvable;
 use webignition\StubbleResolvable\ResolvableInterface;
 use webignition\StubbleResolvable\ResolvedTemplateMutatorResolvable;
 
-class ClassDefinition implements ClassDefinitionInterface, ResolvableInterface
+class ClassDefinition implements ClassDefinitionInterface
 {
     use DeferredResolvableCreationTrait;
 

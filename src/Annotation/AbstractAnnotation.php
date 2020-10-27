@@ -7,7 +7,7 @@ namespace webignition\BasilCompilableSource\Annotation;
 use webignition\StubbleResolvable\Resolvable;
 use webignition\StubbleResolvable\ResolvableInterface;
 
-abstract class AbstractAnnotation implements AnnotationInterface, ResolvableInterface
+abstract class AbstractAnnotation implements AnnotationInterface
 {
     private const RENDER_TEMPLATE = '@{{ name }} {{ arguments }}';
 
