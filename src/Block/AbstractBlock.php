@@ -36,10 +36,6 @@ abstract class AbstractBlock implements HasMetadataInterface, ResolvableInterfac
 
     private function indent(string $content): string
     {
-        if ('' === $content) {
-            return '';
-        }
-
         $lines = explode("\n", $content);
 
         array_walk($lines, function (&$line) {
