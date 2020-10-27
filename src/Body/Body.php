@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSource\Body;
 
-use webignition\BasilCompilableSource\DeferredResolvableCreationTrait;
+use webignition\BasilCompilableSource\DeferredResolvableCollectionTrait;
 use webignition\BasilCompilableSource\Expression\AssignmentExpression;
 use webignition\BasilCompilableSource\Expression\ClosureExpression;
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
@@ -20,7 +20,7 @@ use webignition\StubbleResolvable\ResolvedTemplateMutatorResolvable;
 
 class Body implements BodyInterface, ResolvableCollectionInterface
 {
-    use DeferredResolvableCreationTrait;
+    use DeferredResolvableCollectionTrait;
 
     /**
      * @var BodyContentInterface[]
@@ -158,23 +158,5 @@ class Body implements BodyInterface, ResolvableCollectionInterface
         }
 
         return $metadata;
-    }
-
-    public function count(): int
-    {
-        $resolvable = $this->getResolvable();
-
-        return $resolvable instanceof ResolvableCollectionInterface
-            ? count($resolvable)
-            : 1;
-    }
-
-    public function getIndexForItem($item): ?int
-    {
-        $resolvable = $this->getResolvable();
-
-        return $resolvable instanceof ResolvableCollectionInterface
-            ? $resolvable->getIndexForItem($item)
-            : null;
     }
 }
