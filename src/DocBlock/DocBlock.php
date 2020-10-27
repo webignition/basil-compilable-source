@@ -5,16 +5,18 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\DocBlock;
 
 use webignition\BasilCompilableSource\Annotation\AnnotationInterface;
-use webignition\BasilCompilableSource\DeferredResolvableCreationTrait;
+use webignition\BasilCompilableSource\DeferredResolvableCollectionTrait;
+use webignition\Stubble\CollectionItemContext;
 use webignition\StubbleResolvable\ResolvableCollection;
+use webignition\StubbleResolvable\ResolvableCollectionInterface;
 use webignition\StubbleResolvable\ResolvableInterface;
 use webignition\StubbleResolvable\ResolvableWithoutContext;
 use webignition\StubbleResolvable\ResolvedTemplateMutationInterface;
 use webignition\StubbleResolvable\ResolvedTemplateMutatorResolvable;
 
-class DocBlock implements ResolvableInterface, ResolvedTemplateMutationInterface
+class DocBlock implements ResolvableInterface, ResolvedTemplateMutationInterface, ResolvableCollectionInterface
 {
-    use DeferredResolvableCreationTrait;
+    use DeferredResolvableCollectionTrait;
 
     private const RENDER_TEMPLATE_EMPTY = <<<'EOD'
 /**
@@ -57,7 +59,7 @@ EOD;
                 return self::RENDER_TEMPLATE_EMPTY;
             }
 
-            return sprintf(self::RENDER_TEMPLATE, rtrim($resolvedTemplate));
+            return sprintf(self::RENDER_TEMPLATE, $resolvedTemplate);
         };
     }
 
@@ -81,8 +83,8 @@ EOD;
         array_walk($resolvableItems, function (&$resolvable) {
             $resolvable = new ResolvedTemplateMutatorResolvable(
                 $resolvable,
-                function (string $resolvedLine): string {
-                    return $this->resolvedLineTemplateMutator($resolvedLine);
+                function (string $resolvedLine, ?CollectionItemContext $context): string {
+                    return $this->resolvedLineTemplateMutator($resolvedLine, $context);
                 }
             );
         });
@@ -90,7 +92,7 @@ EOD;
         return ResolvableCollection::create($resolvableItems);
     }
 
-    private function resolvedLineTemplateMutator(string $resolvedLine): string
+    private function resolvedLineTemplateMutator(string $resolvedLine, ?CollectionItemContext $context): string
     {
         if ('' === trim($resolvedLine)) {
             $resolvedLine = ' *';
@@ -98,6 +100,11 @@ EOD;
             $resolvedLine = ' * ' . $resolvedLine;
         }
 
-        return $resolvedLine . "\n";
+        $appendNewLine = $context instanceof CollectionItemContext && false === $context->isLast();
+        if ($appendNewLine) {
+            $resolvedLine .= "\n";
+        }
+
+        return $resolvedLine;
     }
 }
