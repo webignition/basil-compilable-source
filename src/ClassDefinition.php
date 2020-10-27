@@ -14,6 +14,7 @@ use webignition\StubbleResolvable\ResolvedTemplateMutatorResolvable;
 class ClassDefinition implements ClassDefinitionInterface
 {
     use DeferredResolvableCreationTrait;
+    use IndentTrait;
 
     private const RENDER_TEMPLATE = <<<'EOD'
 {{ dependencies }}
@@ -89,18 +90,5 @@ EOD;
         }
 
         return $classDependencies;
-    }
-
-    private function indent(string $content): string
-    {
-        $lines = explode("\n", $content);
-
-        array_walk($lines, function (&$line) {
-            if ('' !== $line) {
-                $line = '    ' . $line;
-            }
-        });
-
-        return implode("\n", $lines);
     }
 }

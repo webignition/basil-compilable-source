@@ -6,12 +6,15 @@ namespace webignition\BasilCompilableSource\Block;
 
 use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\HasMetadataInterface;
+use webignition\BasilCompilableSource\IndentTrait;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\StubbleResolvable\ResolvableInterface;
 use webignition\StubbleResolvable\ResolvedTemplateMutatorResolvable;
 
 abstract class AbstractBlock implements HasMetadataInterface, ResolvableInterface
 {
+    use IndentTrait;
+
     protected BodyInterface $body;
 
     public function __construct(BodyInterface $body)
@@ -32,18 +35,5 @@ abstract class AbstractBlock implements HasMetadataInterface, ResolvableInterfac
                 return rtrim($this->indent($resolvedTemplate));
             }
         );
-    }
-
-    private function indent(string $content): string
-    {
-        $lines = explode("\n", $content);
-
-        array_walk($lines, function (&$line) {
-            if ('' !== $line) {
-                $line = '    ' . $line;
-            }
-        });
-
-        return implode("\n", $lines);
     }
 }
