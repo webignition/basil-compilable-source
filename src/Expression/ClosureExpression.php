@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource\Expression;
 
 use webignition\BasilCompilableSource\Body\BodyInterface;
+use webignition\BasilCompilableSource\IndentTrait;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\StubbleResolvable\ResolvedTemplateMutatorResolvable;
 
 class ClosureExpression implements ExpressionInterface
 {
+    use IndentTrait;
+
     private const RENDER_TEMPLATE = <<<'EOD'
 (function () {
 {{ body }}
@@ -43,18 +46,5 @@ EOD;
                 }
             ),
         ];
-    }
-
-    private function indent(string $content): string
-    {
-        $lines = explode("\n", $content);
-
-        array_walk($lines, function (&$line) {
-            if ('' !== $line) {
-                $line = '    ' . $line;
-            }
-        });
-
-        return implode("\n", $lines);
     }
 }

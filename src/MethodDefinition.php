@@ -12,6 +12,8 @@ use webignition\StubbleResolvable\ResolvedTemplateMutatorResolvable;
 
 class MethodDefinition implements MethodDefinitionInterface
 {
+    use IndentTrait;
+
     private const RENDER_TEMPLATE_WITHOUT_DOCBLOCK = <<<'EOD'
 {{ signature }}
 {
@@ -185,23 +187,6 @@ EOD;
         });
 
         return implode(', ', $arguments);
-    }
-
-    private function indent(string $content): string
-    {
-        if ('' === $content) {
-            return '';
-        }
-
-        $lines = explode("\n", $content);
-
-        array_walk($lines, function (&$line) {
-            if ('' !== $line) {
-                $line = '    ' . $line;
-            }
-        });
-
-        return implode("\n", $lines);
     }
 
     /**
