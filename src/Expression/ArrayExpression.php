@@ -36,7 +36,7 @@ class ArrayExpression implements ExpressionInterface, ResolvedTemplateMutationIn
     }
 
     /**
-     * @param array<string|int, array<string, string|int|ExpressionInterface>> $array
+     * @param array<mixed> $array
      *
      * @return self
      */
@@ -54,6 +54,11 @@ class ArrayExpression implements ExpressionInterface, ResolvedTemplateMutationIn
         return new ArrayExpression($arrayPairs);
     }
 
+    /**
+     * @param string $key
+     * @param mixed $value
+     * @return ArrayPair|null
+     */
     private static function createArrayPair(string $key, $value): ?ArrayPair
     {
         $valueExpression = self::createExpression($value);
@@ -67,6 +72,11 @@ class ArrayExpression implements ExpressionInterface, ResolvedTemplateMutationIn
         return null;
     }
 
+    /**
+     * @param mixed $value
+     *
+     * @return ExpressionInterface|null
+     */
     private static function createExpression($value): ?ExpressionInterface
     {
         if ($value instanceof ExpressionInterface) {
