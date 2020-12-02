@@ -299,9 +299,11 @@ class MethodDefinitionTest extends AbstractResolvableTest
                             new DataProviderAnnotation('dataProviderMethodName'),
                             "\n",
                         ]));
+
+                        $methodDefinition = $methodDefinition->withDocBlock($docblock);
                     }
 
-                    return $methodDefinition->withDocBlock($docblock);
+                    return $methodDefinition;
                 })(),
                 'expectedString' =>
                     '/**' . "\n" .
