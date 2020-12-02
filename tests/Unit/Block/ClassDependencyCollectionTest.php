@@ -100,7 +100,7 @@ class ClassDependencyCollectionTest extends AbstractResolvableTest
      */
     public function testCount(ClassDependencyCollection $collection, int $expectedCount)
     {
-        self::assertSame($expectedCount, count($collection));
+        self::assertCount($expectedCount, $collection);
     }
 
     /**
