@@ -24,7 +24,7 @@ class ComparisonExpressionTest extends AbstractResolvableTest
         ExpressionInterface $rightHandSide,
         string $comparison,
         MetadataInterface $expectedMetadata
-    ) {
+    ): void {
         $expression = new ComparisonExpression($leftHandSide, $rightHandSide, $comparison);
 
         $this->assertEquals($expectedMetadata, $expression->getMetadata());
@@ -33,6 +33,9 @@ class ComparisonExpressionTest extends AbstractResolvableTest
         $this->assertSame($comparison, $expression->getComparison());
     }
 
+    /**
+     * @return array[]
+     */
     public function createDataProvider(): array
     {
         return [
@@ -61,11 +64,14 @@ class ComparisonExpressionTest extends AbstractResolvableTest
     /**
      * @dataProvider renderDataProvider
      */
-    public function testRender(ComparisonExpression $expression, string $expectedString)
+    public function testRender(ComparisonExpression $expression, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $expression);
     }
 
+    /**
+     * @return array[]
+     */
     public function renderDataProvider(): array
     {
         return [

@@ -13,13 +13,16 @@ class LiteralExpressionTest extends AbstractResolvableTest
     /**
      * @dataProvider createDataProvider
      */
-    public function testCreate(string $content)
+    public function testCreate(string $content): void
     {
         $expression = new LiteralExpression($content);
 
         $this->assertEquals(new Metadata(), $expression->getMetadata());
     }
 
+    /**
+     * @return array[]
+     */
     public function createDataProvider(): array
     {
         return [
@@ -38,11 +41,14 @@ class LiteralExpressionTest extends AbstractResolvableTest
     /**
      * @dataProvider renderDataProvider
      */
-    public function testRender(LiteralExpression $expression, string $expectedString)
+    public function testRender(LiteralExpression $expression, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $expression);
     }
 
+    /**
+     * @return array[]
+     */
     public function renderDataProvider(): array
     {
         return [

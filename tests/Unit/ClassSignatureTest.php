@@ -10,7 +10,7 @@ use webignition\BasilCompilableSource\ClassSignature;
 
 class ClassSignatureTest extends AbstractResolvableTest
 {
-    public function testGetName()
+    public function testGetName(): void
     {
         $name = 'ClassName';
         $signature = new ClassSignature($name);
@@ -21,11 +21,14 @@ class ClassSignatureTest extends AbstractResolvableTest
     /**
      * @dataProvider getBaseClassDataProvider
      */
-    public function testGetBaseClass(ClassSignature $signature, ?ClassName $expectedBaseClass)
+    public function testGetBaseClass(ClassSignature $signature, ?ClassName $expectedBaseClass): void
     {
         self::assertSame($expectedBaseClass, $signature->getBaseClass());
     }
 
+    /**
+     * @return array[]
+     */
     public function getBaseClassDataProvider(): array
     {
         $baseClass = new ClassName(TestCase::class);
@@ -45,11 +48,14 @@ class ClassSignatureTest extends AbstractResolvableTest
     /**
      * @dataProvider renderDataProvider
      */
-    public function testRender(ClassSignature $classSignature, string $expectedString)
+    public function testRender(ClassSignature $classSignature, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $classSignature);
     }
 
+    /**
+     * @return array[]
+     */
     public function renderDataProvider(): array
     {
         return [

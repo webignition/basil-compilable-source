@@ -23,7 +23,7 @@ use webignition\BasilCompilableSource\VariableDependencyCollection;
 
 class IfBlockTest extends AbstractResolvableTest
 {
-    public function testGetMetadata()
+    public function testGetMetadata(): void
     {
         $expression = new ComparisonExpression(
             new ObjectMethodInvocation(
@@ -64,11 +64,14 @@ class IfBlockTest extends AbstractResolvableTest
     /**
      * @dataProvider renderDataProvider
      */
-    public function testRender(IfBlock $ifBlock, string $expectedString)
+    public function testRender(IfBlock $ifBlock, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $ifBlock);
     }
 
+    /**
+     * @return array[]
+     */
     public function renderDataProvider(): array
     {
         return [

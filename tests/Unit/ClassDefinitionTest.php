@@ -26,7 +26,7 @@ use webignition\BasilCompilableSource\VariableName;
 
 class ClassDefinitionTest extends AbstractResolvableTest
 {
-    public function testCreate()
+    public function testCreate(): void
     {
         $signature = new ClassSignature('ClassName');
         $body = new ClassBody([]);
@@ -40,11 +40,16 @@ class ClassDefinitionTest extends AbstractResolvableTest
     /**
      * @dataProvider getMetadataDataProvider
      */
-    public function testGetMetadata(ClassDefinitionInterface $classDefinition, MetadataInterface $expectedMetadata)
-    {
+    public function testGetMetadata(
+        ClassDefinitionInterface $classDefinition,
+        MetadataInterface $expectedMetadata
+    ): void {
         $this->assertEquals($expectedMetadata, $classDefinition->getMetadata());
     }
 
+    /**
+     * @return array[]
+     */
     public function getMetadataDataProvider(): array
     {
         return [
@@ -99,11 +104,14 @@ class ClassDefinitionTest extends AbstractResolvableTest
     /**
      * @dataProvider renderDataProvider
      */
-    public function testRender(ClassDefinitionInterface $classDefinition, string $expectedString)
+    public function testRender(ClassDefinitionInterface $classDefinition, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $classDefinition);
     }
 
+    /**
+     * @return array[]
+     */
     public function renderDataProvider(): array
     {
         return [

@@ -15,11 +15,14 @@ class RenderableClassDependencyCollectionTest extends AbstractResolvableTest
     /**
      * @dataProvider renderDataProvider
      */
-    public function testRender(RenderableClassDependencyCollection $collection, string $expectedString)
+    public function testRender(RenderableClassDependencyCollection $collection, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $collection);
     }
 
+    /**
+     * @return array[]
+     */
     public function renderDataProvider(): array
     {
         return [
@@ -75,7 +78,7 @@ class RenderableClassDependencyCollectionTest extends AbstractResolvableTest
     /**
      * @dataProvider countDataProvider
      */
-    public function testCount(ClassDependencyCollection $collection, int $expectedCount)
+    public function testCount(ClassDependencyCollection $collection, int $expectedCount): void
     {
         self::assertCount($expectedCount, $collection);
     }
@@ -83,11 +86,14 @@ class RenderableClassDependencyCollectionTest extends AbstractResolvableTest
     /**
      * @dataProvider countDataProvider
      */
-    public function testCountable(ClassDependencyCollection $collection, int $expectedCount)
+    public function testCountable(ClassDependencyCollection $collection, int $expectedCount): void
     {
         self::assertCount($expectedCount, $collection);
     }
 
+    /**
+     * @return array[]
+     */
     public function countDataProvider(): array
     {
         return [
@@ -122,11 +128,14 @@ class RenderableClassDependencyCollectionTest extends AbstractResolvableTest
     /**
      * @dataProvider isEmptyDataProvider
      */
-    public function testIsEmpty(ClassDependencyCollection $collection, bool $expectedIsEmpty)
+    public function testIsEmpty(ClassDependencyCollection $collection, bool $expectedIsEmpty): void
     {
         self::assertSame($expectedIsEmpty, $collection->isEmpty());
     }
 
+    /**
+     * @return array[]
+     */
     public function isEmptyDataProvider(): array
     {
         return [

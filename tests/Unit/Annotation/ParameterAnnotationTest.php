@@ -13,11 +13,14 @@ class ParameterAnnotationTest extends AbstractResolvableTest
     /**
      * @dataProvider renderDataProvider
      */
-    public function testRender(ParameterAnnotation $annotation, string $expectedString)
+    public function testRender(ParameterAnnotation $annotation, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $annotation);
     }
 
+    /**
+     * @return array[]
+     */
     public function renderDataProvider(): array
     {
         return [

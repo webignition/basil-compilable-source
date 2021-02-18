@@ -15,7 +15,7 @@ class VariableDependencyCollectionTest extends \PHPUnit\Framework\TestCase
      * @param string[] $names
      * @param VariableDependency[] $expectedPlaceholders
      */
-    public function testCreate(array $names, array $expectedPlaceholders)
+    public function testCreate(array $names, array $expectedPlaceholders): void
     {
         $collection = new VariableDependencyCollection($names);
 
@@ -23,6 +23,9 @@ class VariableDependencyCollectionTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expectedPlaceholders, $this->getCollectionVariablePlaceholders($collection));
     }
 
+    /**
+     * @return array[]
+     */
     public function createDataProvider(): array
     {
         return [
@@ -42,7 +45,7 @@ class VariableDependencyCollectionTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    public function testMerge()
+    public function testMerge(): void
     {
         $collection = new VariableDependencyCollection(['ONE']);
 
@@ -64,7 +67,7 @@ class VariableDependencyCollectionTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testIterator()
+    public function testIterator(): void
     {
         $collectionValues = [
             'ONE' => 'ONE',

@@ -35,13 +35,16 @@ class ClassBodyTest extends AbstractResolvableTest
      * @param array<mixed> $methods
      * @param MethodDefinitionInterface[] $expectedMethods
      */
-    public function testCreate(array $methods, array $expectedMethods)
+    public function testCreate(array $methods, array $expectedMethods): void
     {
         $body = new ClassBody($methods);
 
         self::assertEquals($expectedMethods, $body->getMethods());
     }
 
+    /**
+     * @return array[]
+     */
     public function createDataProvider(): array
     {
         return [
@@ -73,11 +76,14 @@ class ClassBodyTest extends AbstractResolvableTest
     /**
      * @dataProvider getMetadataDataProvider
      */
-    public function testGetMetadata(ClassBody $body, MetadataInterface $expectedMetadata)
+    public function testGetMetadata(ClassBody $body, MetadataInterface $expectedMetadata): void
     {
         $this->assertEquals($expectedMetadata, $body->getMetadata());
     }
 
+    /**
+     * @return array[]
+     */
     public function getMetadataDataProvider(): array
     {
         return [
@@ -125,11 +131,14 @@ class ClassBodyTest extends AbstractResolvableTest
     /**
      * @dataProvider renderDataProvider
      */
-    public function testRender(ClassBody $body, string $expectedString)
+    public function testRender(ClassBody $body, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $body);
     }
 
+    /**
+     * @return array[]
+     */
     public function renderDataProvider(): array
     {
         return [

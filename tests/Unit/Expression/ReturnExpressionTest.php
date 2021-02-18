@@ -13,11 +13,14 @@ class ReturnExpressionTest extends AbstractResolvableTest
     /**
      * @dataProvider renderDataProvider
      */
-    public function testRender(ReturnExpression $expression, string $expectedString)
+    public function testRender(ReturnExpression $expression, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $expression);
     }
 
+    /**
+     * @return array[]
+     */
     public function renderDataProvider(): array
     {
         return [

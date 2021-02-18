@@ -14,7 +14,7 @@ use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclarationColle
 
 class CatchExpressionTest extends AbstractResolvableTest
 {
-    public function testGetMetadata()
+    public function testGetMetadata(): void
     {
         $typeDeclarationCollection = new ObjectTypeDeclarationCollection([
             new ObjectTypeDeclaration(new ClassName(\LogicException::class)),
@@ -33,7 +33,7 @@ class CatchExpressionTest extends AbstractResolvableTest
         $this->assertEquals($expectedMetadata, $expression->getMetadata());
     }
 
-    public function testRender()
+    public function testRender(): void
     {
         $typeDeclarationCollection = new ObjectTypeDeclarationCollection([
             new ObjectTypeDeclaration(new ClassName(\LogicException::class)),

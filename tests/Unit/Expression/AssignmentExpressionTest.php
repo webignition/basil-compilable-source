@@ -25,7 +25,7 @@ class AssignmentExpressionTest extends AbstractResolvableTest
         ExpressionInterface $value,
         string $operator,
         MetadataInterface $expectedMetadata
-    ) {
+    ): void {
         $expression = new AssignmentExpression($variable, $value, $operator);
 
         $this->assertEquals($expectedMetadata, $expression->getMetadata());
@@ -34,6 +34,9 @@ class AssignmentExpressionTest extends AbstractResolvableTest
         $this->assertSame($operator, $expression->getOperator());
     }
 
+    /**
+     * @return array[]
+     */
     public function createDataProvider(): array
     {
         return [
@@ -62,11 +65,14 @@ class AssignmentExpressionTest extends AbstractResolvableTest
     /**
      * @dataProvider renderDataProvider
      */
-    public function testRender(AssignmentExpression $expression, string $expectedString)
+    public function testRender(AssignmentExpression $expression, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $expression);
     }
 
+    /**
+     * @return array[]
+     */
     public function renderDataProvider(): array
     {
         return [

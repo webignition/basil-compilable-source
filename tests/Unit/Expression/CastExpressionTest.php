@@ -21,7 +21,7 @@ use webignition\BasilCompilableSource\VariableDependency;
 
 class CastExpressionTest extends AbstractResolvableTest
 {
-    public function testCreate()
+    public function testCreate(): void
     {
         $expression = new LiteralExpression('"literal"');
         $castExpression = new CastExpression($expression, 'string');
@@ -32,11 +32,14 @@ class CastExpressionTest extends AbstractResolvableTest
     /**
      * @dataProvider renderDataProvider
      */
-    public function testRender(CastExpression $expression, string $expectedString)
+    public function testRender(CastExpression $expression, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $expression);
     }
 
+    /**
+     * @return array[]
+     */
     public function renderDataProvider(): array
     {
         return [

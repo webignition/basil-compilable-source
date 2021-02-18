@@ -22,11 +22,14 @@ class TryCatchBlockTest extends AbstractResolvableTest
     /**
      * @dataProvider renderDataProvider
      */
-    public function testRender(TryCatchBlock $tryCatch, string $expectedString)
+    public function testRender(TryCatchBlock $tryCatch, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $tryCatch);
     }
 
+    /**
+     * @return array[]
+     */
     public function renderDataProvider(): array
     {
         return [

@@ -31,7 +31,7 @@ class ObjectMethodInvocationTest extends AbstractResolvableTest
         string $methodName,
         ?MethodArgumentsInterface $arguments,
         MetadataInterface $expectedMetadata
-    ) {
+    ): void {
         $invocation = new ObjectMethodInvocation($object, $methodName, $arguments);
 
         $this->assertSame($methodName, $invocation->getCall());
@@ -39,6 +39,9 @@ class ObjectMethodInvocationTest extends AbstractResolvableTest
         $this->assertEquals($expectedMetadata, $invocation->getMetadata());
     }
 
+    /**
+     * @return array[]
+     */
     public function createDataProvider(): array
     {
         return [
@@ -94,11 +97,14 @@ class ObjectMethodInvocationTest extends AbstractResolvableTest
     /**
      * @dataProvider renderDataProvider
      */
-    public function testRender(ObjectMethodInvocation $invocation, string $expectedString)
+    public function testRender(ObjectMethodInvocation $invocation, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $invocation);
     }
 
+    /**
+     * @return array[]
+     */
     public function renderDataProvider(): array
     {
         return [

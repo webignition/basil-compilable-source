@@ -12,7 +12,7 @@ use webignition\BasilCompilableSource\Tests\Unit\AbstractResolvableTest;
 
 class UseExpressionTest extends AbstractResolvableTest
 {
-    public function testCreate()
+    public function testCreate(): void
     {
         $expression = new UseExpression(new ClassName(UseExpressionTest::class));
 
@@ -22,11 +22,14 @@ class UseExpressionTest extends AbstractResolvableTest
     /**
      * @dataProvider renderDataProvider
      */
-    public function testRender(UseExpression $expression, string $expectedString)
+    public function testRender(UseExpression $expression, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $expression);
     }
 
+    /**
+     * @return array[]
+     */
     public function renderDataProvider(): array
     {
         return [

@@ -34,7 +34,7 @@ class MethodDefinitionTest extends AbstractResolvableTest
      * @param BodyInterface $codeBlock
      * @param string[] $arguments
      */
-    public function testCreate(string $name, BodyInterface $codeBlock, array $arguments = [])
+    public function testCreate(string $name, BodyInterface $codeBlock, array $arguments = []): void
     {
         $methodDefinition = new MethodDefinition($name, $codeBlock, $arguments);
 
@@ -46,6 +46,9 @@ class MethodDefinitionTest extends AbstractResolvableTest
         $this->assertFalse($methodDefinition->isStatic());
     }
 
+    /**
+     * @return array[]
+     */
     public function createDataProvider(): array
     {
         $body = new Body([]);
@@ -74,11 +77,16 @@ class MethodDefinitionTest extends AbstractResolvableTest
     /**
      * @dataProvider getMetadataDataProvider
      */
-    public function testGetMetadata(MethodDefinitionInterface $methodDefinition, MetadataInterface $expectedMetadata)
-    {
+    public function testGetMetadata(
+        MethodDefinitionInterface $methodDefinition,
+        MetadataInterface $expectedMetadata
+    ): void {
         $this->assertEquals($expectedMetadata, $methodDefinition->getMetadata());
     }
 
+    /**
+     * @return array[]
+     */
     public function getMetadataDataProvider(): array
     {
         return [
@@ -117,7 +125,7 @@ class MethodDefinitionTest extends AbstractResolvableTest
         ];
     }
 
-    public function testVisibility()
+    public function testVisibility(): void
     {
         $methodDefinition = new MethodDefinition('name', new Body([]));
         $this->assertSame(MethodDefinition::VISIBILITY_PUBLIC, $methodDefinition->getVisibility());
@@ -132,7 +140,7 @@ class MethodDefinitionTest extends AbstractResolvableTest
         $this->assertSame(MethodDefinition::VISIBILITY_PUBLIC, $methodDefinition->getVisibility());
     }
 
-    public function testSetReturnType()
+    public function testSetReturnType(): void
     {
         $methodDefinition = new MethodDefinition('name', new Body([]));
         $this->assertNull($methodDefinition->getReturnType());
@@ -147,7 +155,7 @@ class MethodDefinitionTest extends AbstractResolvableTest
         $this->assertNull($methodDefinition->getReturnType());
     }
 
-    public function testIsStatic()
+    public function testIsStatic(): void
     {
         $methodDefinition = new MethodDefinition('name', new Body([]));
         $this->assertFalse($methodDefinition->isStatic());
@@ -159,11 +167,14 @@ class MethodDefinitionTest extends AbstractResolvableTest
     /**
      * @dataProvider renderDataProvider
      */
-    public function testRender(MethodDefinitionInterface $methodDefinition, string $expectedString)
+    public function testRender(MethodDefinitionInterface $methodDefinition, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $methodDefinition);
     }
 
+    /**
+     * @return array[]
+     */
     public function renderDataProvider(): array
     {
         $emptyProtectedMethod = new MethodDefinition('emptyProtectedMethod', new Body([]));
@@ -323,11 +334,14 @@ class MethodDefinitionTest extends AbstractResolvableTest
     /**
      * @dataProvider getDocBlockDataProvider
      */
-    public function testGetDocBlock(MethodDefinition $methodDefinition, ?DocBlock $expectedDocBlock)
+    public function testGetDocBlock(MethodDefinition $methodDefinition, ?DocBlock $expectedDocBlock): void
     {
         $this->assertEquals($expectedDocBlock, $methodDefinition->getDocBlock());
     }
 
+    /**
+     * @return array[]
+     */
     public function getDocBlockDataProvider(): array
     {
         return [

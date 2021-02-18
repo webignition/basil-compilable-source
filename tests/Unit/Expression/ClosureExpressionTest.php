@@ -34,13 +34,16 @@ class ClosureExpressionTest extends AbstractResolvableTest
     /**
      * @dataProvider createDataProvider
      */
-    public function testCreate(BodyInterface $body, MetadataInterface $expectedMetadata)
+    public function testCreate(BodyInterface $body, MetadataInterface $expectedMetadata): void
     {
         $expression = new ClosureExpression($body);
 
         $this->assertEquals($expectedMetadata, $expression->getMetadata());
     }
 
+    /**
+     * @return array[]
+     */
     public function createDataProvider(): array
     {
         return [
@@ -100,11 +103,14 @@ class ClosureExpressionTest extends AbstractResolvableTest
     /**
      * @dataProvider renderDataProvider
      */
-    public function testRender(ClosureExpression $expression, string $expectedString)
+    public function testRender(ClosureExpression $expression, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $expression);
     }
 
+    /**
+     * @return array[]
+     */
     public function renderDataProvider(): array
     {
         return [

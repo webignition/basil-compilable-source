@@ -26,7 +26,7 @@ class StaticObjectMethodInvocationTest extends AbstractResolvableTest
         string $methodName,
         MethodArgumentsInterface $arguments,
         MetadataInterface $expectedMetadata
-    ) {
+    ): void {
         $invocation = new StaticObjectMethodInvocation($staticObject, $methodName, $arguments);
 
         $this->assertSame($staticObject, $invocation->getStaticObject());
@@ -35,6 +35,9 @@ class StaticObjectMethodInvocationTest extends AbstractResolvableTest
         $this->assertEquals($expectedMetadata, $invocation->getMetadata());
     }
 
+    /**
+     * @return array[]
+     */
     public function createDataProvider(): array
     {
         return [
@@ -82,11 +85,14 @@ class StaticObjectMethodInvocationTest extends AbstractResolvableTest
     /**
      * @dataProvider renderDataProvider
      */
-    public function testRender(StaticObjectMethodInvocationInterface $invocation, string $expectedString)
+    public function testRender(StaticObjectMethodInvocationInterface $invocation, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $invocation);
     }
 
+    /**
+     * @return array[]
+     */
     public function renderDataProvider(): array
     {
         return [

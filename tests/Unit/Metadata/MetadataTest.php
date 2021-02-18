@@ -22,13 +22,16 @@ class MetadataTest extends \PHPUnit\Framework\TestCase
         array $components,
         ClassDependencyCollection $expectedClassDependencies,
         VariableDependencyCollection $expectedVariableDependencies
-    ) {
+    ): void {
         $metadata = new Metadata($components);
 
         $this->assertEquals($expectedClassDependencies, $metadata->getClassDependencies());
         $this->assertEquals($expectedVariableDependencies, $metadata->getVariableDependencies());
     }
 
+    /**
+     * @return array[]
+     */
     public function createDataProvider(): array
     {
         return [
@@ -64,7 +67,7 @@ class MetadataTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    public function testMerge()
+    public function testMerge(): void
     {
         $metadata1 = new Metadata([
             Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([

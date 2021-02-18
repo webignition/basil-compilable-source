@@ -20,7 +20,7 @@ class StatementTest extends AbstractResolvableTest
     /**
      * @dataProvider createDataProvider
      */
-    public function testCreate(ExpressionInterface $expression, MetadataInterface $expectedMetadata)
+    public function testCreate(ExpressionInterface $expression, MetadataInterface $expectedMetadata): void
     {
         $statement = new Statement($expression);
 
@@ -28,6 +28,9 @@ class StatementTest extends AbstractResolvableTest
         $this->assertSame($expression, $statement->getExpression());
     }
 
+    /**
+     * @return array[]
+     */
     public function createDataProvider(): array
     {
         return [
@@ -60,11 +63,14 @@ class StatementTest extends AbstractResolvableTest
     /**
      * @dataProvider renderDataProvider
      */
-    public function testRender(StatementInterface $statement, string $expectedString)
+    public function testRender(StatementInterface $statement, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $statement);
     }
 
+    /**
+     * @return array[]
+     */
     public function renderDataProvider(): array
     {
         return [

@@ -16,7 +16,7 @@ use webignition\BasilCompilableSource\Tests\Unit\AbstractResolvableTest;
 
 class MethodInvocationTest extends AbstractResolvableTest
 {
-    public function testCreateWithNoArguments()
+    public function testCreateWithNoArguments(): void
     {
         $methodName = 'methodName';
 
@@ -25,7 +25,7 @@ class MethodInvocationTest extends AbstractResolvableTest
         self::assertEquals(new Metadata(), $invocation->getMetadata());
     }
 
-    public function testCreateWithArgumentsWithMetadata()
+    public function testCreateWithArgumentsWithMetadata(): void
     {
         $methodName = 'methodName';
         $arguments = new MethodArguments([
@@ -44,11 +44,14 @@ class MethodInvocationTest extends AbstractResolvableTest
     /**
      * @dataProvider renderDataProvider
      */
-    public function testRender(MethodInvocationInterface $invocation, string $expectedString)
+    public function testRender(MethodInvocationInterface $invocation, string $expectedString): void
     {
         self::assertRenderResolvable($expectedString, $invocation);
     }
 
+    /**
+     * @return array[]
+     */
     public function renderDataProvider(): array
     {
         return [

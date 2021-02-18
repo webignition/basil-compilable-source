@@ -17,11 +17,14 @@ class ErrorSuppressedMethodInvocationTest extends AbstractResolvableTest
     /**
      * @dataProvider renderDataProvider
      */
-    public function testRender(ErrorSuppressedMethodInvocation $invocation, string $expectedString)
+    public function testRender(ErrorSuppressedMethodInvocation $invocation, string $expectedString): void
     {
         self::assertRenderResolvable($expectedString, $invocation);
     }
 
+    /**
+     * @return array[]
+     */
     public function renderDataProvider(): array
     {
         return [

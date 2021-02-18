@@ -8,7 +8,7 @@ use webignition\BasilCompilableSource\EmptyLine;
 
 class EmptyLineTest extends AbstractResolvableTest
 {
-    public function testRender()
+    public function testRender(): void
     {
         $this->assertRenderResolvable('', new EmptyLine());
     }

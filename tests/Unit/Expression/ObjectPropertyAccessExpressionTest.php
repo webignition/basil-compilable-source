@@ -22,7 +22,7 @@ class ObjectPropertyAccessExpressionTest extends AbstractResolvableTest
         VariablePlaceholderInterface $objectPlaceholder,
         string $property,
         MetadataInterface $expectedMetadata
-    ) {
+    ): void {
         $invocation = new ObjectPropertyAccessExpression($objectPlaceholder, $property);
 
         $this->assertSame($objectPlaceholder, $invocation->getObjectPlaceholder());
@@ -30,6 +30,9 @@ class ObjectPropertyAccessExpressionTest extends AbstractResolvableTest
         $this->assertEquals($expectedMetadata, $invocation->getMetadata());
     }
 
+    /**
+     * @return array[]
+     */
     public function createDataProvider(): array
     {
         return [
@@ -53,11 +56,14 @@ class ObjectPropertyAccessExpressionTest extends AbstractResolvableTest
     /**
      * @dataProvider renderDataProvider
      */
-    public function testRender(ObjectPropertyAccessExpression $expression, string $expectedString)
+    public function testRender(ObjectPropertyAccessExpression $expression, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $expression);
     }
 
+    /**
+     * @return array[]
+     */
     public function renderDataProvider(): array
     {
         return [

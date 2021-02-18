@@ -11,7 +11,7 @@ use webignition\BasilCompilableSource\Tests\Unit\AbstractResolvableTest;
 
 class EncapsulatedExpressionTest extends AbstractResolvableTest
 {
-    public function testCreate()
+    public function testCreate(): void
     {
         $expression = new LiteralExpression('"literal"');
         $encapsulatedExpression = new EncapsulatedExpression($expression);
@@ -22,11 +22,14 @@ class EncapsulatedExpressionTest extends AbstractResolvableTest
     /**
      * @dataProvider renderDataProvider
      */
-    public function testRender(EncapsulatedExpression $expression, string $expectedString)
+    public function testRender(EncapsulatedExpression $expression, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $expression);
     }
 
+    /**
+     * @return array[]
+     */
     public function renderDataProvider(): array
     {
         return [

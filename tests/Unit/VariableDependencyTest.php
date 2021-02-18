@@ -14,13 +14,16 @@ class VariableDependencyTest extends AbstractResolvableTest
     /**
      * @dataProvider constructDataProvider
      */
-    public function testConstruct(string $name)
+    public function testConstruct(string $name): void
     {
         $dependency = new VariableDependency($name);
 
         $this->assertSame($name, $dependency->getName());
     }
 
+    /**
+     * @return array[]
+     */
     public function constructDataProvider(): array
     {
         return [
@@ -33,11 +36,14 @@ class VariableDependencyTest extends AbstractResolvableTest
     /**
      * @dataProvider getMetadataDataProvider
      */
-    public function testGetMetadata(VariableDependency $dependency, MetadataInterface $expectedMetadata)
+    public function testGetMetadata(VariableDependency $dependency, MetadataInterface $expectedMetadata): void
     {
         $this->assertEquals($expectedMetadata, $dependency->getMetadata());
     }
 
+    /**
+     * @return array[]
+     */
     public function getMetadataDataProvider(): array
     {
         return [
@@ -55,11 +61,14 @@ class VariableDependencyTest extends AbstractResolvableTest
     /**
      * @dataProvider renderDataProvider
      */
-    public function testRender(VariableDependency $dependency, string $expectedString)
+    public function testRender(VariableDependency $dependency, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $dependency);
     }
 
+    /**
+     * @return array[]
+     */
     public function renderDataProvider(): array
     {
         return [
