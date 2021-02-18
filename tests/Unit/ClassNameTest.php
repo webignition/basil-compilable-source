@@ -13,7 +13,7 @@ class ClassNameTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider createDataProvider
      */
-    public function testCreate(string $className, ?string $alias)
+    public function testCreate(string $className, ?string $alias): void
     {
         $classDependency = new ClassName($className, $alias);
 
@@ -21,6 +21,9 @@ class ClassNameTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($alias, ObjectReflector::getProperty($classDependency, 'alias'));
     }
 
+    /**
+     * @return array[]
+     */
     public function createDataProvider(): array
     {
         return [
@@ -38,11 +41,14 @@ class ClassNameTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider getClassDataProvider
      */
-    public function testGetClass(ClassName $classDependency, string $expectedClass)
+    public function testGetClass(ClassName $classDependency, string $expectedClass): void
     {
         $this->assertSame($expectedClass, $classDependency->getClass());
     }
 
+    /**
+     * @return array[]
+     */
     public function getClassDataProvider(): array
     {
         return [
@@ -60,11 +66,14 @@ class ClassNameTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider toStringDataProvider
      */
-    public function testToString(ClassName $classDependency, string $expectedString)
+    public function testToString(ClassName $classDependency, string $expectedString): void
     {
         $this->assertSame($expectedString, (string) $classDependency);
     }
 
+    /**
+     * @return array[]
+     */
     public function toStringDataProvider(): array
     {
         return [
@@ -90,11 +99,14 @@ class ClassNameTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider isInRootNamespaceDataProvider
      */
-    public function testIsInRootNamespace(ClassName $classDependency, bool $expectedIsInRootNamespace)
+    public function testIsInRootNamespace(ClassName $classDependency, bool $expectedIsInRootNamespace): void
     {
         $this->assertSame($expectedIsInRootNamespace, $classDependency->isInRootNamespace());
     }
 
+    /**
+     * @return array[]
+     */
     public function isInRootNamespaceDataProvider(): array
     {
         return [
@@ -120,11 +132,14 @@ class ClassNameTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider renderClassNameDataProvider
      */
-    public function testRenderClassName(ClassName $classDependency, string $expectedString)
+    public function testRenderClassName(ClassName $classDependency, string $expectedString): void
     {
         $this->assertSame($expectedString, $classDependency->renderClassName());
     }
 
+    /**
+     * @return array[]
+     */
     public function renderClassNameDataProvider(): array
     {
         return [
@@ -150,11 +165,14 @@ class ClassNameTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider isFullyQualifiedClassNameDataProvider
      */
-    public function testIsFullyQualifiedClassName(string $className, bool $expectedIsFullyQualifiedClassName)
+    public function testIsFullyQualifiedClassName(string $className, bool $expectedIsFullyQualifiedClassName): void
     {
         self::assertSame($expectedIsFullyQualifiedClassName, ClassName::isFullyQualifiedClassName($className));
     }
 
+    /**
+     * @return array[]
+     */
     public function isFullyQualifiedClassNameDataProvider(): array
     {
         return [

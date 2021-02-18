@@ -11,11 +11,14 @@ class ArrayKeyTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider toStringDataProvider
      */
-    public function testToString(ArrayKey $key, string $expectedString)
+    public function testToString(ArrayKey $key, string $expectedString): void
     {
         $this->assertSame($expectedString, (string) $key);
     }
 
+    /**
+     * @return array[]
+     */
     public function toStringDataProvider(): array
     {
         return [

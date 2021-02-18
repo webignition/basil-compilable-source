@@ -21,11 +21,14 @@ class ArrayExpressionTest extends AbstractResolvableTest
     /**
      * @dataProvider getMetadataDataProvider
      */
-    public function testGetMetadata(ArrayExpression $expression, MetadataInterface $expectedMetadata)
+    public function testGetMetadata(ArrayExpression $expression, MetadataInterface $expectedMetadata): void
     {
         self::assertEquals($expectedMetadata, $expression->getMetadata());
     }
 
+    /**
+     * @return array[]
+     */
     public function getMetadataDataProvider(): array
     {
         return [
@@ -64,11 +67,14 @@ class ArrayExpressionTest extends AbstractResolvableTest
     /**
      * @dataProvider renderDataProvider
      */
-    public function testRender(ArrayExpression $expression, string $expectedString)
+    public function testRender(ArrayExpression $expression, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $expression);
     }
 
+    /**
+     * @return array[]
+     */
     public function renderDataProvider(): array
     {
         return [
@@ -264,11 +270,14 @@ class ArrayExpressionTest extends AbstractResolvableTest
     /**
      * @dataProvider fromArrayDataProvider
      */
-    public function testFromArray(ArrayExpression $expression, ArrayExpression $expectedExpression)
+    public function testFromArray(ArrayExpression $expression, ArrayExpression $expectedExpression): void
     {
         self::assertEquals($expectedExpression, $expression);
     }
 
+    /**
+     * @return array[]
+     */
     public function fromArrayDataProvider(): array
     {
         return [

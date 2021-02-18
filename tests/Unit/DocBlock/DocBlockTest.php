@@ -15,11 +15,14 @@ class DocBlockTest extends AbstractResolvableTest
      * @dataProvider mergeDataProvider
      * @dataProvider appendDataProvider
      */
-    public function testAppend(DocBlock $docBlock, DocBlock $merge, DocBlock $expectedDocBlock)
+    public function testAppend(DocBlock $docBlock, DocBlock $merge, DocBlock $expectedDocBlock): void
     {
         $this->assertEquals($expectedDocBlock, $docBlock->append($merge));
     }
 
+    /**
+     * @return array[]
+     */
     public function appendDataProvider(): array
     {
         return [
@@ -42,11 +45,14 @@ class DocBlockTest extends AbstractResolvableTest
      * @dataProvider mergeDataProvider
      * @dataProvider prependDataProvider
      */
-    public function testPrepend(DocBlock $docBlock, DocBlock $merge, DocBlock $expectedDocBlock)
+    public function testPrepend(DocBlock $docBlock, DocBlock $merge, DocBlock $expectedDocBlock): void
     {
         $this->assertEquals($expectedDocBlock, $docBlock->prepend($merge));
     }
 
+    /**
+     * @return array[]
+     */
     public function prependDataProvider(): array
     {
         return [
@@ -65,6 +71,9 @@ class DocBlockTest extends AbstractResolvableTest
         ];
     }
 
+    /**
+     * @return array[]
+     */
     public function mergeDataProvider(): array
     {
         return [
@@ -97,11 +106,14 @@ class DocBlockTest extends AbstractResolvableTest
     /**
      * @dataProvider renderDataProvider
      */
-    public function testRender(DocBlock $docBlock, string $expectedString)
+    public function testRender(DocBlock $docBlock, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $docBlock);
     }
 
+    /**
+     * @return array[]
+     */
     public function renderDataProvider(): array
     {
         return [

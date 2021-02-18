@@ -16,7 +16,7 @@ class DataProviderMethodDefinitionTest extends AbstractResolvableTest
      * @param string $name
      * @param array<mixed> $data
      */
-    public function testCreate(string $name, array $data)
+    public function testCreate(string $name, array $data): void
     {
         $methodDefinition = new DataProviderMethodDefinition($name, $data);
 
@@ -29,6 +29,9 @@ class DataProviderMethodDefinitionTest extends AbstractResolvableTest
         $this->assertSame($data, $methodDefinition->getData());
     }
 
+    /**
+     * @return array[]
+     */
     public function createDataProvider(): array
     {
         return [
@@ -55,11 +58,14 @@ class DataProviderMethodDefinitionTest extends AbstractResolvableTest
     /**
      * @dataProvider renderDataProvider
      */
-    public function testRender(DataProviderMethodDefinitionInterface $methodDefinition, string $expectedString)
+    public function testRender(DataProviderMethodDefinitionInterface $methodDefinition, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $methodDefinition);
     }
 
+    /**
+     * @return array[]
+     */
     public function renderDataProvider(): array
     {
         return [

@@ -15,13 +15,16 @@ class StaticObjectTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider getMetadataDataProvider
      */
-    public function testGetMetadata(string $object, MetadataInterface $expectedMetadata)
+    public function testGetMetadata(string $object, MetadataInterface $expectedMetadata): void
     {
         $staticObject = new StaticObject($object);
 
         $this->assertEquals($expectedMetadata, $staticObject->getMetadata());
     }
 
+    /**
+     * @return array[]
+     */
     public function getMetadataDataProvider(): array
     {
         return [
@@ -51,11 +54,14 @@ class StaticObjectTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider toStringDataProvider
      */
-    public function testToString(StaticObject $staticObject, string $expectedString)
+    public function testToString(StaticObject $staticObject, string $expectedString): void
     {
         $this->assertSame($expectedString, (string) $staticObject);
     }
 
+    /**
+     * @return array[]
+     */
     public function toStringDataProvider(): array
     {
         return [

@@ -18,11 +18,16 @@ class ObjectTypeDeclarationCollectionTest extends AbstractResolvableTest
     /**
      * @dataProvider getMetadataDataProvider
      */
-    public function testGetMetadata(ObjectTypeDeclarationCollection $collection, MetadataInterface $expectedMetadata)
-    {
+    public function testGetMetadata(
+        ObjectTypeDeclarationCollection $collection,
+        MetadataInterface $expectedMetadata
+    ): void {
         $this->assertEquals($expectedMetadata, $collection->getMetadata());
     }
 
+    /**
+     * @return array[]
+     */
     public function getMetadataDataProvider(): array
     {
         return [
@@ -48,11 +53,14 @@ class ObjectTypeDeclarationCollectionTest extends AbstractResolvableTest
     /**
      * @dataProvider renderDataProvider
      */
-    public function testRender(ObjectTypeDeclarationCollection $collection, string $expectedString)
+    public function testRender(ObjectTypeDeclarationCollection $collection, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $collection);
     }
 
+    /**
+     * @return array[]
+     */
     public function renderDataProvider(): array
     {
         return [

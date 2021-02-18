@@ -34,7 +34,7 @@ class BodyTest extends AbstractResolvableTest
      * @param BodyContentInterface[] $content
      * @param BodyContentInterface[] $expectedContent
      */
-    public function testCreate(array $content, array $expectedContent)
+    public function testCreate(array $content, array $expectedContent): void
     {
         $body = new Body($content);
 
@@ -44,6 +44,9 @@ class BodyTest extends AbstractResolvableTest
         );
     }
 
+    /**
+     * @return array[]
+     */
     public function createDataProvider(): array
     {
         return [
@@ -142,11 +145,14 @@ class BodyTest extends AbstractResolvableTest
     /**
      * @dataProvider renderDataProvider
      */
-    public function testRender(Body $body, string $expectedString)
+    public function testRender(Body $body, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $body);
     }
 
+    /**
+     * @return array[]
+     */
     public function renderDataProvider(): array
     {
         return [
@@ -264,11 +270,14 @@ class BodyTest extends AbstractResolvableTest
     /**
      * @dataProvider createEnclosingBodyDataProvider
      */
-    public function testCreateEnclosingBody(BodyInterface $body, BodyInterface $expectedBody)
+    public function testCreateEnclosingBody(BodyInterface $body, BodyInterface $expectedBody): void
     {
         $this->assertEquals($expectedBody, Body::createEnclosingBody($body));
     }
 
+    /**
+     * @return array[]
+     */
     public function createEnclosingBodyDataProvider(): array
     {
         return [
@@ -293,7 +302,7 @@ class BodyTest extends AbstractResolvableTest
         ];
     }
 
-    public function testCreateFromExpressionsThrowsInvalidArgumentExceptionForNonExpression()
+    public function testCreateFromExpressionsThrowsInvalidArgumentExceptionForNonExpression(): void
     {
         self::expectExceptionObject(new \InvalidArgumentException('Non-expression at index 1'));
 
@@ -310,11 +319,14 @@ class BodyTest extends AbstractResolvableTest
      * @param array<mixed> $expressions
      * @param Body $expectedBody
      */
-    public function testCreateFromExpressions(array $expressions, Body $expectedBody)
+    public function testCreateFromExpressions(array $expressions, Body $expectedBody): void
     {
         self::assertEquals($expectedBody, Body::createFromExpressions($expressions));
     }
 
+    /**
+     * @return array[]
+     */
     public function createFromExpressionsDataProvider(): array
     {
         return [
@@ -339,7 +351,7 @@ class BodyTest extends AbstractResolvableTest
         ];
     }
 
-    public function testCreateForSingleAssignmentStatement()
+    public function testCreateForSingleAssignmentStatement(): void
     {
         $variable = new VariableDependency('LHS');
         $value = new LiteralExpression('"value"');

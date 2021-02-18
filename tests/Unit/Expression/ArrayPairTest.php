@@ -20,11 +20,14 @@ class ArrayPairTest extends AbstractResolvableTest
     /**
      * @dataProvider getMetadataDataProvider
      */
-    public function testGetMetadata(ArrayPair $pair, MetadataInterface $expectedMetadata)
+    public function testGetMetadata(ArrayPair $pair, MetadataInterface $expectedMetadata): void
     {
         self::assertEquals($expectedMetadata, $pair->getMetadata());
     }
 
+    /**
+     * @return array[]
+     */
     public function getMetadataDataProvider(): array
     {
         return [
@@ -55,11 +58,14 @@ class ArrayPairTest extends AbstractResolvableTest
     /**
      * @dataProvider renderDataProvider
      */
-    public function testRender(ArrayPair $pair, string $expectedString)
+    public function testRender(ArrayPair $pair, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $pair);
     }
 
+    /**
+     * @return array[]
+     */
     public function renderDataProvider(): array
     {
         return [

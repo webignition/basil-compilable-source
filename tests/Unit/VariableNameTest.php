@@ -9,7 +9,7 @@ use webignition\BasilCompilableSource\VariableName;
 
 class VariableNameTest extends AbstractResolvableTest
 {
-    public function testGetMetadata()
+    public function testGetMetadata(): void
     {
         $this->assertEquals(new Metadata(), (new VariableName('name'))->getMetadata());
     }
@@ -17,11 +17,14 @@ class VariableNameTest extends AbstractResolvableTest
     /**
      * @dataProvider renderDataProvider
      */
-    public function testRender(VariableName $placeholder, string $expectedString)
+    public function testRender(VariableName $placeholder, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $placeholder);
     }
 
+    /**
+     * @return array[]
+     */
     public function renderDataProvider(): array
     {
         return [

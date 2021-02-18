@@ -25,7 +25,7 @@ use webignition\BasilCompilableSource\VariableDependencyCollection;
 
 class CatchBlockTest extends AbstractResolvableTest
 {
-    public function testGetMetadata()
+    public function testGetMetadata(): void
     {
         $body = new Body([
             new Statement(
@@ -64,11 +64,14 @@ class CatchBlockTest extends AbstractResolvableTest
     /**
      * @dataProvider renderDataProvider
      */
-    public function testRender(CatchBlock $tryBlock, string $expectedString)
+    public function testRender(CatchBlock $tryBlock, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $tryBlock);
     }
 
+    /**
+     * @return array[]
+     */
     public function renderDataProvider(): array
     {
         return [

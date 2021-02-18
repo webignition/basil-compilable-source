@@ -13,7 +13,7 @@ use webignition\BasilCompilableSource\TypeDeclaration\TypeDeclarationInterface;
 
 class ObjectTypeDeclarationTest extends TestCase
 {
-    public function testGetMetadata()
+    public function testGetMetadata(): void
     {
         $type = new ClassName(\Exception::class);
         $declaration = new ObjectTypeDeclaration($type);
@@ -30,11 +30,14 @@ class ObjectTypeDeclarationTest extends TestCase
     /**
      * @dataProvider toStringDataProvider
      */
-    public function testToString(ObjectTypeDeclaration $declaration, string $expectedString)
+    public function testToString(ObjectTypeDeclaration $declaration, string $expectedString): void
     {
         $this->assertSame($expectedString, (string) $declaration);
     }
 
+    /**
+     * @return array[]
+     */
     public function toStringDataProvider(): array
     {
         return [

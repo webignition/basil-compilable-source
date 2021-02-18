@@ -23,7 +23,7 @@ class ObjectConstructorTest extends AbstractResolvableTest
         ClassName $class,
         ?MethodArgumentsInterface $arguments,
         MetadataInterface $expectedMetadata
-    ) {
+    ): void {
         $constructor = new ObjectConstructor($class, $arguments);
 
         $this->assertSame($class->getClass(), $constructor->getCall());
@@ -31,6 +31,9 @@ class ObjectConstructorTest extends AbstractResolvableTest
         $this->assertEquals($expectedMetadata, $constructor->getMetadata());
     }
 
+    /**
+     * @return array[]
+     */
     public function createDataProvider(): array
     {
         return [
@@ -60,11 +63,14 @@ class ObjectConstructorTest extends AbstractResolvableTest
     /**
      * @dataProvider renderDataProvider
      */
-    public function testRender(ObjectConstructor $constructor, string $expectedString)
+    public function testRender(ObjectConstructor $constructor, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $constructor);
     }
 
+    /**
+     * @return array[]
+     */
     public function renderDataProvider(): array
     {
         $classDependency = new ClassName('Acme\\Model');

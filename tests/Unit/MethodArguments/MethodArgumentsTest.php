@@ -37,7 +37,7 @@ class MethodArgumentsTest extends AbstractResolvableTest
         array $arguments,
         string $format,
         MetadataInterface $expectedMetadata
-    ) {
+    ): void {
         $methodArguments = new MethodArguments($arguments, $format);
 
         $this->assertSame($arguments, $methodArguments->getArguments());
@@ -45,6 +45,9 @@ class MethodArgumentsTest extends AbstractResolvableTest
         $this->assertEquals($expectedMetadata, $methodArguments->getMetadata());
     }
 
+    /**
+     * @return array[]
+     */
     public function createDataProvider(): array
     {
         return [
@@ -94,11 +97,14 @@ class MethodArgumentsTest extends AbstractResolvableTest
     /**
      * @dataProvider renderDataProvider
      */
-    public function testRender(MethodArguments $arguments, string $expectedString)
+    public function testRender(MethodArguments $arguments, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $arguments);
     }
 
+    /**
+     * @return array[]
+     */
     public function renderDataProvider(): array
     {
         return [

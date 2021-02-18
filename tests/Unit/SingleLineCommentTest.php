@@ -9,7 +9,7 @@ use webignition\ObjectReflector\ObjectReflector;
 
 class SingleLineCommentTest extends AbstractResolvableTest
 {
-    public function testCreate()
+    public function testCreate(): void
     {
         $content = 'comment content';
         $comment = new SingleLineComment($content);
@@ -20,11 +20,14 @@ class SingleLineCommentTest extends AbstractResolvableTest
     /**
      * @dataProvider renderDataProvider
      */
-    public function testRender(SingleLineComment $comment, string $expectedString)
+    public function testRender(SingleLineComment $comment, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $comment);
     }
 
+    /**
+     * @return array[]
+     */
     public function renderDataProvider(): array
     {
         return [

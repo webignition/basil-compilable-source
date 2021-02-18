@@ -20,13 +20,16 @@ class ClassDependencyCollectionTest extends AbstractResolvableTest
      * @param ClassName[] $dependencies
      * @param ClassName[] $expectedDependencies
      */
-    public function testCreate(array $dependencies, array $expectedDependencies)
+    public function testCreate(array $dependencies, array $expectedDependencies): void
     {
         $collection = new ClassDependencyCollection($dependencies);
 
         $this->assertEquals($expectedDependencies, ObjectReflector::getProperty($collection, 'classNames'));
     }
 
+    /**
+     * @return array[]
+     */
     public function createDataProvider(): array
     {
         return [
@@ -60,11 +63,14 @@ class ClassDependencyCollectionTest extends AbstractResolvableTest
     /**
      * @dataProvider renderDataProvider
      */
-    public function testRender(ClassDependencyCollection $collection, string $expectedString)
+    public function testRender(ClassDependencyCollection $collection, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $collection);
     }
 
+    /**
+     * @return array[]
+     */
     public function renderDataProvider(): array
     {
         return [
@@ -98,7 +104,7 @@ class ClassDependencyCollectionTest extends AbstractResolvableTest
     /**
      * @dataProvider countDataProvider
      */
-    public function testCount(ClassDependencyCollection $collection, int $expectedCount)
+    public function testCount(ClassDependencyCollection $collection, int $expectedCount): void
     {
         self::assertCount($expectedCount, $collection);
     }
@@ -106,11 +112,14 @@ class ClassDependencyCollectionTest extends AbstractResolvableTest
     /**
      * @dataProvider countDataProvider
      */
-    public function testCountable(ClassDependencyCollection $collection, int $expectedCount)
+    public function testCountable(ClassDependencyCollection $collection, int $expectedCount): void
     {
         self::assertCount($expectedCount, $collection);
     }
 
+    /**
+     * @return array[]
+     */
     public function countDataProvider(): array
     {
         return [
@@ -145,11 +154,14 @@ class ClassDependencyCollectionTest extends AbstractResolvableTest
     /**
      * @dataProvider isEmptyDataProvider
      */
-    public function testIsEmpty(ClassDependencyCollection $collection, bool $expectedIsEmpty)
+    public function testIsEmpty(ClassDependencyCollection $collection, bool $expectedIsEmpty): void
     {
         self::assertSame($expectedIsEmpty, $collection->isEmpty());
     }
 
+    /**
+     * @return array[]
+     */
     public function isEmptyDataProvider(): array
     {
         return [

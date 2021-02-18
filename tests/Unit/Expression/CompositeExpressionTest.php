@@ -21,13 +21,16 @@ class CompositeExpressionTest extends AbstractResolvableTest
      * @param array<mixed> $expressions
      * @param MetadataInterface $expectedMetadata
      */
-    public function testCreate(array $expressions, MetadataInterface $expectedMetadata)
+    public function testCreate(array $expressions, MetadataInterface $expectedMetadata): void
     {
         $expression = new CompositeExpression($expressions);
 
         $this->assertEquals($expectedMetadata, $expression->getMetadata());
     }
 
+    /**
+     * @return array[]
+     */
     public function createDataProvider(): array
     {
         return [
@@ -62,11 +65,14 @@ class CompositeExpressionTest extends AbstractResolvableTest
     /**
      * @dataProvider renderDataProvider
      */
-    public function testRender(CompositeExpression $expression, string $expectedString)
+    public function testRender(CompositeExpression $expression, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $expression);
     }
 
+    /**
+     * @return array[]
+     */
     public function renderDataProvider(): array
     {
         return [

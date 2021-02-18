@@ -12,11 +12,14 @@ class DataProviderAnnotationTest extends AbstractResolvableTest
     /**
      * @dataProvider renderDataProvider
      */
-    public function testRender(DataProviderAnnotation $annotation, string $expectedString)
+    public function testRender(DataProviderAnnotation $annotation, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $annotation);
     }
 
+    /**
+     * @return array[]
+     */
     public function renderDataProvider(): array
     {
         return [
