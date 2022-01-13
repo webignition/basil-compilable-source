@@ -37,8 +37,6 @@ class ArrayExpression implements ExpressionInterface, ResolvedTemplateMutationIn
 
     /**
      * @param array<mixed> $array
-     *
-     * @return self
      */
     public static function fromArray(array $array): self
     {
@@ -52,50 +50,6 @@ class ArrayExpression implements ExpressionInterface, ResolvedTemplateMutationIn
         }
 
         return new ArrayExpression($arrayPairs);
-    }
-
-    /**
-     * @param string $key
-     * @param mixed $value
-     * @return ArrayPair|null
-     */
-    private static function createArrayPair(string $key, $value): ?ArrayPair
-    {
-        $valueExpression = self::createExpression($value);
-        if ($valueExpression instanceof ExpressionInterface) {
-            return new ArrayPair(
-                new ArrayKey((string) $key),
-                $valueExpression
-            );
-        }
-
-        return null;
-    }
-
-    /**
-     * @param mixed $value
-     *
-     * @return ExpressionInterface|null
-     */
-    private static function createExpression($value): ?ExpressionInterface
-    {
-        if ($value instanceof ExpressionInterface) {
-            return $value;
-        }
-
-        if (is_scalar($value)) {
-            if (is_string($value)) {
-                $value = '\'' . $value . '\'';
-            }
-
-            return new LiteralExpression((string) $value);
-        }
-
-        if (is_array($value)) {
-            return self::fromArray($value);
-        }
-
-        return null;
     }
 
     public function getMetadata(): MetadataInterface
@@ -141,6 +95,46 @@ class ArrayExpression implements ExpressionInterface, ResolvedTemplateMutationIn
         }
 
         return ResolvableCollection::create($resolvablePairs);
+    }
+
+    /**
+     * @param mixed $value
+     */
+    private static function createArrayPair(string $key, $value): ?ArrayPair
+    {
+        $valueExpression = self::createExpression($value);
+        if ($valueExpression instanceof ExpressionInterface) {
+            return new ArrayPair(
+                new ArrayKey((string) $key),
+                $valueExpression
+            );
+        }
+
+        return null;
+    }
+
+    /**
+     * @param mixed $value
+     */
+    private static function createExpression($value): ?ExpressionInterface
+    {
+        if ($value instanceof ExpressionInterface) {
+            return $value;
+        }
+
+        if (is_scalar($value)) {
+            if (is_string($value)) {
+                $value = '\'' . $value . '\'';
+            }
+
+            return new LiteralExpression((string) $value);
+        }
+
+        if (is_array($value)) {
+            return self::fromArray($value);
+        }
+
+        return null;
     }
 
     private function arrayPairResolvedTemplateMutator(string $resolved): string

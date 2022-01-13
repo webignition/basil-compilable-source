@@ -8,9 +8,8 @@ use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 
 class AssignmentExpression implements AssignmentExpressionInterface
 {
-    private const RENDER_TEMPLATE = '{{ variable }} {{ operator }} {{ value }}';
-
     public const OPERATOR_ASSIGMENT_EQUALS = '=';
+    private const RENDER_TEMPLATE = '{{ variable }} {{ operator }} {{ value }}';
 
     private ExpressionInterface $variable;
     private ExpressionInterface $value;
@@ -44,6 +43,7 @@ class AssignmentExpression implements AssignmentExpressionInterface
     public function getMetadata(): MetadataInterface
     {
         $metadata = $this->variable->getMetadata();
+
         return $metadata->merge($this->value->getMetadata());
     }
 

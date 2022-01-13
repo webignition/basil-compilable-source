@@ -70,7 +70,7 @@ class CatchBlockTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function renderDataProvider(): array
     {
@@ -86,8 +86,7 @@ class CatchBlockTest extends AbstractResolvableTest
                         new LiteralExpression('"literal"')
                     )
                 ),
-                'expectedString' =>
-                    'catch (\Exception $exception) {' . "\n" .
+                'expectedString' => 'catch (\Exception $exception) {' . "\n" .
                     '    "literal";' . "\n" .
                     '}',
             ],
@@ -103,8 +102,7 @@ class CatchBlockTest extends AbstractResolvableTest
                         new LiteralExpression('"literal"')
                     )
                 ),
-                'expectedString' =>
-                    'catch (\LogicException | \RuntimeException $exception) {' . "\n" .
+                'expectedString' => 'catch (\LogicException | \RuntimeException $exception) {' . "\n" .
                     '    "literal";' . "\n" .
                     '}',
             ],
@@ -121,8 +119,7 @@ class CatchBlockTest extends AbstractResolvableTest
                         new LiteralExpression('"literal"')
                     )
                 ),
-                'expectedString' =>
-                    'catch (\LogicException | \RuntimeException | TestCase $exception) {' . "\n" .
+                'expectedString' => 'catch (\LogicException | \RuntimeException | TestCase $exception) {' . "\n" .
                     '    "literal";' . "\n" .
                     '}',
             ],
@@ -137,8 +134,7 @@ class CatchBlockTest extends AbstractResolvableTest
                         new ReturnExpression()
                     )
                 ),
-                'expectedString' =>
-                    'catch (\Exception $exception) {' . "\n" .
+                'expectedString' => 'catch (\Exception $exception) {' . "\n" .
                     '    return;' . "\n" .
                     '}',
             ],

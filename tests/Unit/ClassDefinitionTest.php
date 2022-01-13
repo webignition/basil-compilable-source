@@ -48,7 +48,7 @@ class ClassDefinitionTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function getMetadataDataProvider(): array
     {
@@ -110,7 +110,7 @@ class ClassDefinitionTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function renderDataProvider(): array
     {
@@ -120,8 +120,7 @@ class ClassDefinitionTest extends AbstractResolvableTest
                     new ClassSignature('NameOfClass'),
                     new ClassBody([])
                 ),
-                'expectedString' =>
-                    'class NameOfClass' . "\n" .
+                'expectedString' => 'class NameOfClass' . "\n" .
                     '{}'
             ],
             'no methods, base class in root namespace' => [
@@ -132,8 +131,7 @@ class ClassDefinitionTest extends AbstractResolvableTest
                     ),
                     new ClassBody([])
                 ),
-                'expectedString' =>
-                    'class NameOfClass extends \TestCase' . "\n" .
+                'expectedString' => 'class NameOfClass extends \TestCase' . "\n" .
                     '{}'
             ],
             'no methods, base class in non-root namespace' => [
@@ -144,8 +142,7 @@ class ClassDefinitionTest extends AbstractResolvableTest
                     ),
                     new ClassBody([])
                 ),
-                'expectedString' =>
-                    'use PHPUnit\Framework\TestCase;' . "\n" .
+                'expectedString' => 'use PHPUnit\Framework\TestCase;' . "\n" .
                     "\n" .
                     'class NameOfClass extends TestCase' . "\n" .
                     '{}'
@@ -160,8 +157,7 @@ class ClassDefinitionTest extends AbstractResolvableTest
                         new MethodDefinition('methodName', new Body([])),
                     ])
                 ),
-                'expectedString' =>
-                    'class NameOfClass extends \TestCase' . "\n" .
+                'expectedString' => 'class NameOfClass extends \TestCase' . "\n" .
                     '{' . "\n" .
                     '    public function methodName()' . "\n" .
                     '    {' . "\n\n" .

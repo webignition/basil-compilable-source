@@ -32,7 +32,7 @@ class ObjectConstructorTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function createDataProvider(): array
     {
@@ -69,7 +69,7 @@ class ObjectConstructorTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function renderDataProvider(): array
     {
@@ -91,10 +91,10 @@ class ObjectConstructorTest extends AbstractResolvableTest
                     $classDependency,
                     new MethodArguments([
                         new LiteralExpression('1'),
-                        new LiteralExpression("\'single-quoted value\'"),
+                        new LiteralExpression("\\'single-quoted value\\'"),
                     ])
                 ),
-                'expectedString' => "new Model(1, \'single-quoted value\')",
+                'expectedString' => "new Model(1, \\'single-quoted value\\')",
             ],
             'has arguments, stacked' => [
                 'constructor' => new ObjectConstructor(
@@ -102,15 +102,15 @@ class ObjectConstructorTest extends AbstractResolvableTest
                     new MethodArguments(
                         [
                             new LiteralExpression('1'),
-                            new LiteralExpression("\'single-quoted value\'"),
+                            new LiteralExpression("\\'single-quoted value\\'"),
                         ],
                         MethodArguments::FORMAT_STACKED
                     )
                 ),
                 'expectedString' => "new Model(\n" .
                     "    1,\n" .
-                    "    \'single-quoted value\'\n" .
-                    ")",
+                    "    \\'single-quoted value\\'\n" .
+                    ')',
             ],
         ];
     }

@@ -42,7 +42,7 @@ class ClosureExpressionTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function createDataProvider(): array
     {
@@ -109,15 +109,14 @@ class ClosureExpressionTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function renderDataProvider(): array
     {
         return [
             'empty' => [
                 'expression' => new ClosureExpression(new Body([])),
-                'expectedString' =>
-                    '(function () {' . "\n" .
+                'expectedString' => '(function () {' . "\n" .
                     '' . "\n" .
                     '})()',
             ],
@@ -129,8 +128,7 @@ class ClosureExpressionTest extends AbstractResolvableTest
                         ),
                     ])
                 ),
-                'expectedString' =>
-                    '(function () {' . "\n" .
+                'expectedString' => '(function () {' . "\n" .
                     '    return 5;' . "\n" .
                     '})()',
             ],
@@ -147,8 +145,7 @@ class ClosureExpressionTest extends AbstractResolvableTest
                         ),
                     ])
                 ),
-                'expectedString' =>
-                    '(function () {' . "\n" .
+                'expectedString' => '(function () {' . "\n" .
                     '    return (string) (5);' . "\n" .
                     '})()',
             ],
@@ -163,8 +160,7 @@ class ClosureExpressionTest extends AbstractResolvableTest
                         ),
                     ])
                 ),
-                'expectedString' =>
-                    '(function () {' . "\n" .
+                'expectedString' => '(function () {' . "\n" .
                     '    3;' . "\n" .
                     '    4;' . "\n" .
                     "\n" .
@@ -233,8 +229,7 @@ class ClosureExpressionTest extends AbstractResolvableTest
                         )
                     )
                 ),
-                'expectedString' =>
-                    '(function () {' . "\n" .
+                'expectedString' => '(function () {' . "\n" .
                     '    try {' . "\n" .
                     '        // TryBlock comment' . "\n" .
                     '    } catch (\RuntimeException $exception) {' . "\n" .
@@ -259,8 +254,7 @@ class ClosureExpressionTest extends AbstractResolvableTest
                         ),
                     ])
                 ),
-                'expectedString' =>
-                    '(function () {' . "\n" .
+                'expectedString' => '(function () {' . "\n" .
                     '    $variableName = "literal value";' . "\n" .
                     "\n" .
                     '    return $variableName;' . "\n" .

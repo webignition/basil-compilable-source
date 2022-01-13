@@ -21,6 +21,11 @@ class VariableName implements ExpressionInterface, VariablePlaceholderInterface
         $this->metadata = new Metadata();
     }
 
+    public function __toString(): string
+    {
+        return '$' . $this->name;
+    }
+
     public function getName(): string
     {
         return $this->name;
@@ -29,10 +34,5 @@ class VariableName implements ExpressionInterface, VariablePlaceholderInterface
     public function getMetadata(): MetadataInterface
     {
         return $this->metadata;
-    }
-
-    public function __toString(): string
-    {
-        return '$' . $this->name;
     }
 }

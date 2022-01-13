@@ -19,7 +19,6 @@ class CompositeExpressionTest extends AbstractResolvableTest
      * @dataProvider createDataProvider
      *
      * @param array<mixed> $expressions
-     * @param MetadataInterface $expectedMetadata
      */
     public function testCreate(array $expressions, MetadataInterface $expectedMetadata): void
     {
@@ -29,7 +28,7 @@ class CompositeExpressionTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function createDataProvider(): array
     {
@@ -71,7 +70,7 @@ class CompositeExpressionTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function renderDataProvider(): array
     {
@@ -119,8 +118,7 @@ class CompositeExpressionTest extends AbstractResolvableTest
                         'string'
                     ),
                 ]),
-                'expectedString' =>
-                    '(string) (1) . \'x\' . (string) (2)',
+                'expectedString' => '(string) (1) . \'x\' . (string) (2)',
             ],
         ];
     }

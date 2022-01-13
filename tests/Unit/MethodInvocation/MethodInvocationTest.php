@@ -50,7 +50,7 @@ class MethodInvocationTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function renderDataProvider(): array
     {
@@ -64,10 +64,10 @@ class MethodInvocationTest extends AbstractResolvableTest
                     'methodName',
                     new MethodArguments([
                         new LiteralExpression('1'),
-                        new LiteralExpression("\'single-quoted value\'"),
+                        new LiteralExpression("\\'single-quoted value\\'"),
                     ])
                 ),
-                'expectedString' => "methodName(1, \'single-quoted value\')",
+                'expectedString' => "methodName(1, \\'single-quoted value\\')",
             ],
             'has arguments, stacked' => [
                 'invocation' => new MethodInvocation(
@@ -75,15 +75,15 @@ class MethodInvocationTest extends AbstractResolvableTest
                     new MethodArguments(
                         [
                             new LiteralExpression('1'),
-                            new LiteralExpression("\'single-quoted value\'"),
+                            new LiteralExpression("\\'single-quoted value\\'"),
                         ],
                         MethodArguments::FORMAT_STACKED
                     )
                 ),
                 'expectedString' => "methodName(\n" .
                     "    1,\n" .
-                    "    \'single-quoted value\'\n" .
-                    ")",
+                    "    \\'single-quoted value\\'\n" .
+                    ')',
             ],
         ];
     }

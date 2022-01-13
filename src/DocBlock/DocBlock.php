@@ -30,12 +30,12 @@ EOD;
 EOD;
 
     /**
-     * @var array<int, string|AnnotationInterface>
+     * @var array<int, AnnotationInterface|string>
      */
     private array $lines;
 
     /**
-     * @param array<int, string|AnnotationInterface> $lines
+     * @param array<int, AnnotationInterface|string> $lines
      */
     public function __construct(array $lines)
     {
@@ -68,11 +68,6 @@ EOD;
         ];
     }
 
-    private function merge(DocBlock $source, DocBlock $addition): self
-    {
-        return new DocBlock(array_merge($source->lines, $addition->lines));
-    }
-
     protected function createResolvable(): ResolvableInterface
     {
         $resolvableItems = [];
@@ -95,6 +90,11 @@ EOD;
         });
 
         return ResolvableCollection::create($resolvableItems);
+    }
+
+    private function merge(DocBlock $source, DocBlock $addition): self
+    {
+        return new DocBlock(array_merge($source->lines, $addition->lines));
     }
 
     private function resolvedLineTemplateMutator(string $resolvedLine, ?CollectionItemContext $context): string

@@ -40,7 +40,7 @@ class ObjectMethodInvocationTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function createDataProvider(): array
     {
@@ -103,7 +103,7 @@ class ObjectMethodInvocationTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function renderDataProvider(): array
     {
@@ -121,10 +121,10 @@ class ObjectMethodInvocationTest extends AbstractResolvableTest
                     'methodName',
                     new MethodArguments([
                         new LiteralExpression('1'),
-                        new LiteralExpression("\'single-quoted value\'"),
+                        new LiteralExpression("\\'single-quoted value\\'"),
                     ])
                 ),
-                'expectedString' => "{{ OBJECT }}->methodName(1, \'single-quoted value\')",
+                'expectedString' => "{{ OBJECT }}->methodName(1, \\'single-quoted value\\')",
             ],
             'has arguments, stacked' => [
                 'invocation' => new ObjectMethodInvocation(
@@ -133,15 +133,15 @@ class ObjectMethodInvocationTest extends AbstractResolvableTest
                     new MethodArguments(
                         [
                             new LiteralExpression('1'),
-                            new LiteralExpression("\'single-quoted value\'"),
+                            new LiteralExpression("\\'single-quoted value\\'"),
                         ],
                         MethodArguments::FORMAT_STACKED
                     )
                 ),
                 'expectedString' => "{{ OBJECT }}->methodName(\n" .
                     "    1,\n" .
-                    "    \'single-quoted value\'\n" .
-                    ")",
+                    "    \\'single-quoted value\\'\n" .
+                    ')',
             ],
             'object and method name only, resolving placeholder' => [
                 'invocation' => new ObjectMethodInvocation(

@@ -45,7 +45,7 @@ class BodyTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function createDataProvider(): array
     {
@@ -151,7 +151,7 @@ class BodyTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function renderDataProvider(): array
     {
@@ -200,8 +200,7 @@ class BodyTest extends AbstractResolvableTest
                         ])
                     ),
                 ]),
-                'expectedString' =>
-                    '// single line comment' . "\n" .
+                'expectedString' => '// single line comment' . "\n" .
                     "\n" .
                     '"literal from statement";' . "\n" .
                     '"literal from statement from body";' . "\n" .
@@ -231,8 +230,7 @@ class BodyTest extends AbstractResolvableTest
                         new ReturnExpression()
                     )
                 ]),
-                'expectedString' =>
-                    '"literal from statement";' . "\n" .
+                'expectedString' => '"literal from statement";' . "\n" .
                     'return;',
             ],
             'explicit trailing empty line' => [
@@ -242,8 +240,7 @@ class BodyTest extends AbstractResolvableTest
                     ),
                     new EmptyLine(),
                 ]),
-                'expectedString' =>
-                    '// comment 1' . "\n",
+                'expectedString' => '// comment 1' . "\n",
             ],
             'body containing bodies with explicity trailing empty line' => [
                 'body' => new Body([
@@ -259,8 +256,7 @@ class BodyTest extends AbstractResolvableTest
                         ),
                     ]),
                 ]),
-                'expectedString' =>
-                    '// comment 1' . "\n" .
+                'expectedString' => '// comment 1' . "\n" .
                     "\n" .
                     '// comment 2',
             ],
@@ -276,7 +272,7 @@ class BodyTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function createEnclosingBodyDataProvider(): array
     {
@@ -317,7 +313,6 @@ class BodyTest extends AbstractResolvableTest
      * @dataProvider createFromExpressionsDataProvider
      *
      * @param array<mixed> $expressions
-     * @param Body $expectedBody
      */
     public function testCreateFromExpressions(array $expressions, Body $expectedBody): void
     {
@@ -325,7 +320,7 @@ class BodyTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function createFromExpressionsDataProvider(): array
     {

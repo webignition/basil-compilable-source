@@ -12,7 +12,7 @@ class VariableDependencyCollectionTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider createDataProvider
      *
-     * @param string[] $names
+     * @param string[]             $names
      * @param VariableDependency[] $expectedPlaceholders
      */
     public function testCreate(array $names, array $expectedPlaceholders): void
@@ -24,7 +24,7 @@ class VariableDependencyCollectionTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function createDataProvider(): array
     {
@@ -85,8 +85,6 @@ class VariableDependencyCollectionTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @param VariableDependencyCollection $collection
-     *
      * @return VariableDependency[]
      */
     private function getCollectionVariablePlaceholders(VariableDependencyCollection $collection): array
@@ -95,6 +93,8 @@ class VariableDependencyCollectionTest extends \PHPUnit\Framework\TestCase
         $property = $reflectionObject->getProperty('dependencies');
         $property->setAccessible(true);
 
-        return $property->getValue($collection);
+        $value = $property->getValue($collection);
+
+        return is_array($value) ? $value : [];
     }
 }

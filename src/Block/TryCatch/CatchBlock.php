@@ -42,6 +42,7 @@ EOD;
     public function getMetadata(): MetadataInterface
     {
         $metadata = parent::getMetadata();
+
         return $metadata->merge($this->catchExpression->getMetadata());
     }
 }

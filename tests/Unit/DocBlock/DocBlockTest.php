@@ -21,7 +21,7 @@ class DocBlockTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function appendDataProvider(): array
     {
@@ -51,7 +51,7 @@ class DocBlockTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function prependDataProvider(): array
     {
@@ -72,7 +72,7 @@ class DocBlockTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function mergeDataProvider(): array
     {
@@ -112,15 +112,14 @@ class DocBlockTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function renderDataProvider(): array
     {
         return [
             'empty' => [
                 'docBlock' => new DocBlock([]),
-                'expectedString' =>
-                    '/**' . "\n" .
+                'expectedString' => '/**' . "\n" .
                     ' */',
             ],
             'non-empty' => [
@@ -129,8 +128,7 @@ class DocBlockTest extends AbstractResolvableTest
                     'single line comment',
                     new ParameterAnnotation('string', new VariableName('name'))
                 ]),
-                'expectedString' =>
-                    '/**' . "\n" .
+                'expectedString' => '/**' . "\n" .
                     ' *' . "\n" .
                     ' * single line comment' . "\n" .
                     ' * @param string $name' . "\n" .

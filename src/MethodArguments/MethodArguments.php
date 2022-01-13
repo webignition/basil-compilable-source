@@ -33,7 +33,6 @@ class MethodArguments implements MethodArgumentsInterface, ResolvedTemplateMutat
 
     /**
      * @param ExpressionInterface[] $arguments
-     * @param string $format
      */
     public function __construct(array $arguments = [], string $format = self::FORMAT_INLINE)
     {

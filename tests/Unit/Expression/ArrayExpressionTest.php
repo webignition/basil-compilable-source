@@ -27,7 +27,7 @@ class ArrayExpressionTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function getMetadataDataProvider(): array
     {
@@ -73,7 +73,7 @@ class ArrayExpressionTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function renderDataProvider(): array
     {
@@ -89,10 +89,9 @@ class ArrayExpressionTest extends AbstractResolvableTest
                         new LiteralExpression('\'value1\'')
                     ),
                 ]),
-                'expectedString' =>
-                    "[\n" .
+                'expectedString' => "[\n" .
                     "    'key1' => 'value1',\n" .
-                    "]",
+                    ']',
             ],
             'multiple pairs' => [
                 'expression' => new ArrayExpression([
@@ -112,12 +111,11 @@ class ArrayExpressionTest extends AbstractResolvableTest
                         )
                     ),
                 ]),
-                'expectedString' =>
-                    "[\n" .
+                'expectedString' => "[\n" .
                     "    'key1' => 'value1',\n" .
                     "    'key2' => \$variableName,\n" .
                     "    'key3' => {{ OBJECT }}->methodName(),\n" .
-                    "]",
+                    ']',
             ],
             'single data set with single key:value numerical name' => [
                 'expression' => new ArrayExpression([
@@ -131,12 +129,11 @@ class ArrayExpressionTest extends AbstractResolvableTest
                         ])
                     ),
                 ]),
-                'expectedString' =>
-                    "[\n" .
+                'expectedString' => "[\n" .
                     "    '0' => [\n" .
                     "        'key1' => 'value1',\n" .
                     "    ],\n" .
-                    "]",
+                    ']',
             ],
             'single data set with single key:value string name' => [
                 'expression' => new ArrayExpression([
@@ -150,12 +147,11 @@ class ArrayExpressionTest extends AbstractResolvableTest
                         ])
                     ),
                 ]),
-                'expectedString' =>
-                    "[\n" .
+                'expectedString' => "[\n" .
                     "    'data-set-one' => [\n" .
                     "        'key1' => 'value1',\n" .
                     "    ],\n" .
-                    "]",
+                    ']',
             ],
             'single data set with multiple key:value numerical name' => [
                 'expression' => new ArrayExpression([
@@ -173,13 +169,12 @@ class ArrayExpressionTest extends AbstractResolvableTest
                         ])
                     ),
                 ]),
-                'expectedString' =>
-                    "[\n" .
+                'expectedString' => "[\n" .
                     "    '0' => [\n" .
                     "        'key1' => 'value1',\n" .
                     "        'key2' => 'value2',\n" .
                     "    ],\n" .
-                    "]",
+                    ']',
             ],
             'multiple data sets with multiple key:value numerical name' => [
                 'expression' => new ArrayExpression([
@@ -210,8 +205,7 @@ class ArrayExpressionTest extends AbstractResolvableTest
                         ])
                     ),
                 ]),
-                'expectedString' =>
-                    "[\n" .
+                'expectedString' => "[\n" .
                     "    '0' => [\n" .
                     "        'key1' => 'value1',\n" .
                     "        'key2' => 'value2',\n" .
@@ -220,7 +214,7 @@ class ArrayExpressionTest extends AbstractResolvableTest
                     "        'key1' => 'value3',\n" .
                     "        'key2' => 'value4',\n" .
                     "    ],\n" .
-                    "]",
+                    ']',
             ],
 
             'single data set with VariableName value' => [
@@ -235,12 +229,11 @@ class ArrayExpressionTest extends AbstractResolvableTest
                         ])
                     ),
                 ]),
-                'expectedString' =>
-                    "[\n" .
+                'expectedString' => "[\n" .
                     "    'data-set-one' => [\n" .
                     "        'key1' => \$variableName,\n" .
                     "    ],\n" .
-                    "]",
+                    ']',
             ],
             'single data set with ObjectMethodInvocation value' => [
                 'expression' => new ArrayExpression([
@@ -257,12 +250,11 @@ class ArrayExpressionTest extends AbstractResolvableTest
                         ])
                     ),
                 ]),
-                'expectedString' =>
-                    "[\n" .
+                'expectedString' => "[\n" .
                     "    'data-set-one' => [\n" .
                     "        'key1' => {{ OBJECT }}->methodName(),\n" .
                     "    ],\n" .
-                    "]",
+                    ']',
             ],
         ];
     }
@@ -276,7 +268,7 @@ class ArrayExpressionTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function fromArrayDataProvider(): array
     {

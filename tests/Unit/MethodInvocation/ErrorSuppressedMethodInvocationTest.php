@@ -23,7 +23,7 @@ class ErrorSuppressedMethodInvocationTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function renderDataProvider(): array
     {

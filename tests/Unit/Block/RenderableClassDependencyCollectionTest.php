@@ -21,7 +21,7 @@ class RenderableClassDependencyCollectionTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function renderDataProvider(): array
     {
@@ -35,8 +35,7 @@ class RenderableClassDependencyCollectionTest extends AbstractResolvableTest
                     new ClassName(ClassName::class),
                     new ClassName(ClassNameTest::class, 'BaseTest'),
                 ]),
-                'expectedString' =>
-                    'use webignition\BasilCompilableSource\ClassName;' . "\n" .
+                'expectedString' => 'use webignition\BasilCompilableSource\ClassName;' . "\n" .
                     'use webignition\BasilCompilableSource\Tests\Unit\ClassNameTest as BaseTest;',
             ],
             'lines are sorted' => [
@@ -45,8 +44,7 @@ class RenderableClassDependencyCollectionTest extends AbstractResolvableTest
                     new ClassName('Acme\A'),
                     new ClassName('Acme\B'),
                 ]),
-                'expectedString' =>
-                    'use Acme\A;' . "\n" .
+                'expectedString' => 'use Acme\A;' . "\n" .
                     'use Acme\B;' . "\n" .
                     'use Acme\C;',
             ],
@@ -68,8 +66,7 @@ class RenderableClassDependencyCollectionTest extends AbstractResolvableTest
                     new ClassName('B'),
                     new ClassName('Acme\C'),
                 ]),
-                'expectedString' =>
-                    'use Acme\A;' . "\n" .
+                'expectedString' => 'use Acme\A;' . "\n" .
                     'use Acme\C;',
             ],
         ];
@@ -92,7 +89,7 @@ class RenderableClassDependencyCollectionTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function countDataProvider(): array
     {
@@ -134,7 +131,7 @@ class RenderableClassDependencyCollectionTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function isEmptyDataProvider(): array
     {

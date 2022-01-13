@@ -28,7 +28,7 @@ class TryCatchBlockTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function renderDataProvider(): array
     {
@@ -60,8 +60,7 @@ class TryCatchBlockTest extends AbstractResolvableTest
                         ])
                     )
                 ),
-                'expectedString' =>
-                    'try {' . "\n" .
+                'expectedString' => 'try {' . "\n" .
                     '    methodName();' . "\n" .
                     '} catch (\LogicException | \RuntimeException $exception) {' . "\n" .
                     '    // handle LogicException and RuntimeException' . "\n" .

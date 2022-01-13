@@ -22,7 +22,7 @@ class VariableDependencyTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function constructDataProvider(): array
     {
@@ -42,7 +42,7 @@ class VariableDependencyTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function getMetadataDataProvider(): array
     {
@@ -67,7 +67,7 @@ class VariableDependencyTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function renderDataProvider(): array
     {

@@ -15,8 +15,6 @@ class MetadataTest extends \PHPUnit\Framework\TestCase
      * @dataProvider createDataProvider
      *
      * @param array<mixed> $components
-     * @param ClassDependencyCollection $expectedClassDependencies
-     * @param VariableDependencyCollection $expectedVariableDependencies
      */
     public function testCreate(
         array $components,
@@ -30,7 +28,7 @@ class MetadataTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function createDataProvider(): array
     {

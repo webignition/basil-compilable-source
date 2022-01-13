@@ -22,7 +22,7 @@ class ClassBody implements ResolvableInterface, ResolvableCollectionInterface
     private array $methods = [];
 
     /**
-     * @param MethodDefinitionInterface[] $methods
+     * @param array<mixed> $methods
      */
     public function __construct(array $methods)
     {
