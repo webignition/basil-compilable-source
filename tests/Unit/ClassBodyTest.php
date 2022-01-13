@@ -32,7 +32,7 @@ class ClassBodyTest extends AbstractResolvableTest
     /**
      * @dataProvider createDataProvider
      *
-     * @param array<mixed> $methods
+     * @param array<mixed>                $methods
      * @param MethodDefinitionInterface[] $expectedMethods
      */
     public function testCreate(array $methods, array $expectedMethods): void
@@ -150,8 +150,7 @@ class ClassBodyTest extends AbstractResolvableTest
                 'classBody' => new ClassBody([
                     new MethodDefinition('methodName', new Body([])),
                 ]),
-                'expectedString' =>
-                    'public function methodName()' . "\n" .
+                'expectedString' => 'public function methodName()' . "\n" .
                     '{' . "\n\n" .
                     '}'
             ],
@@ -200,8 +199,7 @@ class ClassBodyTest extends AbstractResolvableTest
                         ),
                     ])),
                 ]),
-                'expectedString' =>
-                    'public function stepOne()' . "\n" .
+                'expectedString' => 'public function stepOne()' . "\n" .
                     '{' . "\n" .
                     '    // click $"a"' . "\n" .
                     '    $statement = Statement::createAction(\'$"a" exists\');' . "\n" .
@@ -290,8 +288,7 @@ class ClassBodyTest extends AbstractResolvableTest
                         ),
                     ])),
                 ]),
-                'expectedString' =>
-                    '/**' . "\n" .
+                'expectedString' => '/**' . "\n" .
                     ' * @dataProvider stepOneDataProvider' . "\n" .
                     ' *' . "\n" .
                     ' * @param string $x' . "\n" .

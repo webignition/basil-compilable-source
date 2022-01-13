@@ -23,6 +23,7 @@ class CatchExpression implements ExpressionInterface
     public function getMetadata(): MetadataInterface
     {
         $metadata = new Metadata();
+
         return $metadata->merge($this->classes->getMetadata());
     }
 

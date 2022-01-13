@@ -16,11 +16,10 @@ abstract class AbstractMethodInvocationEncapsulator implements InvocableInterfac
         $this->invocation = new MethodInvocation($methodName, $arguments);
     }
 
-    abstract protected function getAdditionalMetadata(): MetadataInterface;
-
     public function getMetadata(): MetadataInterface
     {
         $metadata = $this->invocation->getMetadata();
+
         return $metadata->merge($this->getAdditionalMetadata());
     }
 
@@ -33,4 +32,6 @@ abstract class AbstractMethodInvocationEncapsulator implements InvocableInterfac
     {
         return $this->invocation->getArguments();
     }
+
+    abstract protected function getAdditionalMetadata(): MetadataInterface;
 }

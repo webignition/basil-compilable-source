@@ -10,5 +10,6 @@ use webignition\BasilCompilableSource\MethodArguments\MethodArgumentsInterface;
 interface InvocableInterface extends ExpressionInterface
 {
     public function getCall(): string;
+
     public function getArguments(): MethodArgumentsInterface;
 }

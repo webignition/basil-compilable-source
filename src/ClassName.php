@@ -26,6 +26,11 @@ class ClassName
         $this->alias = $alias;
     }
 
+    public function __toString(): string
+    {
+        return $this->alias ?? $this->getClass();
+    }
+
     public static function isFullyQualifiedClassName(string $className): bool
     {
         if (in_array($className, self::$specialClasses)) {
@@ -69,10 +74,5 @@ class ClassName
         }
 
         return $rendered;
-    }
-
-    public function __toString(): string
-    {
-        return $this->alias ?? $this->getClass();
     }
 }

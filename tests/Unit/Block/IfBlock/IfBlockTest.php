@@ -30,8 +30,8 @@ class IfBlockTest extends AbstractResolvableTest
                 new VariableDependency('IF_EXPRESSION_OBJECT'),
                 'methodName'
             ),
-            new LiteralExpression("value"),
-            "==="
+            new LiteralExpression('value'),
+            '==='
         );
 
         $body = new Body([
@@ -80,7 +80,7 @@ class IfBlockTest extends AbstractResolvableTest
                     new ComparisonExpression(
                         new LiteralExpression('"value"'),
                         new LiteralExpression('"another value"'),
-                        "!=="
+                        '!=='
                     ),
                     new Statement(
                         new ReturnExpression(
@@ -88,8 +88,7 @@ class IfBlockTest extends AbstractResolvableTest
                         )
                     )
                 ),
-                'expectedString' =>
-                    'if ("value" !== "another value") {' . "\n" .
+                'expectedString' => 'if ("value" !== "another value") {' . "\n" .
                     '    return "return value";' . "\n" .
                     '}',
             ],

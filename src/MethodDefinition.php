@@ -14,6 +14,10 @@ class MethodDefinition implements MethodDefinitionInterface
 {
     use IndentTrait;
 
+    public const VISIBILITY_PUBLIC = 'public';
+    public const VISIBILITY_PROTECTED = 'protected';
+    public const VISIBILITY_PRIVATE = 'private';
+
     private const RENDER_TEMPLATE_WITHOUT_DOCBLOCK = <<<'EOD'
 {{ signature }}
 {
@@ -29,10 +33,6 @@ EOD;
 }
 EOD;
 
-    public const VISIBILITY_PUBLIC = 'public';
-    public const VISIBILITY_PROTECTED = 'protected';
-    public const VISIBILITY_PRIVATE = 'private';
-
     private string $visibility;
 
     private ?string $returnType;
@@ -47,8 +47,6 @@ EOD;
     private ?DocBlock $docblock;
 
     /**
-     * @param string $name
-     * @param BodyInterface $body
      * @param string[] $arguments
      */
     public function __construct(string $name, BodyInterface $body, array $arguments = [])
@@ -175,8 +173,6 @@ EOD;
 
     /**
      * @param array<string, string> $argumentNames
-     *
-     * @return string
      */
     private function createSignatureArguments(array $argumentNames): string
     {
@@ -191,8 +187,6 @@ EOD;
 
     /**
      * @param string[] $arguments
-     *
-     * @return DocBlock|null
      */
     private function createDocBlock(array $arguments): ?DocBlock
     {

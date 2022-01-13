@@ -15,6 +15,7 @@ class ObjectConstructor extends AbstractMethodInvocationEncapsulator
     private const RENDER_TEMPLATE = 'new {{ method_invocation }}';
 
     private ClassName $class;
+
     public function __construct(ClassName $class, ?MethodArgumentsInterface $arguments = null)
     {
         parent::__construct($class->renderClassName(), $arguments);

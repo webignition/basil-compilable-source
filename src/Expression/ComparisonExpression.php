@@ -15,11 +15,6 @@ class ComparisonExpression implements ExpressionInterface
     private ExpressionInterface $rightHandSide;
     private string $comparison;
 
-    /**
-     * @param ExpressionInterface $leftHandSide
-     * @param ExpressionInterface $rightHandSide
-     * @param string $comparison
-     */
     public function __construct(
         ExpressionInterface $leftHandSide,
         ExpressionInterface $rightHandSide,
@@ -64,6 +59,6 @@ class ComparisonExpression implements ExpressionInterface
         $metadata = new Metadata();
         $metadata = $metadata->merge($this->leftHandSide->getMetadata());
 
-        return  $metadata->merge($this->rightHandSide->getMetadata());
+        return $metadata->merge($this->rightHandSide->getMetadata());
     }
 }

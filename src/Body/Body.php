@@ -50,8 +50,6 @@ class Body implements BodyInterface, ResolvableCollectionInterface
     /**
      * @param array<mixed> $expressions
      *
-     * @return self
-     *
      * @throws \InvalidArgumentException
      */
     public static function createFromExpressions(array $expressions): self
@@ -131,8 +129,6 @@ class Body implements BodyInterface, ResolvableCollectionInterface
 
     /**
      * @param mixed $item
-     *
-     * @return bool
      */
     private function includeContent($item): bool
     {

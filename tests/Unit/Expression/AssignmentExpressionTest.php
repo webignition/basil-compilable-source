@@ -81,8 +81,7 @@ class AssignmentExpressionTest extends AbstractResolvableTest
                     new LiteralExpression('lhs'),
                     new LiteralExpression('rhs')
                 ),
-                'expectedString' =>
-                    'lhs = rhs',
+                'expectedString' => 'lhs = rhs',
             ],
             'object property access and literal, assignment' => [
                 'expression' => new AssignmentExpression(
@@ -92,8 +91,7 @@ class AssignmentExpressionTest extends AbstractResolvableTest
                     ),
                     new LiteralExpression('value')
                 ),
-                'expectedString' =>
-                    '{{ DEPENDENCY }}->propertyName = value',
+                'expectedString' => '{{ DEPENDENCY }}->propertyName = value',
             ],
         ];
     }

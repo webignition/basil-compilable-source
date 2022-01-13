@@ -27,13 +27,13 @@ class ObjectTypeDeclaration implements TypeDeclarationInterface
         ]);
     }
 
-    public function getMetadata(): MetadataInterface
-    {
-        return $this->metadata;
-    }
-
     public function __toString(): string
     {
         return $this->type->renderClassName();
+    }
+
+    public function getMetadata(): MetadataInterface
+    {
+        return $this->metadata;
     }
 }

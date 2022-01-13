@@ -41,7 +41,7 @@ class VariableDependency implements ExpressionInterface, VariableDependencyInter
 
     public function getContext(): array
     {
-        return             [
+        return [
             'name' => $this->name,
         ];
     }

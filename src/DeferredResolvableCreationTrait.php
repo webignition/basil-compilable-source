@@ -10,20 +10,20 @@ trait DeferredResolvableCreationTrait
 {
     private ?ResolvableInterface $resolvable = null;
 
-    abstract protected function createResolvable(): ResolvableInterface;
-
     public function getTemplate(): string
     {
         return $this->getResolvable()->getTemplate();
     }
 
     /**
-     * @return array<string, string|ResolvableInterface>
+     * @return array<string, ResolvableInterface|string>
      */
     public function getContext(): array
     {
         return $this->getResolvable()->getContext();
     }
+
+    abstract protected function createResolvable(): ResolvableInterface;
 
     private function getResolvable(): ResolvableInterface
     {

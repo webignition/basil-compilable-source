@@ -21,7 +21,6 @@ class DataProviderMethodDefinition extends MethodDefinition implements DataProvi
     private array $data;
 
     /**
-     * @param string $name
      * @param array<mixed> $data
      */
     public function __construct(string $name, array $data)

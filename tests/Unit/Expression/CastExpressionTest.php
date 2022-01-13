@@ -63,8 +63,7 @@ class CastExpressionTest extends AbstractResolvableTest
             ],
             'empty closure expression as string' => [
                 'expression' => new CastExpression(new ClosureExpression(new Body([])), 'string'),
-                'expectedString' =>
-                    '(string) ((function () {' . "\n" .
+                'expectedString' => '(string) ((function () {' . "\n" .
                     "\n" .
                     '})())',
             ],

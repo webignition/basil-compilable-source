@@ -50,8 +50,7 @@ class ArgumentFactory
     }
 
     /**
-     * @param int|float|string|bool $scalar
-     * @return ExpressionInterface
+     * @param bool|float|int|string $scalar
      */
     private function createExpressionFromScalar($scalar): ExpressionInterface
     {

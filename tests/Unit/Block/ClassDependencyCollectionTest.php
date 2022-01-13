@@ -83,8 +83,7 @@ class ClassDependencyCollectionTest extends AbstractResolvableTest
                     new ClassName(ClassName::class),
                     new ClassName(ClassNameTest::class, 'BaseTest'),
                 ]),
-                'expectedString' =>
-                    'use webignition\BasilCompilableSource\ClassName;' . "\n" .
+                'expectedString' => 'use webignition\BasilCompilableSource\ClassName;' . "\n" .
                     'use webignition\BasilCompilableSource\Tests\Unit\ClassNameTest as BaseTest;',
             ],
             'lines are sorted' => [
@@ -93,8 +92,7 @@ class ClassDependencyCollectionTest extends AbstractResolvableTest
                     new ClassName('Acme\A'),
                     new ClassName('Acme\B'),
                 ]),
-                'expectedString' =>
-                    'use Acme\A;' . "\n" .
+                'expectedString' => 'use Acme\A;' . "\n" .
                     'use Acme\B;' . "\n" .
                     'use Acme\C;',
             ],

@@ -122,12 +122,11 @@ class ArrayPairTest extends AbstractResolvableTest
                         ),
                     ]),
                 ),
-                'expectedString' =>
-                    "'key' => [\n" .
+                'expectedString' => "'key' => [\n" .
                     "    'sub-key-1' => 'sub value 1',\n" .
                     "    'sub-key-2' => 'sub value 2',\n" .
                     "    'sub-key-3' => 'sub value 3',\n" .
-                    "],",
+                    '],',
             ],
         ];
     }

@@ -6,10 +6,10 @@ namespace webignition\BasilCompilableSource\MethodInvocation;
 
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\MethodArguments\MethodArgumentsInterface;
+use webignition\BasilCompilableSource\MethodInvocation\StaticObjectMethodInvocationInterface as SOMIInterface;
 use webignition\BasilCompilableSource\StaticObject;
 
-class StaticObjectMethodInvocation extends AbstractMethodInvocationEncapsulator implements
-    StaticObjectMethodInvocationInterface
+class StaticObjectMethodInvocation extends AbstractMethodInvocationEncapsulator implements SOMIInterface
 {
     private const RENDER_TEMPLATE = '{{ object }}::{{ method_invocation }}';
 
@@ -38,13 +38,13 @@ class StaticObjectMethodInvocation extends AbstractMethodInvocationEncapsulator 
         ];
     }
 
-    protected function getAdditionalMetadata(): MetadataInterface
-    {
-        return $this->staticObject->getMetadata();
-    }
-
     public function getStaticObject(): StaticObject
     {
         return $this->staticObject;
+    }
+
+    protected function getAdditionalMetadata(): MetadataInterface
+    {
+        return $this->staticObject->getMetadata();
     }
 }

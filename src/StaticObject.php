@@ -20,6 +20,17 @@ class StaticObject implements ExpressionInterface
         $this->object = $object;
     }
 
+    public function __toString(): string
+    {
+        if (ClassName::isFullyQualifiedClassName($this->object)) {
+            $className = new ClassName($this->object);
+
+            return $className->renderClassName();
+        }
+
+        return $this->object;
+    }
+
     public function getMetadata(): MetadataInterface
     {
         if (ClassName::isFullyQualifiedClassName($this->object)) {
@@ -31,15 +42,5 @@ class StaticObject implements ExpressionInterface
         }
 
         return new Metadata();
-    }
-
-    public function __toString(): string
-    {
-        if (ClassName::isFullyQualifiedClassName($this->object)) {
-            $className = new ClassName($this->object);
-            return $className->renderClassName();
-        }
-
-        return $this->object;
     }
 }

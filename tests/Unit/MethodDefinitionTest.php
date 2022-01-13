@@ -30,8 +30,6 @@ class MethodDefinitionTest extends AbstractResolvableTest
     /**
      * @dataProvider createDataProvider
      *
-     * @param string $name
-     * @param BodyInterface $codeBlock
      * @param string[] $arguments
      */
     public function testCreate(string $name, BodyInterface $codeBlock, array $arguments = []): void
@@ -192,22 +190,19 @@ class MethodDefinitionTest extends AbstractResolvableTest
         return [
             'public, no arguments, no return type, no lines' => [
                 'methodDefinition' => new MethodDefinition('emptyPublicMethod', new Body([])),
-                'expectedString' =>
-                    'public function emptyPublicMethod()' . "\n" .
+                'expectedString' => 'public function emptyPublicMethod()' . "\n" .
                     '{' . "\n\n" .
                     '}'
             ],
             'protected, no arguments, no return type, no lines' => [
                 'methodDefinition' => $emptyProtectedMethod,
-                'expectedString' =>
-                    'protected function emptyProtectedMethod()' . "\n" .
+                'expectedString' => 'protected function emptyProtectedMethod()' . "\n" .
                     '{' . "\n\n" .
                     '}'
             ],
             'private, no arguments, no return type, no lines' => [
                 'methodDefinition' => $emptyPrivateMethod,
-                'expectedString' =>
-                    'private function emptyPrivateMethod()' . "\n" .
+                'expectedString' => 'private function emptyPrivateMethod()' . "\n" .
                     '{' . "\n\n" .
                     '}'
             ],
@@ -217,8 +212,7 @@ class MethodDefinitionTest extends AbstractResolvableTest
                     'arg2',
                     'arg3',
                 ]),
-                'expectedString' =>
-                    '/**' . "\n" .
+                'expectedString' => '/**' . "\n" .
                     ' * @param string $arg1' . "\n" .
                     ' * @param string $arg2' . "\n" .
                     ' * @param string $arg3' . "\n" .
@@ -229,8 +223,7 @@ class MethodDefinitionTest extends AbstractResolvableTest
             ],
             'public, no arguments, has return type, no lines' => [
                 'methodDefinition' => $emptyMethodWithReturnType,
-                'expectedString' =>
-                    'public function emptyPublicMethodWithReturnType(): string' . "\n" .
+                'expectedString' => 'public function emptyPublicMethodWithReturnType(): string' . "\n" .
                     '{' . "\n\n" .
                     '}'
             ],
@@ -256,8 +249,7 @@ class MethodDefinitionTest extends AbstractResolvableTest
                     ]),
                     ['x', 'y']
                 ),
-                'expectedString' =>
-                    '/**' . "\n" .
+                'expectedString' => '/**' . "\n" .
                     ' * @param string $x' . "\n" .
                     ' * @param string $y' . "\n" .
                     ' */' . "\n" .
@@ -277,8 +269,7 @@ class MethodDefinitionTest extends AbstractResolvableTest
                     ]),
                     ['x', 'y']
                 ),
-                'expectedString' =>
-                    '/**' . "\n" .
+                'expectedString' => '/**' . "\n" .
                     ' * @param string $x' . "\n" .
                     ' * @param string $y' . "\n" .
                     ' */' . "\n" .
@@ -289,8 +280,7 @@ class MethodDefinitionTest extends AbstractResolvableTest
             ],
             'public static, no arguments, no return type, no lines' => [
                 'methodDefinition' => $emptyPublicStaticMethod,
-                'expectedString' =>
-                    'public static function emptyPublicStaticMethod()' . "\n" .
+                'expectedString' => 'public static function emptyPublicStaticMethod()' . "\n" .
                     '{' . "\n\n" .
                     '}'
             ],
@@ -316,8 +306,7 @@ class MethodDefinitionTest extends AbstractResolvableTest
 
                     return $methodDefinition;
                 })(),
-                'expectedString' =>
-                    '/**' . "\n" .
+                'expectedString' => '/**' . "\n" .
                     ' * @dataProvider dataProviderMethodName' . "\n" .
                     ' *' . "\n" .
                     ' * @param string $x' . "\n" .

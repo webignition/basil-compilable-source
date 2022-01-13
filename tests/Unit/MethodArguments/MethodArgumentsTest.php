@@ -31,7 +31,6 @@ class MethodArgumentsTest extends AbstractResolvableTest
      * @dataProvider createDataProvider
      *
      * @param ExpressionInterface[] $arguments
-     * @param MetadataInterface $expectedMetadata
      */
     public function testCreate(
         array $arguments,
@@ -71,7 +70,7 @@ class MethodArgumentsTest extends AbstractResolvableTest
             'multiple arguments' => [
                 'arguments' => [
                     new LiteralExpression('2'),
-                    new LiteralExpression("\'single-quoted value\'"),
+                    new LiteralExpression("\\'single-quoted value\\'"),
                     new LiteralExpression('"double-quoted value"'),
                 ],
                 'format' => MethodArguments::FORMAT_INLINE,
@@ -119,21 +118,21 @@ class MethodArgumentsTest extends AbstractResolvableTest
             'has arguments, inline' => [
                 'arguments' => new MethodArguments([
                     new LiteralExpression('1'),
-                    new LiteralExpression("\'single-quoted value\'"),
+                    new LiteralExpression("\\'single-quoted value\\'"),
                 ]),
-                'expectedString' => "1, \'single-quoted value\'",
+                'expectedString' => "1, \\'single-quoted value\\'",
             ],
             'has arguments, stacked' => [
                 'arguments' => new MethodArguments(
                     [
                         new LiteralExpression('1'),
-                        new LiteralExpression("\'single-quoted value\'"),
+                        new LiteralExpression("\\'single-quoted value\\'"),
                     ],
                     MethodArguments::FORMAT_STACKED
                 ),
                 'expectedString' => "\n" .
                     "    1,\n" .
-                    "    \'single-quoted value\'\n",
+                    "    \\'single-quoted value\\'\n",
             ],
             'indent stacked multi-line arguments' => [
                 'arguments' => new MethodArguments(
@@ -172,8 +171,7 @@ class MethodArgumentsTest extends AbstractResolvableTest
                     ],
                     MethodArguments::FORMAT_STACKED
                 ),
-                'expectedString' =>
-                    "\n" .
+                'expectedString' => "\n" .
                     '    {{ NAVIGATOR }}->find(ObjectMethodInvocation::fromJson({' . "\n" .
                     '        "locator": ".selector"' . "\n" .
                     '    })),' . "\n" .
@@ -198,14 +196,13 @@ class MethodArgumentsTest extends AbstractResolvableTest
                         ])
                     ]
                 ),
-                'expectedString' =>
-                    "[\n" .
+                'expectedString' => "[\n" .
                     "    'name' => {{ DEPENDENCY }}->dataName(),\n" .
                     "    'data' => [\n" .
                     "        'key1' => 'value1',\n" .
                     "        'key2' => 'value2',\n" .
                     "    ],\n" .
-                    "]",
+                    ']',
             ],
         ];
     }

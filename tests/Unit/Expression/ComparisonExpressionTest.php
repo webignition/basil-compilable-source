@@ -81,8 +81,7 @@ class ComparisonExpressionTest extends AbstractResolvableTest
                     new LiteralExpression('rhs'),
                     '==='
                 ),
-                'expectedString' =>
-                    'lhs === rhs',
+                'expectedString' => 'lhs === rhs',
             ],
             'object method invocation and literal, null coalesce' => [
                 'expression' => new ComparisonExpression(
@@ -93,8 +92,7 @@ class ComparisonExpressionTest extends AbstractResolvableTest
                     new LiteralExpression('value'),
                     '??'
                 ),
-                'expectedString' =>
-                    '{{ DEPENDENCY }}->methodName() ?? value',
+                'expectedString' => '{{ DEPENDENCY }}->methodName() ?? value',
             ],
         ];
     }

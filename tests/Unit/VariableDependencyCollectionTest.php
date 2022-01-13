@@ -12,7 +12,7 @@ class VariableDependencyCollectionTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider createDataProvider
      *
-     * @param string[] $names
+     * @param string[]             $names
      * @param VariableDependency[] $expectedPlaceholders
      */
     public function testCreate(array $names, array $expectedPlaceholders): void
@@ -85,8 +85,6 @@ class VariableDependencyCollectionTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @param VariableDependencyCollection $collection
-     *
      * @return VariableDependency[]
      */
     private function getCollectionVariablePlaceholders(VariableDependencyCollection $collection): array

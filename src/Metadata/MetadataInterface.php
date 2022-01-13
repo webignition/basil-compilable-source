@@ -10,6 +10,7 @@ use webignition\BasilCompilableSource\VariableDependencyCollection;
 interface MetadataInterface
 {
     public function getClassDependencies(): ClassDependencyCollection;
+
     public function getVariableDependencies(): VariableDependencyCollection;
 
     public function merge(MetadataInterface $metadata): MetadataInterface;

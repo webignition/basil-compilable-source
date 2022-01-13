@@ -9,5 +9,6 @@ use webignition\StubbleResolvable\ResolvableInterface;
 interface ClassDefinitionInterface extends HasMetadataInterface, ResolvableInterface
 {
     public function getSignature(): ClassSignature;
+
     public function getBody(): ClassBody;
 }

@@ -119,8 +119,7 @@ class DocBlockTest extends AbstractResolvableTest
         return [
             'empty' => [
                 'docBlock' => new DocBlock([]),
-                'expectedString' =>
-                    '/**' . "\n" .
+                'expectedString' => '/**' . "\n" .
                     ' */',
             ],
             'non-empty' => [
@@ -129,8 +128,7 @@ class DocBlockTest extends AbstractResolvableTest
                     'single line comment',
                     new ParameterAnnotation('string', new VariableName('name'))
                 ]),
-                'expectedString' =>
-                    '/**' . "\n" .
+                'expectedString' => '/**' . "\n" .
                     ' *' . "\n" .
                     ' * single line comment' . "\n" .
                     ' * @param string $name' . "\n" .

@@ -13,7 +13,6 @@ class DataProviderMethodDefinitionTest extends AbstractResolvableTest
     /**
      * @dataProvider createDataProvider
      *
-     * @param string $name
      * @param array<mixed> $data
      */
     public function testCreate(string $name, array $data): void
@@ -71,8 +70,7 @@ class DataProviderMethodDefinitionTest extends AbstractResolvableTest
         return [
             'empty data' => [
                 'methodDefinition' => new DataProviderMethodDefinition('emptyDataDataProvider', []),
-                'expectedString' =>
-                    'public function emptyDataDataProvider(): array' . "\n" .
+                'expectedString' => 'public function emptyDataDataProvider(): array' . "\n" .
                     '{' . "\n" .
                     '    return [];' . "\n" .
                     '}'
@@ -81,27 +79,26 @@ class DataProviderMethodDefinitionTest extends AbstractResolvableTest
                 'methodDefinition' => new DataProviderMethodDefinition('emptyDataDataProvider', [
                     0 => [
                         'x' => '1',
-                        'y' => "\'string1\'",
+                        'y' => "\\'string1\\'",
                     ],
                     1 => [
                         'x' => '2',
-                        'y' => "\'string2\'",
+                        'y' => "\\'string2\\'",
                     ],
                 ]),
-                'expectedString' =>
-                    "public function emptyDataDataProvider(): array\n" .
+                'expectedString' => "public function emptyDataDataProvider(): array\n" .
                     "{\n" .
                     "    return [\n" .
                     "        '0' => [\n" .
                     "            'x' => '1',\n" .
-                    "            'y' => '\'string1\'',\n" .
+                    "            'y' => '\\'string1\\'',\n" .
                     "        ],\n" .
                     "        '1' => [\n" .
                     "            'x' => '2',\n" .
-                    "            'y' => '\'string2\'',\n" .
+                    "            'y' => '\\'string2\\'',\n" .
                     "        ],\n" .
                     "    ];\n" .
-                    "}"
+                    '}'
             ],
         ];
     }

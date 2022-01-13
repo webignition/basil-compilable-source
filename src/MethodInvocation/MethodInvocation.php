@@ -15,10 +15,6 @@ class MethodInvocation implements MethodInvocationInterface
     private string $methodName;
     private MethodArgumentsInterface $arguments;
 
-    /**
-     * @param string $methodName
-     * @param MethodArgumentsInterface|null $arguments
-     */
     public function __construct(string $methodName, ?MethodArgumentsInterface $arguments = null)
     {
         $this->methodName = $methodName;

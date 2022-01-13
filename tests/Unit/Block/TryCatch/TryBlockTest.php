@@ -69,8 +69,7 @@ class TryBlockTest extends AbstractResolvableTest
                         new LiteralExpression('"literal expression"')
                     )
                 ),
-                'expectedString' =>
-                    'try {' . "\n" .
+                'expectedString' => 'try {' . "\n" .
                     '    "literal expression";' . "\n" .
                     '}',
             ],
@@ -80,8 +79,7 @@ class TryBlockTest extends AbstractResolvableTest
                         new ReturnExpression()
                     )
                 ),
-                'expectedString' =>
-                    'try {' . "\n" .
+                'expectedString' => 'try {' . "\n" .
                     '    return;' . "\n" .
                     '}',
             ],

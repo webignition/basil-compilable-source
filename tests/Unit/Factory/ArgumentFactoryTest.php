@@ -23,7 +23,7 @@ class ArgumentFactoryTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider createDataProvider
      *
-     * @param array<mixed> $arguments
+     * @param array<mixed>          $arguments
      * @param ExpressionInterface[] $expectedArguments
      */
     public function testCreate(array $arguments, array $expectedArguments): void
