@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource;
 
 use webignition\StubbleResolvable\ResolvableCollectionInterface;
+use webignition\StubbleResolvable\ResolvableInterface;
 
 trait DeferredResolvableCollectionTrait
 {
@@ -19,7 +20,7 @@ trait DeferredResolvableCollectionTrait
             : 1;
     }
 
-    public function getIndexForItem($item): ?int
+    public function getIndexForItem(string|\Stringable|ResolvableInterface $item): ?int
     {
         $resolvable = $this->getResolvable();
 
