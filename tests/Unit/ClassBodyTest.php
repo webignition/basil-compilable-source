@@ -43,7 +43,7 @@ class ClassBodyTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function createDataProvider(): array
     {
@@ -82,7 +82,7 @@ class ClassBodyTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function getMetadataDataProvider(): array
     {
@@ -137,7 +137,7 @@ class ClassBodyTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function renderDataProvider(): array
     {

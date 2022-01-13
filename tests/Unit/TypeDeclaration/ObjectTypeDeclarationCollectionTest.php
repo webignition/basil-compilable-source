@@ -26,7 +26,7 @@ class ObjectTypeDeclarationCollectionTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function getMetadataDataProvider(): array
     {
@@ -59,7 +59,7 @@ class ObjectTypeDeclarationCollectionTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function renderDataProvider(): array
     {

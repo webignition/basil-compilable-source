@@ -28,7 +28,7 @@ class ClassDependencyCollectionTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function createDataProvider(): array
     {
@@ -69,7 +69,7 @@ class ClassDependencyCollectionTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function renderDataProvider(): array
     {
@@ -116,7 +116,7 @@ class ClassDependencyCollectionTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function countDataProvider(): array
     {
@@ -158,7 +158,7 @@ class ClassDependencyCollectionTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function isEmptyDataProvider(): array
     {

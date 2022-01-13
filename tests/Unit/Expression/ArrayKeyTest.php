@@ -17,7 +17,7 @@ class ArrayKeyTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function toStringDataProvider(): array
     {

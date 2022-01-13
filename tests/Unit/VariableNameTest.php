@@ -23,7 +23,7 @@ class VariableNameTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function renderDataProvider(): array
     {

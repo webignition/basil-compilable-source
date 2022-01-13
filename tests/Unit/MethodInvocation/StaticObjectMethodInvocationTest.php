@@ -36,7 +36,7 @@ class StaticObjectMethodInvocationTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function createDataProvider(): array
     {
@@ -91,7 +91,7 @@ class StaticObjectMethodInvocationTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function renderDataProvider(): array
     {

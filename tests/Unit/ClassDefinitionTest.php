@@ -48,7 +48,7 @@ class ClassDefinitionTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function getMetadataDataProvider(): array
     {
@@ -110,7 +110,7 @@ class ClassDefinitionTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function renderDataProvider(): array
     {

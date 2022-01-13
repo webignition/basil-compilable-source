@@ -24,7 +24,7 @@ class VariableDependencyCollectionTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function createDataProvider(): array
     {
@@ -93,6 +93,8 @@ class VariableDependencyCollectionTest extends \PHPUnit\Framework\TestCase
         $property = $reflectionObject->getProperty('dependencies');
         $property->setAccessible(true);
 
-        return $property->getValue($collection);
+        $value = $property->getValue($collection);
+
+        return is_array($value) ? $value : [];
     }
 }

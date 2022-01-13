@@ -21,7 +21,7 @@ class DocBlockTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function appendDataProvider(): array
     {
@@ -51,7 +51,7 @@ class DocBlockTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function prependDataProvider(): array
     {
@@ -72,7 +72,7 @@ class DocBlockTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function mergeDataProvider(): array
     {
@@ -112,7 +112,7 @@ class DocBlockTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function renderDataProvider(): array
     {

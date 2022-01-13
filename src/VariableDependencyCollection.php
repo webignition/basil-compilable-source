@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSource;
 
 /**
- * @implements \IteratorAggregate<VariableDependencyInterface>
+ * @implements \IteratorAggregate<string, VariableDependencyInterface>
  */
 class VariableDependencyCollection implements \IteratorAggregate
 {
     /**
-     * @var VariableDependencyInterface[]
+     * @var array<string, VariableDependencyInterface>
      */
     private array $dependencies = [];
 
@@ -46,8 +46,9 @@ class VariableDependencyCollection implements \IteratorAggregate
         }
     }
 
-    // IteratorAggregate methods
-
+    /**
+     * @return \Traversable<string, VariableDependencyInterface>
+     */
     public function getIterator()
     {
         return new \ArrayIterator($this->dependencies);

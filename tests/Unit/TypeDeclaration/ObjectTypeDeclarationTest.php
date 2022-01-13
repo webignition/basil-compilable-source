@@ -36,7 +36,7 @@ class ObjectTypeDeclarationTest extends TestCase
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function toStringDataProvider(): array
     {

@@ -26,7 +26,7 @@ class ArrayPairTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function getMetadataDataProvider(): array
     {
@@ -64,7 +64,7 @@ class ArrayPairTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function renderDataProvider(): array
     {

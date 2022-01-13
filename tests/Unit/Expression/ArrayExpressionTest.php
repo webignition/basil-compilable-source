@@ -27,7 +27,7 @@ class ArrayExpressionTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function getMetadataDataProvider(): array
     {
@@ -73,7 +73,7 @@ class ArrayExpressionTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function renderDataProvider(): array
     {
@@ -268,7 +268,7 @@ class ArrayExpressionTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function fromArrayDataProvider(): array
     {

@@ -22,7 +22,7 @@ class ClassNameTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function createDataProvider(): array
     {
@@ -47,7 +47,7 @@ class ClassNameTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function getClassDataProvider(): array
     {
@@ -72,7 +72,7 @@ class ClassNameTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function toStringDataProvider(): array
     {
@@ -105,7 +105,7 @@ class ClassNameTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function isInRootNamespaceDataProvider(): array
     {
@@ -138,7 +138,7 @@ class ClassNameTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function renderClassNameDataProvider(): array
     {
@@ -171,7 +171,7 @@ class ClassNameTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function isFullyQualifiedClassNameDataProvider(): array
     {

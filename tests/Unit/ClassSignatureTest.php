@@ -27,7 +27,7 @@ class ClassSignatureTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function getBaseClassDataProvider(): array
     {
@@ -54,7 +54,7 @@ class ClassSignatureTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function renderDataProvider(): array
     {
