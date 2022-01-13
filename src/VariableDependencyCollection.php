@@ -49,7 +49,7 @@ class VariableDependencyCollection implements \IteratorAggregate
     /**
      * @return \Traversable<string, VariableDependencyInterface>
      */
-    public function getIterator()
+    public function getIterator(): \Traversable
     {
         return new \ArrayIterator($this->dependencies);
     }

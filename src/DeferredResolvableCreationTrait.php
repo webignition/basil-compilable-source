@@ -16,7 +16,7 @@ trait DeferredResolvableCreationTrait
     }
 
     /**
-     * @return array<string, ResolvableInterface|string>
+     * @return array<string, ResolvableInterface|string|\Stringable>
      */
     public function getContext(): array
     {
